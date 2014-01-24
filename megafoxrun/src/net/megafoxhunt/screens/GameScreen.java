@@ -20,6 +20,7 @@ private MyGdxGame game;
 	private OrthographicCamera camera;
 	
 	float x, y;
+	private float speed = 40;
 	
 	public GameScreen(final MyGdxGame game) {
 		this.game = game;		
@@ -36,8 +37,8 @@ private MyGdxGame game;
         camera.position.set(x, y, 0);
         camera.update();
         
-        x++;
-        y++;
+        x += speed * delta;;
+        y += speed * delta;
         
         renderer.setView(camera);
         renderer.render();

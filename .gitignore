@@ -1,39 +1,11 @@
-/MyGdxGame.gwt.xml
-/net
-# Compiled source #
-###################
-*.com
-*.class
-*.dll
-*.exe
-*.o
-*.so
+megafoxrun-android/.settings/
+megafoxrun-android/bin/
 
-# Packages #
-############
-# it's better to unpack these files and commit the raw source
-# git has its own built in compression methods
-*.7z
-*.dmg
-*.gz
-*.iso
-*.jar
-*.rar
-*.tar
-*.zip
+megafoxrun/.settings/
+megafoxrun/bin/
 
-# Logs and databases #
-######################
-*.log
-*.sql
-*.sqlite
+megafoxrun-android/.settings/
+megafoxrun-desktop/bin/
 
-# OS generated files #
-######################
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
+megafox_server/.settings
+megafox_server/bin
