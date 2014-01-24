@@ -10,7 +10,6 @@ public class Main {
 		cfg.useGL20 = false;
 		cfg.width = 480;
 		cfg.height = 320;
-		
 		new LwjglApplication(new MyGdxGame(), cfg);
 	}
 }
