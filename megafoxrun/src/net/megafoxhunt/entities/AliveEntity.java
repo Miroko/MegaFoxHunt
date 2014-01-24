@@ -6,7 +6,7 @@ public class AliveEntity extends StaticEntity{
 		super(name, x, y);		
 	}
 	public void move(int mx, int my){
-		this.getPoint().translate(mx, my);
+		this.getCoordinates().translate(mx, my);
 	}
 	
 }

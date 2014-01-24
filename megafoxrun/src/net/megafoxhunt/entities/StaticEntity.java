@@ -1,16 +1,19 @@
 package net.megafoxhunt.entities;
 
-import java.awt.Point;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class StaticEntity {
 	private String name;
 	public String getName(){return name;}
 	
-	private Point point;
-	public Point getPoint(){return point;}
+	private Coordinates coordinates;
+	public Coordinates getCoordinates(){return coordinates;}
 		
 	public StaticEntity(String name, int x, int y){
-		this.point = new Point(x, y);
+		this.coordinates = new Coordinates(x, y);
 		this.name = name;
+	}
+	public void draw(SpriteBatch sb){
+		
 	}
 }
