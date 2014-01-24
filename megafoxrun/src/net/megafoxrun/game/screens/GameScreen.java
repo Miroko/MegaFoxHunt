@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 
 public class GameScreen implements Screen {
 
-	private Game game;
+	private MyGdxGame game;
 	
 	private OrthographicCamera camera;
 	
