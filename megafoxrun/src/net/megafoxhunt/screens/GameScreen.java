@@ -20,7 +20,7 @@ private MyGdxGame game;
 	private OrthographicCamera camera;
 	
 	float x, y;
-	private float speed = 40;
+	private float speed = 30;
 	
 	public GameScreen(final MyGdxGame game) {
 		this.game = game;		
