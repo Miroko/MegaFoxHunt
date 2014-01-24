@@ -1,8 +1,9 @@
-package net.megafoxrun.game.screens;
+package net.megafoxhunt.screens;
 
-import net.megafoxrun.game.MyGdxGame;
+import net.megafoxhunt.core.GameInputProcessor;
+import net.megafoxhunt.core.MyGdxGame;
 
-import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 
@@ -13,15 +14,16 @@ public class GameScreen implements Screen {
 	private OrthographicCamera camera;
 	
 	public GameScreen(final MyGdxGame game) {
-		this.game = game;
-		
+		this.game = game;		
 		camera = new OrthographicCamera();
-        camera.setToOrtho(true, 800, 480);
+        camera.setToOrtho(true, 800, 480);        
+        Gdx.input.setInputProcessor(new GameInputProcessor());        
 	}
 	
 	@Override
 	public void render(float delta) {
 		// TODO Auto-generated method stub
+		
 		
 	}
 
