@@ -21,15 +21,13 @@ public class KryoServer {
 				return new PlayerConnection();
 			}
 		};
-		server.start();
+		
 		KryoNetwork.register(server);
-		try {
-			server.bind(port);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+
 		server.addListener(new Listener(){
-			public void receiver(Connection c, Object o){
+			@Override
+			public void received(Connection c, Object o){
+				System.out.println("Receiving");
 				PlayerConnection pc = (PlayerConnection) c;
 				String name = pc.name;
 				if(o instanceof Login){
@@ -42,6 +40,13 @@ public class KryoServer {
 				}
 			}
 		});
+		try {
+			server.bind(port);
+			System.out.println("started");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		server.start();
 	}
 	
 	
