@@ -3,6 +3,8 @@ package net.megafoxhunt.entities;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class StaticEntity {
+	private int id;
+	
 	private String name;
 	public String getName(){return name;}
 	
