@@ -16,10 +16,10 @@ public class KryoNetwork {
 		kryo.register(Move.class);
 	}	
 	public static class Login{
-		String name;
+		public String name;
 	}
 	public static class WelcomePlayer{
-		int id;
+		public int id;
 	}
 	public static class AddPlayer{
 		String name;
