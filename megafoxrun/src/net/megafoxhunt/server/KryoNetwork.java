@@ -5,8 +5,6 @@ import com.esotericsoftware.kryonet.EndPoint;
 
 public class KryoNetwork {
 	
-	static public final int PORT = 6666;
-	
 	public static void register(EndPoint ep){
 		Kryo kryo = ep.getKryo();
 		kryo.register(Login.class);

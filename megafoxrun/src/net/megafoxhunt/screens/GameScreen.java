@@ -27,8 +27,7 @@ private MyGdxGame game;
 		camera = new OrthographicCamera();
         camera.setToOrtho(true, 800, 480);        
         Gdx.input.setInputProcessor(new GameInputProcessor());        
-	}
-	
+	}	
 	@Override
 	public void render(float delta) {
 		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
@@ -37,7 +36,7 @@ private MyGdxGame game;
         camera.position.set(x, y, 0);
         camera.update();
         
-        x += speed * delta;;
+        x += speed * delta;
         y += speed * delta;
         
         renderer.setView(camera);
