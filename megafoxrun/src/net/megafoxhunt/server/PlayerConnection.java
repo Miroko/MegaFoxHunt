@@ -39,13 +39,4 @@ public class PlayerConnection extends Connection {
 	public void setMyId(int id) {
 		this.myId = id;
 	}
-
-	public void dispose() {
-		if (myCurrentRoom != null) {
-			myCurrentRoom.removePlayer(this);
-		}
-		
-		setMyId(-1);
-		setName("");
-	}
 }

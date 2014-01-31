@@ -1,7 +1,6 @@
 package net.megafoxhunt.server;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import net.megafoxhunt.server.KryoNetwork.Login;
 import net.megafoxhunt.server.KryoNetwork.WelcomePlayer;
@@ -14,12 +13,13 @@ public class KryoServer {
 	
 	private Server server;
 	
-	private ArrayList<GameRoom> rooms;
+	private RoomHandler roomHandler;
 	
 	private int nextAvailableId = 1;
 	
 	public KryoServer(int port){
-		rooms = new ArrayList<GameRoom>();
+		roomHandler = new RoomHandler();
+		
 		server = new Server(){
 			protected Connection newConnection(){
 				return new PlayerConnection();
@@ -55,7 +55,7 @@ public class KryoServer {
 					wp.id = playerConnection.getMyId();
 					playerConnection.sendTCP(wp);
 					
-					searchAvailableRoom(playerConnection);
+					roomHandler.searchAvailableRoom(playerConnection);
 				}
 			}
 			
@@ -66,37 +66,16 @@ public class KryoServer {
 				int id = playerConnection.getMyId();
 				if (id != -1) {
 					System.out.println("Player left: " + playerConnection.getName() + "(" + playerConnection.getMyId() + ")");
-					playerConnection.dispose();
+					playerConnection.getMyCurrentRoom().removePlayer(playerConnection);
 				}
 			}
 		});
+		
 		try {
 			server.bind(port);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		server.start();
-	}
-	
-	private void searchAvailableRoom(PlayerConnection playerConnection) {
-		GameRoom selectedRoom = null;
-		
-		// Join to first room that has open slots
-		for(GameRoom room : rooms) {
-			if (room.addPlayer(playerConnection)) {
-				selectedRoom = room;
-				break;
-			}
-		}
-		
-		// Create new room if no available room were found
-		if (selectedRoom == null) {
-			selectedRoom = new GameRoom();
-			selectedRoom.start();
-			rooms.add(selectedRoom);
-			selectedRoom.addPlayer(playerConnection);
-		}
-		
-		playerConnection.setMyCurrentRoom(selectedRoom);
 	}
 }
