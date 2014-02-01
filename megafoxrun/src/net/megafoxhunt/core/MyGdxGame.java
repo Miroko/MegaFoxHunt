@@ -10,7 +10,7 @@ import net.megafoxhunt.server.KryoNetwork.Login;
 
 import com.esotericsoftware.kryonet.Listener.ThreadedListener;
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
+
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
