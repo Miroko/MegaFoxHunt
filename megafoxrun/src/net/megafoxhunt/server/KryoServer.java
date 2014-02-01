@@ -11,18 +11,16 @@ import com.esotericsoftware.kryonet.Server;
 
 public class KryoServer {
 	
-	private Server server;
-	
+	private IDHandler idHandler;
+	private Server server;	
 	private RoomHandler roomHandler;
-	
-	private int nextAvailableId = 1;
 	
 	public KryoServer(int port){
 		roomHandler = new RoomHandler();
-		
+		idHandler = new IDHandler();
 		server = new Server(){
 			protected Connection newConnection(){
-				return new PlayerConnection();
+				return new PlayerConnection(idHandler.getFreeID(), null);
 			}
 		};
 		
@@ -31,42 +29,34 @@ public class KryoServer {
 		server.addListener(new Listener(){
 			@Override
 			public void received(Connection connection, Object object){
-				PlayerConnection playerConnection = (PlayerConnection) connection;
-				int id = playerConnection.getMyId();
-				
-				if(object instanceof Login){
-					if(id != -1){ return; }
-					
-					String name = ((Login)object).name;
-					
-					if (name == null || name.isEmpty()) {
+				PlayerConnection playerConnection = (PlayerConnection) connection;						
+				if(object instanceof Login){					
+					String name = ((Login)object).name;					
+					if(name == null || name.isEmpty()) {
 						connection.close();
 						return;
 					}
-					
-					playerConnection.setName(name);
-					
-					playerConnection.setMyId(nextAvailableId);
-					nextAvailableId++;
-					
-					System.out.println("User connected: " + name + "(" + playerConnection.getMyId() + ")");
-					
-					WelcomePlayer wp = new WelcomePlayer();
-					wp.id = playerConnection.getMyId();
-					playerConnection.sendTCP(wp);
-					
-					roomHandler.searchAvailableRoom(playerConnection);
+					else{
+						playerConnection.setName(name);
+						System.out.println("User connected: " + name + " (" + playerConnection.getID() + ")");
+						
+						roomHandler.searchAvailableRoom(playerConnection);
+						
+						WelcomePlayer wp = new WelcomePlayer();
+						wp.id = playerConnection.getID();
+						playerConnection.sendTCP(wp);
+					}
 				}
 			}
 			
 			@Override
 			public void disconnected (Connection connection) {
-				PlayerConnection playerConnection = (PlayerConnection)connection;
-				
-				int id = playerConnection.getMyId();
-				if (id != -1) {
-					System.out.println("Player left: " + playerConnection.getName() + "(" + playerConnection.getMyId() + ")");
+				PlayerConnection playerConnection = (PlayerConnection)connection;				
+				int id = playerConnection.getID();
+				if (idHandler.isValidID(id)) {
+					System.out.println("Player left: " + playerConnection.getName() + " (" + id + ")");
 					playerConnection.getMyCurrentRoom().removePlayer(playerConnection);
+					idHandler.freeID(id);
 				}
 			}
 		});
