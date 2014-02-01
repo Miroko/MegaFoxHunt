@@ -23,7 +23,6 @@ public class MyGdxGame extends Game {
 	@Override
 	public void create() {
 		this.setScreen(new GameScreen(this));	
-		PlayerHandler.setPlayerEntity(new Chased("Player",0, 0));
 		
 		Client client = new Client();
 		client.start();

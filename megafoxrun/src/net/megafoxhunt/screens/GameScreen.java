@@ -1,6 +1,7 @@
 package net.megafoxhunt.screens;
 
 import net.megafoxhunt.core.GameInputProcessor;
+import net.megafoxhunt.core.GameMap;
 import net.megafoxhunt.core.MyGdxGame;
 
 import com.badlogic.gdx.Gdx;
@@ -13,20 +14,21 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
 public class GameScreen implements Screen {
 
-private MyGdxGame game;
+	private MyGdxGame game;
 	
-	private TiledMap map;
-	private OrthogonalTiledMapRenderer renderer;
+	private GameMap gameMap;
 	private OrthographicCamera camera;
 	
 	float x, y;
 	private float speed = 30;
 	
 	public GameScreen(final MyGdxGame game) {
-		this.game = game;		
-		camera = new OrthographicCamera();
-        camera.setToOrtho(true, 800, 480);        
-        Gdx.input.setInputProcessor(new GameInputProcessor());        
+		this.game = game;	
+		this.gameMap = new GameMap();
+		this.gameMap.setMap("data/testmap.tmx");
+		this.camera = new OrthographicCamera();
+        this.camera.setToOrtho(true, 800, 480);        
+        Gdx.input.setInputProcessor(new GameInputProcessor()); 
 	}	
 	@Override
 	public void render(float delta) {
@@ -39,8 +41,8 @@ private MyGdxGame game;
         x += speed * delta;
         y += speed * delta;
         
-        renderer.setView(camera);
-        renderer.render();
+        gameMap.setView(camera);
+        gameMap.draw();
 	}
 
 	@Override
@@ -50,11 +52,8 @@ private MyGdxGame game;
 	}
 
 	@Override
-	public void show() {
-		map = new TmxMapLoader().load("data/testmap.tmx");
-		renderer = new OrthogonalTiledMapRenderer(map);
+	public void show() {		
 		
-		camera = new OrthographicCamera();
 	}
 
 	@Override
@@ -77,8 +76,7 @@ private MyGdxGame game;
 
 	@Override
 	public void dispose() {
-		map.dispose();
-		renderer.dispose();
+		gameMap.dispose();
 	}
 
 }
