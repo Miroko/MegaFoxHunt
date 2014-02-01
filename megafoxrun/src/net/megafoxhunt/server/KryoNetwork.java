@@ -12,21 +12,26 @@ public class KryoNetwork {
 		kryo.register(AddPlayer.class);
 		kryo.register(RemovePlayer.class);
 		kryo.register(Move.class);
-	}	
+	}
+	
 	public static class Login{
 		public String name;
 	}
+	
 	public static class WelcomePlayer{
 		public int id;
 	}
+	
 	public static class AddPlayer{
-		String name;
-		int id;
+		public String name;
+		public int id;
 	}
+	
 	public static class RemovePlayer{
-		int id;
+		public int id;
 	}
+	
 	public static class Move{
-		int id;
+		public int id;
 	}
 }
