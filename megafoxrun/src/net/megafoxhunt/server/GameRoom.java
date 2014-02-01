@@ -97,7 +97,7 @@ public class GameRoom extends Thread {
 				@Override
 				public void run() {
 					AddPlayer addNewPlayer = new AddPlayer();
-					addNewPlayer.id = player.getMyId();
+					addNewPlayer.id = player.getID();
 					addNewPlayer.name = player.getName();
 					
 					playersLock.readLock().lock();
@@ -106,7 +106,7 @@ public class GameRoom extends Thread {
 							conn.sendTCP(addNewPlayer);
 							
 							AddPlayer addOldPlayer = new AddPlayer();
-							addOldPlayer.id = conn.getMyId();
+							addOldPlayer.id = conn.getID();
 							addOldPlayer.name = conn.getName();
 							player.sendTCP(addOldPlayer);
 						}
@@ -137,7 +137,7 @@ public class GameRoom extends Thread {
 				@Override
 				public void run() {
 					RemovePlayer removePlayer = new RemovePlayer();
-					removePlayer.id = player.getMyId();
+					removePlayer.id = player.getID();
 					
 					playersLock.readLock().lock();
 					for(PlayerConnection conn : players) {

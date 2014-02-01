@@ -1,32 +1,33 @@
 package net.megafoxhunt.screens;
 
 import net.megafoxhunt.core.GameInputProcessor;
+import net.megafoxhunt.core.GameMap;
 import net.megafoxhunt.core.MyGdxGame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
 public class GameScreen implements Screen {
 
 	private MyGdxGame game;
 	
-	private TiledMap map;
-	private OrthogonalTiledMapRenderer renderer;
+	private GameMap gameMap;
 	private OrthographicCamera camera;
 	
 	float x, y;
 	private float speed = 30;
 	
 	public GameScreen(final MyGdxGame game) {
-		this.game = game;		
-		camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());        
         Gdx.input.setInputProcessor(new GameInputProcessor());        
+
+		this.game = game;	
+		this.gameMap = new GameMap();
+		this.gameMap.setMap("data/testmap.tmx");
+		this.camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        this.camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());        
+        Gdx.input.setInputProcessor(new GameInputProcessor());
 	}	
 	@Override
 	public void render(float delta) {
@@ -38,8 +39,8 @@ public class GameScreen implements Screen {
         
         x += speed * delta;
         
-        renderer.setView(camera);
-        renderer.render();
+        gameMap.setView(camera);
+        gameMap.draw();
 	}
 
 	@Override
@@ -49,11 +50,8 @@ public class GameScreen implements Screen {
 	}
 
 	@Override
-	public void show() {
-		map = new TmxMapLoader().load("data/testmap.tmx");
-		renderer = new OrthogonalTiledMapRenderer(map);
+	public void show() {		
 		
-		camera = new OrthographicCamera();
 	}
 
 	@Override
@@ -76,8 +74,7 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void dispose() {
-		map.dispose();
-		renderer.dispose();
+		gameMap.dispose();
 	}
 
 }
