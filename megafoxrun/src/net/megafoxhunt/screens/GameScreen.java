@@ -13,7 +13,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
 public class GameScreen implements Screen {
 
-private MyGdxGame game;
+	private MyGdxGame game;
 	
 	private TiledMap map;
 	private OrthogonalTiledMapRenderer renderer;
@@ -24,8 +24,8 @@ private MyGdxGame game;
 	
 	public GameScreen(final MyGdxGame game) {
 		this.game = game;		
-		camera = new OrthographicCamera();
-        camera.setToOrtho(true, 800, 480);        
+		camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());        
         Gdx.input.setInputProcessor(new GameInputProcessor());        
 	}	
 	@Override
@@ -37,7 +37,6 @@ private MyGdxGame game;
         camera.update();
         
         x += speed * delta;
-        y += speed * delta;
         
         renderer.setView(camera);
         renderer.render();

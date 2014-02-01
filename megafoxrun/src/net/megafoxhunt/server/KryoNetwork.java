@@ -12,6 +12,7 @@ public class KryoNetwork {
 		kryo.register(AddPlayer.class);
 		kryo.register(RemovePlayer.class);
 		kryo.register(Move.class);
+		kryo.register(ChangeState.class);
 	}
 	
 	public static class Login{
@@ -33,5 +34,12 @@ public class KryoNetwork {
 	
 	public static class Move{
 		public int id;
+	}
+	
+	public static class ChangeState {
+		public static final int LOBBY = 0;
+		public static final int GAME = 1;
+		
+		public int roomState;
 	}
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import net.megafoxhunt.server.KryoNetwork.AddPlayer;
+import net.megafoxhunt.server.KryoNetwork.ChangeState;
 import net.megafoxhunt.server.KryoNetwork.RemovePlayer;
 
 public class GameRoom extends Thread {
@@ -45,7 +46,7 @@ public class GameRoom extends Thread {
 		long time_last_update = System.currentTimeMillis();
 		long time_loop_start;
 		long time_sleep;		
-		while(roomRunning){
+		while(roomRunning) {
 			time_loop_start = System.currentTimeMillis();
 			update(time_loop_start - time_last_update);			
 			time_sleep = UPDATE_RATE_MS - (System.currentTimeMillis() - time_loop_start);
@@ -58,6 +59,27 @@ public class GameRoom extends Thread {
 			}	
 			time_last_update = time_loop_start;
 		}
+	}
+	
+	public void changeRoomState(RoomState state) {
+		ChangeState changeState = new ChangeState();
+		
+		switch(state) {
+		case GAME:
+			changeState.roomState = ChangeState.GAME;
+			break;
+		case LOBBY:
+			changeState.roomState = ChangeState.LOBBY;
+			break;
+		default:
+			return;
+		}
+		
+		playersLock.readLock().lock();
+		for(PlayerConnection conn : players) {
+			conn.sendTCP(changeState);
+		}
+		playersLock.readLock().unlock();
 	}
 	
 	public boolean addPlayer(final PlayerConnection player) {
@@ -90,6 +112,12 @@ public class GameRoom extends Thread {
 						}
 					}
 					playersLock.readLock().unlock();
+					
+					// Inform new player about current roomState
+					ChangeState changeState = new ChangeState();
+					if (roomState == RoomState.GAME) { changeState.roomState = ChangeState.GAME; }
+					else if (roomState == RoomState.LOBBY) { changeState.roomState = ChangeState.LOBBY; }
+					player.sendTCP(changeState);
 				}
 			}).start();
 		}
