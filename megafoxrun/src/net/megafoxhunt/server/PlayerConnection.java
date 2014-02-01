@@ -7,13 +7,16 @@ public class PlayerConnection extends Connection {
 	private GameRoom myCurrentRoom;
 	
 	private String name;
-	private int myId;
+	public String getName(){return name;}
+	public void setName(String name){this.name = name;}
 	
-	public PlayerConnection() {
-		super();
-		
-		name = "";
-		myId = -1;
+	private int id;
+	public int getID(){return id;}
+	
+	public PlayerConnection(int id, String name) {
+		super();	
+		this.id = id;
+		this.name = name;
 	}
 
 	public GameRoom getMyCurrentRoom() {
@@ -24,19 +27,4 @@ public class PlayerConnection extends Connection {
 		this.myCurrentRoom = myCurrentRoom;
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public int getMyId() {
-		return myId;
-	}
-
-	public void setMyId(int id) {
-		this.myId = id;
-	}
 }
