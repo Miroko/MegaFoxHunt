@@ -9,18 +9,17 @@ import net.megafoxhunt.server.KryoNetwork.RemovePlayer;
 
 public class GameRoom extends Thread {
 	
+	public static final int MAX_SIZE = 12;
+	private static final long UPDATE_RATE_MS = 100;
+	
 	public enum RoomState {
 		LOBBY, GAME
 	};
 	
-	public static final int MAX_SIZE = 12;
-
-	private static final long UPDATE_RATE_MS = 100;
+	private RoomState roomState;
 	
 	private ReentrantReadWriteLock playersLock;
 	private ArrayList<PlayerConnection> players;
-	
-	private RoomState roomState;
 	
 	private boolean roomRunning = true;
 	

@@ -33,7 +33,22 @@ public class KryoNetwork {
 	}
 	
 	public static class Move{
+		public static final int DIRECTION_UP = 1;
+		public static final int DIRECTION_RIGHT = 2;
+		public static final int DIRECTION_DOWN = 3;
+		public static final int DIRECTION_LEFT = 4;
+		
 		public int id;
+		public int direction;
+		public int x;
+		public int y;
+		
+		public Move(int id, int direction, int x, int y) {
+			this.id = id;
+			this.direction = direction;
+			this.x = x;
+			this.y = y;
+		}
 	}
 	
 	public static class ChangeState {
