@@ -20,6 +20,7 @@ public class GameRoom extends Thread {
 	
 	private ReentrantReadWriteLock playersLock;
 	private ArrayList<PlayerConnection> players;
+
 	
 	private boolean roomRunning = true;
 	
