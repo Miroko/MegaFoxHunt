@@ -51,6 +51,7 @@ public class ConcurrentPlayerContainer {
 
 		lock.writeLock().lock();
 			boolean removeSuccessful = players.remove(player);
+			if (removeSuccessful) currentSize--;
 		lock.writeLock().unlock();
 			
 		return removeSuccessful;
