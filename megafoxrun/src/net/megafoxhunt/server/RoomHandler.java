@@ -14,6 +14,10 @@ public class RoomHandler {
 		lock = new ReentrantLock(true);
 	}
 	
+	public ArrayList<GameRoom> getRooms() {
+		return (ArrayList<GameRoom>)rooms.clone();
+	}
+	
 	public void joinAvailableRoom(PlayerConnection playerConnection) {
 		lock.lock();
 		

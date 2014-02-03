@@ -1,6 +1,7 @@
 package net.megafoxhunt.server;
 
 import net.megafoxhunt.server.KryoNetwork.Login;
+import net.megafoxhunt.server.KryoNetwork.Move;
 import net.megafoxhunt.server.KryoNetwork.WelcomePlayer;
 
 import com.esotericsoftware.kryonet.Connection;
@@ -36,6 +37,9 @@ public class ServerListener extends Listener {
 						wp.id = playerConnection.getMyId();
 						playerConnection.sendTCP(wp);
 					}
+				} else if (object instanceof Move) {
+					Move move = (Move)object;
+					playerConnection.getMyCurrentRoom().move(playerConnection, move);
 				}
 			}
 		});

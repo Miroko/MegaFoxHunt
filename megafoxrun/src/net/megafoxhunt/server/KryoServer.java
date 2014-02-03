@@ -2,6 +2,7 @@ package net.megafoxhunt.server;
 
 import java.io.IOException;
 
+import net.megafoxhunt.debug.ServerDebugInput;
 import net.megafoxhunt.server.KryoNetwork.Login;
 import net.megafoxhunt.server.KryoNetwork.WelcomePlayer;
 
@@ -34,6 +35,10 @@ public class KryoServer {
 			e.printStackTrace();
 		}
 		server.start();
+		
+		// For debugging
+		ServerDebugInput s = new ServerDebugInput(this);
+		s.start();
 	}
 	
 	public RoomHandler getRoomHandler() {

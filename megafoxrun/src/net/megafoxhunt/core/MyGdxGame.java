@@ -4,13 +4,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import net.megafoxhunt.entities.AliveEntity;
 import net.megafoxhunt.entities.Chased;
+import net.megafoxhunt.entities.EntityContainer;
 import net.megafoxhunt.screens.GameScreen;
 import net.megafoxhunt.screens.LobbyScreen;
 import net.megafoxhunt.screens.MenuScreen;
 import net.megafoxhunt.server.KryoNetwork;
+import net.megafoxhunt.server.KryoNetwork.AddEntity;
 import net.megafoxhunt.server.KryoNetwork.AddPlayer;
 import net.megafoxhunt.server.KryoNetwork.ChangeState;
+import net.megafoxhunt.server.KryoNetwork.Move;
 import net.megafoxhunt.server.KryoNetwork.RemovePlayer;
 import net.megafoxhunt.server.KryoNetwork.WelcomePlayer;
 import net.megafoxhunt.server.KryoNetwork.Login;
@@ -26,18 +30,21 @@ import com.esotericsoftware.kryonet.Listener;
 
 public class MyGdxGame extends Game {
 	
-	public SpriteBatch batch;
-	
 	private String myName;
+	
+	private EntityContainer entityContainer;
+	
+	private Client client;
 	
 	@Override
 	public void create() {
-		batch = new SpriteBatch();
+		entityContainer = new EntityContainer();
 		
-		this.setScreen(new MenuScreen());	
-		PlayerHandler.setPlayerEntity(new Chased("Player",0, 0));
+		Gdx.input.setInputProcessor(new GameInputProcessor());
 		
-		Client client = new Client();
+		this.setScreen(new MenuScreen());
+		
+		client = new Client();
 		client.start();
 		
 		KryoNetwork.register(client);
@@ -66,12 +73,21 @@ public class MyGdxGame extends Game {
 						@Override
 						public void run() {
 							if (changeState.roomState == ChangeState.GAME) {
-								MyGdxGame.this.setScreen(new GameScreen(MyGdxGame.this));
+								MyGdxGame.this.setScreen(new GameScreen(MyGdxGame.this, entityContainer));
 							} else if (changeState.roomState == ChangeState.LOBBY) {
 								MyGdxGame.this.setScreen(new LobbyScreen(MyGdxGame.this));
 							}
 						}
 					});
+				} else if (object instanceof AddEntity) {
+					AddEntity addEntity = (AddEntity)object;
+					EntityContainer.createEntity(entityContainer, addEntity.id, addEntity.type, addEntity.x, addEntity.y, addEntity.direction);
+				} else if (object instanceof Move) {
+					Move move = (Move)object;
+					AliveEntity entity = (AliveEntity)entityContainer.getEntity(move.id);
+					entity.setDirection(move.direction);
+					entity.setX(move.x);
+					entity.setY(move.y);
 				}
 			}
 
@@ -98,6 +114,9 @@ public class MyGdxGame extends Game {
 	
 	@Override
 	public void dispose() {
-		batch.dispose();
+	}
+	
+	public Client getClient() {
+		return client;
 	}
 }

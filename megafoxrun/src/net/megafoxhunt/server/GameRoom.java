@@ -4,7 +4,9 @@ import java.util.ArrayList;
 
 import net.megafoxhunt.server.KryoNetwork.AddPlayer;
 import net.megafoxhunt.server.KryoNetwork.ChangeState;
+import net.megafoxhunt.server.KryoNetwork.Move;
 import net.megafoxhunt.server.KryoNetwork.RemovePlayer;
+import net.megafoxhunt.server.KryoNetwork.AddEntity;;
 
 public class GameRoom extends Thread {
 	
@@ -65,6 +67,15 @@ public class GameRoom extends Thread {
 		playerContainer.sendObjectToAll(changeState);
 	}
 	
+	public void startGame() {
+		changeRoomState(ROOM_STATE_GAME);
+		
+		ArrayList<PlayerConnection> players = playerContainer.getPlayers();
+		for (PlayerConnection player : players) {
+			playerContainer.sendObjectToAll(new AddEntity(player.getMyId(), 1, 10, 10, 1));
+		}
+	}
+	
 	public boolean addPlayer(final PlayerConnection player) {
 		if (playerContainer.addPlayer(player)) {
 			// Send new player information to old players
@@ -108,5 +119,9 @@ public class GameRoom extends Thread {
 		}
 		
 		return false;
+	}
+
+	public void move(PlayerConnection player, Move move) {
+		playerContainer.sendObjectToAllExcept(player, move);
 	}
 }

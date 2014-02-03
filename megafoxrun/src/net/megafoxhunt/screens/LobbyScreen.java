@@ -12,19 +12,23 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class LobbyScreen implements Screen {
 
 	private MyGdxGame game;
 	private BitmapFont font;
 
-	OrthographicCamera camera;
+	public SpriteBatch batch;
+	
+	private OrthographicCamera camera;
 	
 	public LobbyScreen(final MyGdxGame game) {
 		this.game = game;
+		this.batch = new SpriteBatch();
 		font = new BitmapFont();
 		
-		camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.update();
 	}
@@ -35,21 +39,20 @@ public class LobbyScreen implements Screen {
         Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		
         ArrayList<User> users = UsersHandler.getUsers();
-        User me = UsersHandler.getMyUser();
         
         int screenHeight = Gdx.graphics.getHeight();
         
         camera.update();
-        game.batch.setProjectionMatrix(camera.combined);
-        game.batch.begin();
+        batch.setProjectionMatrix(camera.combined);
+        batch.begin();
         font.setColor(Color.RED);
-        font.draw(game.batch, UsersHandler.getMyUser().getName(), 25, screenHeight - 20);
+        font.draw(batch, UsersHandler.getMyUser().getName(), 25, screenHeight - 20);
 
         font.setColor(Color.WHITE);
 		for(int i = 0; i < users.size(); i++) {
-			font.draw(game.batch, users.get(i).getName(), 25, screenHeight - ((i * 20) + 40));
+			font.draw(batch, users.get(i).getName(), 25, screenHeight - ((i * 20) + 40));
 		}
-		game.batch.end();
+		batch.end();
 	}
 
 	@Override
@@ -85,5 +88,6 @@ public class LobbyScreen implements Screen {
 	@Override
 	public void dispose() {
 		font.dispose();
+		batch.dispose();
 	}
 }
