@@ -27,6 +27,13 @@ public class GameRoom extends Thread {
 	
 	public void update(double delta){
 		ArrayList<PlayerConnection> players = playerContainer.getPlayers();
+		
+		switch (roomState) {
+			case ROOM_STATE_LOBBY:
+				break;
+			case ROOM_STATE_GAME:
+				break;
+		}
 	}
 	
 	// Delta should stay near UPDATE_RATE_MS
@@ -60,29 +67,35 @@ public class GameRoom extends Thread {
 	
 	public boolean addPlayer(final PlayerConnection player) {
 		if (playerContainer.addPlayer(player)) {
+			// Send new player information to old players
 			AddPlayer addPlayer = new AddPlayer();
 			addPlayer.id = player.getMyId();
 			addPlayer.name = player.getName();
 			playerContainer.sendObjectToAllExcept(player, addPlayer);
 			
-			ArrayList<PlayerConnection> connections = playerContainer.getPlayers();
-			
-			for (PlayerConnection conn : connections) {
-				if (conn != player) {
-					addPlayer.id = conn.getMyId();
-					addPlayer.name = conn.getName();
-					player.sendTCP(addPlayer);
-				}
-			}
-			
-			ChangeState changeState = new ChangeState();
-			changeState.roomState = roomState;
-			player.sendTCP(changeState);
+			initNewPlayer(player);
 			
 			return true;
 		}
 		
 		return false;
+	}
+	
+	private void initNewPlayer(final PlayerConnection player) {
+		ArrayList<PlayerConnection> connections = playerContainer.getPlayers();
+		AddPlayer addPlayer = new AddPlayer();
+		for (PlayerConnection conn : connections) {
+			if (conn != player) {
+				addPlayer.id = conn.getMyId();
+				addPlayer.name = conn.getName();
+				player.sendTCP(addPlayer);
+			}
+		}
+		
+		// Change new player state to current room state
+		ChangeState changeState = new ChangeState();
+		changeState.roomState = roomState;
+		player.sendTCP(changeState);
 	}
 	
 	public boolean removePlayer(final PlayerConnection player) {
