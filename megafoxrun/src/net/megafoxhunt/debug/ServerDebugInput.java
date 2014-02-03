@@ -30,7 +30,7 @@ public class ServerDebugInput extends Thread{
 	}
 	
 	private void newCommand(String command) {
-		if (command.equals("force-start")) {
+		if (command.equals("force-start") || command.equals("run")) {
 			ArrayList<GameRoom> rooms = server.getRoomHandler().getRooms();
 			for (GameRoom room : rooms) {
 				room.startGame();
