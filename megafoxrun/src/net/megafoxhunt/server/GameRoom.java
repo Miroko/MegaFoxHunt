@@ -1,7 +1,6 @@
 package net.megafoxhunt.server;
 
 import java.util.ArrayList;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import net.megafoxhunt.server.KryoNetwork.AddPlayer;
 import net.megafoxhunt.server.KryoNetwork.ChangeState;
@@ -9,36 +8,25 @@ import net.megafoxhunt.server.KryoNetwork.RemovePlayer;
 
 public class GameRoom extends Thread {
 	
-	public static final int MAX_SIZE = 12;
+	private static final int MAX_SIZE = 12;
 	private static final long UPDATE_RATE_MS = 100;
 	
-	public enum RoomState {
-		LOBBY, GAME
-	};
+	private static final int ROOM_STATE_LOBBY = KryoNetwork.ChangeState.LOBBY;
+	private static final int ROOM_STATE_GAME = KryoNetwork.ChangeState.GAME;
 	
-	private RoomState roomState;
+	public int roomState;
 	
-	private ReentrantReadWriteLock playersLock;
-	private ArrayList<PlayerConnection> players;
+	private ConcurrentPlayerContainer playerContainer;
 
-	
 	private boolean roomRunning = true;
 	
 	public GameRoom(){
-		players = new ArrayList<PlayerConnection>(MAX_SIZE);
-		this.roomState = RoomState.LOBBY;
-		playersLock = new ReentrantReadWriteLock(true);
+		this.roomState = ROOM_STATE_LOBBY;
+		playerContainer = new ConcurrentPlayerContainer(MAX_SIZE);
 	}
 	
 	public void update(double delta){
-		switch (roomState) {
-		case GAME:
-			
-			break;
-		case LOBBY:
-			
-			break;
-		}
+		ArrayList<PlayerConnection> players = playerContainer.getPlayers();
 	}
 	
 	// Delta should stay near UPDATE_RATE_MS
@@ -61,91 +49,51 @@ public class GameRoom extends Thread {
 		}
 	}
 	
-	public void changeRoomState(RoomState state) {
+	public void changeRoomState(int state) {
+		roomState = state;
+		
 		ChangeState changeState = new ChangeState();
-		
-		switch(state) {
-		case GAME:
-			changeState.roomState = ChangeState.GAME;
-			break;
-		case LOBBY:
-			changeState.roomState = ChangeState.LOBBY;
-			break;
-		default:
-			return;
-		}
-		
-		playersLock.readLock().lock();
-		for(PlayerConnection conn : players) {
-			conn.sendTCP(changeState);
-		}
-		playersLock.readLock().unlock();
+		changeState.roomState = roomState;
+	
+		playerContainer.sendObjectToAll(changeState);
 	}
 	
 	public boolean addPlayer(final PlayerConnection player) {
-		boolean joinSuccessful = false;
-		playersLock.writeLock().lock();
-		if (players.size() < MAX_SIZE) {
-			players.add(player);
-			joinSuccessful = true;
-		}
-		playersLock.writeLock().unlock();
-		
-		
-		if (joinSuccessful) {
-			new Thread(new Runnable() {
-				@Override
-				public void run() {
-					AddPlayer addNewPlayer = new AddPlayer();
-					addNewPlayer.id = player.getID();
-					addNewPlayer.name = player.getName();
-					
-					playersLock.readLock().lock();
-					for(PlayerConnection conn : players) {
-						if (conn != player) {
-							conn.sendTCP(addNewPlayer);
-							
-							AddPlayer addOldPlayer = new AddPlayer();
-							addOldPlayer.id = conn.getID();
-							addOldPlayer.name = conn.getName();
-							player.sendTCP(addOldPlayer);
-						}
-					}
-					playersLock.readLock().unlock();
-					
-					// Inform new player about current roomState
-					ChangeState changeState = new ChangeState();
-					if (roomState == RoomState.GAME) { changeState.roomState = ChangeState.GAME; }
-					else if (roomState == RoomState.LOBBY) { changeState.roomState = ChangeState.LOBBY; }
-					player.sendTCP(changeState);
+		if (playerContainer.addPlayer(player)) {
+			AddPlayer addPlayer = new AddPlayer();
+			addPlayer.id = player.getMyId();
+			addPlayer.name = player.getName();
+			playerContainer.sendObjectToAllExcept(player, addPlayer);
+			
+			ArrayList<PlayerConnection> connections = playerContainer.getPlayers();
+			
+			for (PlayerConnection conn : connections) {
+				if (conn != player) {
+					addPlayer.id = conn.getMyId();
+					addPlayer.name = conn.getName();
+					player.sendTCP(addPlayer);
 				}
-			}).start();
+			}
+			
+			ChangeState changeState = new ChangeState();
+			changeState.roomState = roomState;
+			player.sendTCP(changeState);
+			
+			return true;
 		}
 		
-		return joinSuccessful;
+		return false;
 	}
 	
-	public void removePlayer(final PlayerConnection player) {
-		boolean removeSuccessful = false;
-		
-		playersLock.writeLock().lock();
-		removeSuccessful = players.remove(player);
-		playersLock.writeLock().unlock();
-		
-		if (removeSuccessful) {
-			new Thread(new Runnable() {
-				@Override
-				public void run() {
-					RemovePlayer removePlayer = new RemovePlayer();
-					removePlayer.id = player.getID();
-					
-					playersLock.readLock().lock();
-					for(PlayerConnection conn : players) {
-						conn.sendTCP(removePlayer);
-					}
-					playersLock.readLock().unlock();
-				}
-			}).start();
+	public boolean removePlayer(final PlayerConnection player) {
+		if (playerContainer.removePlayer(player)) {
+			RemovePlayer removePlayer = new RemovePlayer();
+			removePlayer.id = player.getMyId();
+			playerContainer.sendObjectToAllExcept(player, removePlayer);
+
+			return true;
 		}
+		
+		return false;
 	}
 }

@@ -26,40 +26,7 @@ public class KryoServer {
 		
 		KryoNetwork.register(server);
 
-		server.addListener(new Listener(){
-			@Override
-			public void received(Connection connection, Object object){
-				PlayerConnection playerConnection = (PlayerConnection) connection;						
-				if(object instanceof Login){					
-					String name = ((Login)object).name;					
-					if(name == null || name.isEmpty()) {
-						connection.close();
-						return;
-					}
-					else{
-						playerConnection.setName(name);
-						System.out.println("User connected: " + name + " (" + playerConnection.getID() + ")");
-						
-						roomHandler.searchAvailableRoom(playerConnection);
-						
-						WelcomePlayer wp = new WelcomePlayer();
-						wp.id = playerConnection.getID();
-						playerConnection.sendTCP(wp);
-					}
-				}
-			}
-			
-			@Override
-			public void disconnected (Connection connection) {
-				PlayerConnection playerConnection = (PlayerConnection)connection;				
-				int id = playerConnection.getID();
-				if (idHandler.isValidID(id)) {
-					System.out.println("Player left: " + playerConnection.getName() + " (" + id + ")");
-					playerConnection.getMyCurrentRoom().removePlayer(playerConnection);
-					idHandler.freeID(id);
-				}
-			}
-		});
+		server.addListener(new ServerListener(this));
 		
 		try {
 			server.bind(port);
@@ -67,5 +34,13 @@ public class KryoServer {
 			e.printStackTrace();
 		}
 		server.start();
+	}
+	
+	public RoomHandler getRoomHandler() {
+		return roomHandler;
+	}
+	
+	public IDHandler getIdHandler() {
+		return idHandler;
 	}
 }

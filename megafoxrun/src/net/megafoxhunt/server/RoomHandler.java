@@ -14,7 +14,7 @@ public class RoomHandler {
 		lock = new ReentrantLock(true);
 	}
 	
-	public void searchAvailableRoom(PlayerConnection playerConnection) {
+	public void joinAvailableRoom(PlayerConnection playerConnection) {
 		lock.lock();
 		
 		GameRoom selectedRoom = null;
