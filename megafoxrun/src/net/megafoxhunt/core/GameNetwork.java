@@ -70,11 +70,12 @@ public class GameNetwork {
 				else if (object instanceof ChangeState) {
 					final ChangeState changeState = (ChangeState)object;
 					
+					// TODO miksi postrunnable?
 					Gdx.app.postRunnable(new Runnable() {
 						@Override
 						public void run() {
 							if (changeState.roomState == ChangeState.GAME) {
-								MyGdxGame.INSTANCE.setScreen(new GameScreen(MyGdxGame.INSTANCE,MyGdxGame.getEntityContainer()));
+								MyGdxGame.INSTANCE.setScreen(new GameScreen(MyGdxGame.INSTANCE, MyGdxGame.getEntityContainer()));
 							} else if (changeState.roomState == ChangeState.LOBBY) {
 								MyGdxGame.INSTANCE.setScreen(new LobbyScreen(MyGdxGame.INSTANCE));
 							}

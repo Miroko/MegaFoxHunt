@@ -1,6 +1,7 @@
 package net.megafoxhunt.screens;
 
 import java.awt.List;
+
 import java.util.Collection;
 
 import net.megafoxhunt.core.GameInputProcessor;
@@ -52,6 +53,9 @@ public class GameScreen implements Screen {
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
         
         // TODO: (process input, collision detection, position update)
+		/*
+		 * inputprocessor olisi eventpohjainen ja riippumaton rendauksesta
+		 */
         AliveEntity myEntity = PlayerHandler.getPlayerEntity();
         if (myEntity != null) {
         	int direction = -1;
@@ -75,6 +79,11 @@ public class GameScreen implements Screen {
 		
 		
         // TODO: SET CAMERA POSITION TO FOLLOW TARGET
+        /*
+         * 
+         * pit‰‰ varmaan luoda oma gamegraphic luokka
+         * 
+         */
         camera.update();
         
         renderer.setView(camera);
