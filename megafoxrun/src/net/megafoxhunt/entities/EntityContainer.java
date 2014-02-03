@@ -1,10 +1,12 @@
 package net.megafoxhunt.entities;
 
 import java.util.Collection;
+
 import java.util.concurrent.ConcurrentHashMap;
 
+import net.megafoxhunt.core.MyGdxGame;
 import net.megafoxhunt.core.PlayerHandler;
-import net.megafoxhunt.core.UsersHandler;
+
 
 public class EntityContainer {
 
@@ -39,7 +41,7 @@ public class EntityContainer {
 			case ALIVE_ENTITY:
 				entity = new AliveEntity(id, "asd", x, y, 50, 1);
 				
-				if (id == UsersHandler.getMyUser().getId()) {
+				if (id == MyGdxGame.userContainer.getUser().getId()) {
 					PlayerHandler.setPlayerEntity((AliveEntity)entity);
 				}
 				break;

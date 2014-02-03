@@ -2,10 +2,9 @@ package net.megafoxhunt.screens;
 
 import java.util.ArrayList;
 
+
 import net.megafoxhunt.core.MyGdxGame;
 import net.megafoxhunt.core.User;
-import net.megafoxhunt.core.UsersHandler;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -38,7 +37,7 @@ public class LobbyScreen implements Screen {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		
-        ArrayList<User> users = UsersHandler.getUsers();
+        ArrayList<User> users = MyGdxGame.userContainer.getUsers();
         
         int screenHeight = Gdx.graphics.getHeight();
         
@@ -46,7 +45,7 @@ public class LobbyScreen implements Screen {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         font.setColor(Color.RED);
-        font.draw(batch, UsersHandler.getMyUser().getName(), 25, screenHeight - 20);
+        font.draw(batch, MyGdxGame.userContainer.getUser().getName(), 25, screenHeight - 20);
 
         font.setColor(Color.WHITE);
 		for(int i = 0; i < users.size(); i++) {

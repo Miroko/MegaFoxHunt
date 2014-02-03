@@ -69,7 +69,7 @@ public class GameScreen implements Screen {
         		myEntity.setDirection(direction);
         		
         		Move move = new Move(myEntity.getId(), direction, (int)myEntity.getX(), (int)myEntity.getY());
-        		game.getClient().sendTCP(move);
+        		MyGdxGame.getNetwork().getClient().sendTCP(move);
         	}
         }
 		
