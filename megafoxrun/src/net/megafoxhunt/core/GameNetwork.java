@@ -3,6 +3,8 @@ package net.megafoxhunt.core;
 import java.io.IOException;
 
 
+
+import net.megafoxhunt.debug.DebugConsole;
 import net.megafoxhunt.entities.AliveEntity;
 import net.megafoxhunt.entities.EntityContainer;
 import net.megafoxhunt.screens.GameScreen;
@@ -45,8 +47,8 @@ public class GameNetwork {
 				 */
 				if (object instanceof WelcomePlayer) {
 					WelcomePlayer welcomePlayer = (WelcomePlayer)object;
-					MyGdxGame.userContainer.getUser().setId(welcomePlayer.id);					
-					System.out.println("Welcome, your id is: " + welcomePlayer.id);
+					MyGdxGame.userContainer.getUser().setId(welcomePlayer.id);
+					DebugConsole.msg("Welcome, your id is: " + welcomePlayer.id);
 				}
 				/*
 				 * ADD PLAYER
@@ -54,7 +56,7 @@ public class GameNetwork {
 				else if (object instanceof AddPlayer) {
 					AddPlayer addPlayer = (AddPlayer)object;
 					MyGdxGame.userContainer.addUser(new User(addPlayer.id, addPlayer.name));
-					System.out.println("player joined: " + addPlayer.name + "(" + addPlayer.id + ")");
+					DebugConsole.msg("player joined: " + addPlayer.name + "(" + addPlayer.id + ")");
 				}
 				/*
 				 * REMOVE PLAYER
@@ -62,7 +64,7 @@ public class GameNetwork {
 				else if (object instanceof RemovePlayer) {
 					RemovePlayer removePlayer = (RemovePlayer)object;
 					MyGdxGame.userContainer.removeUserById(removePlayer.id);
-					System.out.println("player left: (" + removePlayer.id + ")");
+					DebugConsole.msg("player left: (" + removePlayer.id + ")");
 				} 
 				/*
 				 * CHANGE STATE

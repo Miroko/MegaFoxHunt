@@ -79,11 +79,7 @@ public class GameScreen implements Screen {
 		
 		
         // TODO: SET CAMERA POSITION TO FOLLOW TARGET
-        /*
-         * 
-         * pit‰‰ varmaan luoda oma gamegraphic luokka
-         * 
-         */
+
         camera.update();
         
         renderer.setView(camera);

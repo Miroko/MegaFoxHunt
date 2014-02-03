@@ -2,15 +2,19 @@ package net.megafoxhunt.core;
 
 
 import java.util.Scanner;
+
+
 import net.megafoxhunt.entities.EntityContainer;
+
 import net.megafoxhunt.screens.MenuScreen;
+
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 
 public class MyGdxGame extends Game {
 	
 	public static MyGdxGame INSTANCE;
-	
+
 	public static UserContainer userContainer = new UserContainer();
 	
 	private static GameNetwork NETWORK;
@@ -38,5 +42,6 @@ public class MyGdxGame extends Game {
 	}		
 	@Override
 	public void dispose() {
+		
 	}
 }
