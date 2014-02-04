@@ -1,54 +1,56 @@
 package net.megafoxhunt.entities;
 
 import java.util.Collection;
-
 import java.util.concurrent.ConcurrentHashMap;
 
+import net.megafoxhunt.core.GameNetwork;
 import net.megafoxhunt.core.MyGdxGame;
 import net.megafoxhunt.core.PlayerHandler;
+import net.megafoxhunt.core.UserContainer;
 
 
 public class EntityContainer {
-
+	
+	/*
+	 * Pelaajien Entityt saisi varmaan sidottua User luokkaan
+	 * 
+	 */
+	
 	public static final int ALIVE_ENTITY = 1;
 	
-	private ConcurrentHashMap<Integer, StaticEntity> container;
-	
-	public EntityContainer() {
-		container = new ConcurrentHashMap<Integer, StaticEntity>();
+	private static ConcurrentHashMap<Integer, StaticEntity> ENTITIES = new ConcurrentHashMap<Integer, StaticEntity>();;
+
+	public static void addEntity(int key, StaticEntity entity) {
+		ENTITIES.put(key, entity);
 	}
 	
-	public void addEntity(int key, StaticEntity entity) {
-		container.put(key, entity);
+	public static void removeEntity(int key) {
+		ENTITIES.remove(key);
 	}
 	
-	public void removeEntity(int key) {
-		container.remove(key);
+	public static StaticEntity getEntity(int id) {
+		return ENTITIES.get(id);
 	}
 	
-	public StaticEntity getEntity(int id) {
-		return container.get(id);
+	public static Collection<StaticEntity> getValues() {
+		return ENTITIES.values();
 	}
 	
-	public Collection<StaticEntity> getValues() {
-		return container.values();
-	}
-	
-	public static void createEntity(EntityContainer container, int id, int type, int x, int y, int direction) {
+	public static void createEntity(int id, int type, int x, int y, int direction) {
 		StaticEntity entity = null;
 		
 		switch(type) {
 			case ALIVE_ENTITY:
 				entity = new AliveEntity(id, "asd", x, y, 50, 1);
 				
-				if (id == MyGdxGame.userContainer.getUser().getId()) {
+				if (id == GameNetwork.getUser().getId()) {
 					PlayerHandler.setPlayerEntity((AliveEntity)entity);
 				}
 				break;
 		}
 		
 		if (entity != null) {
-			container.addEntity(id, entity);
+			addEntity(id, entity);
 		}
 	}
 }

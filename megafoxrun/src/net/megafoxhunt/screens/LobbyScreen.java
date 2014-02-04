@@ -1,10 +1,7 @@
 package net.megafoxhunt.screens;
+import net.megafoxhunt.core.GameNetwork;
+import net.megafoxhunt.core.UserContainer;
 
-import java.util.ArrayList;
-
-
-import net.megafoxhunt.core.MyGdxGame;
-import net.megafoxhunt.core.User;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -15,15 +12,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class LobbyScreen implements Screen {
 
-	private MyGdxGame game;
 	private BitmapFont font;
 
 	public SpriteBatch batch;
 	
 	private OrthographicCamera camera;
 	
-	public LobbyScreen(final MyGdxGame game) {
-		this.game = game;
+	public LobbyScreen() {
 		this.batch = new SpriteBatch();
 		font = new BitmapFont();
 		
@@ -36,24 +31,25 @@ public class LobbyScreen implements Screen {
 	public void render(float delta) {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		
-        ArrayList<User> users = MyGdxGame.userContainer.getUsers();
-        
-        int screenHeight = Gdx.graphics.getHeight();
-        
+               
         camera.update();
-        batch.setProjectionMatrix(camera.combined);
+        batch.setProjectionMatrix(camera.combined);        
+        
         batch.begin();
-        font.setColor(Color.RED);
-        font.draw(batch, MyGdxGame.userContainer.getUser().getName(), 25, screenHeight - 20);
-
-        font.setColor(Color.WHITE);
-		for(int i = 0; i < users.size(); i++) {
-			font.draw(batch, users.get(i).getName(), 25, screenHeight - ((i * 20) + 40));
-		}
+		drawLobbyUsers();
 		batch.end();
 	}
+	private void drawLobbyUsers(){	
+		// SELF
+        font.setColor(Color.RED);
+        font.draw(batch, GameNetwork.getUser().getName(), 25, Gdx.graphics.getHeight() - 20);
 
+        // OTHERS
+        font.setColor(Color.WHITE);
+		for(int i = 0; i < UserContainer.numberOfUsers(); i++) {
+			font.draw(batch, UserContainer.getUsers().get(i).getName(), 25, Gdx.graphics.getHeight() - ((i * 20) + 40));
+		}
+	}
 	@Override
 	public void resize(int width, int height) {
 		// TODO Auto-generated method stub

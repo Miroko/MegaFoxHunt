@@ -3,27 +3,26 @@ package net.megafoxhunt.core;
 import java.util.ArrayList;
 
 public class UserContainer {
-	private User user = new User(0, null);
-	private ArrayList<User> users = new ArrayList<User>();
 	
-	public User getUser(){
-		return user;
+	private static ArrayList<User> USERS = new ArrayList<User>();
+	
+	public static int numberOfUsers(){
+		return getUsers().size();
 	}
-	public ArrayList<User> getUsers() {
-		return (ArrayList<User>)users.clone();
+	public static ArrayList<User> getUsers() {
+		return (ArrayList<User>)USERS.clone();
 	}	
-	public void addUser(User user) {
-		users.add(user);
+	public static void addUser(User user) {
+		USERS.add(user);
+	}	
+	public static void removeUser(User user) {
+		USERS.remove(user);
 	}
 	
-	public void removeUser(User user) {
-		users.remove(user);
-	}
-	
-	public void removeUserById(int id) {
-		for(User user : users) {
+	public static void removeUserById(int id) {
+		for(User user : USERS) {
 			if (user.getId() == id) {
-				users.remove(user);
+				USERS.remove(user);
 				break;
 			}
 		}

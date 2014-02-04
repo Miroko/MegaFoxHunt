@@ -1,11 +1,11 @@
 package net.megafoxhunt.screens;
 
 import java.awt.List;
-
 import java.util.Collection;
 
 import net.megafoxhunt.core.GameInputProcessor;
 import net.megafoxhunt.core.GameKeys;
+import net.megafoxhunt.core.GameNetwork;
 import net.megafoxhunt.core.MyGdxGame;
 import net.megafoxhunt.core.PlayerHandler;
 import net.megafoxhunt.entities.AliveEntity;
@@ -18,7 +18,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
-
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -33,12 +32,9 @@ public class GameScreen implements Screen {
 	private OrthogonalTiledMapRenderer renderer;
 	private OrthographicCamera camera;
 	
-	private EntityContainer entityContainer;
-	
-	public GameScreen(final MyGdxGame game, EntityContainer entityContainer) {
-		this.game = game;
-		this.entityContainer = entityContainer;
-		
+	public GameScreen() {
+		Gdx.input.setInputProcessor(new GameInputProcessor());
+
 		map = new TmxMapLoader().load("data/testmap.tmx");
 		renderer = new OrthogonalTiledMapRenderer(map, UNIT_SCALE);
 		
@@ -54,7 +50,8 @@ public class GameScreen implements Screen {
         
         // TODO: (process input, collision detection, position update)
 		/*
-		 * inputprocessor olisi eventpohjainen ja riippumaton rendauksesta
+		 * toimiiko jos inputprocessorissa suunnan lähetys?
+		 * ei olisi riippuvainen rendauksesta
 		 */
         AliveEntity myEntity = PlayerHandler.getPlayerEntity();
         if (myEntity != null) {
@@ -73,7 +70,7 @@ public class GameScreen implements Screen {
         		myEntity.setDirection(direction);
         		
         		Move move = new Move(myEntity.getId(), direction, (int)myEntity.getX(), (int)myEntity.getY());
-        		MyGdxGame.getNetwork().getClient().sendTCP(move);
+        		GameNetwork.getClient().sendTCP(move);
         	}
         }
 		
@@ -85,7 +82,7 @@ public class GameScreen implements Screen {
         renderer.setView(camera);
         renderer.render();
         
-        Collection<StaticEntity> entities = entityContainer.getValues();
+        Collection<StaticEntity> entities = EntityContainer.getValues();
         
         for (StaticEntity entity : entities) {
         	entity.update(delta);
