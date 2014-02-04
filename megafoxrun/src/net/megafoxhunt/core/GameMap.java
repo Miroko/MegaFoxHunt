@@ -32,7 +32,7 @@ public class GameMap {
 	public void draw(){
 		for(StaticEntity e : entities){
 			// add in camera bounds check for entity
-			e.draw((SpriteBatch) renderer.getSpriteBatch());
+			
 		}
 		renderer.render();
 	}

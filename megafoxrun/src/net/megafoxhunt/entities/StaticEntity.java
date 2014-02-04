@@ -1,21 +1,46 @@
 package net.megafoxhunt.entities;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class StaticEntity {
-	private int id;
 	
-	private String name;
-	public String getName(){return name;}
+	protected int id;
+	protected float x;
+	protected float y;
 	
-	private Coordinates coordinates;
-	public Coordinates getCoordinates(){return coordinates;}
-		
-	public StaticEntity(String name, int x, int y){
-		this.coordinates = new Coordinates(x, y);
-		this.name = name;
+	protected Texture texture;
+
+	public StaticEntity(int id, float x, float y){
+		this.id = id;
+		this.x = x;
+		this.y = y;
 	}
-	public void draw(SpriteBatch sb){
+	
+	public void update(float delta) {}
+	
+	public void render(Batch batch){
 		
+	}
+	
+	public int getId() {
+		return id;
+	}
+	
+	public float getX() {
+		return x;
+	}
+	
+	public float getY() {
+		return y;
+	}
+	
+	public void setX(float x) {
+		this.x = x;
+	}
+	
+	public void setY(float y) {
+		this.y = y;
 	}
 }

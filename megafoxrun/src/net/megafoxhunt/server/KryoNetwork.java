@@ -13,6 +13,7 @@ public class KryoNetwork {
 		kryo.register(RemovePlayer.class);
 		kryo.register(Move.class);
 		kryo.register(ChangeState.class);
+		kryo.register(AddEntity.class);
 	}
 	
 	public static class Login{
@@ -33,22 +34,39 @@ public class KryoNetwork {
 	}
 	
 	public static class Move{
-		public static final int DIRECTION_UP = 1;
-		public static final int DIRECTION_RIGHT = 2;
-		public static final int DIRECTION_DOWN = 3;
-		public static final int DIRECTION_LEFT = 4;
-		
 		public int id;
 		public int direction;
 		public int x;
 		public int y;
 		
+		public Move() { }
 		public Move(int id, int direction, int x, int y) {
 			this.id = id;
 			this.direction = direction;
 			this.x = x;
 			this.y = y;
 		}
+	}
+	
+	public static class AddEntity {
+		public int id;
+		public int type;
+		public int x;
+		public int y;
+		public int direction;
+		
+		public AddEntity() { }
+		public AddEntity(int id, int type, int x, int y, int direction) {
+			this.id = id;
+			this.type = type;
+			this.x = x;
+			this.y = y;
+			this.direction = direction;
+		}
+	}
+	
+	public static class RemoveEntity {
+		public int id;
 	}
 	
 	public static class ChangeState {
