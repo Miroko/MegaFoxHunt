@@ -13,26 +13,22 @@ public class KryoNetwork {
 		kryo.register(RemovePlayer.class);
 		kryo.register(Move.class);
 		kryo.register(ChangeState.class);
-		kryo.register(AddEntity.class);
-	}
-	
+		kryo.register(AddChaser.class);
+		kryo.register(AddChased.class);
+	}	
 	public static class Login{
 		public String name;
-	}
-	
+	}	
 	public static class WelcomePlayer{
 		public int id;
-	}
-	
+	}	
 	public static class AddPlayer{
 		public String name;
 		public int id;
-	}
-	
+	}	
 	public static class RemovePlayer{
 		public int id;
-	}
-	
+	}	
 	public static class Move{
 		public int id;
 		public int direction;
@@ -47,7 +43,32 @@ public class KryoNetwork {
 			this.y = y;
 		}
 	}
+	public static class AddChaser {
+		public int id;
+		public int x;
+		public int y;
+		
+		public AddChaser(){}
+		public AddChaser(int id, int x, int y) {
+			this.id = id;
+			this.x = x;
+			this.y = y;
+		}
+	}
+	public static class AddChased {
+		public int id;
+		public int x;
+		public int y;
+		
+		public AddChased(){}
+		public AddChased(int id, int x, int y) {
+			this.id = id;
+			this.x = x;
+			this.y = y;
+		}
+	}
 	
+	/*
 	public static class AddEntity {
 		public int id;
 		public int type;
@@ -64,7 +85,7 @@ public class KryoNetwork {
 			this.direction = direction;
 		}
 	}
-	
+	*/
 	public static class RemoveEntity {
 		public int id;
 	}

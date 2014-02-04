@@ -1,5 +1,6 @@
 package net.megafoxhunt.screens;
 import net.megafoxhunt.core.GameNetwork;
+import net.megafoxhunt.core.User;
 import net.megafoxhunt.core.UserContainer;
 
 import com.badlogic.gdx.Gdx;
@@ -40,14 +41,17 @@ public class LobbyScreen implements Screen {
 		batch.end();
 	}
 	private void drawLobbyUsers(){	
-		// SELF
-        font.setColor(Color.RED);
-        font.draw(batch, GameNetwork.getUser().getName(), 25, Gdx.graphics.getHeight() - 20);
-
-        // OTHERS
-        font.setColor(Color.WHITE);
 		for(int i = 0; i < UserContainer.numberOfUsers(); i++) {
-			font.draw(batch, UserContainer.getUsers().get(i).getName(), 25, Gdx.graphics.getHeight() - ((i * 20) + 40));
+			User userToDraw = UserContainer.getUsersConcurrentSafe().get(i);
+			if(userToDraw == GameNetwork.getUser()){
+				// SELF
+		        font.setColor(Color.RED);
+			}
+			else{
+		        // OTHERS
+		        font.setColor(Color.WHITE);
+			}
+			font.draw(batch, userToDraw.getName(), 25, Gdx.graphics.getHeight() - ((i * 20) + 40));
 		}
 	}
 	@Override

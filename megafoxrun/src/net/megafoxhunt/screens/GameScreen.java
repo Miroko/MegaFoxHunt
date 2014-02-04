@@ -1,15 +1,15 @@
 package net.megafoxhunt.screens;
 
-import java.util.Collection;
 
 import net.megafoxhunt.core.GameInputProcessor;
 import net.megafoxhunt.core.GameKeys;
 import net.megafoxhunt.core.GameNetwork;
 import net.megafoxhunt.core.MyGdxGame;
 import net.megafoxhunt.core.PlayerHandler;
+import net.megafoxhunt.core.User;
+import net.megafoxhunt.core.UserContainer;
+import net.megafoxhunt.debug.DebugConsole;
 import net.megafoxhunt.entities.AliveEntity;
-import net.megafoxhunt.entities.EntityContainer;
-import net.megafoxhunt.entities.StaticEntity;
 import net.megafoxhunt.server.KryoNetwork.Move;
 
 import com.badlogic.gdx.Gdx;
@@ -32,6 +32,7 @@ public class GameScreen implements Screen {
 	private OrthographicCamera camera;
 	
 	public GameScreen() {
+		
 		Gdx.input.setInputProcessor(new GameInputProcessor());
 
 		map = new TmxMapLoader().load("data/testmap.tmx");
@@ -40,6 +41,7 @@ public class GameScreen implements Screen {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 30, 20);
 		camera.update();
+		
 	}
 	
 	@Override
@@ -52,7 +54,8 @@ public class GameScreen implements Screen {
 		 * toimiiko jos inputprocessorissa suunnan lähetys?
 		 * ei olisi riippuvainen rendauksesta
 		 */
-        AliveEntity myEntity = PlayerHandler.getPlayerEntity();
+
+        AliveEntity myEntity = GameNetwork.getUser().getControlledEntity();
         if (myEntity != null) {
         	int direction = -1;
         	if (GameKeys.isPressed(GameKeys.UP)) {
@@ -80,18 +83,17 @@ public class GameScreen implements Screen {
         
         renderer.setView(camera);
         renderer.render();
-        
-        Collection<StaticEntity> entities = EntityContainer.getValues();
-        
-        for (StaticEntity entity : entities) {
-        	entity.update(delta);
+
+        for(User user : UserContainer.getUsersConcurrentSafe()){        	
+        	user.getControlledEntity().update(delta);
         }
         
         Batch batch = renderer.getSpriteBatch();
         batch.begin();
-        for (StaticEntity entity : entities) {
-        	entity.render(batch);
+        for(User user : UserContainer.getUsersConcurrentSafe()){
+        	user.getControlledEntity().render(batch);
         }
+        
         batch.end();
 	}
 

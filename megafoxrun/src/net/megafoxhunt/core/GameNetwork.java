@@ -2,18 +2,17 @@ package net.megafoxhunt.core;
 
 import java.io.IOException;
 
-
-
-
 import java.util.Scanner;
 
 import net.megafoxhunt.debug.DebugConsole;
 import net.megafoxhunt.entities.AliveEntity;
-import net.megafoxhunt.entities.EntityContainer;
+import net.megafoxhunt.entities.Chased;
+import net.megafoxhunt.entities.Chaser;
 import net.megafoxhunt.screens.GameScreen;
 import net.megafoxhunt.screens.LobbyScreen;
 import net.megafoxhunt.server.KryoNetwork;
-import net.megafoxhunt.server.KryoNetwork.AddEntity;
+import net.megafoxhunt.server.KryoNetwork.AddChased;
+import net.megafoxhunt.server.KryoNetwork.AddChaser;
 import net.megafoxhunt.server.KryoNetwork.AddPlayer;
 import net.megafoxhunt.server.KryoNetwork.ChangeState;
 import net.megafoxhunt.server.KryoNetwork.Login;
@@ -54,7 +53,7 @@ public class GameNetwork {
 				 */
 				if (object instanceof WelcomePlayer) {
 					WelcomePlayer welcomePlayer = (WelcomePlayer)object;
-					USER.setId(welcomePlayer.id);
+					USER.setID(welcomePlayer.id);
 					DebugConsole.msg("Welcome, your id is: " + welcomePlayer.id);
 				}
 				/*
@@ -92,21 +91,40 @@ public class GameNetwork {
 					});
 				}
 				/*
-				 * ADD ENTITY
+				 * ADD CHASER
 				 */
-				else if (object instanceof AddEntity) {
-					AddEntity addEntity = (AddEntity)object;
-					EntityContainer.createEntity(addEntity.id, addEntity.type, addEntity.x, addEntity.y, addEntity.direction);
+				else if (object instanceof AddChaser) {
+					AddChaser addChaser = (AddChaser)object;
+					UserContainer.getUserByID(addChaser.id).setControlledEntity(new Chaser(addChaser.id, addChaser.x, addChaser.y));
+					
+					// EntityContainer.createEntity(addEntity.id, addEntity.type, addEntity.x, addEntity.y, addEntity.direction);
+				}
+				/*
+				 * ADD CHASED
+				 */
+				else if (object instanceof AddChased) {
+					AddChased addChased = (AddChased)object;
+					UserContainer.getUserByID(addChased.id).setControlledEntity(new Chased(addChased.id, addChased.x, addChased.y));
 				}
 				/*
 				 * MOVE ENTITY
 				 */
 				else if (object instanceof Move) {
 					Move move = (Move)object;
+					
+					AliveEntity entity = (AliveEntity)UserContainer.getUserByID(move.id).getControlledEntity();
+					entity.setDirection(move.direction);
+					
+					// SYNC POSITION
+					entity.setX(move.x);
+					entity.setY(move.y);
+					
+					/*
 					AliveEntity entity = (AliveEntity)EntityContainer.getEntity(move.id);
 					entity.setDirection(move.direction);
 					entity.setX(move.x);
 					entity.setY(move.y);
+					*/
 				}
 			}
 
@@ -129,6 +147,7 @@ public class GameNetwork {
 			scanner.close();
 		}
 		USER.setName(name);
+		UserContainer.addUser(USER);
 		DebugConsole.msg("Username set: " + USER.getName());
 	}
 	public static void connect(String host, int port){
