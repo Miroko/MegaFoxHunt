@@ -6,6 +6,19 @@ import net.megafoxhunt.screens.MenuScreen;
 
 import com.badlogic.gdx.Game;
 
+
+/*
+ * TODO
+ *  
+ * Luokkia joita todennäköisesti tulee olemaan vain yksi, muutettu staattisiksi
+ * 
+ * Login automaattinen, clientin käynnistyessä ei kysytä usernamea
+ * GameNetwork.setUsername();
+ * 
+ * 
+ * 
+ */
+
 public class MyGdxGame extends Game {
 	
 	private static MyGdxGame INSTANCE;

@@ -1,6 +1,5 @@
 package net.megafoxhunt.screens;
 
-import java.awt.List;
 import java.util.Collection;
 
 import net.megafoxhunt.core.GameInputProcessor;
