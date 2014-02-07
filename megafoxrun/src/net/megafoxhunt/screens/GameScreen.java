@@ -2,15 +2,9 @@ package net.megafoxhunt.screens;
 
 
 import net.megafoxhunt.core.GameInputProcessor;
-import net.megafoxhunt.core.GameKeys;
-import net.megafoxhunt.core.GameNetwork;
 import net.megafoxhunt.core.MyGdxGame;
-import net.megafoxhunt.core.PlayerHandler;
 import net.megafoxhunt.core.User;
 import net.megafoxhunt.core.UserContainer;
-import net.megafoxhunt.debug.DebugConsole;
-import net.megafoxhunt.entities.AliveEntity;
-import net.megafoxhunt.server.KryoNetwork.Move;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -48,34 +42,6 @@ public class GameScreen implements Screen {
 	public void render(float delta) {
 		Gdx.gl.glClearColor(0.7f, 0.7f, 1.0f, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-        
-        // TODO: (process input, collision detection, position update)
-		/*
-		 * toimiiko jos inputprocessorissa suunnan lähetys?
-		 * ei olisi riippuvainen rendauksesta
-		 */
-
-        AliveEntity myEntity = GameNetwork.getUser().getControlledEntity();
-        if (myEntity != null) {
-        	int direction = -1;
-        	if (GameKeys.isPressed(GameKeys.UP)) {
-        		direction = AliveEntity.DIRECTION_UP;
-        	} else if (GameKeys.isPressed(GameKeys.RIGHT)) {
-        		direction = AliveEntity.DIRECTION_RIGHT;
-        	} else if (GameKeys.isPressed(GameKeys.DOWN)) {
-        		direction = AliveEntity.DIRECTION_DOWN;
-        	} else if (GameKeys.isPressed(GameKeys.LEFT)) {
-        		direction = AliveEntity.DIRECTION_LEFT;
-        	}
-        	
-        	if (direction != -1) {
-        		myEntity.setDirection(direction);
-        		
-        		Move move = new Move(myEntity.getId(), direction, (int)myEntity.getX(), (int)myEntity.getY());
-        		GameNetwork.getClient().sendTCP(move);
-        	}
-        }
-		
 		
         // TODO: SET CAMERA POSITION TO FOLLOW TARGET
 

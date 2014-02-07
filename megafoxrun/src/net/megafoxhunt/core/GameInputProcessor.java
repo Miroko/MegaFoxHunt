@@ -1,62 +1,45 @@
 package net.megafoxhunt.core;
+
+import net.megafoxhunt.entities.AliveEntity;
+import net.megafoxhunt.server.KryoNetwork.Move;
+
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
 
 public class GameInputProcessor extends InputAdapter {
+		
+	private int last_direction = -1;
 	
-	public boolean keyDown(int k) {
+	private void sendDirection(int direction){
+		// IF DIRECTION HAS CHANGED
+		if(direction != last_direction){
+    		AliveEntity entity = GameNetwork.getUser().getControlledEntity();
+    		entity.setDirection(direction);
+    		// SEND MOVE COMMAND
+    		Move move = new Move(entity.getId(), direction, (int)entity.getX(), (int)entity.getY());
+    		GameNetwork.getClient().sendTCP(move);
+    		last_direction = direction;
+		}
+	}
+	
+	public boolean keyDown(int k) {    	
 		if(k == Keys.UP) {
-			GameKeys.setKey(GameKeys.UP, true);
+			sendDirection(AliveEntity.DIRECTION_UP);
 		}
 		if(k == Keys.LEFT) {
-			GameKeys.setKey(GameKeys.LEFT, true);
+			sendDirection(AliveEntity.DIRECTION_LEFT);
 		}
 		if(k == Keys.DOWN) {
-			GameKeys.setKey(GameKeys.DOWN, true);
+			sendDirection(AliveEntity.DIRECTION_DOWN);
 		}
 		if(k == Keys.RIGHT) {
-			GameKeys.setKey(GameKeys.RIGHT, true);
-		}
-		if(k == Keys.ENTER) {
-			GameKeys.setKey(GameKeys.ENTER, true);
-		}
-		if(k == Keys.ESCAPE) {
-			GameKeys.setKey(GameKeys.ESCAPE, true);
-		}
-		if(k == Keys.SPACE) {
-			GameKeys.setKey(GameKeys.SPACE, true);
-		}
-		if(k == Keys.SHIFT_LEFT || k == Keys.SHIFT_RIGHT) {
-			GameKeys.setKey(GameKeys.SHIFT, true);
+			sendDirection(AliveEntity.DIRECTION_RIGHT);
 		}
 		return true;
 	}
 	
 	public boolean keyUp(int k) {
-		if(k == Keys.UP) {
-			GameKeys.setKey(GameKeys.UP, false);
-		}
-		if(k == Keys.LEFT) {
-			GameKeys.setKey(GameKeys.LEFT, false);
-		}
-		if(k == Keys.DOWN) {
-			GameKeys.setKey(GameKeys.DOWN, false);
-		}
-		if(k == Keys.RIGHT) {
-			GameKeys.setKey(GameKeys.RIGHT, false);
-		}
-		if(k == Keys.ENTER) {
-			GameKeys.setKey(GameKeys.ENTER, false);
-		}
-		if(k == Keys.ESCAPE) {
-			GameKeys.setKey(GameKeys.ESCAPE, false);
-		}
-		if(k == Keys.SPACE) {
-			GameKeys.setKey(GameKeys.SPACE, false);
-		}
-		if(k == Keys.SHIFT_LEFT || k == Keys.SHIFT_RIGHT) {
-			GameKeys.setKey(GameKeys.SHIFT, false);
-		}
+
 		return true;
 	}
 }
