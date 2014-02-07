@@ -76,9 +76,7 @@ public class GameNetwork {
 				 * CHANGE GAME STATE
 				 */
 				else if (object instanceof ChangeState) {
-					final ChangeState changeState = (ChangeState)object;
-					
-					// TODO miksi postrunnable?					
+					final ChangeState changeState = (ChangeState)object;									
 					Gdx.app.postRunnable(new Runnable() {
 						@Override
 						public void run() {
@@ -96,8 +94,6 @@ public class GameNetwork {
 				else if (object instanceof AddChaser) {
 					AddChaser addChaser = (AddChaser)object;
 					UserContainer.getUserByID(addChaser.id).setControlledEntity(new Chaser(addChaser.id, addChaser.x, addChaser.y));
-					
-					// EntityContainer.createEntity(addEntity.id, addEntity.type, addEntity.x, addEntity.y, addEntity.direction);
 				}
 				/*
 				 * ADD CHASED
@@ -118,13 +114,6 @@ public class GameNetwork {
 					// SYNC POSITION
 					entity.setX(move.x);
 					entity.setY(move.y);
-					
-					/*
-					AliveEntity entity = (AliveEntity)EntityContainer.getEntity(move.id);
-					entity.setDirection(move.direction);
-					entity.setX(move.x);
-					entity.setY(move.y);
-					*/
 				}
 			}
 
