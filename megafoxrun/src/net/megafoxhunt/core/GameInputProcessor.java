@@ -9,6 +9,7 @@ import com.badlogic.gdx.InputAdapter;
 public class GameInputProcessor extends InputAdapter {
 		
 	private int last_direction = -1;
+	private int previousKey;
 	
 	private void sendDirection(int direction){
 		// IF DIRECTION HAS CHANGED
@@ -35,12 +36,15 @@ public class GameInputProcessor extends InputAdapter {
 		if(k == Keys.RIGHT) {
 			sendDirection(AliveEntity.DIRECTION_RIGHT);
 		}
+		previousKey = k;
 		return true;
 	}
 	
 	public boolean keyUp(int k) {
 		// KEY UP STOP		
-		sendDirection(AliveEntity.DIRECTION_STOP);
+		if(k == previousKey){
+			sendDirection(AliveEntity.DIRECTION_STOP);
+		}
 		return true;
 	}
 }
