@@ -10,12 +10,7 @@ import net.megafoxhunt.core.UserContainer;
 
 
 public class EntityContainer {
-	
 	/*
-	 * Pelaajien Entityt saisi varmaan sidottua User luokkaan
-	 * 
-	 */
-	
 	public static final int ALIVE_ENTITY = 1;
 	
 	private static ConcurrentHashMap<Integer, StaticEntity> ENTITIES = new ConcurrentHashMap<Integer, StaticEntity>();;
@@ -43,7 +38,7 @@ public class EntityContainer {
 			case ALIVE_ENTITY:
 				entity = new AliveEntity(id, "asd", x, y, 50, 1);
 				
-				if (id == GameNetwork.getUser().getId()) {
+				if (id == GameNetwork.getUser().getID()) {
 					PlayerHandler.setPlayerEntity((AliveEntity)entity);
 				}
 				break;
@@ -53,4 +48,5 @@ public class EntityContainer {
 			addEntity(id, entity);
 		}
 	}
+	*/
 }

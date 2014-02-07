@@ -13,16 +13,13 @@ public class AliveEntity extends StaticEntity{
 	public static final int DIRECTION_DOWN = 3;
 	public static final int DIRECTION_LEFT = 4;
 	
-	private int direction;
-	
-	private String name;
+	private int direction = DIRECTION_UP;
+
 	private float movementSpeed;
 	
-	public AliveEntity(int id, String name, float x, float y, float movementSpeed, int direction) {
+	public AliveEntity(int id, float x, float y, float movementSpeed) {
 		super(id, x, y);
-		this.name = name;
 		this.movementSpeed = movementSpeed;
-		this.direction = direction;
 	}
 
 	@Override

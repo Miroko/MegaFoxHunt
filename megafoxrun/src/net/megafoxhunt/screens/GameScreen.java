@@ -1,16 +1,10 @@
 package net.megafoxhunt.screens;
 
-import java.util.Collection;
 
 import net.megafoxhunt.core.GameInputProcessor;
-import net.megafoxhunt.core.GameKeys;
-import net.megafoxhunt.core.GameNetwork;
 import net.megafoxhunt.core.MyGdxGame;
-import net.megafoxhunt.core.PlayerHandler;
-import net.megafoxhunt.entities.AliveEntity;
-import net.megafoxhunt.entities.EntityContainer;
-import net.megafoxhunt.entities.StaticEntity;
-import net.megafoxhunt.server.KryoNetwork.Move;
+import net.megafoxhunt.core.User;
+import net.megafoxhunt.core.UserContainer;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -32,6 +26,7 @@ public class GameScreen implements Screen {
 	private OrthographicCamera camera;
 	
 	public GameScreen() {
+		
 		Gdx.input.setInputProcessor(new GameInputProcessor());
 
 		map = new TmxMapLoader().load("data/testmap.tmx");
@@ -40,39 +35,13 @@ public class GameScreen implements Screen {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 30, 20);
 		camera.update();
+		
 	}
 	
 	@Override
 	public void render(float delta) {
 		Gdx.gl.glClearColor(0.7f, 0.7f, 1.0f, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-        
-        // TODO: (process input, collision detection, position update)
-		/*
-		 * toimiiko jos inputprocessorissa suunnan lähetys?
-		 * ei olisi riippuvainen rendauksesta
-		 */
-        AliveEntity myEntity = PlayerHandler.getPlayerEntity();
-        if (myEntity != null) {
-        	int direction = -1;
-        	if (GameKeys.isPressed(GameKeys.UP)) {
-        		direction = AliveEntity.DIRECTION_UP;
-        	} else if (GameKeys.isPressed(GameKeys.RIGHT)) {
-        		direction = AliveEntity.DIRECTION_RIGHT;
-        	} else if (GameKeys.isPressed(GameKeys.DOWN)) {
-        		direction = AliveEntity.DIRECTION_DOWN;
-        	} else if (GameKeys.isPressed(GameKeys.LEFT)) {
-        		direction = AliveEntity.DIRECTION_LEFT;
-        	}
-        	
-        	if (direction != -1) {
-        		myEntity.setDirection(direction);
-        		
-        		Move move = new Move(myEntity.getId(), direction, (int)myEntity.getX(), (int)myEntity.getY());
-        		GameNetwork.getClient().sendTCP(move);
-        	}
-        }
-		
 		
         // TODO: SET CAMERA POSITION TO FOLLOW TARGET
 
@@ -80,18 +49,17 @@ public class GameScreen implements Screen {
         
         renderer.setView(camera);
         renderer.render();
-        
-        Collection<StaticEntity> entities = EntityContainer.getValues();
-        
-        for (StaticEntity entity : entities) {
-        	entity.update(delta);
+
+        for(User user : UserContainer.getUsersConcurrentSafe()){        	
+        	user.getControlledEntity().update(delta);
         }
         
         Batch batch = renderer.getSpriteBatch();
         batch.begin();
-        for (StaticEntity entity : entities) {
-        	entity.render(batch);
+        for(User user : UserContainer.getUsersConcurrentSafe()){
+        	user.getControlledEntity().render(batch);
         }
+        
         batch.end();
 	}
 

@@ -4,3 +4,12 @@ Luokkia joita todennäköisesti tulee olemaan vain yksi, muutettu staattisiksi
  
 Login automaattinen, clientin käynnistyessä ei kysytä usernamea
 GameNetwork.setUsername();
+
+----------
+
+Entity sidottu useriin -> entity container ei käytössä
+yksinkertaistaa network koodia
+esim. UserContainer.getUserByID(addChaser.id).setControlledEntity(new Chaser(addChaser.id, addChaser.x, addChaser.y));
+
+Local User myös usercontainerissa 
+uudet kryoluokat joilla luodaan chaser tai chased entity
