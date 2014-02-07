@@ -67,25 +67,6 @@ public class KryoNetwork {
 			this.y = y;
 		}
 	}
-	
-	/*
-	public static class AddEntity {
-		public int id;
-		public int type;
-		public int x;
-		public int y;
-		public int direction;
-		
-		public AddEntity() { }
-		public AddEntity(int id, int type, int x, int y, int direction) {
-			this.id = id;
-			this.type = type;
-			this.x = x;
-			this.y = y;
-			this.direction = direction;
-		}
-	}
-	*/
 	public static class RemoveEntity {
 		public int id;
 	}

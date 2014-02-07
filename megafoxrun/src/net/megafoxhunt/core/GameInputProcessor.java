@@ -39,7 +39,8 @@ public class GameInputProcessor extends InputAdapter {
 	}
 	
 	public boolean keyUp(int k) {
-
+		// KEY UP STOP		
+		sendDirection(AliveEntity.DIRECTION_STOP);
 		return true;
 	}
 }

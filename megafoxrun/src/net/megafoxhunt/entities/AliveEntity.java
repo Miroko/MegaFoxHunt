@@ -8,24 +8,24 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class AliveEntity extends StaticEntity{
 
+	public static final int DIRECTION_STOP = 0;	
 	public static final int DIRECTION_UP = 1;
 	public static final int DIRECTION_RIGHT = 2;
 	public static final int DIRECTION_DOWN = 3;
 	public static final int DIRECTION_LEFT = 4;
 	
-	private int direction = DIRECTION_UP;
-
+	private int direction = DIRECTION_STOP;
+	
 	private float movementSpeed;
 	
-	public AliveEntity(int id, float x, float y, float movementSpeed) {
-		super(id, x, y);
+	public AliveEntity(int id, float x, float y, float movementSpeed, Texture texture) {
+		super(id, x, y, texture);
 		this.movementSpeed = movementSpeed;
 	}
 
 	@Override
 	public void update(float delta){
-		float speed = movementSpeed * GameScreen.UNIT_SCALE * delta;
-		
+		float speed = movementSpeed * GameScreen.UNIT_SCALE * delta;		
 		switch (direction) {
 			case DIRECTION_UP:
 				y += speed;
@@ -42,13 +42,6 @@ public class AliveEntity extends StaticEntity{
 		}
 	}
 	
-	@Override
-	public void render(Batch batch){
-		if (texture == null) {
-			texture = new Texture("data/libgdx.png");
-		}
-		batch.draw(texture, x, y, 1, 1);
-	}
 	
 	public void setDirection(int direction) {
 		this.direction = direction;

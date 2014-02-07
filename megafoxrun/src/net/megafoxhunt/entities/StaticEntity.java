@@ -6,22 +6,25 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class StaticEntity {
 	
+	public static Texture DEBUG_TEXTURE = null;
+	
 	protected int id;
 	protected float x;
 	protected float y;
 	
 	protected Texture texture;
 
-	public StaticEntity(int id, float x, float y){
+	public StaticEntity(int id, float x, float y, Texture texture){
 		this.id = id;
 		this.x = x;
 		this.y = y;
+		this.texture = texture;
 	}
 	
 	public void update(float delta) {}
 	
 	public void render(Batch batch){
-		
+		batch.draw(texture, x, y, 1, 1);
 	}
 	
 	public int getId() {
