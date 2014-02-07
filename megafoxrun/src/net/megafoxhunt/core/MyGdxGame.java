@@ -27,12 +27,15 @@ public class MyGdxGame extends Game {
 	private static void initTextures(){
 		 StaticEntity.DEBUG_TEXTURE = new Texture("data/libgdx.png");
 	}
+	private static void disposeTextures(){
+		StaticEntity.DEBUG_TEXTURE.dispose();
+	}
 	public static void shutdown(){
 		DebugConsole.msg("Shutdown");
 		System.exit(0);
 	}
 	@Override
 	public void dispose() {
-		
+		disposeTextures();
 	}
 }
