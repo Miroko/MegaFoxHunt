@@ -25,7 +25,7 @@ public class AliveEntity extends StaticEntity{
 
 	@Override
 	public void update(float delta){
-		float speed = movementSpeed * GameScreen.UNIT_SCALE * delta;		
+		float speed = movementSpeed * delta;		
 		switch (direction) {
 			case DIRECTION_UP:
 				y += speed;

@@ -17,7 +17,7 @@ public class GameInputProcessor extends InputAdapter {
     		AliveEntity entity = GameNetwork.getUser().getControlledEntity();
     		entity.setDirection(direction);
     		// SEND MOVE COMMAND
-    		Move move = new Move(entity.getId(), direction, (int)entity.getX(), (int)entity.getY());
+    		Move move = new Move(entity.getId(), direction, entity.getX(), entity.getY());
     		GameNetwork.getClient().sendTCP(move);
     		last_direction = direction;
 		}

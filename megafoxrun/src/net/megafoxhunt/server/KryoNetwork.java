@@ -32,11 +32,11 @@ public class KryoNetwork {
 	public static class Move{
 		public int id;
 		public int direction;
-		public int x;
-		public int y;
+		public float x;
+		public float y;
 		
 		public Move() { }
-		public Move(int id, int direction, int x, int y) {
+		public Move(int id, int direction, float x, float y) {
 			this.id = id;
 			this.direction = direction;
 			this.x = x;
