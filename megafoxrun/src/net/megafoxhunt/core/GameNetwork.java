@@ -109,11 +109,7 @@ public class GameNetwork {
 					Move move = (Move)object;
 					
 					AliveEntity entity = (AliveEntity)UserContainer.getUserByID(move.id).getControlledEntity();
-					entity.setDirection(move.direction);
-					
-					// SYNC POSITION
-					entity.setX(move.x);
-					entity.setY(move.y);
+					entity.move(move);
 				}
 			}
 

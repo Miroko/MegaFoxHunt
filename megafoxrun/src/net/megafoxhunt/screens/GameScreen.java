@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
@@ -25,11 +26,14 @@ public class GameScreen implements Screen {
 	private OrthogonalTiledMapRenderer renderer;
 	private OrthographicCamera camera;
 	
+	public static TiledMapTileLayer collisionMap;
+	
 	public GameScreen() {
 		
 		Gdx.input.setInputProcessor(new GameInputProcessor());
 
 		map = new TmxMapLoader().load("data/testmap.tmx");
+		GameScreen.collisionMap = (TiledMapTileLayer)map.getLayers().get(0);
 		renderer = new OrthogonalTiledMapRenderer(map, UNIT_SCALE);
 		
 		camera = new OrthographicCamera();
