@@ -45,7 +45,8 @@ public class AliveEntity extends StaticEntity{
 		
 		if (!isMoving) {
 			setNewDestination();
-		} else if (isMoving) {
+		}
+		if (isMoving) {
 			moveTowardsDestination(speed);
 			if (isDestinationReached()) {
 				snapToTile();
@@ -114,7 +115,7 @@ public class AliveEntity extends StaticEntity{
 		float distanceX = Math.abs(x - destinationX);
 		float distanceY = Math.abs(y - destinationY);
 		
-		if (distanceX <= 0.1f && distanceY <= 0.1f) {
+		if (distanceX <= 0.04f && distanceY <= 0.04f) {
 			return true;
 		}
 		
