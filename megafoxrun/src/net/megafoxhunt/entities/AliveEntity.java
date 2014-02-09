@@ -1,5 +1,7 @@
 package net.megafoxhunt.entities;
 
+import java.beans.DesignMode;
+
 import net.megafoxhunt.core.GameNetwork;
 import net.megafoxhunt.screens.GameScreen;
 import net.megafoxhunt.server.KryoNetwork.Move;
@@ -43,9 +45,7 @@ public class AliveEntity extends StaticEntity{
 		
 		if (!isMoving) {
 			setNewDestination();
-		}
-		
-		if (isMoving) {
+		} else if (isMoving) {
 			moveTowardsDestination(speed);
 			if (isDestinationReached()) {
 				snapToTile();
@@ -106,10 +106,15 @@ public class AliveEntity extends StaticEntity{
 	}
 	
 	private boolean isDestinationReached() {
+		if 		(destinationDirection == DIRECTION_UP && y > destinationY) return true;
+		else if (destinationDirection == DIRECTION_RIGHT && x > destinationX) return true;
+		else if (destinationDirection == DIRECTION_DOWN && y < destinationY) return true;
+		else if (destinationDirection == DIRECTION_LEFT && x < destinationX) return true;
+		
 		float distanceX = Math.abs(x - destinationX);
 		float distanceY = Math.abs(y - destinationY);
 		
-		if (distanceX <= 0.05f && distanceY <= 0.05f) {
+		if (distanceX <= 0.1f && distanceY <= 0.1f) {
 			return true;
 		}
 		

@@ -20,7 +20,7 @@ public class MyGdxGame extends Game {
 			
 		GameNetwork.init();
 		GameNetwork.setUsername("TestUser");		
-		GameNetwork.connect("localhost", 6666);
+		GameNetwork.connect("212.149.174.127", 6666);
 		
 		INSTANCE.setScreen(new MenuScreen());	
 	}	
