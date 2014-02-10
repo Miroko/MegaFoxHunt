@@ -21,7 +21,7 @@ import com.badlogic.gdx.math.Vector3;
 
 public class GameScreen implements Screen {
 
-	public static final float UNIT_SCALE = 1 / 32f;
+	public static final float UNIT_SCALE = 1 / 64f;
 	
 	private MyGdxGame game;
 	
@@ -36,7 +36,7 @@ public class GameScreen implements Screen {
 	public GameScreen() {
 		Gdx.input.setInputProcessor(new GameInputProcessor());
 
-		map = new TmxMapLoader().load("data/testmap.tmx");
+		map = new TmxMapLoader().load("data/basic_map.tmx");
 		GameScreen.collisionMap = (TiledMapTileLayer)map.getLayers().get(0);
 		renderer = new OrthogonalTiledMapRenderer(map, UNIT_SCALE);
 		

@@ -43,6 +43,8 @@ public class AliveEntity extends StaticEntity{
 		float speed = movementSpeed * delta;
 		collisionMap = GameScreen.collisionMap;
 		
+		if (collisionMap == null) return;
+		
 		if (!isMoving) {
 			setNewDestination();
 		}
