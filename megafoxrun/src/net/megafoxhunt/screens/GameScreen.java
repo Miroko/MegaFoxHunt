@@ -3,8 +3,9 @@ package net.megafoxhunt.screens;
 
 import net.megafoxhunt.core.GameInputProcessor;
 
+import net.megafoxhunt.core.GameMap;
 import net.megafoxhunt.core.GameNetwork;
-import net.megafoxhunt.core.MyGdxGame;
+
 import net.megafoxhunt.core.User;
 import net.megafoxhunt.core.UserContainer;
 
@@ -15,17 +16,15 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.maps.tiled.TiledMap;
+
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Vector3;
 
 public class GameScreen implements Screen {
 
 	public static final float UNIT_SCALE = 1 / 64f;
-	
-	private TiledMap map;
+
 	private OrthogonalTiledMapRenderer renderer;
 	private OrthographicCamera camera;
 	
@@ -33,10 +32,13 @@ public class GameScreen implements Screen {
 	
 	public GameScreen() {
 		Gdx.input.setInputProcessor(new GameInputProcessor());
-
-		map = new TmxMapLoader().load("data/basic_map.tmx");
-		GameScreen.collisionMap = (TiledMapTileLayer)map.getLayers().get(0);
-		renderer = new OrthogonalTiledMapRenderer(map, UNIT_SCALE);
+	
+		// TODO tämä game networkiin
+		GameMap.setCurrentMap(GameMap.MAP_DEBUG);			
+		
+		GameScreen.collisionMap = (TiledMapTileLayer)GameMap.getCurrentMap().getTiledMap().getLayers().get(0);
+		
+		renderer = new OrthogonalTiledMapRenderer(GameMap.getCurrentMap().getTiledMap(), UNIT_SCALE);
 				
 		camera = new OrthographicCamera();	
 		camera.setToOrtho(false, 30, 20);
@@ -110,7 +112,7 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void dispose() {
-		map.dispose();
+		GameMap.getCurrentMap().dispose();
 		renderer.dispose();
 	}
 
