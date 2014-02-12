@@ -31,17 +31,15 @@ public class GameMap {
 	}
 	public static void setCurrentMap(GameMap map){
 		CURRENT_MAP = map;
-		CURRENT_MAP.load();
 	}
 	public static GameMap getCurrentMap(){
 		return CURRENT_MAP;
 	}
-	public static GameMap getMapByName(String name){
-		GameMap map = null;
+	public static GameMap getMapByName(String name){		
 		if(name.equals(MAP_DEBUG.getName())){
-			map = MAP_DEBUG;
-		}		
-		return map;			
+			return MAP_DEBUG;
+		}
+		return null;				
 	}
 	public TiledMapTileLayer getCollisionLayer(){		
 		return (TiledMapTileLayer)tiledMap.getLayers().get(COLLISION_LAYER);

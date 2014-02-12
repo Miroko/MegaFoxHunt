@@ -1,6 +1,7 @@
 package net.megafoxhunt.entities;
 
 
+import net.megafoxhunt.core.GameMap;
 import net.megafoxhunt.core.GameNetwork;
 import net.megafoxhunt.screens.GameScreen;
 import net.megafoxhunt.server.KryoNetwork.Move;
@@ -39,7 +40,7 @@ public class Entity extends StaticObject{
 	@Override
 	public void update(float delta){
 		float speed = movementSpeed * delta;
-		collisionMap = GameScreen.collisionMap;
+		collisionMap = GameMap.getCurrentMap().getCollisionLayer();
 		
 		if (collisionMap == null) return;
 		

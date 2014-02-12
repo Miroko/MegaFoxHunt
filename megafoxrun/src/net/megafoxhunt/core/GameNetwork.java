@@ -109,22 +109,21 @@ public class GameNetwork {
 				 * MOVE ENTITY
 				 */
 				else if (object instanceof Move) {
-					Move move = (Move)object;
-					
+					Move move = (Move)object;					
 					Entity entity = (Entity)UserContainer.getUserByID(move.id).getControlledEntity();
 					entity.move(move);
-				}
-				// TODO rikki
+				}			
 				/*
 				 * CHANGE MAP
-				 */
-				/*
+				 */						
 				else if(object instanceof SetMap){					
-					SetMap setMap = (SetMap)object;					
+					SetMap setMap = (SetMap)object;	
+					DebugConsole.msg("Set map: " + setMap.mapName);
 					GameMap map = GameMap.getMapByName(setMap.mapName);					
 					GameMap.setCurrentMap(map);					
 				}
-				*/
+				
+				
 			}
 
 			@Override

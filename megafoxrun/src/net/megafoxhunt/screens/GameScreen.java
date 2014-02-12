@@ -8,6 +8,7 @@ import net.megafoxhunt.core.GameNetwork;
 
 import net.megafoxhunt.core.User;
 import net.megafoxhunt.core.UserContainer;
+import net.megafoxhunt.debug.DebugConsole;
 
 import net.megafoxhunt.entities.Entity;
 
@@ -28,15 +29,15 @@ public class GameScreen implements Screen {
 	private OrthogonalTiledMapRenderer renderer;
 	private OrthographicCamera camera;
 	
-	public static TiledMapTileLayer collisionMap;
-	
 	public GameScreen() {
-		Gdx.input.setInputProcessor(new GameInputProcessor());
-	
-		// TODO tämä game networkiin
-		GameMap.setCurrentMap(GameMap.MAP_DEBUG);			
+		DebugConsole.msg("Set screen: GameScreen");
 		
-		GameScreen.collisionMap = (TiledMapTileLayer)GameMap.getCurrentMap().getTiledMap().getLayers().get(0);
+		Gdx.input.setInputProcessor(new GameInputProcessor());
+		
+		/*
+		 * LOAD MAP
+		 */
+		GameMap.getCurrentMap().load();	
 		
 		renderer = new OrthogonalTiledMapRenderer(GameMap.getCurrentMap().getTiledMap(), UNIT_SCALE);
 				
