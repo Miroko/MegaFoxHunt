@@ -23,15 +23,11 @@ public class GameScreen implements Screen {
 
 	public static final float UNIT_SCALE = 1 / 64f;
 	
-	private MyGdxGame game;
-	
 	private TiledMap map;
 	private OrthogonalTiledMapRenderer renderer;
 	private OrthographicCamera camera;
 	
 	public static TiledMapTileLayer collisionMap;
-	
-	private AliveEntity myEntity;
 	
 	public GameScreen() {
 		Gdx.input.setInputProcessor(new GameInputProcessor());
@@ -39,39 +35,48 @@ public class GameScreen implements Screen {
 		map = new TmxMapLoader().load("data/basic_map.tmx");
 		GameScreen.collisionMap = (TiledMapTileLayer)map.getLayers().get(0);
 		renderer = new OrthogonalTiledMapRenderer(map, UNIT_SCALE);
-		
+		renderer.getSpriteBatch().disableBlending();
+			
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 30, 20);
-		camera.update();
-		
+		camera.update();		
 	}
 	
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(0.7f, 0.7f, 1.0f, 1);
-		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		
+		// TODO syö kaiken suoritustehon?
 
+		// UPDATE ENTITIES
 		for(User user : UserContainer.getUsersConcurrentSafe()){        	
 			user.getControlledEntity().update(delta);
 		}
 		
-        if (myEntity == null) myEntity = GameNetwork.getUser().getControlledEntity();
-        else {
+		// FOCUS CAMERA ON PLAYER ENTITY
+		AliveEntity myEntity = GameNetwork.getUser().getControlledEntity();
+        if (myEntity != null){
         	camera.position.x = myEntity.getX();
         	camera.position.y = myEntity.getY();
         }
         camera.update();
-        
+		
+		// CLEAR SCREEN
+		Gdx.gl.glClearColor(0.7f, 0.7f, 1.0f, 1);
+		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		
+		// DRAW MAP
         renderer.setView(camera);
         renderer.render();
-
-        Batch batch = renderer.getSpriteBatch();
-        batch.begin();
+		
+		// INIT BATCH
+		Batch batch = renderer.getSpriteBatch();
+		batch.begin();		
+             
+        // DRAW ENTITIES
         for(User user : UserContainer.getUsersConcurrentSafe()){
         	user.getControlledEntity().render(batch);
-        }
-        
-        batch.end();
+        }        
+        batch.end(); 
 	}
 
 	@Override

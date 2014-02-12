@@ -1,14 +1,12 @@
 package net.megafoxhunt.entities;
 
-import java.beans.DesignMode;
 
 import net.megafoxhunt.core.GameNetwork;
 import net.megafoxhunt.screens.GameScreen;
 import net.megafoxhunt.server.KryoNetwork.Move;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 
 public class AliveEntity extends StaticEntity{
