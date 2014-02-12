@@ -2,11 +2,14 @@ package net.megafoxhunt.server;
 
 import java.util.ArrayList;
 
+
+import net.megafoxhunt.core.GameMap;
 import net.megafoxhunt.server.KryoNetwork.AddChaser;
 import net.megafoxhunt.server.KryoNetwork.AddPlayer;
 import net.megafoxhunt.server.KryoNetwork.ChangeState;
 import net.megafoxhunt.server.KryoNetwork.Move;
 import net.megafoxhunt.server.KryoNetwork.RemovePlayer;
+import net.megafoxhunt.server.KryoNetwork.SetMap;
 
 public class GameRoom extends Thread {
 	
@@ -73,10 +76,14 @@ public class GameRoom extends Thread {
 		for (PlayerConnection player : players) {
 			playerContainer.sendObjectToAll(new AddChaser(player.getMyId(), 10, 10));
 		}
+		// SEND MAP
+		changeMap(GameMap.MAP_DEBUG);
 		// SET STATE
 		changeRoomState(ROOM_STATE_GAME);
 	}
-	
+	public void changeMap(GameMap map){
+		playerContainer.sendObjectToAll(new SetMap(map.getName()));
+	}	
 	public boolean addPlayer(final PlayerConnection player) {
 		if (playerContainer.addPlayer(player)) {
 			// Send new player information to old players

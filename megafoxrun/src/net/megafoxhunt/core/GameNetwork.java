@@ -20,6 +20,7 @@ import net.megafoxhunt.server.KryoNetwork.ChangeState;
 import net.megafoxhunt.server.KryoNetwork.Login;
 import net.megafoxhunt.server.KryoNetwork.Move;
 import net.megafoxhunt.server.KryoNetwork.RemovePlayer;
+import net.megafoxhunt.server.KryoNetwork.SetMap;
 import net.megafoxhunt.server.KryoNetwork.WelcomePlayer;
 
 import com.badlogic.gdx.Gdx;
@@ -113,6 +114,17 @@ public class GameNetwork {
 					Entity entity = (Entity)UserContainer.getUserByID(move.id).getControlledEntity();
 					entity.move(move);
 				}
+				// TODO rikki
+				/*
+				 * CHANGE MAP
+				 */
+				/*
+				else if(object instanceof SetMap){					
+					SetMap setMap = (SetMap)object;					
+					GameMap map = GameMap.getMapByName(setMap.mapName);					
+					GameMap.setCurrentMap(map);					
+				}
+				*/
 			}
 
 			@Override
