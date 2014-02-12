@@ -2,11 +2,13 @@ package net.megafoxhunt.screens;
 
 
 import net.megafoxhunt.core.GameInputProcessor;
+
 import net.megafoxhunt.core.GameNetwork;
 import net.megafoxhunt.core.MyGdxGame;
 import net.megafoxhunt.core.User;
 import net.megafoxhunt.core.UserContainer;
-import net.megafoxhunt.entities.AliveEntity;
+
+import net.megafoxhunt.entities.Entity;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -35,9 +37,8 @@ public class GameScreen implements Screen {
 		map = new TmxMapLoader().load("data/basic_map.tmx");
 		GameScreen.collisionMap = (TiledMapTileLayer)map.getLayers().get(0);
 		renderer = new OrthogonalTiledMapRenderer(map, UNIT_SCALE);
-		renderer.getSpriteBatch().disableBlending();
-			
-		camera = new OrthographicCamera();
+				
+		camera = new OrthographicCamera();	
 		camera.setToOrtho(false, 30, 20);
 		camera.update();		
 	}
@@ -53,7 +54,7 @@ public class GameScreen implements Screen {
 		}
 		
 		// FOCUS CAMERA ON PLAYER ENTITY
-		AliveEntity myEntity = GameNetwork.getUser().getControlledEntity();
+		Entity myEntity = GameNetwork.getUser().getControlledEntity();
         if (myEntity != null){
         	camera.position.x = myEntity.getX();
         	camera.position.y = myEntity.getY();

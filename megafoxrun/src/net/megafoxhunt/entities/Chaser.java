@@ -1,10 +1,12 @@
 package net.megafoxhunt.entities;
 
+import net.megafoxhunt.core.GameTextures;
+
 import com.badlogic.gdx.graphics.Texture;
 
-public class Chaser extends AliveEntity{
+public class Chaser extends Entity{
 	
-	private static final Texture TEXTURE_DOG = StaticEntity.DEBUG_TEXTURE;
+	private static final Texture TEXTURE_DOG = GameTextures.DEBUG_TEXTURE;
 	
 	private static final float MOVEMENT_SPEED = 5;
 	
