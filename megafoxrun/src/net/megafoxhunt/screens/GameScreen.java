@@ -2,9 +2,13 @@ package net.megafoxhunt.screens;
 
 
 import net.megafoxhunt.core.GameInputProcessor;
+
+import net.megafoxhunt.core.GameNetwork;
 import net.megafoxhunt.core.MyGdxGame;
 import net.megafoxhunt.core.User;
 import net.megafoxhunt.core.UserContainer;
+
+import net.megafoxhunt.entities.Entity;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -12,55 +16,68 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Vector3;
 
 public class GameScreen implements Screen {
 
-	public static final float UNIT_SCALE = 1 / 32f;
-	
-	private MyGdxGame game;
+	public static final float UNIT_SCALE = 1 / 64f;
 	
 	private TiledMap map;
 	private OrthogonalTiledMapRenderer renderer;
 	private OrthographicCamera camera;
 	
+	public static TiledMapTileLayer collisionMap;
+	
 	public GameScreen() {
-		
 		Gdx.input.setInputProcessor(new GameInputProcessor());
 
-		map = new TmxMapLoader().load("data/testmap.tmx");
+		map = new TmxMapLoader().load("data/basic_map.tmx");
+		GameScreen.collisionMap = (TiledMapTileLayer)map.getLayers().get(0);
 		renderer = new OrthogonalTiledMapRenderer(map, UNIT_SCALE);
-		
-		camera = new OrthographicCamera();
+				
+		camera = new OrthographicCamera();	
 		camera.setToOrtho(false, 30, 20);
-		camera.update();
-		
+		camera.update();		
 	}
 	
 	@Override
 	public void render(float delta) {
+		
+		// TODO syö kaiken suoritustehon?
+
+		// UPDATE ENTITIES
+		for(User user : UserContainer.getUsersConcurrentSafe()){        	
+			user.getControlledEntity().update(delta);
+		}
+		
+		// FOCUS CAMERA ON PLAYER ENTITY
+		Entity myEntity = GameNetwork.getUser().getControlledEntity();
+        if (myEntity != null){
+        	camera.position.x = myEntity.getX();
+        	camera.position.y = myEntity.getY();
+        }
+        camera.update();
+		
+		// CLEAR SCREEN
 		Gdx.gl.glClearColor(0.7f, 0.7f, 1.0f, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		
-        // TODO: SET CAMERA POSITION TO FOLLOW TARGET
-
-        camera.update();
-        
+		// DRAW MAP
         renderer.setView(camera);
         renderer.render();
-
-        for(User user : UserContainer.getUsersConcurrentSafe()){        	
-        	user.getControlledEntity().update(delta);
-        }
-        
-        Batch batch = renderer.getSpriteBatch();
-        batch.begin();
+		
+		// INIT BATCH
+		Batch batch = renderer.getSpriteBatch();
+		batch.begin();		
+             
+        // DRAW ENTITIES
         for(User user : UserContainer.getUsersConcurrentSafe()){
         	user.getControlledEntity().render(batch);
-        }
-        
-        batch.end();
+        }        
+        batch.end(); 
 	}
 
 	@Override

@@ -2,12 +2,14 @@ package net.megafoxhunt.core;
 
 import java.io.IOException;
 
+
 import java.util.Scanner;
 
 import net.megafoxhunt.debug.DebugConsole;
-import net.megafoxhunt.entities.AliveEntity;
+
 import net.megafoxhunt.entities.Chased;
 import net.megafoxhunt.entities.Chaser;
+import net.megafoxhunt.entities.Entity;
 import net.megafoxhunt.screens.GameScreen;
 import net.megafoxhunt.screens.LobbyScreen;
 import net.megafoxhunt.server.KryoNetwork;
@@ -108,12 +110,8 @@ public class GameNetwork {
 				else if (object instanceof Move) {
 					Move move = (Move)object;
 					
-					AliveEntity entity = (AliveEntity)UserContainer.getUserByID(move.id).getControlledEntity();
-					entity.setDirection(move.direction);
-					
-					// SYNC POSITION
-					entity.setX(move.x);
-					entity.setY(move.y);
+					Entity entity = (Entity)UserContainer.getUserByID(move.id).getControlledEntity();
+					entity.move(move);
 				}
 			}
 
