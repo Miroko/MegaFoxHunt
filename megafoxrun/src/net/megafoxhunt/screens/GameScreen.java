@@ -30,8 +30,7 @@ public class GameScreen implements Screen {
 	private OrthographicCamera camera;
 	
 	public GameScreen() {
-		DebugConsole.msg("Set screen: GameScreen");
-		
+		DebugConsole.msg("Set screen: GameScreen");		
 		Gdx.input.setInputProcessor(new GameInputProcessor());
 		
 		/*
