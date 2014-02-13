@@ -2,26 +2,22 @@ package net.megafoxhunt.screens;
 
 
 import net.megafoxhunt.core.GameInputProcessor;
-
 import net.megafoxhunt.core.GameMap;
 import net.megafoxhunt.core.GameNetwork;
-
 import net.megafoxhunt.core.User;
 import net.megafoxhunt.core.UserContainer;
 import net.megafoxhunt.debug.DebugConsole;
-
 import net.megafoxhunt.entities.Entity;
 import net.megafoxhunt.ui.TouchJoystick;
 
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
 public class GameScreen implements Screen {
@@ -37,6 +33,7 @@ public class GameScreen implements Screen {
 	
 	public GameScreen() {
 		touchJoystick = new TouchJoystick();
+		
 		spriteBatch = new SpriteBatch();
 		
 		DebugConsole.msg("Set screen: GameScreen");		

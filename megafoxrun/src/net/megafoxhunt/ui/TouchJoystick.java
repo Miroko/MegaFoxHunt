@@ -40,6 +40,8 @@ public class TouchJoystick {
 		
 		joystickPos.clamp(0, 55);
 		
+		float distance = circlePos.dst(x, y);
+		
 		float angle = joystickPos.angle();
 		if (angle < 45 && angle > 0 || angle < 360 && angle > 315) {
 			sendDirection(Entity.DIRECTION_RIGHT);

@@ -18,7 +18,7 @@ public class MyGdxGame extends Game {
 			
 		GameNetwork.init();
 		GameNetwork.setUsername("TestUser");		
-		GameNetwork.connect("212.149.174.127", 6666);
+		GameNetwork.connect("192.168.0.102", 6666);
 		
 		INSTANCE.setScreen(new MenuScreen());	
 	}	
