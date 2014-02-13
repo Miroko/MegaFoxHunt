@@ -11,12 +11,14 @@ import net.megafoxhunt.core.UserContainer;
 import net.megafoxhunt.debug.DebugConsole;
 
 import net.megafoxhunt.entities.Entity;
+import net.megafoxhunt.ui.TouchJoystick;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 
@@ -29,9 +31,16 @@ public class GameScreen implements Screen {
 	private OrthogonalTiledMapRenderer renderer;
 	private OrthographicCamera camera;
 	
+	private TouchJoystick touchJoystick;
+	
+	private SpriteBatch spriteBatch;
+	
 	public GameScreen() {
+		touchJoystick = new TouchJoystick();
+		spriteBatch = new SpriteBatch();
+		
 		DebugConsole.msg("Set screen: GameScreen");		
-		Gdx.input.setInputProcessor(new GameInputProcessor());
+		Gdx.input.setInputProcessor(new GameInputProcessor(touchJoystick));
 		
 		/*
 		 * LOAD MAP
@@ -79,7 +88,11 @@ public class GameScreen implements Screen {
         for(User user : UserContainer.getUsersConcurrentSafe()){
         	user.getControlledEntity().render(batch);
         }        
-        batch.end(); 
+        batch.end();
+        
+        spriteBatch.begin();
+        touchJoystick.draw(spriteBatch);
+        spriteBatch.end();
 	}
 
 	@Override
