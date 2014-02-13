@@ -3,6 +3,7 @@ package net.megafoxhunt.core;
 
 
 
+import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -16,6 +17,9 @@ public class GameMap {
 	public static GameMap MAP_DEBUG = new GameMap("Debug", "data/basic_map.tmx");	
 	
 	private static GameMap CURRENT_MAP;	
+	
+	private int mapWidth;
+	private int mapHeight;
 	
 	private String name;
 	public String getName(){return name;}
@@ -45,12 +49,22 @@ public class GameMap {
 		return (TiledMapTileLayer)tiledMap.getLayers().get(COLLISION_LAYER);
 	}
 	public void load(){		
-		tiledMap = new TmxMapLoader().load(tiledMapPath);		
+		tiledMap = new TmxMapLoader().load(tiledMapPath);
+		MapProperties prop = tiledMap.getProperties();
+		mapWidth = prop.get("width", Integer.class);
+		mapHeight = prop.get("height", Integer.class);
 	}
 	public void dispose(){
 		tiledMap.dispose();
 	}
 	
+	public int getMapWidth() {
+		return mapWidth;
+	}
+	
+	public int getMapHeight() {
+		return mapHeight;
+	}
 	
 
 	

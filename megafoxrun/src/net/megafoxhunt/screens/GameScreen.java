@@ -23,6 +23,9 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 public class GameScreen implements Screen {
 
 	public static final float UNIT_SCALE = 1 / 64f;
+	
+	private static final int FIT_TILES_WIDTH = 30;
+	private static final int FIT_TILES_HEIGHT = 20;
 
 	private OrthogonalTiledMapRenderer renderer;
 	private OrthographicCamera camera;
@@ -47,7 +50,7 @@ public class GameScreen implements Screen {
 		renderer = new OrthogonalTiledMapRenderer(GameMap.getCurrentMap().getTiledMap(), UNIT_SCALE);
 				
 		camera = new OrthographicCamera();	
-		camera.setToOrtho(false, 30, 20);
+		camera.setToOrtho(false, FIT_TILES_WIDTH, FIT_TILES_HEIGHT);
 		camera.update();		
 	}
 	
@@ -66,6 +69,7 @@ public class GameScreen implements Screen {
         if (myEntity != null){
         	camera.position.x = myEntity.getX();
         	camera.position.y = myEntity.getY();
+        	keepCameraInBoundaries();
         }
         camera.update();
 		
@@ -90,6 +94,20 @@ public class GameScreen implements Screen {
         spriteBatch.begin();
         touchJoystick.draw(spriteBatch);
         spriteBatch.end();
+	}
+
+	private void keepCameraInBoundaries() {
+		if (camera.position.x < FIT_TILES_WIDTH / 2) {
+    		camera.position.x = FIT_TILES_WIDTH / 2;
+    	} if (camera.position.x > (GameMap.getCurrentMap().getMapWidth() - (FIT_TILES_WIDTH / 2))) {
+    		camera.position.x = GameMap.getCurrentMap().getMapWidth() - (FIT_TILES_WIDTH / 2);
+    	}
+    	
+    	if (camera.position.y < FIT_TILES_HEIGHT / 2) {
+    		camera.position.y = FIT_TILES_HEIGHT / 2;
+    	} if (camera.position.y > (GameMap.getCurrentMap().getMapHeight() - (FIT_TILES_HEIGHT / 2))) {
+    		camera.position.y = GameMap.getCurrentMap().getMapHeight() - (FIT_TILES_HEIGHT / 2);
+    	}
 	}
 
 	@Override
