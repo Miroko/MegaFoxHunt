@@ -7,8 +7,11 @@ megafoxrun/bin/
 
 megafoxrun-desktop/.settings/
 
-megafox_server/.settings
-megafox_server/bin
+megafoxhunt-server/.settings
+megafoxhunt-server/bin
+
+ServerClientShared/.settings
+ServerClientShared/bin
 
 /.metadata
 *.project
