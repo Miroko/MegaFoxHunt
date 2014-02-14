@@ -1,5 +1,0 @@
-package net.megafoxhunt.shared;
-
-public class Shared {
-	public static final int ASD = 0;
-}
