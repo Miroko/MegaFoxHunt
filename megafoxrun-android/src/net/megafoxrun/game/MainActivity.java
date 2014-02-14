@@ -13,6 +13,7 @@ public class MainActivity extends AndroidApplication {
         
         AndroidApplicationConfiguration cfg = new AndroidApplicationConfiguration();
         cfg.useGL20 = false;
+        cfg.useWakelock = true;
         
         initialize(new MyGdxGame(), cfg);
     }

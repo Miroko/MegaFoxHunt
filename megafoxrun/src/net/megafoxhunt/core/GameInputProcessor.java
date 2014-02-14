@@ -2,6 +2,7 @@ package net.megafoxhunt.core;
 
 
 import net.megafoxhunt.entities.Entity;
+import net.megafoxhunt.ui.TouchJoystick;
 
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
@@ -10,6 +11,12 @@ public class GameInputProcessor extends InputAdapter {
 		
 	private int last_direction = -1;
 	private int previousKey;
+	
+	private TouchJoystick touchJoystick;
+	
+	public GameInputProcessor(TouchJoystick touchJoystick) {
+		this.touchJoystick = touchJoystick;
+	}
 	
 	private void sendDirection(int direction){
 		// IF DIRECTION HAS CHANGED
@@ -44,4 +51,27 @@ public class GameInputProcessor extends InputAdapter {
 		}
 		return true;
 	}
+
+	@Override
+	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+		touchJoystick.mouseDown(screenX, screenY);
+		
+		return super.touchDown(screenX, screenY, pointer, button);
+	}
+
+	@Override
+	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+		touchJoystick.mouseUp(screenX, screenY);
+		
+		return super.touchUp(screenX, screenY, pointer, button);
+	}
+
+	@Override
+	public boolean touchDragged(int screenX, int screenY, int pointer) {
+		touchJoystick.mouseDown(screenX, screenY);
+		
+		return super.touchDragged(screenX, screenY, pointer);
+	}
+	
+	
 }
