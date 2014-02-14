@@ -11,3 +11,4 @@ megafox_server/.settings
 megafox_server/bin
 
 /.metadata
+*.project
