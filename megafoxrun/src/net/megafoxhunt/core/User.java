@@ -1,6 +1,8 @@
 package net.megafoxhunt.core;
 
-import net.megafoxhunt.entities.AliveEntity;
+import net.megafoxhunt.entities.Entity;
+
+
 
 public class User {
 	
@@ -12,9 +14,9 @@ public class User {
 	public String getName(){return name;}
 	public void setName(String name){this.name = name;}
 	
-	private AliveEntity controlledEntity;
-	public void setControlledEntity(AliveEntity entity){controlledEntity = entity;}
-	public AliveEntity getControlledEntity(){return controlledEntity;}
+	private Entity controlledEntity;
+	public void setControlledEntity(Entity entity){controlledEntity = entity;}
+	public Entity getControlledEntity(){return controlledEntity;}
 
 	public User(int id, String name) {
 		this.id = id;

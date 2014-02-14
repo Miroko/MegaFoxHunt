@@ -1,46 +1,58 @@
 package net.megafoxhunt.core;
 
-import java.util.ArrayList;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
+
+
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
-import net.megafoxhunt.entities.StaticEntity;
 
-/*
- * Storage for map and entities
- * Handles entities
- */
 public class GameMap {
 	
-	private TiledMap map;	
-	private OrthogonalTiledMapRenderer renderer;
-	private ArrayList<StaticEntity> entities;
-	public void addEntity(StaticEntity e){entities.add(e);}
-	public void removeEntity(StaticEntity e){entities.remove(e);}
+	private static final int COLLISION_LAYER = 0;
 	
-	public GameMap(){
-		entities = new ArrayList<StaticEntity>();
-		renderer = new OrthogonalTiledMapRenderer(map);	
+	
+	public static GameMap MAP_DEBUG = new GameMap("Debug", "data/basic_map.tmx");	
+	
+	private static GameMap CURRENT_MAP;	
+	
+	private String name;
+	public String getName(){return name;}
+	
+	private String tiledMapPath;
+	
+	private TiledMap tiledMap;
+	public TiledMap getTiledMap(){return tiledMap;}	
+	
+	public GameMap(String name, String tiledMapPath){
+		this.name = name;
+		this.tiledMapPath = tiledMapPath;		
 	}
-	public void setMap(String path){
-		map = new TmxMapLoader().load(path);
-		renderer.setMap(map);
+	public static void setCurrentMap(GameMap map){
+		CURRENT_MAP = map;
 	}
-	public void draw(){
-		for(StaticEntity e : entities){
-			// add in camera bounds check for entity
-			
+	public static GameMap getCurrentMap(){
+		return CURRENT_MAP;
+	}
+	public static GameMap getMapByName(String name){		
+		if(name.equals(MAP_DEBUG.getName())){
+			return MAP_DEBUG;
 		}
-		renderer.render();
+		return null;				
 	}
-	public void setView(OrthographicCamera c){
-		renderer.setView(c);
+	public TiledMapTileLayer getCollisionLayer(){		
+		return (TiledMapTileLayer)tiledMap.getLayers().get(COLLISION_LAYER);
+	}
+	public void load(){		
+		tiledMap = new TmxMapLoader().load(tiledMapPath);		
 	}
 	public void dispose(){
-		map.dispose();
-		renderer.dispose();
+		tiledMap.dispose();
 	}
+	
+	
+
+	
+
 }

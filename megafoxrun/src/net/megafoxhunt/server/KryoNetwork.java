@@ -15,13 +15,26 @@ public class KryoNetwork {
 		kryo.register(ChangeState.class);
 		kryo.register(AddChaser.class);
 		kryo.register(AddChased.class);
+		kryo.register(SetMap.class);
 	}	
+	/*
+	 * CLIENT HANDLING
+	 */
 	public static class Login{
 		public String name;
 	}	
 	public static class WelcomePlayer{
 		public int id;
 	}	
+	/*
+	 * LOBBY
+	 */
+	public static class ChangeState {
+		public static final int LOBBY = 0;
+		public static final int GAME = 1;
+		
+		public int roomState;
+	}
 	public static class AddPlayer{
 		public String name;
 		public int id;
@@ -29,20 +42,9 @@ public class KryoNetwork {
 	public static class RemovePlayer{
 		public int id;
 	}	
-	public static class Move{
-		public int id;
-		public int direction;
-		public int x;
-		public int y;
-		
-		public Move() { }
-		public Move(int id, int direction, int x, int y) {
-			this.id = id;
-			this.direction = direction;
-			this.x = x;
-			this.y = y;
-		}
-	}
+	/*
+	 * ENTITIES
+	 */
 	public static class AddChaser {
 		public int id;
 		public int x;
@@ -70,11 +72,32 @@ public class KryoNetwork {
 	public static class RemoveEntity {
 		public int id;
 	}
-	
-	public static class ChangeState {
-		public static final int LOBBY = 0;
-		public static final int GAME = 1;
+	/*
+	 * MAP
+	 */
+	public static class SetMap{
+		public String mapName;
 		
-		public int roomState;
+		public SetMap(){}
+		public SetMap(String mapName){
+			this.mapName = mapName;
+		}
+	}
+	/*
+	 * GAME
+	 */
+	public static class Move{
+		public int id;
+		public int direction;
+		public int x;
+		public int y;
+		
+		public Move() { }
+		public Move(int id, int direction, int x, int y) {
+			this.id = id;
+			this.direction = direction;
+			this.x = x;
+			this.y = y;
+		}
 	}
 }

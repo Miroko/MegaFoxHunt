@@ -2,12 +2,14 @@ package net.megafoxhunt.core;
 
 import java.io.IOException;
 
+
 import java.util.Scanner;
 
 import net.megafoxhunt.debug.DebugConsole;
-import net.megafoxhunt.entities.AliveEntity;
+
 import net.megafoxhunt.entities.Chased;
 import net.megafoxhunt.entities.Chaser;
+import net.megafoxhunt.entities.Entity;
 import net.megafoxhunt.screens.GameScreen;
 import net.megafoxhunt.screens.LobbyScreen;
 import net.megafoxhunt.server.KryoNetwork;
@@ -18,6 +20,7 @@ import net.megafoxhunt.server.KryoNetwork.ChangeState;
 import net.megafoxhunt.server.KryoNetwork.Login;
 import net.megafoxhunt.server.KryoNetwork.Move;
 import net.megafoxhunt.server.KryoNetwork.RemovePlayer;
+import net.megafoxhunt.server.KryoNetwork.SetMap;
 import net.megafoxhunt.server.KryoNetwork.WelcomePlayer;
 
 import com.badlogic.gdx.Gdx;
@@ -76,9 +79,7 @@ public class GameNetwork {
 				 * CHANGE GAME STATE
 				 */
 				else if (object instanceof ChangeState) {
-					final ChangeState changeState = (ChangeState)object;
-					
-					// TODO miksi postrunnable?					
+					final ChangeState changeState = (ChangeState)object;									
 					Gdx.app.postRunnable(new Runnable() {
 						@Override
 						public void run() {
@@ -96,8 +97,6 @@ public class GameNetwork {
 				else if (object instanceof AddChaser) {
 					AddChaser addChaser = (AddChaser)object;
 					UserContainer.getUserByID(addChaser.id).setControlledEntity(new Chaser(addChaser.id, addChaser.x, addChaser.y));
-					
-					// EntityContainer.createEntity(addEntity.id, addEntity.type, addEntity.x, addEntity.y, addEntity.direction);
 				}
 				/*
 				 * ADD CHASED
@@ -110,22 +109,21 @@ public class GameNetwork {
 				 * MOVE ENTITY
 				 */
 				else if (object instanceof Move) {
-					Move move = (Move)object;
-					
-					AliveEntity entity = (AliveEntity)UserContainer.getUserByID(move.id).getControlledEntity();
-					entity.setDirection(move.direction);
-					
-					// SYNC POSITION
-					entity.setX(move.x);
-					entity.setY(move.y);
-					
-					/*
-					AliveEntity entity = (AliveEntity)EntityContainer.getEntity(move.id);
-					entity.setDirection(move.direction);
-					entity.setX(move.x);
-					entity.setY(move.y);
-					*/
+					Move move = (Move)object;					
+					Entity entity = (Entity)UserContainer.getUserByID(move.id).getControlledEntity();
+					entity.move(move);
+				}			
+				/*
+				 * CHANGE MAP
+				 */						
+				else if(object instanceof SetMap){					
+					SetMap setMap = (SetMap)object;	
+					DebugConsole.msg("Set map: " + setMap.mapName);
+					GameMap map = GameMap.getMapByName(setMap.mapName);					
+					GameMap.setCurrentMap(map);					
 				}
+				
+				
 			}
 
 			@Override
