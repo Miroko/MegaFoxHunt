@@ -1,0 +1,15 @@
+INDEX VERSION 1.126+C:\Users\Janne\git\MegaFoxHunt\.metadata\.plugins\org.eclipse.jdt.core
+1833920556.index
+1208282841.index
+1232260422.index
+4163601432.index
+2490863772.index
+1901089568.index
+1308754337.index
+1667488906.index
+2214085934.index
+1878572808.index
+3020862944.index
+490416328.index
+408068781.index
+1677080465.index

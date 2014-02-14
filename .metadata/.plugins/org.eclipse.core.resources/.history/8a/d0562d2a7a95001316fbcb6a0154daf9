@@ -1,0 +1,16 @@
+package net.megafoxhunt.shared;
+
+public class Shared {
+	public enum Map {
+		
+		DEBUG_MAP("Debug", "basic_map.tmx");
+		
+		public String name;
+		public String file;
+		
+		private Map(String name, String file) {
+			this.name = name;
+			this.file = file;
+		}
+	}
+}

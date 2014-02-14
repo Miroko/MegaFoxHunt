@@ -8,8 +8,8 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 public class Main {
 	public static void main(String[] args) {
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
-		cfg.title = "Mega Fox Run";
-		cfg.useGL20 = false;
+		cfg.title = "Mega Fox Hunt";
+		cfg.useGL20 = true;
 		cfg.width = 800;
 		cfg.height = 480;
 		cfg.vSyncEnabled = true;

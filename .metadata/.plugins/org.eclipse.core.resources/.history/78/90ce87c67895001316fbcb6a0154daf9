@@ -1,0 +1,36 @@
+package net.megafoxhunt.core;
+
+
+import net.megafoxhunt.debug.DebugConsole;
+import net.megafoxhunt.screens.MenuScreen;
+import net.megafoxhunt.shared.Shared;
+
+import com.badlogic.gdx.Game;
+
+public class MyGdxGame extends Game {
+	
+	private static MyGdxGame INSTANCE;
+	public static MyGdxGame getInstance(){return INSTANCE;}
+	
+	@Override	
+	public void create() {
+		INSTANCE = this;
+		GameTextures.init();	
+			
+		GameNetwork.init();
+		GameNetwork.setUsername("TestUser");		
+		GameNetwork.connect("10.112.122.143", 6666);
+		
+		System.out.println(Shared.ASD);
+		
+		INSTANCE.setScreen(new MenuScreen());	
+	}	
+	public static void shutdown(){
+		DebugConsole.msg("Shutdown");
+		System.exit(0);
+	}
+	@Override
+	public void dispose() {
+		GameTextures.dispose();
+	}
+}

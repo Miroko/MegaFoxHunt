@@ -3,6 +3,7 @@ package net.megafoxhunt.core;
 
 import net.megafoxhunt.debug.DebugConsole;
 import net.megafoxhunt.screens.MenuScreen;
+import net.megafoxhunt.shared.Shared;
 
 import com.badlogic.gdx.Game;
 
@@ -18,7 +19,7 @@ public class MyGdxGame extends Game {
 			
 		GameNetwork.init();
 		GameNetwork.setUsername("TestUser");		
-		GameNetwork.connect("10.112.122.143", 6666);
+		GameNetwork.connect("192.168.0.102", 6666);
 		
 		INSTANCE.setScreen(new MenuScreen());	
 	}	

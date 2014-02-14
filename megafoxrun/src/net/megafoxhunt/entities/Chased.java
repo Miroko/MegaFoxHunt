@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 
 public class Chased extends Entity{
 	
-	private static final Texture TEXTURE_FOX = GameTextures.DEBUG_TEXTURE;
+	private static final Texture TEXTURE_FOX = GameTextures.FOX_TEXTURE;
 	
 	private static final float MOVEMENT_SPEED = 5;
 	
