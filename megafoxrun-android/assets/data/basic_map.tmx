@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" width="30" height="20" tilewidth="64" tileheight="64">
+<map version="1.0" orientation="orthogonal" width="35" height="25" tilewidth="64" tileheight="64">
  <tileset firstgid="1" name="placeholder_atlas" tilewidth="64" tileheight="64">
   <image source="placeholder_atlas.png" width="512" height="512"/>
   <tile id="0">
@@ -68,9 +68,9 @@
    </properties>
   </tile>
  </tileset>
- <layer name="Tile Layer 1" width="30" height="20">
+ <layer name="Tile Layer 1" width="35" height="25">
   <data encoding="base64" compression="zlib">
-   eJzVVUEOgCAMQzkpJ+DEwf9/U01cQkgnE3DRQy861nZrYDXGzMpwB/yBTRk+410vLTb7P3V4Qn0c4NXw7QFvKnxz+hfQj75x83EFR85baqpp7jmDeEkTpz2AvrEyoyTg1c6zdFfIL1fLZaJlv4Qzf05YK9mvlDcy3t/KlQV9a7V/zhXaqa/4HZGr0fcGaXp6B9CZuxmFguML7wL5lLyDrTUB8Grnmdvnmzh97+eDLck=
+   eJzNVrsOgzAMTIsYSligU0fY+P8fLEhYilw/ziSqGG4gOMn5fHEypJSeN0DeMe3YGEZhjKMHYiKYCi7Dya8r/j8q8pTWyef34nCR9NmUuYhuWu6ILh+mj5bnS1iHxjQdM9vD41KOSRpaufGxNaCHxIXmE3ctx1nY8+1oaelh6aLhqkcIvbNWyYXq4tW+E9bxYiWPoX6RYrkHDo9nNqZpF/VLZB55ZAZjpTV5ryQuZc6ed8sajWBsS+9KZ5zXLALPuwTPu1Ifv9IfUb9Y5xfpdZH/S/rlQtyjfas/51hazmwPTxf0/NQAvRtJD+TNcDXG6gGRO8CCdZcSVide49L6zYZwR3RB78SaflNbo8i9jdSwlV9a4G5ctN72bxzn/QtQPGTq
   </data>
  </layer>
 </map>

@@ -3,6 +3,7 @@ package net.megafoxhunt.core;
 
 import net.megafoxhunt.debug.DebugConsole;
 import net.megafoxhunt.screens.MenuScreen;
+import net.megafoxhunt.shared.Shared;
 
 import com.badlogic.gdx.Game;
 

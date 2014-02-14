@@ -9,3 +9,6 @@ megafoxrun-desktop/.settings/
 
 megafox_server/.settings
 megafox_server/bin
+
+/.metadata
+*.project
