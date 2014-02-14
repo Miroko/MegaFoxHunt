@@ -24,8 +24,8 @@ public class GameScreen implements Screen {
 
 	public static final float UNIT_SCALE = 1 / 64f;
 	
-	private static final int FIT_TILES_WIDTH = 30;
-	private static final int FIT_TILES_HEIGHT = 20;
+	private static final int FIT_TILES_WIDTH = 24;
+	private static final int FIT_TILES_HEIGHT = 16;
 
 	private OrthogonalTiledMapRenderer renderer;
 	private OrthographicCamera camera;
