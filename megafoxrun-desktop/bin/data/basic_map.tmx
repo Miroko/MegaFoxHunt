@@ -17,6 +17,11 @@
     <property name="wall" value=""/>
    </properties>
   </tile>
+  <tile id="4">
+   <properties>
+    <property name="wall" value=""/>
+   </properties>
+  </tile>
   <tile id="8">
    <properties>
     <property name="wall" value=""/>
@@ -28,6 +33,11 @@
    </properties>
   </tile>
   <tile id="10">
+   <properties>
+    <property name="wall" value=""/>
+   </properties>
+  </tile>
+  <tile id="11">
    <properties>
     <property name="wall" value=""/>
    </properties>
@@ -70,7 +80,7 @@
  </tileset>
  <layer name="Tile Layer 1" width="35" height="25">
   <data encoding="base64" compression="zlib">
-   eJzNVrsOgzAMTIsYSligU0fY+P8fLEhYilw/ziSqGG4gOMn5fHEypJSeN0DeMe3YGEZhjKMHYiKYCi7Dya8r/j8q8pTWyef34nCR9NmUuYhuWu6ILh+mj5bnS1iHxjQdM9vD41KOSRpaufGxNaCHxIXmE3ctx1nY8+1oaelh6aLhqkcIvbNWyYXq4tW+E9bxYiWPoX6RYrkHDo9nNqZpF/VLZB55ZAZjpTV5ryQuZc6ed8sajWBsS+9KZ5zXLALPuwTPu1Ifv9IfUb9Y5xfpdZH/S/rlQtyjfas/51hazmwPTxf0/NQAvRtJD+TNcDXG6gGRO8CCdZcSVide49L6zYZwR3RB78SaflNbo8i9jdSwlV9a4G5ctN72bxzn/QtQPGTq
+   eJzNVrsOwjAMDKAOoSzA1JFs/P8P0kpEsk53tluoYDgVEtu9nh/JuZRy/AOMM64zHjOeP8b1jf7/TPieDNcDrHe/OqM5Ng3WrRaKi/3dyrpv2qpFhouHS8BlcHyb8OtcBtizubK5wByOjh/m4OD4eboofXAd7dW+ipPlsmhZRYwqYqIfcmF+NieeLv3Z7aeNT6yBtbp80h9R30RcBmJzL3zeYC1m928bdJnK5xp482mC93UdsvMFZ0rmndmcMV0632rWKvizc4LlZgQ/FtPqj1wUX6ZvBLSL9I+4PMi+PdO9WY82yMXGaYSL0k5prTgyu6gWMrWLWrM+Z7gFcVTtXmCPfbvKR3QPY/1Xi+aCPNfOF9XvCjhfGBdPf3t3UDN3ra3No9dHOMO+eSeOetrWQ9cw+v7M+cRsbQ2oO8MeUHri+sIj26N7Y6mdF7EaXzg=
   </data>
  </layer>
 </map>
