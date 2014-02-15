@@ -1,27 +1,24 @@
 package net.megafoxhunt.core;
 
 import java.io.IOException;
-
-
 import java.util.Scanner;
 
 import net.megafoxhunt.debug.DebugConsole;
-
 import net.megafoxhunt.entities.Chased;
 import net.megafoxhunt.entities.Chaser;
 import net.megafoxhunt.entities.Entity;
 import net.megafoxhunt.screens.GameScreen;
 import net.megafoxhunt.screens.LobbyScreen;
-import net.megafoxhunt.server.KryoNetwork;
-import net.megafoxhunt.server.KryoNetwork.AddChased;
-import net.megafoxhunt.server.KryoNetwork.AddChaser;
-import net.megafoxhunt.server.KryoNetwork.AddPlayer;
-import net.megafoxhunt.server.KryoNetwork.ChangeState;
-import net.megafoxhunt.server.KryoNetwork.Login;
-import net.megafoxhunt.server.KryoNetwork.Move;
-import net.megafoxhunt.server.KryoNetwork.RemovePlayer;
-import net.megafoxhunt.server.KryoNetwork.SetMap;
-import net.megafoxhunt.server.KryoNetwork.WelcomePlayer;
+import net.megafoxhunt.shared.KryoNetwork;
+import net.megafoxhunt.shared.KryoNetwork.AddChased;
+import net.megafoxhunt.shared.KryoNetwork.AddChaser;
+import net.megafoxhunt.shared.KryoNetwork.AddPlayer;
+import net.megafoxhunt.shared.KryoNetwork.ChangeState;
+import net.megafoxhunt.shared.KryoNetwork.Login;
+import net.megafoxhunt.shared.KryoNetwork.Move;
+import net.megafoxhunt.shared.KryoNetwork.RemovePlayer;
+import net.megafoxhunt.shared.KryoNetwork.SetMap;
+import net.megafoxhunt.shared.KryoNetwork.WelcomePlayer;
 
 import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryonet.Client;

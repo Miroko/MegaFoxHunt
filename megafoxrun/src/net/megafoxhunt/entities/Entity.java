@@ -3,11 +3,9 @@ package net.megafoxhunt.entities;
 
 import net.megafoxhunt.core.GameMap;
 import net.megafoxhunt.core.GameNetwork;
-import net.megafoxhunt.screens.GameScreen;
-import net.megafoxhunt.server.KryoNetwork.Move;
+import net.megafoxhunt.shared.KryoNetwork.Move;
 
 import com.badlogic.gdx.graphics.Texture;
-
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 
 public class Entity extends StaticObject{
