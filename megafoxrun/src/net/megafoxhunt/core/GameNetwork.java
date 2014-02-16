@@ -137,8 +137,7 @@ public class GameNetwork {
 				DebugConsole.msg("Disconnected from: " + connection.getRemoteAddressTCP().getHostString());
 				MyGdxGame.shutdown();
 			}
-		}));
-		kryoClient.start();
+		}));		
 	}	
 	/**
 	 * @param name Set null for console input
@@ -164,6 +163,10 @@ public class GameNetwork {
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
+	}
+
+	public void start() {
+		kryoClient.start();		
 	}
 	
 }
