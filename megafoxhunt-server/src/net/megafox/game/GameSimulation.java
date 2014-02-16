@@ -15,6 +15,8 @@ import net.megafoxhunt.shared.KryoNetwork.RemoveEntity;
 
 public class GameSimulation {
 	
+	private int[][] collisionMap;
+	
 	private ArrayList<Entity> removable;
 	
 	private ArrayList<Entity> chasers;
@@ -23,28 +25,30 @@ public class GameSimulation {
 	
 	private PlayerContainer playerContainer;
 
-	public GameSimulation(PlayerContainer playerContainer){
+	public GameSimulation(PlayerContainer playerContainer, int[][] collisionMap){
 		this.playerContainer = playerContainer;
+		
+		this.collisionMap = collisionMap;
+		Entity.setCollisionMap(collisionMap);
+		
 		removable = new ArrayList<>();
 		chasers = new ArrayList<>();
 		chaseds = new ArrayList<>();
 		berries = new ArrayList<>();
 	}
-	public void collisionCheck(){	
-		// TODO make concurrent safe (remove clone)
+	public void update(float delta){
 		/*
-		 * CHASED CATCHED 
+		 * UPDATE AND CHECK COLLISION
 		 */
-		for(Entity chaser : chasers){
+		for(Entity chaser : chasers){			
+			chaser.update(delta);
 			Entity chaced = chaser.collides((ArrayList<Entity>) chaseds.clone());
 			if(chaced != null){
 				removable.add(chaced);
 			}
 		}
-		/*
-		 * BERRY CATCHED 
-		 */
-		for(Entity chased : chaseds){
+		for(Entity chased : chaseds){		
+			chased.update(delta);
 			Entity berry = chased.collides((ArrayList<Entity>) berries.clone());
 			if(berry != null){
 				removable.add(berry);
@@ -92,13 +96,13 @@ public class GameSimulation {
 	public void move(Move move){
 		for(Entity chaser : chasers){
 			if(chaser.getID() == move.id){
-				chaser.moveTo(move.x, move.y);
+				chaser.move(move.x, move.y, move.direction);
 				return;
 			}
 		}
 		for(Entity chased : chaseds){
 			if(chased.getID() == move.id){
-				chased.moveTo(move.x, move.y);
+				chased.move(move.x, move.y, move.direction);
 				return;
 			}
 		}

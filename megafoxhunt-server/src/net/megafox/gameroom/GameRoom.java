@@ -43,12 +43,12 @@ public class GameRoom extends Thread {
 			return true;
 		}
 	}	
-	public void update(double delta){		
+	public void update(float delta){		
 		switch (roomState) {
 			case ROOM_STATE_LOBBY:
 				break;
 			case ROOM_STATE_GAME:
-				gameSimulation.collisionCheck();
+				gameSimulation.update(delta);
 				break;
 		}
 	}	
@@ -86,7 +86,7 @@ public class GameRoom extends Thread {
 		changeMap(Shared.Map.DEBUG_MAP.name);
 		
 		// INIT SIMULATION
-		gameSimulation = new GameSimulation(playerContainer);
+		gameSimulation = new GameSimulation(playerContainer, null);
 		
 		// ADD BERRIES
 		gameSimulation.addBerry(new Berry(6, 5, idHandler.getFreeID()));
@@ -159,13 +159,8 @@ public class GameRoom extends Thread {
 	 * @param move Move command received
 	 */
 	public void move(PlayerConnection player, Move move) {
-		
-		// TODO CHECK IF VALID MOVE
-		gameSimulation.move(move);
-		
-		playerContainer.sendObjectToAllExcept(player, move);
-		
-		
+		gameSimulation.move(move);		
+		playerContainer.sendObjectToAllExcept(player, move);		
 	}
 
 }

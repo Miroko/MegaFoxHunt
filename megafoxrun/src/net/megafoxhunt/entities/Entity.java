@@ -4,7 +4,6 @@ package net.megafoxhunt.entities;
 import net.megafoxhunt.core.GameMap;
 import net.megafoxhunt.core.GameNetwork;
 import net.megafoxhunt.shared.KryoNetwork.Move;
-
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 
