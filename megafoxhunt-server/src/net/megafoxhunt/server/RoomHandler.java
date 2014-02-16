@@ -32,6 +32,7 @@ public class RoomHandler {
 		for(GameRoom room : rooms) {
 			if(room.hasFreeRoom()){				
 				room.addPlayerToRoom(playerConnection);
+				playerConnection.setMyCurrentRoom(room);
 				return true;
 			}
 		}
