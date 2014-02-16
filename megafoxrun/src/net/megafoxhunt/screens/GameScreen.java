@@ -2,6 +2,7 @@ package net.megafoxhunt.screens;
 
 
 import net.megafoxhunt.core.GameInputProcessor;
+
 import net.megafoxhunt.core.GameMap;
 import net.megafoxhunt.core.GameNetwork;
 import net.megafoxhunt.core.User;
@@ -10,14 +11,13 @@ import net.megafoxhunt.debug.DebugConsole;
 import net.megafoxhunt.entities.Entity;
 import net.megafoxhunt.ui.TouchJoystick;
 
-import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
 public class GameScreen implements Screen {
@@ -30,17 +30,18 @@ public class GameScreen implements Screen {
 	private OrthogonalTiledMapRenderer renderer;
 	private OrthographicCamera camera;
 	
-	private TouchJoystick touchJoystick;
-	
 	private SpriteBatch spriteBatch;
 	
-	public GameScreen() {
-		touchJoystick = new TouchJoystick();
-		
-		spriteBatch = new SpriteBatch();
-		
-		DebugConsole.msg("Set screen: GameScreen");		
-		Gdx.input.setInputProcessor(new GameInputProcessor(touchJoystick));
+	private GameNetwork network;
+	
+	private TouchJoystick touchJoystick;
+	
+	public GameScreen(GameNetwork network) {
+		DebugConsole.msg("Set screen: GameScreen");
+		this.network = network;		
+		spriteBatch = new SpriteBatch();		
+		touchJoystick = new TouchJoystick(network);
+		Gdx.input.setInputProcessor(new GameInputProcessor(network, touchJoystick));
 		
 		/*
 		 * LOAD MAP
@@ -61,11 +62,11 @@ public class GameScreen implements Screen {
 
 		// UPDATE ENTITIES
 		for(User user : UserContainer.getUsersConcurrentSafe()){        	
-			user.getControlledEntity().update(delta);
+			user.getControlledEntity().update(delta, network);
 		}
 		
 		// FOCUS CAMERA ON PLAYER ENTITY
-		Entity myEntity = GameNetwork.getUser().getControlledEntity();
+		Entity myEntity = network.getLocalUser().getControlledEntity();
         if (myEntity != null){
         	camera.position.x = myEntity.getX();
         	camera.position.y = myEntity.getY();

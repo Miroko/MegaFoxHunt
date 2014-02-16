@@ -32,15 +32,24 @@ public class GameNetwork {
 	private static final int TIMEOUT_MS = 50000;
 	
 	// LOCAL USER
-	private static User USER = new User(0, null);
-	public static User getUser(){return USER;}
+	private User localUser = new User(0, null);
+	public User getLocalUser(){return localUser;}
 
-	private static Client CLIENT = new Client();
-	public static Client getClient(){return CLIENT;}
+	// KRYO CLIENT
+	private Client kryoClient = new Client();
+	public Client getKryoClient(){return kryoClient;}
 	
-	public static void init(){
-		KryoNetwork.register(CLIENT);	
-		CLIENT.addListener(new ThreadedListener(new Listener() {
+	// GAME
+	private MyGdxGame game;
+	
+	public GameNetwork(MyGdxGame game){
+		this.game = game;
+		init();
+	}
+		
+	public void init(){
+		KryoNetwork.register(kryoClient);	
+		kryoClient.addListener(new ThreadedListener(new Listener() {
 			@Override
 			public void connected (Connection connection) {
 				DebugConsole.msg("Connected to: " + connection.getRemoteAddressTCP().getHostString());
@@ -53,7 +62,7 @@ public class GameNetwork {
 				 */
 				if (object instanceof WelcomePlayer) {
 					WelcomePlayer welcomePlayer = (WelcomePlayer)object;
-					USER.setID(welcomePlayer.id);
+					localUser.setID(welcomePlayer.id);
 					DebugConsole.msg("Welcome, your id is: " + welcomePlayer.id);
 				}
 				/*
@@ -81,9 +90,9 @@ public class GameNetwork {
 						@Override
 						public void run() {
 							if (changeState.roomState == ChangeState.GAME) {
-								MyGdxGame.getInstance().setScreen(new GameScreen());
+								game.setScreen(new GameScreen(game.getNetwork()));
 							} else if (changeState.roomState == ChangeState.LOBBY) {
-								MyGdxGame.getInstance().setScreen(new LobbyScreen());
+								game.setScreen(new LobbyScreen(game.getNetwork()));
 							}
 						}
 					});
@@ -129,29 +138,29 @@ public class GameNetwork {
 				MyGdxGame.shutdown();
 			}
 		}));
-		CLIENT.start();
+		kryoClient.start();
 	}	
 	/**
 	 * @param name Set null for console input
 	 */
-	public static void setUsername(String name){
+	public void setUsername(String name){
 		if(name == null){
 			Scanner scanner = new Scanner(System.in);
 			System.out.print("Insert username: ");
 			name = scanner.nextLine();
 			scanner.close();
 		}
-		USER.setName(name);
-		UserContainer.addUser(USER);
-		DebugConsole.msg("Username set: " + USER.getName());
+		localUser.setName(name);
+		UserContainer.addUser(localUser);
+		DebugConsole.msg("Username set: " + localUser.getName());
 	}
-	public static void connect(String host, int port){
+	public void connect(String host, int port){
 		try {
 			DebugConsole.msg("Connecting to: " + host + " Port: " + port);
-			CLIENT.connect(TIMEOUT_MS, host, port);
+			kryoClient.connect(TIMEOUT_MS, host, port);
 			Login login = new Login();
-			login.name = USER.getName();
-			CLIENT.sendTCP(login);
+			login.name = localUser.getName();
+			kryoClient.sendTCP(login);
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}

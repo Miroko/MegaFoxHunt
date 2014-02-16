@@ -1,9 +1,9 @@
 package net.megafoxhunt.server;
 
-public class KryoServerStart {
+public class GameServerStart {
 
 	public static void main(String[] args) {
-		new KryoServer(6666);
+		new GameServer(6666);
 	}
 
 }

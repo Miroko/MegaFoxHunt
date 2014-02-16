@@ -9,9 +9,9 @@ import com.esotericsoftware.kryonet.Listener;
 
 public class ServerListener extends Listener {
 
-	private KryoServer server;
+	private GameServer server;
 	
-	public ServerListener(KryoServer server) {
+	public ServerListener(GameServer server) {
 		this.server = server;
 	}
 	

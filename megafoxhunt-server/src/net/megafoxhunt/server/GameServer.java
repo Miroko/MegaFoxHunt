@@ -6,13 +6,13 @@ import net.megafoxhunt.shared.KryoNetwork;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
 
-public class KryoServer {
+public class GameServer {
 	
 	private IDHandler idHandler;
 	private Server server;	
 	private RoomHandler roomHandler;
 	
-	public KryoServer(int port){
+	public GameServer(int port){
 		roomHandler = new RoomHandler();
 		idHandler = new IDHandler();
 		server = new Server(){
