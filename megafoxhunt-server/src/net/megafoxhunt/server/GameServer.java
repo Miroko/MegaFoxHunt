@@ -51,15 +51,16 @@ public class GameServer {
 				 * LOGIN
 				 */
 				if(object instanceof Login){					
-					String name = ((Login)object).name;					
+					String name = ((Login)object).name;	
+					// VALIDATION
 					if(name == null || name.isEmpty()) {
 						playerConnection.close();
 						return;
 					} else{
 						playerConnection.setName(name);
-						System.out.println("User connected: " + name + " (" + playerConnection.getMyId() + ")");
+						System.out.println("User connected: " + name + " (" + playerConnection.getMyId() + ")");						
 						
-						roomHandler.joinAvailableRoom(playerConnection);
+						roomHandler.addPlayer(playerConnection);						
 						
 						WelcomePlayer wp = new WelcomePlayer();
 						wp.id = playerConnection.getMyId();
