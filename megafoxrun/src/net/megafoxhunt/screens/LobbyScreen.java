@@ -2,6 +2,7 @@ package net.megafoxhunt.screens;
 import net.megafoxhunt.core.GameNetwork;
 import net.megafoxhunt.core.User;
 import net.megafoxhunt.core.UserContainer;
+import net.megafoxhunt.debug.DebugConsole;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -19,7 +20,11 @@ public class LobbyScreen implements Screen {
 	
 	private OrthographicCamera camera;
 	
-	public LobbyScreen() {
+	private GameNetwork network;
+	
+	public LobbyScreen(GameNetwork network) {
+		DebugConsole.msg("Set screen: LobbyScreen");
+		this.network = network;
 		this.batch = new SpriteBatch();
 		font = new BitmapFont();
 		
@@ -43,7 +48,7 @@ public class LobbyScreen implements Screen {
 	private void drawLobbyUsers(){	
 		for(int i = 0; i < UserContainer.numberOfUsers(); i++) {
 			User userToDraw = UserContainer.getUsersConcurrentSafe().get(i);
-			if(userToDraw == GameNetwork.getUser()){
+			if(userToDraw == network.getLocalUser()){
 				// SELF
 		        font.setColor(Color.RED);
 			}

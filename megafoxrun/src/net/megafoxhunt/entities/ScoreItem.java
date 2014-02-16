@@ -1,5 +1,6 @@
 package net.megafoxhunt.entities;
 
+import net.megafoxhunt.core.GameNetwork;
 import net.megafoxhunt.core.User;
 
 import com.badlogic.gdx.graphics.Texture;
@@ -11,6 +12,12 @@ public class ScoreItem extends StaticObject{
 	}
 	
 	public void pickup(User u){
+		
+	}
+
+	@Override
+	public void update(float delta, GameNetwork network) {
+		// TODO Auto-generated method stub
 		
 	}
 

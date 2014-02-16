@@ -19,19 +19,28 @@ public class GameRoom extends Thread {
 	private static final int ROOM_STATE_LOBBY = KryoNetwork.ChangeState.LOBBY;
 	private static final int ROOM_STATE_GAME = KryoNetwork.ChangeState.GAME;
 	
-	public int roomState;
+	private int roomState;
 	
-	private ConcurrentPlayerContainer playerContainer;
+	private PlayerContainer playerContainer;
 
 	private boolean roomRunning = true;
 	
 	public GameRoom(){
 		this.roomState = ROOM_STATE_LOBBY;
-		playerContainer = new ConcurrentPlayerContainer(MAX_SIZE);
+		playerContainer = new PlayerContainer(MAX_SIZE);
 	}
-	
+	public boolean hasFreeRoom(){
+		if(playerContainer.getPlayersConcurrentSafe().size() == MAX_SIZE){
+			return false;
+		}
+		else{
+			return true;
+		}
+	}	
 	public void update(double delta){
-		ArrayList<PlayerConnection> players = playerContainer.getPlayers();
+		// TODO
+		/*
+		ArrayList<PlayerConnection> players = playerContainer.getPlayersConcurrentSafe();
 		
 		switch (roomState) {
 			case ROOM_STATE_LOBBY:
@@ -39,8 +48,8 @@ public class GameRoom extends Thread {
 			case ROOM_STATE_GAME:
 				break;
 		}
-	}
-	
+		*/
+	}	
 	// Delta should stay near UPDATE_RATE_MS
 	public void run(){
 		long time_last_update = System.currentTimeMillis();
@@ -71,7 +80,7 @@ public class GameRoom extends Thread {
 	}
 	
 	public void startGame() {	
-		ArrayList<PlayerConnection> players = playerContainer.getPlayers();
+		ArrayList<PlayerConnection> players = playerContainer.getPlayersConcurrentSafe();
 		// SEND ENTITIES
 		for (PlayerConnection player : players) {
 			playerContainer.sendObjectToAll(new AddChaser(player.getMyId(), 10, 10));
@@ -84,26 +93,28 @@ public class GameRoom extends Thread {
 	public void changeMap(String name){
 		playerContainer.sendObjectToAll(new SetMap(name));
 	}	
-	public boolean addPlayer(final PlayerConnection player) {
-		if (playerContainer.addPlayer(player)) {
-			// Send new player information to old players
-			AddPlayer addPlayer = new AddPlayer();
-			addPlayer.id = player.getMyId();
-			addPlayer.name = player.getName();
-			playerContainer.sendObjectToAllExcept(player, addPlayer);
-			
-			initNewPlayer(player);
-			
-			return true;
-		}
-		
-		return false;
-	}
-	
-	private void initNewPlayer(final PlayerConnection player) {
-		ArrayList<PlayerConnection> connections = playerContainer.getPlayers();
+	/**
+	 * Adds player to room and informs other players in the room about the addition
+	 * @param player
+	 */
+	public void addPlayerToRoom(PlayerConnection player) {
+		playerContainer.addPlayer(player);
+
+		// SEND NEW PLAYER INFORMATION TO OLD PLAYERS
 		AddPlayer addPlayer = new AddPlayer();
-		for (PlayerConnection conn : connections) {
+		addPlayer.id = player.getMyId();
+		addPlayer.name = player.getName();
+		playerContainer.sendObjectToAllExcept(player, addPlayer);
+		
+		syncNewPlayer(player);
+	}
+	/**
+	 * Informs new player about old players in room 
+	 * @param player
+	 */
+	private void syncNewPlayer(final PlayerConnection player) {
+		AddPlayer addPlayer = new AddPlayer();
+		for (PlayerConnection conn : playerContainer.getPlayersConcurrentSafe()) {
 			if (conn != player) {
 				addPlayer.id = conn.getMyId();
 				addPlayer.name = conn.getName();
@@ -115,20 +126,24 @@ public class GameRoom extends Thread {
 		ChangeState changeState = new ChangeState();
 		changeState.roomState = roomState;
 		player.sendTCP(changeState);
-	}
-	
-	public boolean removePlayer(final PlayerConnection player) {
-		if (playerContainer.removePlayer(player)) {
-			RemovePlayer removePlayer = new RemovePlayer();
-			removePlayer.id = player.getMyId();
-			playerContainer.sendObjectToAllExcept(player, removePlayer);
-
-			return true;
-		}
+	}	
+	/**
+	 * Removes player and informs other players about it
+	 * @param player
+	 */
+	public void removePlayer(final PlayerConnection player) {
+		playerContainer.removePlayer(player);
 		
-		return false;
+		// INFORM ABOUT DELETION
+		RemovePlayer removePlayer = new RemovePlayer();
+		removePlayer.id = player.getMyId();
+		playerContainer.sendObjectToAllExcept(player, removePlayer);
 	}
-
+	/**
+	 * Moves player
+	 * @param player
+	 * @param move Move command received
+	 */
 	public void move(PlayerConnection player, Move move) {
 		playerContainer.sendObjectToAllExcept(player, move);
 	}

@@ -12,16 +12,18 @@ public class GameInputProcessor extends InputAdapter {
 	private int last_direction = -1;
 	private int previousKey;
 	
+	private GameNetwork network;
 	private TouchJoystick touchJoystick;
 	
-	public GameInputProcessor(TouchJoystick touchJoystick) {
+	public GameInputProcessor(GameNetwork network, TouchJoystick touchJoystick) {
 		this.touchJoystick = touchJoystick;
+		this.network = network;
 	}
 	
 	private void sendDirection(int direction){
 		// IF DIRECTION HAS CHANGED
 		if(direction != last_direction){
-			Entity entity = GameNetwork.getUser().getControlledEntity();
+			Entity entity = network.getLocalUser().getControlledEntity();
     		entity.setDirection(direction);
     		last_direction = direction;
 		}

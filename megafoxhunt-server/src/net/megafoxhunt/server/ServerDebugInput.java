@@ -1,18 +1,17 @@
 package net.megafoxhunt.server;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
 import net.megafoxhunt.server.GameRoom;
-import net.megafoxhunt.server.KryoServer;
+
 
 public class ServerDebugInput extends Thread{
 
-	private KryoServer server;
+	private GameServer server;
 	
 	private boolean running;
 	
-	public ServerDebugInput(KryoServer server) {
+	public ServerDebugInput(GameServer server) {
 		this.server = server;
 		running = true;
 	}
@@ -22,7 +21,7 @@ public class ServerDebugInput extends Thread{
 		Scanner scanner = new Scanner(System.in);
 		
 		while (running) {
-			System.out.print("Next command: ");
+			System.out.println("Next command: ");
 			newCommand(scanner.nextLine());
 		}
 		
@@ -33,8 +32,7 @@ public class ServerDebugInput extends Thread{
 		if (command.equals("force-start") ||
 			command.equals("run") ||
 			command.equals("r")) {
-			ArrayList<GameRoom> rooms = server.getRoomHandler().getRooms();
-			for (GameRoom room : rooms) {
+			for (GameRoom room : server.getRoomHandler().getAllRoomsConcurrentSafe()) {
 				room.startGame();
 			}
 		}
