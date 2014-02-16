@@ -19,7 +19,7 @@ public class GameRoom extends Thread {
 	private static final int ROOM_STATE_LOBBY = KryoNetwork.ChangeState.LOBBY;
 	private static final int ROOM_STATE_GAME = KryoNetwork.ChangeState.GAME;
 	
-	public int roomState;
+	private int roomState;
 	
 	private PlayerContainer playerContainer;
 
@@ -38,6 +38,7 @@ public class GameRoom extends Thread {
 		}
 	}	
 	public void update(double delta){
+		// TODO
 		/*
 		ArrayList<PlayerConnection> players = playerContainer.getPlayersConcurrentSafe();
 		
@@ -106,22 +107,6 @@ public class GameRoom extends Thread {
 		playerContainer.sendObjectToAllExcept(player, addPlayer);
 		
 		syncNewPlayer(player);
-		
-		/*
-		if (playerContainer.addPlayer(player)) {
-			// Send new player information to old players
-			AddPlayer addPlayer = new AddPlayer();
-			addPlayer.id = player.getMyId();
-			addPlayer.name = player.getName();
-			playerContainer.sendObjectToAllExcept(player, addPlayer);
-			
-			initNewPlayer(player);
-			
-			return true;
-		}
-		
-		return false;
-		*/
 	}
 	/**
 	 * Informs new player about old players in room 

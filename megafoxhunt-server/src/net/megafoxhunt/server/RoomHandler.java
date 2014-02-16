@@ -53,40 +53,4 @@ public class RoomHandler {
 	public ArrayList<GameRoom> getAllRoomsConcurrentSafe() {
 		return (ArrayList<GameRoom>) rooms.clone();
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	/*
-	public void joinAvailableRoom(PlayerConnection playerConnection) {
-		lock.lock();
-		
-		GameRoom selectedRoom = null;
-		
-		// Join to first room that has open slots
-		for(GameRoom room : rooms) {
-			if (room.addPlayer(playerConnection)) {
-				selectedRoom = room;
-				break;
-			}
-		}
-		
-		// Create new room if no available room were found
-		if (selectedRoom == null) {
-			selectedRoom = new GameRoom();
-			selectedRoom.start();
-			rooms.add(selectedRoom);
-			selectedRoom.addPlayer(playerConnection);
-		}
-		
-		lock.unlock();
-		
-		playerConnection.setMyCurrentRoom(selectedRoom);
-	}
-	*/
-
 }
