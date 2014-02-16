@@ -9,6 +9,7 @@ import net.megafoxhunt.core.User;
 import net.megafoxhunt.core.UserContainer;
 import net.megafoxhunt.debug.DebugConsole;
 import net.megafoxhunt.entities.Entity;
+import net.megafoxhunt.entities.StaticObject;
 import net.megafoxhunt.ui.TouchJoystick;
 
 import com.badlogic.gdx.Gdx;
@@ -89,7 +90,12 @@ public class GameScreen implements Screen {
         // DRAW ENTITIES
         for(User user : UserContainer.getUsersConcurrentSafe()){
         	user.getControlledEntity().render(batch);
-        }        
+        }    
+        // DRAW BERRIES
+        for(StaticObject object : GameMap.getCurrentMap().getAllObjectsConcurrentSafe()){
+        	object.render(batch);
+        }
+        
         batch.end();
         
         spriteBatch.begin();

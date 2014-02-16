@@ -2,9 +2,9 @@ package net.megafoxhunt.entities;
 
 import net.megafoxhunt.core.GameNetwork;
 
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public abstract class StaticObject {
 	

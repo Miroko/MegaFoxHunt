@@ -1,5 +1,7 @@
 package net.megafoxhunt.server;
 
+import net.megafox.gameroom.GameRoom;
+
 import com.esotericsoftware.kryonet.Connection;
 
 public class PlayerConnection extends Connection {

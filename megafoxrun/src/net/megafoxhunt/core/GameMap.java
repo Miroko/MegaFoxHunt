@@ -3,6 +3,11 @@ package net.megafoxhunt.core;
 
 
 
+import java.util.ArrayList;
+import java.util.concurrent.locks.ReentrantLock;
+
+import net.megafoxhunt.entities.StaticObject;
+
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -11,12 +16,14 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 
 public class GameMap {
 	
-	private static final int COLLISION_LAYER = 0;
-	
+	private static final int COLLISION_LAYER = 0;	
 	
 	public static GameMap MAP_DEBUG = new GameMap("Debug", "data/basic_map.tmx");	
 	
 	private static GameMap CURRENT_MAP;	
+	
+	// might not need this
+	private ReentrantLock lock;
 	
 	private int mapWidth;
 	private int mapHeight;
@@ -27,11 +34,31 @@ public class GameMap {
 	private String tiledMapPath;
 	
 	private TiledMap tiledMap;
-	public TiledMap getTiledMap(){return tiledMap;}	
+	public TiledMap getTiledMap(){return tiledMap;}
+	
+	private ArrayList<StaticObject> allObjects;
+	@SuppressWarnings("unchecked")
+	public ArrayList<StaticObject> getAllObjectsConcurrentSafe(){return (ArrayList<StaticObject>) allObjects.clone();}
 	
 	public GameMap(String name, String tiledMapPath){
+		this.lock = new ReentrantLock(true);
 		this.name = name;
 		this.tiledMapPath = tiledMapPath;		
+		this.allObjects = new ArrayList<StaticObject>();
+	}
+	public void addStaticObject(StaticObject object){
+		lock.lock();
+		allObjects.add(object);
+		lock.unlock();
+	}
+	public void removeStaticObjectByID(int id){
+		lock.lock();
+		for(StaticObject object : getAllObjectsConcurrentSafe()){
+			if(object.getId() == id){
+				allObjects.remove(object);
+			}
+		}
+		lock.unlock();
 	}
 	public static void setCurrentMap(GameMap map){
 		CURRENT_MAP = map;

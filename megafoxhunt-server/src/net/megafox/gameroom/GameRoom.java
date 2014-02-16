@@ -1,9 +1,12 @@
-package net.megafoxhunt.server;
+package net.megafox.gameroom;
 
-import java.util.ArrayList;
+import net.megafox.entities.Berry;
 
+import net.megafox.entities.Chased;
+import net.megafox.game.GameSimulation;
+import net.megafoxhunt.server.IDHandler;
+import net.megafoxhunt.server.PlayerConnection;
 import net.megafoxhunt.shared.KryoNetwork;
-import net.megafoxhunt.shared.KryoNetwork.AddChaser;
 import net.megafoxhunt.shared.KryoNetwork.AddPlayer;
 import net.megafoxhunt.shared.KryoNetwork.ChangeState;
 import net.megafoxhunt.shared.KryoNetwork.Move;
@@ -20,13 +23,16 @@ public class GameRoom extends Thread {
 	private static final int ROOM_STATE_GAME = KryoNetwork.ChangeState.GAME;
 	
 	private int roomState;
-	
-	private PlayerContainer playerContainer;
-
 	private boolean roomRunning = true;
 	
-	public GameRoom(){
+	private PlayerContainer playerContainer;
+	private GameSimulation gameSimulation;
+	
+	private IDHandler idHandler;
+	
+	public GameRoom(IDHandler idHandler){
 		this.roomState = ROOM_STATE_LOBBY;
+		this.idHandler = idHandler;
 		playerContainer = new PlayerContainer(MAX_SIZE);
 	}
 	public boolean hasFreeRoom(){
@@ -37,18 +43,14 @@ public class GameRoom extends Thread {
 			return true;
 		}
 	}	
-	public void update(double delta){
-		// TODO
-		/*
-		ArrayList<PlayerConnection> players = playerContainer.getPlayersConcurrentSafe();
-		
+	public void update(double delta){		
 		switch (roomState) {
 			case ROOM_STATE_LOBBY:
 				break;
 			case ROOM_STATE_GAME:
+				gameSimulation.collisionCheck();
 				break;
 		}
-		*/
 	}	
 	// Delta should stay near UPDATE_RATE_MS
 	public void run(){
@@ -70,7 +72,7 @@ public class GameRoom extends Thread {
 		}
 	}
 	
-	public void changeRoomState(int state) {
+	private void changeRoomState(int state) {
 		roomState = state;
 		
 		ChangeState changeState = new ChangeState();
@@ -80,17 +82,29 @@ public class GameRoom extends Thread {
 	}
 	
 	public void startGame() {	
-		ArrayList<PlayerConnection> players = playerContainer.getPlayersConcurrentSafe();
-		// SEND ENTITIES
-		for (PlayerConnection player : players) {
-			playerContainer.sendObjectToAll(new AddChaser(player.getMyId(), 10, 10));
-		}
 		// SEND MAP
 		changeMap(Shared.Map.DEBUG_MAP.name);
+		
+		// INIT SIMULATION
+		gameSimulation = new GameSimulation(playerContainer);
+		
+		// ADD BERRIES
+		gameSimulation.addBerry(new Berry(6, 5, idHandler.getFreeID()));
+		gameSimulation.addBerry(new Berry(6, 15, idHandler.getFreeID()));
+		gameSimulation.addBerry(new Berry(10, 5, idHandler.getFreeID()));
+		
+		// ADD CHASERS
+		// TODO
+		
+		// ADD CHASED
+		for (PlayerConnection player : playerContainer.getPlayersConcurrentSafe()) {
+			gameSimulation.addChased(new Chased(10, 10, player.getMyId()));
+		}
+
 		// SET STATE
 		changeRoomState(ROOM_STATE_GAME);
 	}
-	public void changeMap(String name){
+	private void changeMap(String name){
 		playerContainer.sendObjectToAll(new SetMap(name));
 	}	
 	/**
@@ -145,6 +159,13 @@ public class GameRoom extends Thread {
 	 * @param move Move command received
 	 */
 	public void move(PlayerConnection player, Move move) {
+		
+		// TODO CHECK IF VALID MOVE
+		gameSimulation.move(move);
+		
 		playerContainer.sendObjectToAllExcept(player, move);
+		
+		
 	}
+
 }
