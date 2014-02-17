@@ -4,18 +4,22 @@ import java.io.IOException;
 import java.util.Scanner;
 
 import net.megafoxhunt.debug.DebugConsole;
+import net.megafoxhunt.entities.Berry;
 import net.megafoxhunt.entities.Chased;
 import net.megafoxhunt.entities.Chaser;
 import net.megafoxhunt.entities.Entity;
 import net.megafoxhunt.screens.GameScreen;
 import net.megafoxhunt.screens.LobbyScreen;
+import net.megafoxhunt.shared.GameMapSharedConfig;
 import net.megafoxhunt.shared.KryoNetwork;
+import net.megafoxhunt.shared.KryoNetwork.AddBerry;
 import net.megafoxhunt.shared.KryoNetwork.AddChased;
 import net.megafoxhunt.shared.KryoNetwork.AddChaser;
 import net.megafoxhunt.shared.KryoNetwork.AddPlayer;
 import net.megafoxhunt.shared.KryoNetwork.ChangeState;
 import net.megafoxhunt.shared.KryoNetwork.Login;
 import net.megafoxhunt.shared.KryoNetwork.Move;
+import net.megafoxhunt.shared.KryoNetwork.RemoveEntity;
 import net.megafoxhunt.shared.KryoNetwork.RemovePlayer;
 import net.megafoxhunt.shared.KryoNetwork.SetMap;
 import net.megafoxhunt.shared.KryoNetwork.WelcomePlayer;
@@ -90,9 +94,9 @@ public class GameNetwork {
 						@Override
 						public void run() {
 							if (changeState.roomState == ChangeState.GAME) {
-								game.setScreen(new GameScreen(game.getNetwork()));
+								game.setScreen(new GameScreen(game));
 							} else if (changeState.roomState == ChangeState.LOBBY) {
-								game.setScreen(new LobbyScreen(game.getNetwork()));
+								game.setScreen(new LobbyScreen(game));
 							}
 						}
 					});
@@ -112,6 +116,25 @@ public class GameNetwork {
 					UserContainer.getUserByID(addChased.id).setControlledEntity(new Chased(addChased.id, addChased.x, addChased.y));
 				}
 				/*
+				 * ADD BERRY TO MAP
+				 */
+				else if (object instanceof AddBerry) {
+					AddBerry addBerry = (AddBerry)object;
+					game.getGameMap().addStaticObject(new Berry(addBerry.id, addBerry.x, addBerry.y));
+				}
+				/*
+				 * REMOVE ENTITY 
+				 */
+				else if (object instanceof RemoveEntity) {
+					RemoveEntity removeEntity = (RemoveEntity)object;
+					// DELETE FROM MAP
+					game.getGameMap().removeStaticObjectByID(removeEntity.id);
+					
+					// TODO
+					// DELETE FROM USER ENTITIES					
+					// different kryo command
+				}
+				/*
 				 * MOVE ENTITY
 				 */
 				else if (object instanceof Move) {
@@ -125,16 +148,18 @@ public class GameNetwork {
 				else if(object instanceof SetMap){					
 					SetMap setMap = (SetMap)object;	
 					DebugConsole.msg("Set map: " + setMap.mapName);
-					GameMap map = GameMap.getMapByName(setMap.mapName);					
-					GameMap.setCurrentMap(map);					
-				}
-				
-				
+					
+					// TODO MAKE THIS BETTER
+					if(setMap.mapName.equals(GameMapSharedConfig.DEBUG_MAP.getName())){
+						game.setGameMap(new GameMapClientSide(GameMapSharedConfig.DEBUG_MAP));
+					}					
+				}				
 			}
 
 			@Override
 			public void disconnected (Connection connection) {
-				DebugConsole.msg("Disconnected from: " + connection.getRemoteAddressTCP().getHostString());
+				// TODO null pointer on disconnection
+				//DebugConsole.msg("Disconnected from: " + connection.getRemoteAddressTCP().getHostString());
 				MyGdxGame.shutdown();
 			}
 		}));		

@@ -1,15 +1,23 @@
-package net.megafoxhunt.server;
+package net.megafox.gameroom;
 
-import java.util.ArrayList;
+import java.util.Random;
 
+import net.megafox.entities.Berry;
+
+
+
+import net.megafox.entities.Chased;
+import net.megafox.game.GameMapServerSide;
+import net.megafox.game.GameSimulation;
+import net.megafoxhunt.server.IDHandler;
+import net.megafoxhunt.server.PlayerConnection;
+import net.megafoxhunt.shared.GameMapSharedConfig;
 import net.megafoxhunt.shared.KryoNetwork;
-import net.megafoxhunt.shared.KryoNetwork.AddChaser;
 import net.megafoxhunt.shared.KryoNetwork.AddPlayer;
 import net.megafoxhunt.shared.KryoNetwork.ChangeState;
 import net.megafoxhunt.shared.KryoNetwork.Move;
 import net.megafoxhunt.shared.KryoNetwork.RemovePlayer;
 import net.megafoxhunt.shared.KryoNetwork.SetMap;
-import net.megafoxhunt.shared.Shared;
 
 public class GameRoom extends Thread {
 	
@@ -20,13 +28,17 @@ public class GameRoom extends Thread {
 	private static final int ROOM_STATE_GAME = KryoNetwork.ChangeState.GAME;
 	
 	private int roomState;
-	
-	private PlayerContainer playerContainer;
-
 	private boolean roomRunning = true;
 	
-	public GameRoom(){
+	private GameMapServerSide currentMap;	
+	private PlayerContainer playerContainer;
+	private GameSimulation gameSimulation;
+	
+	private IDHandler idHandler;
+	
+	public GameRoom(IDHandler idHandler){
 		this.roomState = ROOM_STATE_LOBBY;
+		this.idHandler = idHandler;
 		playerContainer = new PlayerContainer(MAX_SIZE);
 	}
 	public boolean hasFreeRoom(){
@@ -37,20 +49,19 @@ public class GameRoom extends Thread {
 			return true;
 		}
 	}	
-	public void update(double delta){
-		// TODO
-		/*
-		ArrayList<PlayerConnection> players = playerContainer.getPlayersConcurrentSafe();
-		
+	public void update(float delta){		
 		switch (roomState) {
 			case ROOM_STATE_LOBBY:
 				break;
 			case ROOM_STATE_GAME:
+				gameSimulation.update(delta, playerContainer);
 				break;
 		}
-		*/
 	}	
-	// Delta should stay near UPDATE_RATE_MS
+	/**
+	 * Calls update(delta)
+	 * delta in ms
+	 */
 	public void run(){
 		long time_last_update = System.currentTimeMillis();
 		long time_loop_start;
@@ -70,7 +81,7 @@ public class GameRoom extends Thread {
 		}
 	}
 	
-	public void changeRoomState(int state) {
+	private void changeRoomState(int state) {
 		roomState = state;
 		
 		ChangeState changeState = new ChangeState();
@@ -80,18 +91,45 @@ public class GameRoom extends Thread {
 	}
 	
 	public void startGame() {	
-		ArrayList<PlayerConnection> players = playerContainer.getPlayersConcurrentSafe();
-		// SEND ENTITIES
-		for (PlayerConnection player : players) {
-			playerContainer.sendObjectToAll(new AddChaser(player.getMyId(), 10, 10));
+		// SET AND SEND MAP	
+		changeMap(GameMapSharedConfig.DEBUG_MAP);
+		
+		// INIT GAME SIMULATION
+		gameSimulation = new GameSimulation(playerContainer, currentMap);
+		
+		// ADD BERRIES
+		int[][] collisionMap = currentMap.getCollisionMap();
+		int berries = 30;
+		Random r = new Random();
+		int x;
+		int y;
+		while(berries > 0){
+			x = r.nextInt(currentMap.getWidth());
+			y = r.nextInt(currentMap.getHeight());
+			if(collisionMap[x][y] == 0){
+				gameSimulation.addBerry(new Berry(x, y, idHandler.getFreeID()));
+				berries--;
+			}
 		}
-		// SEND MAP
-		changeMap(Shared.Map.DEBUG_MAP.name);
+		
+		// ADD CHASERS
+		// TODO
+		
+		// ADD CHASED
+		for (PlayerConnection player : playerContainer.getPlayersConcurrentSafe()) {
+			gameSimulation.addChased(new Chased(10, 10, player.getMyId()));
+		}
+
 		// SET STATE
 		changeRoomState(ROOM_STATE_GAME);
 	}
-	public void changeMap(String name){
-		playerContainer.sendObjectToAll(new SetMap(name));
+	/**
+	 * Set current map and inform players about the map
+	 * @param map
+	 */
+	private void changeMap(GameMapSharedConfig mapConfig){
+		currentMap = new GameMapServerSide(mapConfig);
+		playerContainer.sendObjectToAll(new SetMap(currentMap.getName()));
 	}	
 	/**
 	 * Adds player to room and informs other players in the room about the addition
@@ -145,6 +183,8 @@ public class GameRoom extends Thread {
 	 * @param move Move command received
 	 */
 	public void move(PlayerConnection player, Move move) {
-		playerContainer.sendObjectToAllExcept(player, move);
+		gameSimulation.move(move);		
+		playerContainer.sendObjectToAllExcept(player, move);		
 	}
+
 }

@@ -3,13 +3,18 @@ package net.megafoxhunt.server;
 import java.util.ArrayList;
 import java.util.concurrent.locks.ReentrantLock;
 
+import net.megafox.gameroom.GameRoom;
+
 public class RoomHandler {
 	
 	public ReentrantLock lock;
 
 	private ArrayList<GameRoom> rooms;	
 	
-	public RoomHandler() {
+	private GameServer gameServer;
+	
+	public RoomHandler(GameServer gameServer) {
+		this.gameServer = gameServer;
 		rooms = new ArrayList<GameRoom>();
 		lock = new ReentrantLock(true);
 	}	
@@ -43,7 +48,7 @@ public class RoomHandler {
 	 * @param playerConnection
 	 */
 	private void createNewRoom(PlayerConnection playerConnection){
-		GameRoom room = new GameRoom();
+		GameRoom room = new GameRoom(gameServer.getIdHandler());
 		room.addPlayerToRoom(playerConnection);
 		playerConnection.setMyCurrentRoom(room);
 		rooms.add(room);

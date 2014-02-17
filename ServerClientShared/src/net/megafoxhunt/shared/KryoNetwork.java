@@ -16,6 +16,8 @@ public class KryoNetwork {
 		kryo.register(AddChaser.class);
 		kryo.register(AddChased.class);
 		kryo.register(SetMap.class);
+		kryo.register(AddBerry.class);
+		kryo.register(RemoveEntity.class);
 	}	
 	/*
 	 * CLIENT HANDLING
@@ -64,6 +66,18 @@ public class KryoNetwork {
 		
 		public AddChased(){}
 		public AddChased(int id, int x, int y) {
+			this.id = id;
+			this.x = x;
+			this.y = y;
+		}
+	}
+	public static class AddBerry {
+		public int id;
+		public int x;
+		public int y;
+		
+		public AddBerry(){}
+		public AddBerry(int id, int x, int y) {
 			this.id = id;
 			this.x = x;
 			this.y = y;

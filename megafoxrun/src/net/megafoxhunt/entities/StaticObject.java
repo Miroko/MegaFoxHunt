@@ -1,10 +1,8 @@
 package net.megafoxhunt.entities;
 
-import net.megafoxhunt.core.GameNetwork;
-
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 
 public abstract class StaticObject {
 	
@@ -20,8 +18,6 @@ public abstract class StaticObject {
 		this.y = y;
 		this.texture = texture;
 	}
-	
-	public abstract void update(float delta, GameNetwork network);
 	
 	public void render(Batch batch){
 		batch.draw(texture, x, y, 1, 1);
@@ -46,4 +42,5 @@ public abstract class StaticObject {
 	public void setY(float y) {
 		this.y = y;
 	}
+
 }

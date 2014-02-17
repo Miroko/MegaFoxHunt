@@ -10,9 +10,12 @@ public class MyGdxGame extends Game {
 	private GameNetwork network;
 	public GameNetwork getNetwork(){return network;}
 	
+	private GameMapClientSide gameMap;
+	public GameMapClientSide getGameMap(){return gameMap;}
+	public void setGameMap(GameMapClientSide gameMap){this.gameMap = gameMap;}
+	
 	@Override	
-	public void create() {		
-		
+	public void create() {			
 		GameTextures.init();	
 		
 		network = new GameNetwork(this);

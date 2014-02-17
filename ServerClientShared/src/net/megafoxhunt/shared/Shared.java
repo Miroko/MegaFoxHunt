@@ -1,6 +1,7 @@
 package net.megafoxhunt.shared;
 
 public class Shared {
+	/*
 	public static enum Map {
 		DEBUG_MAP("Debug", "basic_map.tmx");
 		
@@ -12,7 +13,7 @@ public class Shared {
 			this.file = file;
 		}
 	}
-	
+	*/
 	public static final int TEAM_FOX = 1;
 	public static final int TEAM_DOG = 2;
 	

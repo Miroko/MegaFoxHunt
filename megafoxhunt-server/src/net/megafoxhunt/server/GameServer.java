@@ -31,7 +31,7 @@ public class GameServer {
 	public RoomHandler getRoomHandler(){return roomHandler;}
 	
 	public GameServer(){
-		roomHandler = new RoomHandler();
+		roomHandler = new RoomHandler(this);
 		idHandler = new IDHandler();		
 		init();
 	}
@@ -46,7 +46,7 @@ public class GameServer {
 		kryoServer.addListener(new ThreadedListener(new Listener() {
 			@Override
 			public void received(Connection connection, Object object){
-				PlayerConnection playerConnection = (PlayerConnection) connection;
+				PlayerConnection playerConnection = (PlayerConnection) connection;				
 				/*
 				 * LOGIN
 				 */

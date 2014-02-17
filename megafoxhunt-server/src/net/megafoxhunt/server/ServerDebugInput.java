@@ -2,7 +2,7 @@ package net.megafoxhunt.server;
 
 import java.util.Scanner;
 
-import net.megafoxhunt.server.GameRoom;
+import net.megafox.gameroom.GameRoom;
 
 
 public class ServerDebugInput extends Thread{
