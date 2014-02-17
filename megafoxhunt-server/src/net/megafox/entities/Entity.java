@@ -128,7 +128,6 @@ public class Entity {
 		if(destinationReached()){
 			setNewDestination(currentDirection, map);
 		}		
-		// TODO FIX THIS
 		System.out.println(x + "," + y);
 	}
 	/**
@@ -136,6 +135,19 @@ public class Entity {
 	 * @return Entity that collides with this entity or null if no collision
 	 */
 	public Entity collides(ArrayList<Entity> collidesWith){
+		// TODO 
+		// tarkistus jos menty marjan yli eikä poimittu koska koordinaatit ei satu ihan kohilleen		
+		
+		// TEMPORARY FIX
+		for(Entity entity : collidesWith){
+			if(this.x > entity.getX() - 0.5f && this.x < entity.getX() + 0.5f){
+				if(this.y > entity.getY() - 0.5f && this.y < entity.getY() + 0.5f){
+					return entity;
+				}
+			}
+		}
+		return null;
+		/*
 		for(Entity entity : collidesWith){
 			if(this.x == entity.getX()){
 				if(this.y == entity.getY()){
@@ -144,6 +156,7 @@ public class Entity {
 			}
 		}
 		return null;
+		*/		
 	}
 
 }
