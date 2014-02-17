@@ -9,5 +9,6 @@
 	<classpathentry exported="true" kind="lib" path="libs/gdx-backend-android.jar" sourcepath="libs/gdx-backend-android-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="/megafoxrun/libs/gdx.jar" sourcepath="/megafoxrun/libs/gdx-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="/ServerClientShared/libs/kryonet-2.21-all.jar"/>
+	<classpathentry exported="true" kind="lib" path="/ServerClientShared/bin"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
