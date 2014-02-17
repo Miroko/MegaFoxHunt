@@ -5,6 +5,7 @@ import net.megafox.entities.Berry;
 
 
 import net.megafox.entities.Chased;
+import net.megafox.game.GameMapServerSide;
 import net.megafox.game.GameSimulation;
 import net.megafoxhunt.server.IDHandler;
 import net.megafoxhunt.server.PlayerConnection;
@@ -27,8 +28,7 @@ public class GameRoom extends Thread {
 	private int roomState;
 	private boolean roomRunning = true;
 	
-	private GameMapSharedConfig currentMap;
-	
+	private GameMapServerSide currentMap;	
 	private PlayerContainer playerContainer;
 	private GameSimulation gameSimulation;
 	
@@ -56,7 +56,10 @@ public class GameRoom extends Thread {
 				break;
 		}
 	}	
-	// Delta should stay near UPDATE_RATE_MS
+	/**
+	 * Calls update(delta)
+	 * delta in ms
+	 */
 	public void run(){
 		long time_last_update = System.currentTimeMillis();
 		long time_loop_start;
@@ -86,10 +89,10 @@ public class GameRoom extends Thread {
 	}
 	
 	public void startGame() {	
-		// SEND MAP	
+		// SET AND SEND MAP	
 		changeMap(GameMapSharedConfig.DEBUG_MAP);
 		
-		// INIT SIMULATION
+		// INIT GAME SIMULATION
 		gameSimulation = new GameSimulation(playerContainer, currentMap);
 		
 		// ADD BERRIES
@@ -112,9 +115,9 @@ public class GameRoom extends Thread {
 	 * Set current map and inform players about the map
 	 * @param map
 	 */
-	private void changeMap(GameMapSharedConfig map){
-		currentMap = map;
-		playerContainer.sendObjectToAll(new SetMap(map.getName()));
+	private void changeMap(GameMapSharedConfig mapConfig){
+		currentMap = new GameMapServerSide(mapConfig);
+		playerContainer.sendObjectToAll(new SetMap(currentMap.getName()));
 	}	
 	/**
 	 * Adds player to room and informs other players in the room about the addition

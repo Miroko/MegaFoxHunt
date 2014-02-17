@@ -17,7 +17,7 @@ import net.megafoxhunt.shared.KryoNetwork.RemoveEntity;
 
 public class GameSimulation {
 	
-	private int[][] collisionMap;
+	private GameMapServerSide gameMap;
 	
 	private ArrayList<Entity> removable;
 	
@@ -27,13 +27,9 @@ public class GameSimulation {
 	
 	private PlayerContainer playerContainer;
 
-	public GameSimulation(PlayerContainer playerContainer, GameMapSharedConfig map){
-		this.playerContainer = playerContainer;		
-		
-		int[][] collisionMap = new int[map.getWidth()][map.getHeight()];		
-		// TODO load map collision data from path
-		this.collisionMap = collisionMap;	
-		
+	public GameSimulation(PlayerContainer playerContainer, GameMapServerSide gameMap){
+		this.gameMap = gameMap;
+		this.playerContainer = playerContainer;				
 		removable = new ArrayList<>();
 		chasers = new ArrayList<>();
 		chaseds = new ArrayList<>();
@@ -44,14 +40,14 @@ public class GameSimulation {
 		 * UPDATE AND CHECK COLLISION
 		 */
 		for(Entity chaser : chasers){			
-			chaser.update(delta);
+			chaser.update(delta, gameMap);
 			Entity chaced = chaser.collides((ArrayList<Entity>) chaseds.clone());
 			if(chaced != null){
 				removable.add(chaced);
 			}
 		}
 		for(Entity chased : chaseds){		
-			chased.update(delta);
+			chased.update(delta, gameMap);
 			Entity berry = chased.collides((ArrayList<Entity>) berries.clone());
 			if(berry != null){
 				removable.add(berry);
@@ -99,13 +95,13 @@ public class GameSimulation {
 	public void move(Move move){
 		for(Entity chaser : chasers){
 			if(chaser.getID() == move.id){
-				chaser.move(move.x, move.y, move.direction, collisionMap);
+				chaser.move(move.x, move.y, move.direction, gameMap);
 				return;
 			}
 		}
 		for(Entity chased : chaseds){
 			if(chased.getID() == move.id){
-				chased.move(move.x, move.y, move.direction, collisionMap);
+				chased.move(move.x, move.y, move.direction, gameMap);
 				return;
 			}
 		}
