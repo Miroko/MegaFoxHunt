@@ -1,5 +1,6 @@
 package net.megafoxhunt.screens;
 import net.megafoxhunt.core.GameNetwork;
+import net.megafoxhunt.core.MyGdxGame;
 import net.megafoxhunt.core.User;
 import net.megafoxhunt.core.UserContainer;
 import net.megafoxhunt.debug.DebugConsole;
@@ -20,11 +21,11 @@ public class LobbyScreen implements Screen {
 	
 	private OrthographicCamera camera;
 	
-	private GameNetwork network;
+	private MyGdxGame game;
 	
-	public LobbyScreen(GameNetwork network) {
+	public LobbyScreen(MyGdxGame game) {
 		DebugConsole.msg("Set screen: LobbyScreen");
-		this.network = network;
+		this.game = game;
 		this.batch = new SpriteBatch();
 		font = new BitmapFont();
 		
@@ -48,7 +49,7 @@ public class LobbyScreen implements Screen {
 	private void drawLobbyUsers(){	
 		for(int i = 0; i < UserContainer.numberOfUsers(); i++) {
 			User userToDraw = UserContainer.getUsersConcurrentSafe().get(i);
-			if(userToDraw == network.getLocalUser()){
+			if(userToDraw == game.getNetwork().getLocalUser()){
 				// SELF
 		        font.setColor(Color.RED);
 			}

@@ -2,12 +2,13 @@ package net.megafox.game;
 
 import java.util.ArrayList;
 
+
 import net.megafox.entities.Berry;
 import net.megafox.entities.Chased;
 import net.megafox.entities.Chaser;
 import net.megafox.entities.Entity;
 import net.megafox.gameroom.PlayerContainer;
-import net.megafoxhunt.shared.GameMap;
+import net.megafoxhunt.shared.GameMapSharedConfig;
 import net.megafoxhunt.shared.KryoNetwork.AddChaser;
 import net.megafoxhunt.shared.KryoNetwork.AddChased;
 import net.megafoxhunt.shared.KryoNetwork.AddBerry;
@@ -26,7 +27,7 @@ public class GameSimulation {
 	
 	private PlayerContainer playerContainer;
 
-	public GameSimulation(PlayerContainer playerContainer, GameMap map){
+	public GameSimulation(PlayerContainer playerContainer, GameMapSharedConfig map){
 		this.playerContainer = playerContainer;		
 		
 		int[][] collisionMap = new int[map.getWidth()][map.getHeight()];		

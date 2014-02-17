@@ -3,17 +3,18 @@ package net.megafox.gameroom;
 import net.megafox.entities.Berry;
 
 
+
 import net.megafox.entities.Chased;
 import net.megafox.game.GameSimulation;
 import net.megafoxhunt.server.IDHandler;
 import net.megafoxhunt.server.PlayerConnection;
+import net.megafoxhunt.shared.GameMapSharedConfig;
 import net.megafoxhunt.shared.KryoNetwork;
 import net.megafoxhunt.shared.KryoNetwork.AddPlayer;
 import net.megafoxhunt.shared.KryoNetwork.ChangeState;
 import net.megafoxhunt.shared.KryoNetwork.Move;
 import net.megafoxhunt.shared.KryoNetwork.RemovePlayer;
 import net.megafoxhunt.shared.KryoNetwork.SetMap;
-import net.megafoxhunt.shared.GameMap;
 
 public class GameRoom extends Thread {
 	
@@ -26,7 +27,7 @@ public class GameRoom extends Thread {
 	private int roomState;
 	private boolean roomRunning = true;
 	
-	private GameMap currentMap;
+	private GameMapSharedConfig currentMap;
 	
 	private PlayerContainer playerContainer;
 	private GameSimulation gameSimulation;
@@ -86,7 +87,7 @@ public class GameRoom extends Thread {
 	
 	public void startGame() {	
 		// SEND MAP	
-		changeMap(GameMap.DEBUG_MAP);
+		changeMap(GameMapSharedConfig.DEBUG_MAP);
 		
 		// INIT SIMULATION
 		gameSimulation = new GameSimulation(playerContainer, currentMap);
@@ -111,7 +112,7 @@ public class GameRoom extends Thread {
 	 * Set current map and inform players about the map
 	 * @param map
 	 */
-	private void changeMap(GameMap map){
+	private void changeMap(GameMapSharedConfig map){
 		currentMap = map;
 		playerContainer.sendObjectToAll(new SetMap(map.getName()));
 	}	

@@ -1,7 +1,5 @@
 package net.megafoxhunt.entities;
 
-
-import net.megafoxhunt.core.GameMap;
 import net.megafoxhunt.core.GameNetwork;
 import net.megafoxhunt.shared.KryoNetwork.Move;
 import com.badlogic.gdx.graphics.Texture;
@@ -33,11 +31,9 @@ public class Entity extends StaticObject{
 		super(id, x, y, texture);
 		this.movementSpeed = movementSpeed;
 	}
-
-	@Override
-	public void update(float delta, GameNetwork network){
+	public void update(float delta, GameNetwork network, TiledMapTileLayer collisionMap){
 		float speed = movementSpeed * delta;
-		collisionMap = GameMap.getCurrentMap().getCollisionLayer();
+		this.collisionMap = collisionMap;
 		
 		if (collisionMap == null) return;
 		

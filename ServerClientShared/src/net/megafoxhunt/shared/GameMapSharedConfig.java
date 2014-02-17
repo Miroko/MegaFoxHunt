@@ -1,8 +1,8 @@
 package net.megafoxhunt.shared;
 
-public class GameMap {
+public class GameMapSharedConfig {
 	
-	public static final GameMap DEBUG_MAP = new GameMap("Debug", "data/basic_map.tmx", "data/basic_map.txt", 35, 25 );	
+	public static final GameMapSharedConfig DEBUG_MAP = new GameMapSharedConfig("Debug", "data/basic_map.tmx", "data/basic_map.txt", 35, 25 );	
 	
 	private String name;
 	private String tiledMapPath;
@@ -14,7 +14,7 @@ public class GameMap {
 	private int height;
 	public int getHeight(){return height;}
 	
-	public GameMap(String name, String tiledMapPath, String binaryMapPath, int width, int height){
+	public GameMapSharedConfig(String name, String tiledMapPath, String binaryMapPath, int width, int height){
 		this.name = name;
 		this.tiledMapPath = tiledMapPath;
 		this.binaryMapPath = binaryMapPath;

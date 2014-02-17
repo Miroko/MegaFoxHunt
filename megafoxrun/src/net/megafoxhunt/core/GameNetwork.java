@@ -10,6 +10,7 @@ import net.megafoxhunt.entities.Chaser;
 import net.megafoxhunt.entities.Entity;
 import net.megafoxhunt.screens.GameScreen;
 import net.megafoxhunt.screens.LobbyScreen;
+import net.megafoxhunt.shared.GameMapSharedConfig;
 import net.megafoxhunt.shared.KryoNetwork;
 import net.megafoxhunt.shared.KryoNetwork.AddBerry;
 import net.megafoxhunt.shared.KryoNetwork.AddChased;
@@ -93,9 +94,9 @@ public class GameNetwork {
 						@Override
 						public void run() {
 							if (changeState.roomState == ChangeState.GAME) {
-								game.setScreen(new GameScreen(game.getNetwork()));
+								game.setScreen(new GameScreen(game));
 							} else if (changeState.roomState == ChangeState.LOBBY) {
-								game.setScreen(new LobbyScreen(game.getNetwork()));
+								game.setScreen(new LobbyScreen(game));
 							}
 						}
 					});
@@ -119,7 +120,7 @@ public class GameNetwork {
 				 */
 				else if (object instanceof AddBerry) {
 					AddBerry addBerry = (AddBerry)object;
-					GameMap.getCurrentMap().addStaticObject(new Berry(addBerry.id, addBerry.x, addBerry.y));
+					game.getGameMap().addStaticObject(new Berry(addBerry.id, addBerry.x, addBerry.y));
 				}
 				/*
 				 * REMOVE ENTITY 
@@ -127,7 +128,7 @@ public class GameNetwork {
 				else if (object instanceof RemoveEntity) {
 					RemoveEntity removeEntity = (RemoveEntity)object;
 					// DELETE FROM MAP
-					GameMap.getCurrentMap().removeStaticObjectByID(removeEntity.id);
+					game.getGameMap().removeStaticObjectByID(removeEntity.id);
 					
 					// TODO
 					// DELETE FROM USER ENTITIES					
@@ -147,11 +148,12 @@ public class GameNetwork {
 				else if(object instanceof SetMap){					
 					SetMap setMap = (SetMap)object;	
 					DebugConsole.msg("Set map: " + setMap.mapName);
-					GameMap map = GameMap.getMapByName(setMap.mapName);					
-					GameMap.setCurrentMap(map);					
-				}
-				
-				
+					
+					// TODO MAKE THIS BETTER
+					if(setMap.mapName.equals(GameMapSharedConfig.DEBUG_MAP.getName())){
+						game.setGameMap(new GameMapClientSide(GameMapSharedConfig.DEBUG_MAP));
+					}					
+				}				
 			}
 
 			@Override
