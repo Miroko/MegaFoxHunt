@@ -41,7 +41,7 @@ public class Entity {
 	 * @param direction
 	 * @param collisionMap
 	 */
-	public void move(int x, int y, int direction, GameMapServerSide map){
+	public void move(int x, int y, int direction, GameMapServerSide map){		
 		if(collidesWithMap(x, y, map) == false){
 			snapToGrid(x, y);			
 			setNewDestination(direction, map);

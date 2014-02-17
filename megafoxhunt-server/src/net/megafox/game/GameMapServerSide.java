@@ -41,7 +41,7 @@ public class GameMapServerSide {
 			    String[] nums = line.split(",");
 			    for (int col = 0; col < nums.length; col++){
 			        int n = Integer.parseInt(nums[col]);
-			        collisionMap[col][row] = n;
+			        collisionMap[col][(getHeight()-1) - row] = n;
 			        System.out.print(n);
 			    }
 			    row++;
