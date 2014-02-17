@@ -21,6 +21,7 @@ public class Entity {
 	private float speed;
 	
 	private int currentDirection = Shared.DIRECTION_STOP;
+	public int getCurrentDirection(){return currentDirection;}
 	
 	private int destinationX;
 	private int destinationY;
@@ -51,7 +52,8 @@ public class Entity {
 			if(y > 0 && y < map.getHeight()){
 				int[][] collisionMap = map.getCollisionMap();
 				if(collisionMap[x][y] == COLLISION_VALUE){
-					return true;
+					System.out.println("value:" + collisionMap[x][y] + " at" + x + "," + y);
+					return true;					
 				}
 				else{
 					return false;
@@ -87,8 +89,7 @@ public class Entity {
 				destinationY = newDestinationY;
 			}
 			else{
-				currentDirection = Shared.DIRECTION_STOP;
-				System.out.println("collision" + newDestinationX + "," + newDestinationY);
+				currentDirection = Shared.DIRECTION_STOP;				
 			}
 		}
 	}

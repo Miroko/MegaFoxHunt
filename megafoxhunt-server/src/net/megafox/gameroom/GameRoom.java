@@ -52,7 +52,7 @@ public class GameRoom extends Thread {
 			case ROOM_STATE_LOBBY:
 				break;
 			case ROOM_STATE_GAME:
-				gameSimulation.update(delta);
+				gameSimulation.update(delta, playerContainer);
 				break;
 		}
 	}	

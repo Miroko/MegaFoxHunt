@@ -35,7 +35,7 @@ public class GameSimulation {
 		chaseds = new ArrayList<>();
 		berries = new ArrayList<>();
 	}
-	public void update(float delta){
+	public void update(float delta, PlayerContainer players){
 		/*
 		 * UPDATE AND CHECK COLLISION
 		 */

@@ -1,8 +1,8 @@
 package net.megafox.gameroom;
 
 import java.util.ArrayList;
+
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import net.megafoxhunt.server.PlayerConnection;
 
