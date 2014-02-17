@@ -2,6 +2,7 @@ package net.megafox.gameroom;
 
 import net.megafox.entities.Berry;
 
+
 import net.megafox.entities.Chased;
 import net.megafox.game.GameSimulation;
 import net.megafoxhunt.server.IDHandler;
@@ -12,7 +13,7 @@ import net.megafoxhunt.shared.KryoNetwork.ChangeState;
 import net.megafoxhunt.shared.KryoNetwork.Move;
 import net.megafoxhunt.shared.KryoNetwork.RemovePlayer;
 import net.megafoxhunt.shared.KryoNetwork.SetMap;
-import net.megafoxhunt.shared.Shared;
+import net.megafoxhunt.shared.GameMap;
 
 public class GameRoom extends Thread {
 	
@@ -24,6 +25,8 @@ public class GameRoom extends Thread {
 	
 	private int roomState;
 	private boolean roomRunning = true;
+	
+	private GameMap currentMap;
 	
 	private PlayerContainer playerContainer;
 	private GameSimulation gameSimulation;
@@ -82,11 +85,11 @@ public class GameRoom extends Thread {
 	}
 	
 	public void startGame() {	
-		// SEND MAP
-		changeMap(Shared.Map.DEBUG_MAP.name);
+		// SEND MAP	
+		changeMap(GameMap.DEBUG_MAP);
 		
 		// INIT SIMULATION
-		gameSimulation = new GameSimulation(playerContainer, null);
+		gameSimulation = new GameSimulation(playerContainer, currentMap);
 		
 		// ADD BERRIES
 		gameSimulation.addBerry(new Berry(6, 5, idHandler.getFreeID()));
@@ -104,8 +107,13 @@ public class GameRoom extends Thread {
 		// SET STATE
 		changeRoomState(ROOM_STATE_GAME);
 	}
-	private void changeMap(String name){
-		playerContainer.sendObjectToAll(new SetMap(name));
+	/**
+	 * Set current map and inform players about the map
+	 * @param map
+	 */
+	private void changeMap(GameMap map){
+		currentMap = map;
+		playerContainer.sendObjectToAll(new SetMap(map.getName()));
 	}	
 	/**
 	 * Adds player to room and informs other players in the room about the addition

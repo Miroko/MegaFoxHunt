@@ -11,8 +11,7 @@ public class MyGdxGame extends Game {
 	public GameNetwork getNetwork(){return network;}
 	
 	@Override	
-	public void create() {		
-		
+	public void create() {			
 		GameTextures.init();	
 		
 		network = new GameNetwork(this);

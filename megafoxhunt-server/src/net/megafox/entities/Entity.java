@@ -21,9 +21,6 @@ public class Entity {
 	
 	private int destinationX;
 	private int destinationY;
-
-	private static int[][] COLLISION_MAP;
-	public static void setCollisionMap(int[][] map){COLLISION_MAP = map;}
 	
 	public Entity(int x, int y, int id, int speed){
 		this.x = x;
@@ -33,7 +30,7 @@ public class Entity {
 		this.id = id;
 		this.speed = speed;
 	}
-	public void move(int x, int y, int direction){
+	public void move(int x, int y, int direction, int[][] collisionMap){
 		// TODO CHECK COLLISION
 		this.x = x;
 		this.y = y;
@@ -42,10 +39,10 @@ public class Entity {
 		// SET DESTINATION 
 		if (direction == Shared.DIRECTION_UP) destinationY = y + 1;
 		else if (direction == Shared.DIRECTION_RIGHT) destinationX = x + 1;
-		else if (direction == Shared.DIRECTION_DOWN) destinationY = y -1;
+		else if (direction == Shared.DIRECTION_DOWN) destinationY = y - 1;
 		else if (direction == Shared.DIRECTION_LEFT) destinationX = x - 1;		
 	}
-	public void update(float delta){	
+	public void update(float delta){		
 		if(x == destinationX && y == destinationY) return;
 		else{
 			// MOVE TOWARDS DESTINATION
@@ -64,6 +61,7 @@ public class Entity {
 				y = destinationY;
 			}
 		}
+		// TODO FIX THIS
 		System.out.println(x + "," + y);
 	}
 	/**

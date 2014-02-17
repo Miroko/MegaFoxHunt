@@ -7,6 +7,7 @@ import net.megafox.entities.Chased;
 import net.megafox.entities.Chaser;
 import net.megafox.entities.Entity;
 import net.megafox.gameroom.PlayerContainer;
+import net.megafoxhunt.shared.GameMap;
 import net.megafoxhunt.shared.KryoNetwork.AddChaser;
 import net.megafoxhunt.shared.KryoNetwork.AddChased;
 import net.megafoxhunt.shared.KryoNetwork.AddBerry;
@@ -25,11 +26,12 @@ public class GameSimulation {
 	
 	private PlayerContainer playerContainer;
 
-	public GameSimulation(PlayerContainer playerContainer, int[][] collisionMap){
-		this.playerContainer = playerContainer;
+	public GameSimulation(PlayerContainer playerContainer, GameMap map){
+		this.playerContainer = playerContainer;		
 		
-		this.collisionMap = collisionMap;
-		Entity.setCollisionMap(collisionMap);
+		int[][] collisionMap = new int[map.getWidth()][map.getHeight()];		
+		// TODO load map collision data from path
+		this.collisionMap = collisionMap;	
 		
 		removable = new ArrayList<>();
 		chasers = new ArrayList<>();
@@ -96,13 +98,13 @@ public class GameSimulation {
 	public void move(Move move){
 		for(Entity chaser : chasers){
 			if(chaser.getID() == move.id){
-				chaser.move(move.x, move.y, move.direction);
+				chaser.move(move.x, move.y, move.direction, collisionMap);
 				return;
 			}
 		}
 		for(Entity chased : chaseds){
 			if(chased.getID() == move.id){
-				chased.move(move.x, move.y, move.direction);
+				chased.move(move.x, move.y, move.direction, collisionMap);
 				return;
 			}
 		}

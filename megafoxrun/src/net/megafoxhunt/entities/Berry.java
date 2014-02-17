@@ -6,11 +6,9 @@ import net.megafoxhunt.core.GameTextures;
 import com.badlogic.gdx.graphics.Texture;
 
 public class Berry extends StaticObject{
-	
-	private static final Texture TEXTURE_BERRY = GameTextures.DEBUG_TEXTURE;
 
 	public Berry(int id, float x, float y) {
-		super(id, x, y, TEXTURE_BERRY);
+		super(id, x, y, GameTextures.BERRY_TEXTURE);
 		// TODO Auto-generated constructor stub
 	}
 
