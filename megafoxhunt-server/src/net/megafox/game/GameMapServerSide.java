@@ -41,6 +41,8 @@ public class GameMapServerSide {
 			    String[] nums = line.split(",");
 			    for (int col = 0; col < nums.length; col++){
 			        int n = Integer.parseInt(nums[col]);
+			        
+			        // (height - 1 - row) to flip y 
 			        collisionMap[col][(getHeight()-1) - row] = n;
 			        System.out.print(n);
 			    }

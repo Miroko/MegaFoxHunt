@@ -1,5 +1,7 @@
 package net.megafox.gameroom;
 
+import java.util.Random;
+
 import net.megafox.entities.Berry;
 
 
@@ -96,9 +98,19 @@ public class GameRoom extends Thread {
 		gameSimulation = new GameSimulation(playerContainer, currentMap);
 		
 		// ADD BERRIES
-		gameSimulation.addBerry(new Berry(6, 5, idHandler.getFreeID()));
-		gameSimulation.addBerry(new Berry(6, 15, idHandler.getFreeID()));
-		gameSimulation.addBerry(new Berry(10, 5, idHandler.getFreeID()));
+		int[][] collisionMap = currentMap.getCollisionMap();
+		int berries = 30;
+		Random r = new Random();
+		int x;
+		int y;
+		while(berries > 0){
+			x = r.nextInt(currentMap.getWidth());
+			y = r.nextInt(currentMap.getHeight());
+			if(collisionMap[x][y] == 0){
+				gameSimulation.addBerry(new Berry(x, y, idHandler.getFreeID()));
+				berries--;
+			}
+		}
 		
 		// ADD CHASERS
 		// TODO
