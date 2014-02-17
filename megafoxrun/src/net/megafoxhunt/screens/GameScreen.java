@@ -15,6 +15,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -29,7 +30,7 @@ public class GameScreen implements Screen {
 	private OrthogonalTiledMapRenderer renderer;
 	private OrthographicCamera camera;
 	
-	//private SpriteBatch spriteBatch;
+	private SpriteBatch spriteBatch;
 
 	private MyGdxGame game;
 	
@@ -38,7 +39,7 @@ public class GameScreen implements Screen {
 	public GameScreen(MyGdxGame game) {
 		DebugConsole.msg("Set screen: GameScreen");
 		this.game = game;
-		//spriteBatch = new SpriteBatch();		
+		spriteBatch = new SpriteBatch();		
 		touchJoystick = new TouchJoystick(game.getNetwork());
 		Gdx.input.setInputProcessor(new GameInputProcessor(game.getNetwork(), touchJoystick));
 		
@@ -82,7 +83,7 @@ public class GameScreen implements Screen {
         renderer.render();
 		
 		// INIT BATCH
-		SpriteBatch batch = (SpriteBatch) renderer.getSpriteBatch();
+		Batch batch = renderer.getSpriteBatch();
 		batch.begin();		
              
         // DRAW ENTITIES
@@ -94,12 +95,12 @@ public class GameScreen implements Screen {
         	object.render(batch);
         }
         
-       // batch.end();
-        // DRAW JOYSTICK
-       // spriteBatch.begin();
-        touchJoystick.draw(batch);
-      //  spriteBatch.end();
         batch.end();
+        
+        // DRAW JOYSTICK
+        spriteBatch.begin();
+        touchJoystick.draw(spriteBatch);
+        spriteBatch.end();
 	}
 
 	private void keepCameraInBoundaries() {
