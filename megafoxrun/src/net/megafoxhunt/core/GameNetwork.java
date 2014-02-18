@@ -4,18 +4,22 @@ import java.io.IOException;
 import java.util.Scanner;
 
 import net.megafoxhunt.debug.DebugConsole;
+import net.megafoxhunt.entities.Berry;
 import net.megafoxhunt.entities.Chased;
 import net.megafoxhunt.entities.Chaser;
 import net.megafoxhunt.entities.Entity;
 import net.megafoxhunt.screens.GameScreen;
 import net.megafoxhunt.screens.LobbyScreen;
+import net.megafoxhunt.shared.GameMapSharedConfig;
 import net.megafoxhunt.shared.KryoNetwork;
+import net.megafoxhunt.shared.KryoNetwork.AddBerry;
 import net.megafoxhunt.shared.KryoNetwork.AddChased;
 import net.megafoxhunt.shared.KryoNetwork.AddChaser;
 import net.megafoxhunt.shared.KryoNetwork.AddPlayer;
 import net.megafoxhunt.shared.KryoNetwork.ChangeState;
 import net.megafoxhunt.shared.KryoNetwork.Login;
 import net.megafoxhunt.shared.KryoNetwork.Move;
+import net.megafoxhunt.shared.KryoNetwork.RemoveEntity;
 import net.megafoxhunt.shared.KryoNetwork.RemovePlayer;
 import net.megafoxhunt.shared.KryoNetwork.SetMap;
 import net.megafoxhunt.shared.KryoNetwork.WelcomePlayer;
@@ -32,15 +36,24 @@ public class GameNetwork {
 	private static final int TIMEOUT_MS = 50000;
 	
 	// LOCAL USER
-	private static User USER = new User(0, null);
-	public static User getUser(){return USER;}
+	private User localUser = new User(0, null);
+	public User getLocalUser(){return localUser;}
 
-	private static Client CLIENT = new Client();
-	public static Client getClient(){return CLIENT;}
+	// KRYO CLIENT
+	private Client kryoClient = new Client();
+	public Client getKryoClient(){return kryoClient;}
 	
-	public static void init(){
-		KryoNetwork.register(CLIENT);	
-		CLIENT.addListener(new ThreadedListener(new Listener() {
+	// GAME
+	private MyGdxGame game;
+	
+	public GameNetwork(MyGdxGame game){
+		this.game = game;
+		init();
+	}
+		
+	public void init(){
+		KryoNetwork.register(kryoClient);	
+		kryoClient.addListener(new ThreadedListener(new Listener() {
 			@Override
 			public void connected (Connection connection) {
 				DebugConsole.msg("Connected to: " + connection.getRemoteAddressTCP().getHostString());
@@ -53,7 +66,7 @@ public class GameNetwork {
 				 */
 				if (object instanceof WelcomePlayer) {
 					WelcomePlayer welcomePlayer = (WelcomePlayer)object;
-					USER.setID(welcomePlayer.id);
+					localUser.setID(welcomePlayer.id);
 					DebugConsole.msg("Welcome, your id is: " + welcomePlayer.id);
 				}
 				/*
@@ -81,9 +94,9 @@ public class GameNetwork {
 						@Override
 						public void run() {
 							if (changeState.roomState == ChangeState.GAME) {
-								MyGdxGame.getInstance().setScreen(new GameScreen());
+								game.setScreen(new GameScreen(game));
 							} else if (changeState.roomState == ChangeState.LOBBY) {
-								MyGdxGame.getInstance().setScreen(new LobbyScreen());
+								game.setScreen(new LobbyScreen(game));
 							}
 						}
 					});
@@ -103,6 +116,25 @@ public class GameNetwork {
 					UserContainer.getUserByID(addChased.id).setControlledEntity(new Chased(addChased.id, addChased.x, addChased.y));
 				}
 				/*
+				 * ADD BERRY TO MAP
+				 */
+				else if (object instanceof AddBerry) {
+					AddBerry addBerry = (AddBerry)object;
+					game.getGameMap().addStaticObject(new Berry(addBerry.id, addBerry.x, addBerry.y));
+				}
+				/*
+				 * REMOVE ENTITY 
+				 */
+				else if (object instanceof RemoveEntity) {
+					RemoveEntity removeEntity = (RemoveEntity)object;
+					// DELETE FROM MAP
+					game.getGameMap().removeStaticObjectByID(removeEntity.id);
+					
+					// TODO
+					// DELETE FROM USER ENTITIES					
+					// different kryo command
+				}
+				/*
 				 * MOVE ENTITY
 				 */
 				else if (object instanceof Move) {
@@ -116,45 +148,50 @@ public class GameNetwork {
 				else if(object instanceof SetMap){					
 					SetMap setMap = (SetMap)object;	
 					DebugConsole.msg("Set map: " + setMap.mapName);
-					GameMap map = GameMap.getMapByName(setMap.mapName);					
-					GameMap.setCurrentMap(map);					
-				}
-				
-				
+					
+					// TODO MAKE THIS BETTER
+					if(setMap.mapName.equals(GameMapSharedConfig.DEBUG_MAP.getName())){
+						game.setGameMap(new GameMapClientSide(GameMapSharedConfig.DEBUG_MAP));
+					}					
+				}				
 			}
 
 			@Override
 			public void disconnected (Connection connection) {
-				DebugConsole.msg("Disconnected from: " + connection.getRemoteAddressTCP().getHostString());
+				// TODO null pointer on disconnection
+				//DebugConsole.msg("Disconnected from: " + connection.getRemoteAddressTCP().getHostString());
 				MyGdxGame.shutdown();
 			}
-		}));
-		CLIENT.start();
+		}));		
 	}	
 	/**
 	 * @param name Set null for console input
 	 */
-	public static void setUsername(String name){
+	public void setUsername(String name){
 		if(name == null){
 			Scanner scanner = new Scanner(System.in);
 			System.out.print("Insert username: ");
 			name = scanner.nextLine();
 			scanner.close();
 		}
-		USER.setName(name);
-		UserContainer.addUser(USER);
-		DebugConsole.msg("Username set: " + USER.getName());
+		localUser.setName(name);
+		UserContainer.addUser(localUser);
+		DebugConsole.msg("Username set: " + localUser.getName());
 	}
-	public static void connect(String host, int port){
+	public void connect(String host, int port){
 		try {
 			DebugConsole.msg("Connecting to: " + host + " Port: " + port);
-			CLIENT.connect(TIMEOUT_MS, host, port);
+			kryoClient.connect(TIMEOUT_MS, host, port);
 			Login login = new Login();
-			login.name = USER.getName();
-			CLIENT.sendTCP(login);
+			login.name = localUser.getName();
+			kryoClient.sendTCP(login);
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
+	}
+
+	public void start() {
+		kryoClient.start();		
 	}
 	
 }

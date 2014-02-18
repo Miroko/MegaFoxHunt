@@ -1,6 +1,7 @@
 package net.megafoxhunt.ui;
 
 import net.megafoxhunt.core.GameNetwork;
+
 import net.megafoxhunt.entities.Entity;
 
 import com.badlogic.gdx.Gdx;
@@ -19,7 +20,11 @@ public class TouchJoystick {
 	private Texture circle;
 	private Texture joystick;
 	
-	public TouchJoystick() {
+	private GameNetwork network;
+	
+	public TouchJoystick(GameNetwork network) {
+		this.network = network;
+		
 		circlePos = new Vector2(200, 200);
 		joystickPos = new Vector2();
 		
@@ -63,7 +68,7 @@ public class TouchJoystick {
 	
 	private void sendDirection(int direction){
 		// IF DIRECTION HAS CHANGED
-		Entity entity = GameNetwork.getUser().getControlledEntity();
+		Entity entity = network.getLocalUser().getControlledEntity();
 		entity.setDirection(direction);
 	}
 }

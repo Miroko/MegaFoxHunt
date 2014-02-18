@@ -2,22 +2,22 @@ package net.megafoxhunt.screens;
 
 
 import net.megafoxhunt.core.GameInputProcessor;
-import net.megafoxhunt.core.GameMap;
 import net.megafoxhunt.core.GameNetwork;
+import net.megafoxhunt.core.MyGdxGame;
 import net.megafoxhunt.core.User;
 import net.megafoxhunt.core.UserContainer;
 import net.megafoxhunt.debug.DebugConsole;
 import net.megafoxhunt.entities.Entity;
+import net.megafoxhunt.entities.StaticObject;
 import net.megafoxhunt.ui.TouchJoystick;
 
-import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
 public class GameScreen implements Screen {
@@ -30,24 +30,25 @@ public class GameScreen implements Screen {
 	private OrthogonalTiledMapRenderer renderer;
 	private OrthographicCamera camera;
 	
+	private SpriteBatch spriteBatch;
+
+	private MyGdxGame game;
+	
 	private TouchJoystick touchJoystick;
 	
-	private SpriteBatch spriteBatch;
-	
-	public GameScreen() {
-		touchJoystick = new TouchJoystick();
-		
-		spriteBatch = new SpriteBatch();
-		
-		DebugConsole.msg("Set screen: GameScreen");		
-		Gdx.input.setInputProcessor(new GameInputProcessor(touchJoystick));
+	public GameScreen(MyGdxGame game) {
+		DebugConsole.msg("Set screen: GameScreen");
+		this.game = game;
+		spriteBatch = new SpriteBatch();		
+		touchJoystick = new TouchJoystick(game.getNetwork());
+		Gdx.input.setInputProcessor(new GameInputProcessor(game.getNetwork(), touchJoystick));
 		
 		/*
 		 * LOAD MAP
 		 */
-		GameMap.getCurrentMap().load();	
+		game.getGameMap().load();
 		
-		renderer = new OrthogonalTiledMapRenderer(GameMap.getCurrentMap().getTiledMap(), UNIT_SCALE);
+		renderer = new OrthogonalTiledMapRenderer(game.getGameMap().getTiledMap(), UNIT_SCALE);
 				
 		camera = new OrthographicCamera();	
 		camera.setToOrtho(false, FIT_TILES_WIDTH, FIT_TILES_HEIGHT);
@@ -61,11 +62,11 @@ public class GameScreen implements Screen {
 
 		// UPDATE ENTITIES
 		for(User user : UserContainer.getUsersConcurrentSafe()){        	
-			user.getControlledEntity().update(delta);
+			user.getControlledEntity().update(delta, game.getNetwork(), game.getGameMap().getCollisionLayer());
 		}
 		
 		// FOCUS CAMERA ON PLAYER ENTITY
-		Entity myEntity = GameNetwork.getUser().getControlledEntity();
+		Entity myEntity = game.getNetwork().getLocalUser().getControlledEntity();
         if (myEntity != null){
         	camera.position.x = myEntity.getX();
         	camera.position.y = myEntity.getY();
@@ -88,9 +89,15 @@ public class GameScreen implements Screen {
         // DRAW ENTITIES
         for(User user : UserContainer.getUsersConcurrentSafe()){
         	user.getControlledEntity().render(batch);
-        }        
+        }    
+        // DRAW BERRIES
+        for(StaticObject object : game.getGameMap().getAllObjectsConcurrentSafe()){
+        	object.render(batch);
+        }
+        
         batch.end();
         
+        // DRAW JOYSTICK
         spriteBatch.begin();
         touchJoystick.draw(spriteBatch);
         spriteBatch.end();
@@ -99,14 +106,14 @@ public class GameScreen implements Screen {
 	private void keepCameraInBoundaries() {
 		if (camera.position.x < FIT_TILES_WIDTH / 2) {
     		camera.position.x = FIT_TILES_WIDTH / 2;
-    	} if (camera.position.x > (GameMap.getCurrentMap().getMapWidth() - (FIT_TILES_WIDTH / 2))) {
-    		camera.position.x = GameMap.getCurrentMap().getMapWidth() - (FIT_TILES_WIDTH / 2);
+    	} if (camera.position.x > (game.getGameMap().getWidth() - (FIT_TILES_WIDTH / 2))) {
+    		camera.position.x = game.getGameMap().getWidth() - (FIT_TILES_WIDTH / 2);
     	}
     	
     	if (camera.position.y < FIT_TILES_HEIGHT / 2) {
     		camera.position.y = FIT_TILES_HEIGHT / 2;
-    	} if (camera.position.y > (GameMap.getCurrentMap().getMapHeight() - (FIT_TILES_HEIGHT / 2))) {
-    		camera.position.y = GameMap.getCurrentMap().getMapHeight() - (FIT_TILES_HEIGHT / 2);
+    	} if (camera.position.y > (game.getGameMap().getHeight() - (FIT_TILES_HEIGHT / 2))) {
+    		camera.position.y = game.getGameMap().getHeight() - (FIT_TILES_HEIGHT / 2);
     	}
 	}
 
@@ -140,7 +147,7 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void dispose() {
-		GameMap.getCurrentMap().dispose();
+		game.getGameMap().dispose();
 		renderer.dispose();
 	}
 

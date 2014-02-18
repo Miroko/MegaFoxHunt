@@ -2,9 +2,9 @@ package net.megafoxhunt.entities;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class StaticObject {
+
+public abstract class StaticObject {
 	
 	protected int id;
 	protected float x;
@@ -18,8 +18,6 @@ public class StaticObject {
 		this.y = y;
 		this.texture = texture;
 	}
-	
-	public void update(float delta) {}
 	
 	public void render(Batch batch){
 		batch.draw(texture, x, y, 1, 1);
@@ -44,4 +42,5 @@ public class StaticObject {
 	public void setY(float y) {
 		this.y = y;
 	}
+
 }

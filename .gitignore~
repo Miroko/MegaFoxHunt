@@ -1,0 +1,17 @@
+megafoxrun-android/.settings/
+megafoxrun-android/bin/
+megafoxrun-android/gen/
+
+megafoxrun/.settings/
+megafoxrun/bin/
+
+megafoxrun-desktop/.settings/
+
+megafoxhunt-server/.settings
+megafoxhunt-server/bin
+
+ServerClientShared/.settings
+ServerClientShared/bin
+
+/.metadata
+*.project

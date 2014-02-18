@@ -1,10 +1,7 @@
 package net.megafoxhunt.entities;
 
-
-import net.megafoxhunt.core.GameMap;
 import net.megafoxhunt.core.GameNetwork;
 import net.megafoxhunt.shared.KryoNetwork.Move;
-
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 
@@ -34,16 +31,14 @@ public class Entity extends StaticObject{
 		super(id, x, y, texture);
 		this.movementSpeed = movementSpeed;
 	}
-
-	@Override
-	public void update(float delta){
+	public void update(float delta, GameNetwork network, TiledMapTileLayer collisionMap){
 		float speed = movementSpeed * delta;
-		collisionMap = GameMap.getCurrentMap().getCollisionLayer();
+		this.collisionMap = collisionMap;
 		
 		if (collisionMap == null) return;
 		
 		if (!isMoving) {
-			setNewDestination();
+			setNewDestination(network);
 		}
 		if (isMoving) {
 			moveTowardsDestination(speed);
@@ -64,11 +59,11 @@ public class Entity extends StaticObject{
 		}
 	}
 	
-	private void setNewDestination() {
+	private void setNewDestination(GameNetwork network) {
 		if (direction == DIRECTION_STOP) {
-			if (GameNetwork.getUser().getControlledEntity() == this && destinationDirection != direction) {
+			if (network.getLocalUser().getControlledEntity() == this && destinationDirection != direction) {
 				Move move = new Move(id, direction, (int)x, (int)y);
-	    		GameNetwork.getClient().sendTCP(move);
+				network.getKryoClient().sendTCP(move);
 			}
 			destinationDirection = DIRECTION_STOP;
 			return;
@@ -84,15 +79,15 @@ public class Entity extends StaticObject{
 		
 		if (!collisionMap.getCell(destinationX, destinationY).getTile().getProperties().containsKey("wall")) {
 			isMoving = true;
-			if (GameNetwork.getUser().getControlledEntity() == this && destinationDirection != direction) {
+			if (network.getLocalUser().getControlledEntity() == this && destinationDirection != direction) {
 				Move move = new Move(id, direction, (int)x, (int)y);
-	    		GameNetwork.getClient().sendTCP(move);
+				network.getKryoClient().sendTCP(move);
 			}
 			destinationDirection = direction;
 		} else {
-			if (GameNetwork.getUser().getControlledEntity() == this && destinationDirection != DIRECTION_STOP) {
+			if (network.getLocalUser().getControlledEntity() == this && destinationDirection != DIRECTION_STOP) {
 				Move move = new Move(id, direction, (int)x, (int)y);
-	    		GameNetwork.getClient().sendTCP(move);
+				network.getKryoClient().sendTCP(move);
 	    		destinationDirection = DIRECTION_STOP;
 			}
 		}
