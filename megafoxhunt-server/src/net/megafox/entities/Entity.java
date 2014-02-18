@@ -70,7 +70,7 @@ public class Entity {
 			int newDestinationY = 0;
 			if		(currentDirection == Shared.DIRECTION_UP){
 				newDestinationX = (int) x;
-				newDestinationY = (int) (y - 1);
+				newDestinationY = (int) (y + 1);
 			}
 			else if	(currentDirection == Shared.DIRECTION_RIGHT){
 				newDestinationX = (int) (x + 1);
