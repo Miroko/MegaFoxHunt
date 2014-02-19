@@ -44,11 +44,12 @@ public class GameRoom extends Thread {
 		this.idHandler = idHandler;
 		playerContainer = new PlayerContainer(MAX_SIZE);
 	}
-	public boolean hasFreeRoom(){
+	public boolean canJoin(){
+		if (roomState == ROOM_STATE_GAME) return false;
+		
 		if(playerContainer.getPlayersConcurrentSafe().size() == MAX_SIZE){
 			return false;
-		}
-		else{
+		} else{
 			return true;
 		}
 	}	
@@ -93,7 +94,9 @@ public class GameRoom extends Thread {
 		playerContainer.sendObjectToAll(changeState);
 	}
 	
-	public void startGame() {	
+	public void startGame() {
+		if (roomState == ROOM_STATE_GAME) return;
+		
 		// SET AND SEND MAP	
 		changeMap(GameMapSharedConfig.DEBUG_MAP);
 		

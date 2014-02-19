@@ -131,8 +131,7 @@ public class GameNetwork {
 					game.getGameMap().removeStaticObjectByID(removeEntity.id);
 					
 					// TODO
-					// DELETE FROM USER ENTITIES					
-					// different kryo command
+					// Refactor this to its own kryo command
 					for(User user : UserContainer.getUsersConcurrentSafe()){  
 						if (user.getID() == removeEntity.id) {
 							user.setControlledEntity(null);
