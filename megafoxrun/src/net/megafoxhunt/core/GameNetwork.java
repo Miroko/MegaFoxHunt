@@ -133,6 +133,12 @@ public class GameNetwork {
 					// TODO
 					// DELETE FROM USER ENTITIES					
 					// different kryo command
+					for(User user : UserContainer.getUsersConcurrentSafe()){  
+						if (user.getID() == removeEntity.id) {
+							user.setControlledEntity(null);
+							break;
+						}
+					}
 				}
 				/*
 				 * MOVE ENTITY

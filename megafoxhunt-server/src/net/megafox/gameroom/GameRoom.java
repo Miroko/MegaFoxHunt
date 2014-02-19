@@ -3,6 +3,9 @@ package net.megafox.gameroom;
 import java.util.Random;
 
 import net.megafox.entities.Berry;
+import net.megafox.entities.Chaser;
+import net.megafox.entities.Empty;
+import net.megafox.entities.Entity;
 
 
 
@@ -98,26 +101,38 @@ public class GameRoom extends Thread {
 		gameSimulation = new GameSimulation(playerContainer, currentMap);
 		
 		// ADD BERRIES
-		int[][] collisionMap = currentMap.getCollisionMap();
-		int berries = 30;
 		Random r = new Random();
+		Entity[][] collisionMap = currentMap.getCollisionMap();
+		
 		int x;
 		int y;
-		while(berries > 0){
+		
+		for (int i = 0; i < GameMapServerSide.TOTAL_BERRIES; i++) {
 			x = r.nextInt(currentMap.getWidth());
 			y = r.nextInt(currentMap.getHeight());
-			if(collisionMap[x][y] == 0){
-				gameSimulation.addBerry(new Berry(x, y, idHandler.getFreeID()));
-				berries--;
-			}
+			if(collisionMap[x][y].getClass().equals(Empty.class)){
+				Berry berry = new Berry(x, y, idHandler.getFreeID());
+				gameSimulation.addBerry(berry);
+				currentMap.addEntity(berry);
+			} else i--;
 		}
 		
 		// ADD CHASERS
 		// TODO
 		
 		// ADD CHASED
+		int counter = 0;
 		for (PlayerConnection player : playerContainer.getPlayersConcurrentSafe()) {
-			gameSimulation.addChased(new Chased(10, 10, player.getMyId()));
+			if ((counter % 2) == 0) {
+				Chased chased = new Chased(2, 13 + (counter * 1), player.getMyId());
+				player.setEntity(chased);
+				gameSimulation.addChased(chased);
+			} else {
+				Chaser chaser = new Chaser(33, 13 + (counter * 1), player.getMyId());
+				player.setEntity(chaser);
+				gameSimulation.addChaser(chaser);
+			}
+			counter++;
 		}
 
 		// SET STATE
@@ -183,7 +198,7 @@ public class GameRoom extends Thread {
 	 * @param move Move command received
 	 */
 	public void move(PlayerConnection player, Move move) {
-		gameSimulation.move(move);		
+		gameSimulation.move(player.getEntity(), move.x, move.y, move.direction);		
 		playerContainer.sendObjectToAllExcept(player, move);		
 	}
 

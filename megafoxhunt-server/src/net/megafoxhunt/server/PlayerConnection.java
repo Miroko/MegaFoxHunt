@@ -1,5 +1,6 @@
 package net.megafoxhunt.server;
 
+import net.megafox.entities.Entity;
 import net.megafox.gameroom.GameRoom;
 
 import com.esotericsoftware.kryonet.Connection;
@@ -7,6 +8,7 @@ import com.esotericsoftware.kryonet.Connection;
 public class PlayerConnection extends Connection {
 	
 	private GameRoom myCurrentRoom;
+	private Entity entity;
 	
 	private String name;
 	public String getName(){return name;}
@@ -19,6 +21,14 @@ public class PlayerConnection extends Connection {
 		super();	
 		this.myId = id;
 		this.name = name;
+	}
+	
+	public void setEntity(Entity entity) {
+		this.entity = entity;
+	}
+	
+	public Entity getEntity() {
+		return entity;
 	}
 
 	public GameRoom getMyCurrentRoom() {

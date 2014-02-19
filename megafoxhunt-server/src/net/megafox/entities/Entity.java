@@ -48,16 +48,12 @@ public class Entity {
 		}	
 	}
 	private boolean collidesWithMap(int x, int y, GameMapServerSide map){
-		if(x > 0 && x < map.getWidth()){
-			if(y > 0 && y < map.getHeight()){
-				int[][] collisionMap = map.getCollisionMap();
-				if(collisionMap[x][y] == COLLISION_VALUE){
-					System.out.println("value:" + collisionMap[x][y] + " at" + x + "," + y);
-					return true;					
-				}
-				else{
-					return false;
-				}
+		if(x > 0 && x < map.getWidth() && y > 0 && y < map.getHeight()){
+			Entity[][] collisionMap = map.getCollisionMap();
+			if(collisionMap[x][y].getClass().equals(Wall.class)){
+				return true;					
+			} else{
+				return false;
 			}
 		}
 		return true;
@@ -93,10 +89,12 @@ public class Entity {
 			}
 		}
 	}
+	
 	private void snapToGrid(int x, int y){
 		this.x = x;
 		this.y = y;
 	}
+	
 	private void moveTowardsDirection(float delta){		
 		float deltaInSeconds = delta/1000;
 		if		(currentDirection == Shared.DIRECTION_STOP) return;
@@ -128,35 +126,5 @@ public class Entity {
 		if(destinationReached()){
 			setNewDestination(currentDirection, map);
 		}		
-		System.out.println(x + "," + y);
 	}
-	/**
-	 * @param collidesWith Entities this entity collides with
-	 * @return Entity that collides with this entity or null if no collision
-	 */
-	public Entity collides(ArrayList<Entity> collidesWith){
-		// TODO 
-		// tarkistus jos menty marjan yli eikä poimittu koska koordinaatit ei satu ihan kohilleen		
-		
-		// TEMPORARY FIX
-		for(Entity entity : collidesWith){
-			if(this.x > entity.getX() - 0.5f && this.x < entity.getX() + 0.5f){
-				if(this.y > entity.getY() - 0.5f && this.y < entity.getY() + 0.5f){
-					return entity;
-				}
-			}
-		}
-		return null;
-		/*
-		for(Entity entity : collidesWith){
-			if(this.x == entity.getX()){
-				if(this.y == entity.getY()){
-					return entity;
-				}
-			}
-		}
-		return null;
-		*/		
-	}
-
 }

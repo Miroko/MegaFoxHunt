@@ -61,8 +61,10 @@ public class GameScreen implements Screen {
 		// TODO syö kaiken suoritustehon?
 
 		// UPDATE ENTITIES
-		for(User user : UserContainer.getUsersConcurrentSafe()){        	
-			user.getControlledEntity().update(delta, game.getNetwork(), game.getGameMap().getCollisionLayer());
+		Entity entity = null;
+		for(User user : UserContainer.getUsersConcurrentSafe()){
+			entity = user.getControlledEntity();
+			if (entity != null) entity.update(delta, game.getNetwork(), game.getGameMap().getCollisionLayer());
 		}
 		
 		// FOCUS CAMERA ON PLAYER ENTITY
@@ -88,7 +90,8 @@ public class GameScreen implements Screen {
              
         // DRAW ENTITIES
         for(User user : UserContainer.getUsersConcurrentSafe()){
-        	user.getControlledEntity().render(batch);
+        	entity = user.getControlledEntity();
+        	if (entity != null) entity.render(batch);
         }    
         // DRAW BERRIES
         for(StaticObject object : game.getGameMap().getAllObjectsConcurrentSafe()){
