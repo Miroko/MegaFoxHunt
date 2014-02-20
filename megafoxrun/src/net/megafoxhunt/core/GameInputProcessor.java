@@ -24,6 +24,7 @@ public class GameInputProcessor extends InputAdapter {
 		// IF DIRECTION HAS CHANGED
 		if(direction != last_direction){
 			Entity entity = network.getLocalUser().getControlledEntity();
+			if (entity == null) return;
     		entity.setDirection(direction);
     		last_direction = direction;
 		}

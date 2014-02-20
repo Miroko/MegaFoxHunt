@@ -3,15 +3,23 @@ package net.megafox.game;
 import java.io.BufferedReader;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 
+import net.megafox.entities.Berry;
+import net.megafox.entities.Empty;
+import net.megafox.entities.Entity;
+import net.megafox.entities.Wall;
 import net.megafoxhunt.shared.GameMapSharedConfig;
 
 public class GameMapServerSide {
+	
+	public static final int TOTAL_BERRIES = 30;
+	
+	private static final Wall W = new Wall();
+	private static final Empty E = new Empty();
 	
 	private GameMapSharedConfig config;
 	
@@ -20,15 +28,15 @@ public class GameMapServerSide {
 	public int getWidth(){return config.getWidth();}
 	public int getHeight(){return config.getHeight();}
 	
-	private int[][] collisionMap;
-	public int[][] getCollisionMap(){return collisionMap;}
+	private Entity[][] collisionMap;
+	public Entity[][] getCollisionMap(){return collisionMap;}
 	
 	public GameMapServerSide(GameMapSharedConfig mapConfig){
 		this.config = mapConfig;
 		loadCollisionMap(config.getBinaryMapPath());
 	}
 	private void loadCollisionMap(String path){
-		collisionMap = new int[getWidth()][getHeight()];	
+		collisionMap = new Entity[getWidth()][getHeight()];	
 		
 	    try {
 			InputStream is = null;			
@@ -43,8 +51,7 @@ public class GameMapServerSide {
 			        int n = Integer.parseInt(nums[col]);
 			        
 			        // (height - 1 - row) to flip y 
-			        collisionMap[col][(getHeight()-1) - row] = n;
-			        System.out.print(n);
+			        collisionMap[col][(getHeight() - 1) - row] = (n == 0 ? E : W);
 			    }
 			    row++;
 			    System.out.println();
@@ -54,6 +61,10 @@ public class GameMapServerSide {
 			e.printStackTrace();
 		}
 
+	}
+
+	public void addEntity(Berry berry) {
+		collisionMap[berry.getX()][berry.getY()] = berry;
 	}
 }
 

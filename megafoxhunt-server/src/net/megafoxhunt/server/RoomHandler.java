@@ -35,7 +35,7 @@ public class RoomHandler {
 	 */
 	private boolean joinRoom(PlayerConnection playerConnection){
 		for(GameRoom room : rooms) {
-			if(room.hasFreeRoom()){				
+			if(room.canJoin()){				
 				room.addPlayerToRoom(playerConnection);
 				playerConnection.setMyCurrentRoom(room);
 				return true;

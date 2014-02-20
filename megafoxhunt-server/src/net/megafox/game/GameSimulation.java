@@ -35,24 +35,28 @@ public class GameSimulation {
 		chaseds = new ArrayList<>();
 		berries = new ArrayList<>();
 	}
+	
 	public void update(float delta, PlayerContainer players){
-		/*
-		 * UPDATE AND CHECK COLLISION
-		 */
-		for(Entity chaser : chasers){			
-			chaser.update(delta, gameMap);
-			Entity chaced = chaser.collides((ArrayList<Entity>) chaseds.clone());
-			if(chaced != null){
-				removable.add(chaced);
-			}
-		}
+		Entity[][] map = gameMap.getCollisionMap();
+
 		for(Entity chased : chaseds){		
 			chased.update(delta, gameMap);
-			Entity berry = chased.collides((ArrayList<Entity>) berries.clone());
-			if(berry != null){
-				removable.add(berry);
+			Entity collidedEntity = map[chased.getX()][chased.getY()];
+
+			if (collidedEntity instanceof Berry) {
+				removable.add(collidedEntity);
 			}
 		}
+		
+		for(Entity chaser : chasers){
+			chaser.update(delta, gameMap);
+			for (Entity chased : chaseds) {
+				if (chaser.getX() == chased.getX() && chaser.getY() == chased.getY()) {
+					removable.add(chased);
+				}
+			}
+		}
+		
 		/*
 		 * HANDLE REMOVABLE
 		 */
@@ -75,36 +79,34 @@ public class GameSimulation {
 		if(berries.isEmpty()){
 			// chased won
 			// TODO add kryonet commands
+			System.out.println("Chased won");
 		}
 		else if(chaseds.isEmpty()){
 			// chaser won
+			System.out.println("chaser won");
 		}
-	}	
+	}
+	
 	public void addChaser(Chaser chaser){
 		chasers.add(chaser);		
 		playerContainer.sendObjectToAll(new AddChaser(chaser.getID(), chaser.getX(), chaser.getY()));	
 	}
+	
 	public void addChased(Chased chased){
 		chaseds.add(chased);	
 		playerContainer.sendObjectToAll(new AddChased(chased.getID(), chased.getX(), chased.getY()));		
 	}
+	
 	public void addBerry(Berry berry){
 		berries.add(berry);		
 		playerContainer.sendObjectToAll(new AddBerry(berry.getID(), berry.getX(), berry.getY()));
 	}
-	public void move(Move move){
-		for(Entity chaser : chasers){
-			if(chaser.getID() == move.id){
-				chaser.move(move.x, move.y, move.direction, gameMap);
-				return;
-			}
-		}
-		for(Entity chased : chaseds){
-			if(chased.getID() == move.id){
-				chased.move(move.x, move.y, move.direction, gameMap);
-				return;
-			}
-		}
+	
+	public void addBerryToRemove(Berry berry) {
+		removable.add(berry);
 	}
 	
+	public void move(Entity entity, int x, int y, int direction){
+		entity.move(x, y, direction, gameMap);
+	}
 }
