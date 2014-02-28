@@ -1,7 +1,10 @@
 package net.megafoxhunt.entities;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 
 public abstract class StaticObject {
@@ -10,19 +13,26 @@ public abstract class StaticObject {
 	protected float x;
 	protected float y;
 	
-	protected Texture texture;
-
-	public StaticObject(int id, float x, float y, Texture texture){
+	private float stateTime = 0f;
+	private Animation[] animations;
+	private TextureRegion currentFrame;
+	private int animationNumber = 0;
+	public void setAnimation(int animationNumber){
+		if(animationNumber < animations.length){
+			this.animationNumber = animationNumber;
+		}
+	}
+	public StaticObject(int id, float x, float y, Animation[] animations){
 		this.id = id;
 		this.x = x;
 		this.y = y;
-		this.texture = texture;
-	}
-	
+		this.animations = animations;
+	}	
 	public void render(Batch batch){
-		batch.draw(texture, x, y, 1, 1);
-	}
-	
+		stateTime += Gdx.graphics.getDeltaTime();
+		currentFrame = animations[animationNumber].getKeyFrame(stateTime, true);
+		batch.draw(currentFrame, x, y, 1, 1);
+	}	
 	public int getId() {
 		return id;
 	}

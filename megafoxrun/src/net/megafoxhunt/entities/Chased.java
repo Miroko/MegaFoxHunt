@@ -6,12 +6,10 @@ import com.badlogic.gdx.graphics.Texture;
 
 public class Chased extends Entity{
 	
-	private static final Texture TEXTURE_FOX = GameTextures.FOX_TEXTURE;
-	
 	private static final float MOVEMENT_SPEED = 5;
 	
 	public Chased(int id, float x, float y) {
-		super(id, x, y, MOVEMENT_SPEED, TEXTURE_FOX);
+		super(id, x, y, MOVEMENT_SPEED, GameTextures.FOX_ANIMATIONS);
 	}
 
 

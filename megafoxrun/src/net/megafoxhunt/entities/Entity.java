@@ -2,10 +2,12 @@ package net.megafoxhunt.entities;
 
 import net.megafoxhunt.core.GameNetwork;
 import net.megafoxhunt.shared.KryoNetwork.Move;
+
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 
-public class Entity extends StaticObject{
+public abstract class Entity extends StaticObject{
 
 	public static final int DIRECTION_STOP = 0;	
 	public static final int DIRECTION_UP = 1;
@@ -27,8 +29,8 @@ public class Entity extends StaticObject{
 
 	private TiledMapTileLayer collisionMap;
 	
-	public Entity(int id, float x, float y, float movementSpeed, Texture texture) {
-		super(id, x, y, texture);
+	public Entity(int id, float x, float y, float movementSpeed, Animation[] animations) {
+		super(id, x, y, animations);
 		this.movementSpeed = movementSpeed;
 	}
 	public void update(float delta, GameNetwork network, TiledMapTileLayer collisionMap){

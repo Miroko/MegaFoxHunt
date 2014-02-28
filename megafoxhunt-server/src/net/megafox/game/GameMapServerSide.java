@@ -54,7 +54,6 @@ public class GameMapServerSide {
 			        collisionMap[col][(getHeight() - 1) - row] = (n == 0 ? E : W);
 			    }
 			    row++;
-			    System.out.println();
 			}
 			br.close();
 		} catch (NumberFormatException | IOException e) {			
