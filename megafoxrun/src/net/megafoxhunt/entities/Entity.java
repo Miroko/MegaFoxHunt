@@ -15,7 +15,7 @@ public abstract class Entity extends StaticObject{
 	public static final int DIRECTION_DOWN = 3;
 	public static final int DIRECTION_LEFT = 4;
 	
-	private int direction = DIRECTION_STOP;
+	protected int direction = DIRECTION_STOP;
 	
 	private float movementSpeed;
 	

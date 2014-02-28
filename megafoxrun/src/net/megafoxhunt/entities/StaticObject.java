@@ -13,10 +13,10 @@ public abstract class StaticObject {
 	protected float x;
 	protected float y;
 	
-	private float stateTime = 0f;
-	private Animation[] animations;
-	private TextureRegion currentFrame;
-	private int animationNumber = 0;
+	protected float stateTime = 0f;
+	protected Animation[] animations;
+	protected TextureRegion currentFrame;
+	protected int animationNumber = 0;
 	public void setAnimation(int animationNumber){
 		if(animationNumber < animations.length){
 			this.animationNumber = animationNumber;
