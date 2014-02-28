@@ -7,6 +7,10 @@ import net.megafoxhunt.shared.Shared;
 
 public class Entity {
 	
+	public enum Visibility {
+		CHASER, CHASED, BOTH;
+	};
+	
 	private static final int COLLISION_VALUE = 1;
 		
 	private int id;
@@ -26,13 +30,16 @@ public class Entity {
 	private int destinationX;
 	private int destinationY;
 	
-	public Entity(int x, int y, int id, int speed){
+	private Visibility visibility;
+	
+	public Entity(int x, int y, int id, int speed, Visibility visibility){
 		this.x = x;
 		this.y = y;
 		this.destinationX = x;
 		this.destinationY = y;
 		this.id = id;
 		this.speed = speed;
+		this.visibility = visibility;
 	}
 	/**
 	 * Moves to coordinates if possible and sets entity direction
@@ -126,5 +133,9 @@ public class Entity {
 		if(destinationReached()){
 			setNewDestination(currentDirection, map);
 		}		
+	}
+	
+	public Visibility getVisibility() {
+		return this.visibility;
 	}
 }
