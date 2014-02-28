@@ -119,9 +119,6 @@ public class GameRoom extends Thread {
 		// INIT GAME SIMULATION
 		gameSimulation = new GameSimulation(playerContainer, currentMap);
 		
-		// ADD BERRIES
-		generateBerries(GameMapServerSide.TOTAL_BERRIES);
-		
 		// ADD CHASERS
 		// TODO
 		
@@ -139,6 +136,9 @@ public class GameRoom extends Thread {
 			}
 			counter++;
 		}
+		
+		// ADD BERRIES
+		generateBerries(GameMapServerSide.TOTAL_BERRIES);
 
 		// SET STATE
 		changeRoomState(ROOM_STATE_GAME);

@@ -63,8 +63,12 @@ public class GameMapServerSide {
 
 	}
 
-	public void addEntity(Berry berry) {
-		collisionMap[berry.getX()][berry.getY()] = berry;
+	public void addEntity(Entity entity) {
+		collisionMap[entity.getX()][entity.getY()] = entity;
+	}
+	
+	public void removeEntity(Entity entity) {
+		collisionMap[entity.getX()][entity.getY()] = E;
 	}
 }
 
