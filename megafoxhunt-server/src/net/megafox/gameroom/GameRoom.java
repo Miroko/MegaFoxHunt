@@ -93,7 +93,23 @@ public class GameRoom extends Thread {
 	
 		playerContainer.sendObjectToAll(changeState);
 	}
-	
+	private void generateBerries(int amount){
+		Random r = new Random();
+		Entity[][] collisionMap = currentMap.getCollisionMap();
+		
+		int x;
+		int y;
+		
+		for (int i = 0; i < amount; i++) {
+			x = r.nextInt(currentMap.getWidth());
+			y = r.nextInt(currentMap.getHeight());
+			if(collisionMap[x][y].getClass().equals(Empty.class)){
+				Berry berry = new Berry(x, y, idHandler.getFreeID());
+				gameSimulation.addBerry(berry);
+				currentMap.addEntity(berry);
+			} else i--;
+		}
+	}
 	public void startGame() {
 		if (roomState == ROOM_STATE_GAME) return;
 		
@@ -104,21 +120,7 @@ public class GameRoom extends Thread {
 		gameSimulation = new GameSimulation(playerContainer, currentMap);
 		
 		// ADD BERRIES
-		Random r = new Random();
-		Entity[][] collisionMap = currentMap.getCollisionMap();
-		
-		int x;
-		int y;
-		
-		for (int i = 0; i < GameMapServerSide.TOTAL_BERRIES; i++) {
-			x = r.nextInt(currentMap.getWidth());
-			y = r.nextInt(currentMap.getHeight());
-			if(collisionMap[x][y].getClass().equals(Empty.class)){
-				Berry berry = new Berry(x, y, idHandler.getFreeID());
-				gameSimulation.addBerry(berry);
-				currentMap.addEntity(berry);
-			} else i--;
-		}
+		generateBerries(GameMapServerSide.TOTAL_BERRIES);
 		
 		// ADD CHASERS
 		// TODO
