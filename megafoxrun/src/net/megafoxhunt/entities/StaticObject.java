@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 
-public abstract class StaticObject {
+public class StaticObject {
 	
 	protected int id;
 	protected float x;

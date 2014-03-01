@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 
-public abstract class Entity extends StaticObject{
+public class Entity extends StaticObject{
 
 	public static final int DIRECTION_STOP = 0;	
 	public static final int DIRECTION_UP = 1;
@@ -23,7 +23,7 @@ public abstract class Entity extends StaticObject{
 	
 	private int destinationX;
 	private int destinationY;
-	private int destinationDirection;
+	protected int destinationDirection;
 	
 	private Move newMove;
 
