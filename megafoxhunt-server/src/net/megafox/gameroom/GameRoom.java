@@ -93,24 +93,14 @@ public class GameRoom extends Thread {
 	
 		playerContainer.sendObjectToAll(changeState);
 	}
-	
-	public void startGame() {
-		if (roomState == ROOM_STATE_GAME) return;
-		
-		// SET AND SEND MAP	
-		changeMap(GameMapSharedConfig.DEBUG_MAP);
-		
-		// INIT GAME SIMULATION
-		gameSimulation = new GameSimulation(playerContainer, currentMap);
-		
-		// ADD BERRIES
+	private void generateBerries(int amount){
 		Random r = new Random();
 		Entity[][] collisionMap = currentMap.getCollisionMap();
 		
 		int x;
 		int y;
 		
-		for (int i = 0; i < GameMapServerSide.TOTAL_BERRIES; i++) {
+		for (int i = 0; i < amount; i++) {
 			x = r.nextInt(currentMap.getWidth());
 			y = r.nextInt(currentMap.getHeight());
 			if(collisionMap[x][y].getClass().equals(Empty.class)){
@@ -119,6 +109,15 @@ public class GameRoom extends Thread {
 				currentMap.addEntity(berry);
 			} else i--;
 		}
+	}
+	public void startGame() {
+		if (roomState == ROOM_STATE_GAME) return;
+		
+		// SET AND SEND MAP	
+		changeMap(GameMapSharedConfig.DEBUG_MAP);
+		
+		// INIT GAME SIMULATION
+		gameSimulation = new GameSimulation(playerContainer, currentMap);
 		
 		// ADD CHASERS
 		// TODO
@@ -137,6 +136,9 @@ public class GameRoom extends Thread {
 			}
 			counter++;
 		}
+		
+		// ADD BERRIES
+		generateBerries(GameMapServerSide.TOTAL_BERRIES);
 
 		// SET STATE
 		changeRoomState(ROOM_STATE_GAME);

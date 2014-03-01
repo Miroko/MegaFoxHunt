@@ -54,7 +54,6 @@ public class GameMapServerSide {
 			        collisionMap[col][(getHeight() - 1) - row] = (n == 0 ? E : W);
 			    }
 			    row++;
-			    System.out.println();
 			}
 			br.close();
 		} catch (NumberFormatException | IOException e) {			
@@ -63,8 +62,12 @@ public class GameMapServerSide {
 
 	}
 
-	public void addEntity(Berry berry) {
-		collisionMap[berry.getX()][berry.getY()] = berry;
+	public void addEntity(Entity entity) {
+		collisionMap[entity.getX()][entity.getY()] = entity;
+	}
+	
+	public void removeEntity(Entity entity) {
+		collisionMap[entity.getX()][entity.getY()] = E;
 	}
 }
 

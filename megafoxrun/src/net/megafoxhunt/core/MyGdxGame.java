@@ -7,6 +7,8 @@ import com.badlogic.gdx.Game;
 
 public class MyGdxGame extends Game {
 	
+	private static final String IP_SERVER = "54.72.36.237";
+	
 	private GameNetwork network;
 	public GameNetwork getNetwork(){return network;}
 	
@@ -21,6 +23,7 @@ public class MyGdxGame extends Game {
 		network = new GameNetwork(this);
 		network.setUsername("TestUser");	
 		network.start();			
+	//	network.connect(IP_SERVER, 6666);
 		network.connect("localhost", 6666);
 		
 		this.setScreen(new MenuScreen());	

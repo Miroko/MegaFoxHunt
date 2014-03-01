@@ -44,7 +44,7 @@ public class GameSimulation {
 			Entity collidedEntity = map[chased.getX()][chased.getY()];
 
 			if (collidedEntity instanceof Berry) {
-				removable.add(collidedEntity);
+				addBerryToRemove((Berry)collidedEntity);
 			}
 		}
 		
@@ -70,7 +70,7 @@ public class GameSimulation {
 			// INFORM ABOUT ENTITY DELETION
 			RemoveEntity removeEntity = new RemoveEntity();
 			removeEntity.id = entity.getID();
-			playerContainer.sendObjectToAll(removeEntity);
+			playerContainer.sendObjectToAll(removeEntity, entity.getVisibility());
 		}
 		removable.clear();
 		/*
@@ -99,11 +99,12 @@ public class GameSimulation {
 	
 	public void addBerry(Berry berry){
 		berries.add(berry);		
-		playerContainer.sendObjectToAll(new AddBerry(berry.getID(), berry.getX(), berry.getY()));
+		playerContainer.sendObjectToAll(new AddBerry(berry.getID(), berry.getX(), berry.getY()), berry.getVisibility());
 	}
 	
 	public void addBerryToRemove(Berry berry) {
 		removable.add(berry);
+		gameMap.removeEntity(berry);
 	}
 	
 	public void move(Entity entity, int x, int y, int direction){
