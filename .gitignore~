@@ -6,12 +6,11 @@ megafoxrun/.settings/
 megafoxrun/bin/
 
 megafoxrun-desktop/.settings/
+megafoxrun-desktop/*.log
+.gitignore~
 
 megafoxhunt-server/.settings
 megafoxhunt-server/bin
 
 ServerClientShared/.settings
 ServerClientShared/bin
-
-/.metadata
-*.project
