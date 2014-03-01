@@ -1,5 +1,6 @@
 package net.megafox.gameroom;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import net.megafox.entities.Berry;
@@ -207,4 +208,8 @@ public class GameRoom extends Thread {
 		playerContainer.sendObjectToAllExcept(player, move);		
 	}
 
+	
+	public PlayerContainer getPlayerContainer() {
+		return playerContainer;
+	}
 }
