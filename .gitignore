@@ -7,6 +7,7 @@ megafoxrun/bin/
 
 megafoxrun-desktop/.settings/
 megafoxrun-desktop/*.log
+.gitignore~
 
 megafoxhunt-server/.settings
 megafoxhunt-server/bin
