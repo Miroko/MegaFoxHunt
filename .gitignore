@@ -6,6 +6,7 @@ megafoxrun/.settings/
 megafoxrun/bin/
 
 megafoxrun-desktop/.settings/
+megafoxrun-desktop/*.log
 
 megafoxhunt-server/.settings
 megafoxhunt-server/bin
