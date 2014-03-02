@@ -1,12 +1,13 @@
 package net.megafoxhunt.entities;
 
-import net.megafoxhunt.core.GameTextures;
+import net.megafoxhunt.core.MyGdxGame;
+
 
 
 public class Berry extends StaticObject{
 	
 	public Berry(int id, float x, float y) {
-		super(id, x, y, GameTextures.BERRY_ANIMATIONS);
+		super(id, x, y, MyGdxGame.resources.BERRY_ANIMATIONS);
 		// TODO Auto-generated constructor stub
 	}
 

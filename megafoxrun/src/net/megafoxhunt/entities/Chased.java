@@ -1,10 +1,8 @@
 package net.megafoxhunt.entities;
 
-import net.megafoxhunt.core.GameTextures;
+import net.megafoxhunt.core.MyGdxGame;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 
 public class Chased extends Entity{
@@ -14,7 +12,7 @@ public class Chased extends Entity{
 	private int lastXDirection = 2;
 	
 	public Chased(int id, float x, float y) {
-		super(id, x, y, MOVEMENT_SPEED, GameTextures.FOX_ANIMATIONS);
+		super(id, x, y, MOVEMENT_SPEED, MyGdxGame.resources.FOX_ANIMATIONS);
 	}
 
 	@Override

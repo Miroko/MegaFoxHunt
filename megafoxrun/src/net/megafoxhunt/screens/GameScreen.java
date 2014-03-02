@@ -1,12 +1,13 @@
 package net.megafoxhunt.screens;
 
 
+
 import net.megafoxhunt.core.GameInputProcessor;
-import net.megafoxhunt.core.GameNetwork;
+
 import net.megafoxhunt.core.MyGdxGame;
 import net.megafoxhunt.core.User;
 import net.megafoxhunt.core.UserContainer;
-import net.megafoxhunt.debug.DebugConsole;
+
 import net.megafoxhunt.entities.Entity;
 import net.megafoxhunt.entities.StaticObject;
 import net.megafoxhunt.ui.TouchJoystick;
@@ -36,19 +37,18 @@ public class GameScreen implements Screen {
 	
 	private TouchJoystick touchJoystick;
 	
-	public GameScreen(MyGdxGame game) {
-		DebugConsole.msg("Set screen: GameScreen");
+	public GameScreen(MyGdxGame game) {				
 		this.game = game;
 		spriteBatch = new SpriteBatch();		
-		touchJoystick = new TouchJoystick(game.getNetwork());
-		Gdx.input.setInputProcessor(new GameInputProcessor(game.getNetwork(), touchJoystick));
+		touchJoystick = new TouchJoystick(MyGdxGame.network);
+		Gdx.input.setInputProcessor(new GameInputProcessor(MyGdxGame.network, touchJoystick));
 		
 		/*
 		 * LOAD MAP
 		 */
-		game.getGameMap().load();
+		MyGdxGame.gameMap.load();
 		
-		renderer = new OrthogonalTiledMapRenderer(game.getGameMap().getTiledMap(), UNIT_SCALE);
+		renderer = new OrthogonalTiledMapRenderer(MyGdxGame.gameMap.getTiledMap(), UNIT_SCALE);
 				
 		camera = new OrthographicCamera();	
 		camera.setToOrtho(false, FIT_TILES_WIDTH, FIT_TILES_HEIGHT);
@@ -64,11 +64,11 @@ public class GameScreen implements Screen {
 		Entity entity = null;
 		for(User user : UserContainer.getUsersConcurrentSafe()){
 			entity = user.getControlledEntity();
-			if (entity != null) entity.update(delta, game.getNetwork(), game.getGameMap().getCollisionLayer());
+			if (entity != null) entity.update(delta, MyGdxGame.network, MyGdxGame.gameMap.getCollisionLayer());
 		}
 		
 		// FOCUS CAMERA ON PLAYER ENTITY
-		Entity myEntity = game.getNetwork().getLocalUser().getControlledEntity();
+		Entity myEntity = MyGdxGame.network.getLocalUser().getControlledEntity();
         if (myEntity != null){
         	camera.position.x = myEntity.getX();
         	camera.position.y = myEntity.getY();
@@ -94,7 +94,7 @@ public class GameScreen implements Screen {
         	if (entity != null) entity.render(batch);
         }    
         // DRAW BERRIES
-        for(StaticObject object : game.getGameMap().getAllObjectsConcurrentSafe()){
+        for(StaticObject object : MyGdxGame.gameMap.getAllObjectsConcurrentSafe()){
         	object.render(batch);
         }
         
@@ -109,14 +109,14 @@ public class GameScreen implements Screen {
 	private void keepCameraInBoundaries() {
 		if (camera.position.x < FIT_TILES_WIDTH / 2) {
     		camera.position.x = FIT_TILES_WIDTH / 2;
-    	} if (camera.position.x > (game.getGameMap().getWidth() - (FIT_TILES_WIDTH / 2))) {
-    		camera.position.x = game.getGameMap().getWidth() - (FIT_TILES_WIDTH / 2);
+    	} if (camera.position.x > (MyGdxGame.gameMap.getWidth() - (FIT_TILES_WIDTH / 2))) {
+    		camera.position.x = MyGdxGame.gameMap.getWidth() - (FIT_TILES_WIDTH / 2);
     	}
     	
     	if (camera.position.y < FIT_TILES_HEIGHT / 2) {
     		camera.position.y = FIT_TILES_HEIGHT / 2;
-    	} if (camera.position.y > (game.getGameMap().getHeight() - (FIT_TILES_HEIGHT / 2))) {
-    		camera.position.y = game.getGameMap().getHeight() - (FIT_TILES_HEIGHT / 2);
+    	} if (camera.position.y > (MyGdxGame.gameMap.getHeight() - (FIT_TILES_HEIGHT / 2))) {
+    		camera.position.y = MyGdxGame.gameMap.getHeight() - (FIT_TILES_HEIGHT / 2);
     	}
 	}
 
@@ -149,8 +149,7 @@ public class GameScreen implements Screen {
 	}
 
 	@Override
-	public void dispose() {
-		game.getGameMap().dispose();
+	public void dispose() {		
 		renderer.dispose();
 	}
 

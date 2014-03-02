@@ -1,9 +1,9 @@
 package net.megafoxhunt.screens;
-import net.megafoxhunt.core.GameNetwork;
+
 import net.megafoxhunt.core.MyGdxGame;
 import net.megafoxhunt.core.User;
 import net.megafoxhunt.core.UserContainer;
-import net.megafoxhunt.debug.DebugConsole;
+
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -24,7 +24,7 @@ public class LobbyScreen implements Screen {
 	private MyGdxGame game;
 	
 	public LobbyScreen(MyGdxGame game) {
-		DebugConsole.msg("Set screen: LobbyScreen");
+		
 		this.game = game;
 		this.batch = new SpriteBatch();
 		font = new BitmapFont();
@@ -49,7 +49,7 @@ public class LobbyScreen implements Screen {
 	private void drawLobbyUsers(){	
 		for(int i = 0; i < UserContainer.numberOfUsers(); i++) {
 			User userToDraw = UserContainer.getUsersConcurrentSafe().get(i);
-			if(userToDraw == game.getNetwork().getLocalUser()){
+			if(userToDraw == MyGdxGame.network.getLocalUser()){
 				// SELF
 		        font.setColor(Color.RED);
 			}

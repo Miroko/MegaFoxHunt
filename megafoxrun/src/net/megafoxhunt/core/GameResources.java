@@ -3,24 +3,24 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-public class GameTextures {
+public class GameResources {
 
-	public static Texture DEBUG_TEXTURE;
+	public Texture DEBUG_TEXTURE;
 	
-	public static Texture FOX_TEXTURE;
-	public static Texture DOG_TEXTURE;
-	public static Texture BERRY_TEXTURE;
+	public Texture FOX_TEXTURE;
+	public Texture DOG_TEXTURE;
+	public Texture BERRY_TEXTURE;
 	
-	public static final int BERRY_DEFAULT_ANIMATION = 0;
-	public static Animation[] BERRY_ANIMATIONS = new Animation[10];
+	public final int BERRY_DEFAULT_ANIMATION = 0;
+	public Animation[] BERRY_ANIMATIONS = new Animation[10];
 	
-	public static final int FOX_DEFAULT_ANIMATION = 0;
-	public static Animation[] FOX_ANIMATIONS = new Animation[10];
+	public final int FOX_DEFAULT_ANIMATION = 0;
+	public Animation[] FOX_ANIMATIONS = new Animation[10];
 	
-	public static final int DOG_DEFAULT_ANIMATION = 0;
-	public static Animation[] DOG_ANIMATIONS  = new Animation[10];
+	public final int DOG_DEFAULT_ANIMATION = 0;
+	public Animation[] DOG_ANIMATIONS  = new Animation[10];
 	
-	public static void init(){
+	public void init(){
 		 DEBUG_TEXTURE = new Texture("data/libgdx.png");
 		 FOX_TEXTURE = new Texture("data/fox_run.png");
 		 DOG_TEXTURE = new Texture("data/dog.png");
@@ -28,10 +28,9 @@ public class GameTextures {
 		 
 		 BERRY_ANIMATIONS[BERRY_DEFAULT_ANIMATION] = generateAnimation(BERRY_TEXTURE, 0.025f, 1, 1);
 		 FOX_ANIMATIONS[FOX_DEFAULT_ANIMATION] = generateAnimation(FOX_TEXTURE, 0.025f, 6, 5);
-		 DOG_ANIMATIONS[DOG_DEFAULT_ANIMATION] = generateAnimation(DOG_TEXTURE, 0.025f, 1, 1);
-		 
+		 DOG_ANIMATIONS[DOG_DEFAULT_ANIMATION] = generateAnimation(DOG_TEXTURE, 0.025f, 1, 1);		 
 	}
-	private static Animation generateAnimation(Texture texture, float frameDuration, int cols, int rows){
+	private Animation generateAnimation(Texture texture, float frameDuration, int cols, int rows){
 		Animation animation = null;
         TextureRegion[][] tmp = TextureRegion.split(texture, texture.getWidth() / cols, texture.getHeight() / rows); 
         TextureRegion[] frames = new TextureRegion[cols * rows];
@@ -44,11 +43,12 @@ public class GameTextures {
         animation = new Animation(frameDuration, frames);
         return animation;
 	}
-	public static void dispose(){
+	public void dispose(){
 		DEBUG_TEXTURE.dispose();
 		FOX_TEXTURE.dispose();
 		DOG_TEXTURE.dispose();
 		BERRY_TEXTURE.dispose();
 	}
+	
 	
 }

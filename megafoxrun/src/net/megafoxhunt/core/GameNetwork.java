@@ -1,9 +1,9 @@
 package net.megafoxhunt.core;
 
 import java.io.IOException;
+
 import java.util.Scanner;
 
-import net.megafoxhunt.debug.DebugConsole;
 import net.megafoxhunt.entities.Berry;
 import net.megafoxhunt.entities.Chased;
 import net.megafoxhunt.entities.Chaser;
@@ -56,7 +56,7 @@ public class GameNetwork {
 		kryoClient.addListener(new ThreadedListener(new Listener() {
 			@Override
 			public void connected (Connection connection) {
-				DebugConsole.msg("Connected to: " + connection.getRemoteAddressTCP().getHostString());
+				
 			}
 
 			@Override
@@ -67,7 +67,7 @@ public class GameNetwork {
 				if (object instanceof WelcomePlayer) {
 					WelcomePlayer welcomePlayer = (WelcomePlayer)object;
 					localUser.setID(welcomePlayer.id);
-					DebugConsole.msg("Welcome, your id is: " + welcomePlayer.id);
+					//DebugConsole.msg("Welcome, your id is: " + welcomePlayer.id);
 				}
 				/*
 				 * ADD USER
@@ -75,7 +75,7 @@ public class GameNetwork {
 				else if (object instanceof AddPlayer) {
 					AddPlayer addPlayer = (AddPlayer)object;
 					UserContainer.addUser(new User(addPlayer.id, addPlayer.name));
-					DebugConsole.msg("player joined: " + addPlayer.name + "(" + addPlayer.id + ")");
+					//DebugConsole.msg("player joined: " + addPlayer.name + "(" + addPlayer.id + ")");
 				}
 				/*
 				 * REMOVE USER
@@ -83,7 +83,7 @@ public class GameNetwork {
 				else if (object instanceof RemovePlayer) {
 					RemovePlayer removePlayer = (RemovePlayer)object;
 					UserContainer.removeUserById(removePlayer.id);
-					DebugConsole.msg("player left: (" + removePlayer.id + ")");
+					//DebugConsole.msg("player left: (" + removePlayer.id + ")");
 				} 
 				/*
 				 * CHANGE GAME STATE
@@ -120,7 +120,7 @@ public class GameNetwork {
 				 */
 				else if (object instanceof AddBerry) {
 					AddBerry addBerry = (AddBerry)object;
-					game.getGameMap().addStaticObject(new Berry(addBerry.id, addBerry.x, addBerry.y));
+					MyGdxGame.gameMap.addStaticObject(new Berry(addBerry.id, addBerry.x, addBerry.y));
 				}
 				/*
 				 * REMOVE ENTITY 
@@ -128,7 +128,7 @@ public class GameNetwork {
 				else if (object instanceof RemoveEntity) {
 					RemoveEntity removeEntity = (RemoveEntity)object;
 					// DELETE FROM MAP
-					game.getGameMap().removeStaticObjectByID(removeEntity.id);
+					MyGdxGame.gameMap.removeStaticObjectByID(removeEntity.id);
 					
 					// TODO
 					// Refactor this to its own kryo command
@@ -152,11 +152,11 @@ public class GameNetwork {
 				 */						
 				else if(object instanceof SetMap){					
 					SetMap setMap = (SetMap)object;	
-					DebugConsole.msg("Set map: " + setMap.mapName);
+					//DebugConsole.msg("Set map: " + setMap.mapName);
 					
 					// TODO MAKE THIS BETTER
 					if(setMap.mapName.equals(GameMapSharedConfig.DEBUG_MAP.getName())){
-						game.setGameMap(new GameMapClientSide(GameMapSharedConfig.DEBUG_MAP));
+						MyGdxGame.gameMap = new GameMapClientSide(GameMapSharedConfig.DEBUG_MAP);
 					}					
 				}				
 			}
@@ -181,11 +181,11 @@ public class GameNetwork {
 		}
 		localUser.setName(name);
 		UserContainer.addUser(localUser);
-		DebugConsole.msg("Username set: " + localUser.getName());
+		//DebugConsole.msg("Username set: " + localUser.getName());
 	}
 	public void connect(String host, int port){
 		try {
-			DebugConsole.msg("Connecting to: " + host + " Port: " + port);
+			//DebugConsole.msg("Connecting to: " + host + " Port: " + port);
 			kryoClient.connect(TIMEOUT_MS, host, port);
 			Login login = new Login();
 			login.name = localUser.getName();

@@ -1,40 +1,37 @@
 package net.megafoxhunt.core;
-
-
-import net.megafoxhunt.debug.DebugConsole;
 import net.megafoxhunt.screens.MenuScreen;
+import net.megafoxhunt.ui.MenuUI;
+
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public class MyGdxGame extends Game {
 	
 	private static final String IP_SERVER = "54.72.36.237";
-	
-	private GameNetwork network;
-	public GameNetwork getNetwork(){return network;}
-	
-	private GameMapClientSide gameMap;
-	public GameMapClientSide getGameMap(){return gameMap;}
-	public void setGameMap(GameMapClientSide gameMap){this.gameMap = gameMap;}
-	
+		
+	public static GameResources resources; 	
+	public static GameNetwork network;
+	public static GameMapClientSide gameMap;
+
 	@Override	
-	public void create() {			
-		GameTextures.init();	
+	public void create() {	
+		resources = new GameResources();
+		resources.init();
 		
 		network = new GameNetwork(this);
-		network.setUsername("TestUser");	
-		network.start();			
-	//	network.connect(IP_SERVER, 6666);
-		network.connect("localhost", 6666);
 		
-		this.setScreen(new MenuScreen());	
+		this.setScreen(new MenuScreen(this));	
 	}	
-	public static void shutdown(){
-		DebugConsole.msg("Shutdown");
-		System.exit(0);
-	}
 	@Override
 	public void dispose() {
-		GameTextures.dispose();
+		resources.dispose();		
+		gameMap.dispose();
+	}
+	public static void shutdown(){
+		Gdx.app.log("INFO", "Shutdown");
+		System.exit(0);
 	}
 
 }
