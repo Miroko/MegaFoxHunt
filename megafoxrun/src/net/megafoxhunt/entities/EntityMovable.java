@@ -3,8 +3,10 @@ package net.megafoxhunt.entities;
 import net.megafoxhunt.core.GameNetwork;
 import net.megafoxhunt.shared.KryoNetwork.Move;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 
 public class EntityMovable extends Entity{
@@ -24,6 +26,9 @@ public class EntityMovable extends Entity{
 	private int destinationX;
 	private int destinationY;
 	protected int destinationDirection;
+	
+	// for flip
+	private int lastXDirection = 2;
 	
 	private Move newMove;
 
@@ -60,7 +65,36 @@ public class EntityMovable extends Entity{
 			newMove = null;
 		}
 	}
-	
+	@Override
+	public void render(Batch batch){
+		stateTime += Gdx.graphics.getDeltaTime();
+		currentFrame = animations[animationNumber].getKeyFrame(stateTime, true);
+		switch (lastXDirection) {
+		case DIRECTION_STOP:
+
+			break;
+		case DIRECTION_DOWN:
+
+			break;
+		case DIRECTION_UP:
+
+			break;
+		case DIRECTION_LEFT:
+			if(currentFrame.isFlipX() == false){
+				currentFrame.flip(true, false);				
+			}
+			break;
+		case DIRECTION_RIGHT:
+			if(currentFrame.isFlipX() == true){
+				currentFrame.flip(true, false);
+			}
+			break;
+		}
+		if (destinationDirection == DIRECTION_LEFT || destinationDirection == DIRECTION_RIGHT){
+			lastXDirection = destinationDirection;
+		}
+		batch.draw(currentFrame, x - 0.35f, y, 1.7f, 1.7f);
+	}
 	private void setNewDestination(GameNetwork network) {
 		if (direction == DIRECTION_STOP) {
 			if (network.getLocalUser().getControlledEntity() == this && destinationDirection != direction) {

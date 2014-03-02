@@ -9,23 +9,9 @@ public class Chased extends EntityMovable{
 	
 	private static final float MOVEMENT_SPEED = 5;
 	
-	private int lastXDirection = 2;
 	
 	public Chased(int id, float x, float y) {
 		super(id, x, y, MOVEMENT_SPEED, MyGdxGame.resources.FOX_ANIMATIONS);
 	}
 
-	@Override
-	public void render(Batch batch){
-		stateTime += Gdx.graphics.getDeltaTime();
-		currentFrame = animations[animationNumber].getKeyFrame(stateTime, true);
-		
-		if (lastXDirection == DIRECTION_RIGHT && currentFrame.isFlipX()) currentFrame.flip(true, false);
-		
-		if (lastXDirection == DIRECTION_LEFT && !currentFrame.isFlipX()) currentFrame.flip(true, false);
-		
-		if (destinationDirection == DIRECTION_LEFT || destinationDirection == DIRECTION_RIGHT) lastXDirection = destinationDirection;
-		
-		batch.draw(currentFrame, x - 0.35f, y, 1.7f, 1.7f);
-	}
 }

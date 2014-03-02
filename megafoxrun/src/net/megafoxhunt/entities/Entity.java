@@ -12,7 +12,7 @@ public class Entity {
 	protected int id;
 	protected float x;
 	protected float y;
-	
+		
 	protected float stateTime = 0f;
 	protected Animation[] animations;
 	protected TextureRegion currentFrame;
