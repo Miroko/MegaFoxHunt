@@ -79,11 +79,9 @@ public class GameSimulation {
 		if(berries.isEmpty()){
 			// chased won
 			// TODO add kryonet commands
-			System.out.println("Chased won");
 		}
 		else if(chaseds.isEmpty()){
 			// chaser won
-			System.out.println("chaser won");
 		}
 	}
 	
