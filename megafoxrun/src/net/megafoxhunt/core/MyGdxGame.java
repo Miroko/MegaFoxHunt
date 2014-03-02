@@ -7,10 +7,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
-public class MyGdxGame extends Game {
+public class MyGdxGame extends Game {	
 	
 	private static final String IP_SERVER = "54.72.36.237";
-		
+			
+	public static final int VIRTUAL_WIDTH = 800;
+	public static final int VIRTUAL_HEIGHT = 600;
+	
 	public static GameResources resources; 	
 	public static GameNetwork network;
 	public static GameMapClientSide gameMap;

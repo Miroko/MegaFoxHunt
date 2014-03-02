@@ -18,6 +18,7 @@ public class KryoNetwork {
 		kryo.register(SetMap.class);
 		kryo.register(AddBerry.class);
 		kryo.register(RemoveEntity.class);
+		kryo.register(PlayerReady.class);
 	}	
 	/*
 	 * CLIENT HANDLING
@@ -36,6 +37,9 @@ public class KryoNetwork {
 		public static final int GAME = 1;
 		
 		public int roomState;
+	}
+	public static class PlayerReady {		
+		
 	}
 	public static class AddPlayer{
 		public String name;

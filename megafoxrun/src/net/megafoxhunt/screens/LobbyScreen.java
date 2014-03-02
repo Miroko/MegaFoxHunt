@@ -3,6 +3,8 @@ package net.megafoxhunt.screens;
 import net.megafoxhunt.core.MyGdxGame;
 import net.megafoxhunt.core.User;
 import net.megafoxhunt.core.UserContainer;
+import net.megafoxhunt.ui.LobbyUI;
+import net.megafoxhunt.ui.MenuUI;
 
 
 import com.badlogic.gdx.Gdx;
@@ -12,8 +14,11 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public class LobbyScreen implements Screen {
+	
+	private Stage stageUI;		
 
 	private BitmapFont font;
 
@@ -24,8 +29,17 @@ public class LobbyScreen implements Screen {
 	private MyGdxGame game;
 	
 	public LobbyScreen(MyGdxGame game) {
-		
 		this.game = game;
+		
+		stageUI = new Stage();
+		Gdx.input.setInputProcessor(stageUI);	
+		
+	    LobbyUI lobbyUI = new LobbyUI();	  
+	    lobbyUI.setPosition(MyGdxGame.VIRTUAL_WIDTH/2, 0);
+	    stageUI.addActor(lobbyUI);
+		
+	    
+	    
 		this.batch = new SpriteBatch();
 		font = new BitmapFont();
 		
@@ -38,6 +52,9 @@ public class LobbyScreen implements Screen {
 	public void render(float delta) {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+
+	    stageUI.act(Gdx.graphics.getDeltaTime());
+	    stageUI.draw();	
                
         camera.update();
         batch.setProjectionMatrix(camera.combined);        
@@ -61,9 +78,8 @@ public class LobbyScreen implements Screen {
 		}
 	}
 	@Override
-	public void resize(int width, int height) {
-		// TODO Auto-generated method stub
-		
+	public void resize (int width, int height) {
+		stageUI.setViewport(MyGdxGame.VIRTUAL_WIDTH, MyGdxGame.VIRTUAL_HEIGHT, true);
 	}
 
 	@Override
@@ -92,6 +108,7 @@ public class LobbyScreen implements Screen {
 
 	@Override
 	public void dispose() {
+		stageUI.dispose();
 		font.dispose();
 		batch.dispose();
 	}

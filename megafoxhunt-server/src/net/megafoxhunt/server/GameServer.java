@@ -6,6 +6,7 @@ import net.megafoxhunt.shared.KryoNetwork;
 
 import net.megafoxhunt.shared.KryoNetwork.Login;
 import net.megafoxhunt.shared.KryoNetwork.Move;
+import net.megafoxhunt.shared.KryoNetwork.PlayerReady;
 
 import net.megafoxhunt.shared.KryoNetwork.WelcomePlayer;
 
@@ -73,6 +74,12 @@ public class GameServer {
 				else if (object instanceof Move) {
 					Move move = (Move)object;
 					playerConnection.getMyCurrentRoom().move(playerConnection, move);
+				}
+				/*
+				 * LOBBY 
+				 */
+				else if (object instanceof PlayerReady) {					
+					playerConnection.getMyCurrentRoom().playerReady(playerConnection);
 				}
 			}
 			

@@ -10,23 +10,19 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public class MenuScreen implements Screen {
 	
-	public static final int VIRTUAL_WIDTH = 800;
-	public static final int VIRTUAL_HEIGHT = 600;
-	
 	private Stage stageUI;		
-	private MenuUI menuUI;
 	
 	public MenuScreen(MyGdxGame game){	  		
 		stageUI = new Stage();
 	    Gdx.input.setInputProcessor(stageUI);		    
 		
-	    menuUI = new MenuUI();	  
+	    MenuUI menuUI = new MenuUI();	  
 	    menuUI.setPosition(0, 0);
 	    stageUI.addActor(menuUI);
 	}
 	@Override
 	public void resize (int width, int height) {
-		stageUI.setViewport(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, true);
+		stageUI.setViewport(MyGdxGame.VIRTUAL_WIDTH, MyGdxGame.VIRTUAL_HEIGHT, true);
 	}
 	@Override
 	public void dispose() {

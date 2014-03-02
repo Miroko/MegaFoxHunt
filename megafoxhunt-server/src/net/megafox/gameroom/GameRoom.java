@@ -1,5 +1,4 @@
 package net.megafox.gameroom;
-
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -33,6 +32,8 @@ public class GameRoom extends Thread {
 	
 	private int roomState;
 	private boolean roomRunning = true;
+	
+	private ArrayList<PlayerConnection> playersReady = new ArrayList<>();
 	
 	private GameMapServerSide currentMap;	
 	private PlayerContainer playerContainer;
@@ -109,6 +110,14 @@ public class GameRoom extends Thread {
 				gameSimulation.addBerry(berry);
 				currentMap.addEntity(berry);
 			} else i--;
+		}
+	}
+	public void playerReady(PlayerConnection player){	
+		playersReady.add(player);
+		
+		// If same amount of players in lobby and ready
+		if(playerContainer.getPlayersConcurrentSafe().size() == playersReady.size()){
+			startGame();
 		}
 	}
 	public void startGame() {
