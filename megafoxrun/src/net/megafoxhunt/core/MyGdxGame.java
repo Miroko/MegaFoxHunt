@@ -9,7 +9,10 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public class MyGdxGame extends Game {	
 	
-	private static final String IP_SERVER = "54.72.36.237";
+	//public static final String IP_SERVER = "54.72.36.237";
+	
+	public static final String IP_SERVER = "localhost";
+	
 			
 	public static final int VIRTUAL_WIDTH = 800;
 	public static final int VIRTUAL_HEIGHT = 600;

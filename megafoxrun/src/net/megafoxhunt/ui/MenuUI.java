@@ -35,7 +35,7 @@ public class MenuUI extends Table{
 				if(button.isPressed()){					
 					MyGdxGame.network.setUsername("TestUser");	
 					MyGdxGame.network.start();	
-					MyGdxGame.network.connect("localhost", 6666);
+					MyGdxGame.network.connect(MyGdxGame.IP_SERVER, 6666);
 				}
 			}
 		});
