@@ -19,7 +19,19 @@ public class KryoNetwork {
 		kryo.register(AddBerry.class);
 		kryo.register(RemoveEntity.class);
 		kryo.register(PlayerReady.class);
+		kryo.register(Message.class);
+		kryo.register(Winner.class);
 	}	
+	/*
+	 * MESSAGE
+	 * 
+	 */
+	public static class Message{
+		public String message;
+	}
+	public static class Winner{
+		public String winner;
+	}
 	/*
 	 * CLIENT HANDLING
 	 */

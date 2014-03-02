@@ -2,9 +2,11 @@ package net.megafoxhunt.server;
 
 import java.io.IOException;
 
+import net.megafox.gameroom.GameRoom;
 import net.megafoxhunt.shared.KryoNetwork;
 
 import net.megafoxhunt.shared.KryoNetwork.Login;
+import net.megafoxhunt.shared.KryoNetwork.Message;
 import net.megafoxhunt.shared.KryoNetwork.Move;
 import net.megafoxhunt.shared.KryoNetwork.PlayerReady;
 
@@ -16,18 +18,14 @@ import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.kryonet.Listener.ThreadedListener;
 
 public class GameServer {
-	
-	// SERVER PORT
+
 	private static final int PORT = 6666;
 	
-	// KRYO SERVER
 	private Server kryoServer;	
-	
-	// ID HANDLER	
+
 	private IDHandler idHandler;
 	public IDHandler getIdHandler(){return idHandler;}	
-	
-	// ROOM HANDLER	
+
 	private RoomHandler roomHandler;
 	public RoomHandler getRoomHandler(){return roomHandler;}
 	
@@ -51,22 +49,8 @@ public class GameServer {
 				/*
 				 * LOGIN
 				 */
-				if(object instanceof Login){					
-					String name = ((Login)object).name;	
-					// VALIDATION
-					if(name == null || name.isEmpty()) {
-						playerConnection.close();
-						return;
-					} else{
-						playerConnection.setName(name);
-						System.out.println("User connected: " + name + " (" + playerConnection.getMyId() + ")");						
-						
-						roomHandler.addPlayer(playerConnection);						
-						
-						WelcomePlayer wp = new WelcomePlayer();
-						wp.id = playerConnection.getMyId();
-						playerConnection.sendTCP(wp);
-					}
+				if(object instanceof Login){	
+					handleLogin((Login)object, playerConnection);
 				}
 				/*
 				 * MOVE 
@@ -86,12 +70,10 @@ public class GameServer {
 			@Override
 			public void disconnected (Connection connection) {
 				PlayerConnection playerConnection = (PlayerConnection)connection;
-				
-				int id = playerConnection.getMyId();
-				if (idHandler.isValidID(id)) {
-					System.out.println("Player left: " + playerConnection.getName() + " (" + id + ")");
-					playerConnection.getMyCurrentRoom().removePlayer(playerConnection);
-					idHandler.freeID(id);
+				try {
+					handleDisconnection(playerConnection);
+				} catch (Exception e) {					
+					System.out.println("Disconnection error");
 				}
 			}
 		}));				
@@ -101,6 +83,88 @@ public class GameServer {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}		
+	}
+	private boolean handleDisconnection(PlayerConnection connection) throws Exception{		
+		boolean playerRemovedFromRoom = removePlayerFromRoom(connection);
+		if(playerRemovedFromRoom){			
+			logDisconnection(connection);
+			connection.dispose(idHandler);
+		}
+		else{
+			return false;
+		}		
+		return true;
+	}
+	private void handleLogin(Login login, PlayerConnection connection){
+		boolean playerConnected = addConnectingPlayer(login, connection);
+		if(playerConnected){
+			logConnection(connection);
+		}
+	}
+	private boolean addConnectingPlayer(Login login, PlayerConnection connection){
+		String name = login.name;	
+		boolean validName = setName(name, connection);
+		if(validName){			
+			boolean playerAdded = addPlayer(connection);
+			if(playerAdded){
+				sendWelcome(connection);
+				return true;
+			}
+		}
+		else{
+			sendDisconnection("Invalid username", connection);
+			connection.close();			
+		}
+		return false;
+	}
+	/*
+	 * Check if name is valid
+	 */
+	private boolean setName(String name, PlayerConnection connection){
+		if(name == null || name.isEmpty()) {			
+			return false;
+		}
+		else{
+			connection.setName(name);
+			return true;
+		}		
+	}
+	/*
+	 * Adds player to room
+	 * if none available creates new
+	 */
+	private boolean addPlayer(PlayerConnection connection){
+		GameRoom roomAddedTo = roomHandler.addPlayer(connection);
+		if(roomAddedTo == null){			
+			GameRoom room = roomHandler.createNewRoom();
+			room.addPlayerToRoom(connection);				
+			room.start();
+			roomAddedTo = room;
+		}
+		if(connection.getMyCurrentRoom() == null){
+			return false;
+		}
+		return true;
+	}
+	private void logConnection(PlayerConnection connection){
+		System.out.println("Connected: " + connection.getRemoteAddressTCP() + " " + connection.getName() + " " + connection.getMyId());		
+	}
+	private void logDisconnection(PlayerConnection connection){
+		System.out.println("Disconnected: " + connection.getRemoteAddressTCP() + " " + connection.getName() + " " + connection.getMyId());		
+	}
+	private boolean removePlayerFromRoom(PlayerConnection connection){
+		boolean playerRemovedFromRoom = false;
+		playerRemovedFromRoom = connection.getMyCurrentRoom().removePlayer(connection);
+		return playerRemovedFromRoom;
+	}
+	private void sendWelcome(PlayerConnection connection){
+		WelcomePlayer wp = new WelcomePlayer();
+		wp.id = connection.getMyId();		
+		connection.sendTCP(wp);			
+	}
+	private void sendDisconnection(String message, PlayerConnection connection){
+		Message disconnectionMessage = new Message();
+		disconnectionMessage.message = message;
 	}
 	public void start(){
 		kryoServer.start();

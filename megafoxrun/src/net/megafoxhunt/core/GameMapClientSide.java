@@ -18,9 +18,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 public class GameMapClientSide {
 	
 	private static final int TILEDMAP_COLLISION_LAYER = 0;	
-	
-	//public static GameMapClientSide MAP_DEBUG = new GameMapClientSide(GameMapSharedConfig.DEBUG_MAP);	
-	
+
 	private GameMapSharedConfig config;
 
 	public String getName(){return config.getName();}
@@ -51,12 +49,6 @@ public class GameMapClientSide {
 	}
 	public void load(){		
 		tiledMap = new TmxMapLoader().load(config.getTiledMapPath());
-		
-		/*
-		MapProperties prop = tiledMap.getProperties();
-		mapWidth = prop.get("width", Integer.class);
-		mapHeight = prop.get("height", Integer.class);
-		*/
 	}	
 	public int getWidth() {
 		return config.getWidth();
