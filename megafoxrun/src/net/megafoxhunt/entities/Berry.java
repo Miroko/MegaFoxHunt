@@ -4,7 +4,7 @@ import net.megafoxhunt.core.MyGdxGame;
 
 
 
-public class Berry extends StaticObject{
+public class Berry extends Entity{
 	
 	public Berry(int id, float x, float y) {
 		super(id, x, y, MyGdxGame.resources.BERRY_ANIMATIONS);

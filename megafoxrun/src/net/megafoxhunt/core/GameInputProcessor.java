@@ -1,7 +1,7 @@
 package net.megafoxhunt.core;
 
 
-import net.megafoxhunt.entities.Entity;
+import net.megafoxhunt.entities.EntityMovable;
 import net.megafoxhunt.ui.TouchJoystick;
 
 import com.badlogic.gdx.Input.Keys;
@@ -23,7 +23,7 @@ public class GameInputProcessor extends InputAdapter {
 	private void sendDirection(int direction){
 		// IF DIRECTION HAS CHANGED
 		if(direction != last_direction){
-			Entity entity = network.getLocalUser().getControlledEntity();
+			EntityMovable entity = network.getLocalUser().getControlledEntity();
 			if (entity == null) return;
     		entity.setDirection(direction);
     		last_direction = direction;
@@ -32,16 +32,16 @@ public class GameInputProcessor extends InputAdapter {
 	
 	public boolean keyDown(int k) {    	
 		if(k == Keys.UP) {
-			sendDirection(Entity.DIRECTION_UP);
+			sendDirection(EntityMovable.DIRECTION_UP);
 		}
 		if(k == Keys.LEFT) {
-			sendDirection(Entity.DIRECTION_LEFT);
+			sendDirection(EntityMovable.DIRECTION_LEFT);
 		}
 		if(k == Keys.DOWN) {
-			sendDirection(Entity.DIRECTION_DOWN);
+			sendDirection(EntityMovable.DIRECTION_DOWN);
 		}
 		if(k == Keys.RIGHT) {
-			sendDirection(Entity.DIRECTION_RIGHT);
+			sendDirection(EntityMovable.DIRECTION_RIGHT);
 		}
 		previousKey = k;
 		return true;
@@ -50,7 +50,7 @@ public class GameInputProcessor extends InputAdapter {
 	public boolean keyUp(int k) {
 		// KEY UP STOP		
 		if(k == previousKey){
-			sendDirection(Entity.DIRECTION_STOP);
+			sendDirection(EntityMovable.DIRECTION_STOP);
 		}
 		return true;
 	}

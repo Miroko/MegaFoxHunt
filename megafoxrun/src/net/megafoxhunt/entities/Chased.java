@@ -5,7 +5,7 @@ import net.megafoxhunt.core.MyGdxGame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 
-public class Chased extends Entity{
+public class Chased extends EntityMovable{
 	
 	private static final float MOVEMENT_SPEED = 5;
 	

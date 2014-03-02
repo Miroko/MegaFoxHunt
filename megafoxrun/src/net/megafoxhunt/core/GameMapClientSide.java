@@ -6,7 +6,7 @@ package net.megafoxhunt.core;
 import java.util.ArrayList;
 import java.util.concurrent.locks.ReentrantLock;
 
-import net.megafoxhunt.entities.StaticObject;
+import net.megafoxhunt.entities.Entity;
 import net.megafoxhunt.shared.GameMapSharedConfig;
 
 import com.badlogic.gdx.maps.MapProperties;
@@ -28,19 +28,19 @@ public class GameMapClientSide {
 	private TiledMap tiledMap;
 	public TiledMap getTiledMap(){return tiledMap;}
 	
-	private ArrayList<StaticObject> allObjects;
+	private ArrayList<Entity> allObjects;
 	@SuppressWarnings("unchecked")
-	public ArrayList<StaticObject> getAllObjectsConcurrentSafe(){return (ArrayList<StaticObject>) allObjects.clone();}
+	public ArrayList<Entity> getAllObjectsConcurrentSafe(){return (ArrayList<Entity>) allObjects.clone();}
 	
 	public GameMapClientSide(GameMapSharedConfig mapConfig){		
 		this.config = mapConfig;		
-		this.allObjects = new ArrayList<StaticObject>();
+		this.allObjects = new ArrayList<Entity>();
 	}
-	public void addStaticObject(StaticObject object){		
+	public void addStaticObject(Entity object){		
 		allObjects.add(object);		
 	}
 	public void removeStaticObjectByID(int id){		
-		for(StaticObject object : getAllObjectsConcurrentSafe()){
+		for(Entity object : getAllObjectsConcurrentSafe()){
 			if(object.getId() == id){
 				allObjects.remove(object);
 			}

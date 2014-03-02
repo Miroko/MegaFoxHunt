@@ -7,7 +7,7 @@ import java.util.Scanner;
 import net.megafoxhunt.entities.Berry;
 import net.megafoxhunt.entities.Chased;
 import net.megafoxhunt.entities.Chaser;
-import net.megafoxhunt.entities.Entity;
+import net.megafoxhunt.entities.EntityMovable;
 import net.megafoxhunt.screens.GameScreen;
 import net.megafoxhunt.screens.LobbyScreen;
 import net.megafoxhunt.shared.GameMapSharedConfig;
@@ -144,7 +144,7 @@ public class GameNetwork {
 				 */
 				else if (object instanceof Move) {
 					Move move = (Move)object;					
-					Entity entity = (Entity)UserContainer.getUserByID(move.id).getControlledEntity();
+					EntityMovable entity = (EntityMovable)UserContainer.getUserByID(move.id).getControlledEntity();
 					entity.move(move);
 				}			
 				/*

@@ -2,7 +2,7 @@ package net.megafoxhunt.ui;
 
 import net.megafoxhunt.core.GameNetwork;
 
-import net.megafoxhunt.entities.Entity;
+import net.megafoxhunt.entities.EntityMovable;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -49,13 +49,13 @@ public class TouchJoystick {
 		
 		float angle = joystickPos.angle();
 		if (angle < 45 && angle > 0 || angle < 360 && angle > 315) {
-			sendDirection(Entity.DIRECTION_RIGHT);
+			sendDirection(EntityMovable.DIRECTION_RIGHT);
 		} else if (angle > 45 && angle < 135) {
-			sendDirection(Entity.DIRECTION_UP);
+			sendDirection(EntityMovable.DIRECTION_UP);
 		} else if (angle > 135 && angle < 225) {
-			sendDirection(Entity.DIRECTION_LEFT);
+			sendDirection(EntityMovable.DIRECTION_LEFT);
 		} else if (angle > 225 && angle < 315) {
-			sendDirection(Entity.DIRECTION_DOWN);
+			sendDirection(EntityMovable.DIRECTION_DOWN);
 		}
 	}
 	
@@ -63,12 +63,12 @@ public class TouchJoystick {
 		joystickPos.x = 0;
 		joystickPos.y = 0;
 		
-		sendDirection(Entity.DIRECTION_STOP);
+		sendDirection(EntityMovable.DIRECTION_STOP);
 	}
 	
 	private void sendDirection(int direction){
 		// IF DIRECTION HAS CHANGED
-		Entity entity = network.getLocalUser().getControlledEntity();
+		EntityMovable entity = network.getLocalUser().getControlledEntity();
 		if (entity != null) entity.setDirection(direction);
 	}
 }

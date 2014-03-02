@@ -8,8 +8,8 @@ import net.megafoxhunt.core.MyGdxGame;
 import net.megafoxhunt.core.User;
 import net.megafoxhunt.core.UserContainer;
 
+import net.megafoxhunt.entities.EntityMovable;
 import net.megafoxhunt.entities.Entity;
-import net.megafoxhunt.entities.StaticObject;
 import net.megafoxhunt.ui.TouchJoystick;
 
 import com.badlogic.gdx.Gdx;
@@ -61,14 +61,14 @@ public class GameScreen implements Screen {
 		// TODO syö kaiken suoritustehon?
 
 		// UPDATE ENTITIES
-		Entity entity = null;
+		EntityMovable entity = null;
 		for(User user : UserContainer.getUsersConcurrentSafe()){
 			entity = user.getControlledEntity();
 			if (entity != null) entity.update(delta, MyGdxGame.network, MyGdxGame.gameMap.getCollisionLayer());
 		}
 		
 		// FOCUS CAMERA ON PLAYER ENTITY
-		Entity myEntity = MyGdxGame.network.getLocalUser().getControlledEntity();
+		EntityMovable myEntity = MyGdxGame.network.getLocalUser().getControlledEntity();
         if (myEntity != null){
         	camera.position.x = myEntity.getX();
         	camera.position.y = myEntity.getY();
@@ -94,7 +94,7 @@ public class GameScreen implements Screen {
         	if (entity != null) entity.render(batch);
         }    
         // DRAW BERRIES
-        for(StaticObject object : MyGdxGame.gameMap.getAllObjectsConcurrentSafe()){
+        for(Entity object : MyGdxGame.gameMap.getAllObjectsConcurrentSafe()){
         	object.render(batch);
         }
         

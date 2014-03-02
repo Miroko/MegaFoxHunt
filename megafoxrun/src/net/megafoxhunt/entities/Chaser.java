@@ -3,7 +3,7 @@ package net.megafoxhunt.entities;
 
 import net.megafoxhunt.core.MyGdxGame;
 
-public class Chaser extends Entity{
+public class Chaser extends EntityMovable{
 		
 	private static final float MOVEMENT_SPEED = 5;
 	

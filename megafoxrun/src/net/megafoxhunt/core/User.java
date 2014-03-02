@@ -1,6 +1,6 @@
 package net.megafoxhunt.core;
 
-import net.megafoxhunt.entities.Entity;
+import net.megafoxhunt.entities.EntityMovable;
 
 
 
@@ -14,9 +14,9 @@ public class User {
 	public String getName(){return name;}
 	public void setName(String name){this.name = name;}
 	
-	private Entity controlledEntity;
-	public void setControlledEntity(Entity entity){controlledEntity = entity;}
-	public Entity getControlledEntity(){return controlledEntity;}
+	private EntityMovable controlledEntity;
+	public void setControlledEntity(EntityMovable entity){controlledEntity = entity;}
+	public EntityMovable getControlledEntity(){return controlledEntity;}
 
 	public User(int id, String name) {
 		this.id = id;
