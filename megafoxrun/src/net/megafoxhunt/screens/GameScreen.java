@@ -14,12 +14,15 @@ import net.megafoxhunt.ui.TouchJoystick;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.utils.Logger;
 
 public class GameScreen implements Screen {
 
@@ -36,14 +39,18 @@ public class GameScreen implements Screen {
 	private TouchJoystick touchJoystick;	
 	private GameInputProcessor gameInputProcessor;
 	
+	private BitmapFont font;
+	
 	public GameScreen() {			
 		spriteBatch = new SpriteBatch();		
 		touchJoystick = new TouchJoystick(MyGdxGame.network);
 		gameInputProcessor = new GameInputProcessor(MyGdxGame.network, touchJoystick);		
-					
+		
+		font = new BitmapFont();
+		
 		camera = new OrthographicCamera();	
 		camera.setToOrtho(false, FIT_TILES_WIDTH, FIT_TILES_HEIGHT);
-		camera.update();		
+		camera.update();
 	}
 	
 	@Override
@@ -94,7 +101,8 @@ public class GameScreen implements Screen {
         // DRAW JOYSTICK
         spriteBatch.begin();
         touchJoystick.draw(spriteBatch);
-        spriteBatch.end();
+        font.draw(spriteBatch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 25, 25);
+        spriteBatch.end(); 
 	}
 
 	private void keepCameraInBoundaries() {
@@ -143,8 +151,9 @@ public class GameScreen implements Screen {
 	}
 
 	@Override
-	public void dispose() {		
-		renderer.dispose();
+	public void dispose() {
+		if (renderer != null)
+			renderer.dispose();
 	}
 
 }
