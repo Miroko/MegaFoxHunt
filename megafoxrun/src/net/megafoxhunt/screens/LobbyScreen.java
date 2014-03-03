@@ -25,20 +25,16 @@ public class LobbyScreen implements Screen {
 	public SpriteBatch batch;
 	
 	private OrthographicCamera camera;
+
 	
-	private MyGdxGame game;
-	
-	public LobbyScreen(MyGdxGame game) {
-		this.game = game;
+	public LobbyScreen() {
+		
 		
 		stageUI = new Stage();
-		Gdx.input.setInputProcessor(stageUI);	
-		
+				
 	    LobbyUI lobbyUI = new LobbyUI();	  
 	    lobbyUI.setPosition(MyGdxGame.VIRTUAL_WIDTH/2, 0);
-	    stageUI.addActor(lobbyUI);
-		
-	    
+	    stageUI.addActor(lobbyUI);	    
 	    
 		this.batch = new SpriteBatch();
 		font = new BitmapFont();
@@ -84,8 +80,7 @@ public class LobbyScreen implements Screen {
 
 	@Override
 	public void show() {
-		// TODO Auto-generated method stub
-		
+		Gdx.input.setInputProcessor(stageUI);			
 	}
 
 	@Override

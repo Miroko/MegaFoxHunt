@@ -38,5 +38,8 @@ public class PlayerConnection extends Connection {
 	public void setMyCurrentRoom(GameRoom myCurrentRoom) {
 		this.myCurrentRoom = myCurrentRoom;
 	}
+	public void dispose(IDHandler idHandler){
+		idHandler.freeID(myId);
+	}
 
 }

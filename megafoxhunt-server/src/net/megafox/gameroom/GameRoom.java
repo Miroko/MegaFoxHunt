@@ -14,6 +14,7 @@ import net.megafox.game.GameMapServerSide;
 import net.megafox.game.GameSimulation;
 import net.megafoxhunt.server.IDHandler;
 import net.megafoxhunt.server.PlayerConnection;
+import net.megafoxhunt.server.RoomHandler;
 import net.megafoxhunt.shared.GameMapSharedConfig;
 import net.megafoxhunt.shared.KryoNetwork;
 import net.megafoxhunt.shared.KryoNetwork.AddPlayer;
@@ -21,46 +22,65 @@ import net.megafoxhunt.shared.KryoNetwork.ChangeState;
 import net.megafoxhunt.shared.KryoNetwork.Move;
 import net.megafoxhunt.shared.KryoNetwork.RemovePlayer;
 import net.megafoxhunt.shared.KryoNetwork.SetMap;
+import net.megafoxhunt.shared.KryoNetwork.Winner;
 
 public class GameRoom extends Thread {
 	
 	private static final int MAX_SIZE = 12;
 	private static final long UPDATE_RATE_MS = 100;
 	
-	private static final int ROOM_STATE_LOBBY = KryoNetwork.ChangeState.LOBBY;
-	private static final int ROOM_STATE_GAME = KryoNetwork.ChangeState.GAME;
+	public static final int MATCH_LENGHT_SECONDS_DEFAULT =  5;
 	
+	public static final int STATE_LOBBY = KryoNetwork.ChangeState.LOBBY;
+	public static final int STATE_GAME = KryoNetwork.ChangeState.GAME;
+		
 	private int roomState;
 	private boolean roomRunning = true;
 	
-	private ArrayList<PlayerConnection> playersReady = new ArrayList<>();
+	private ArrayList<PlayerConnection> playersReady;
 	
 	private GameMapServerSide currentMap;	
 	private PlayerContainer playerContainer;
-	private GameSimulation gameSimulation;
-	
-	private IDHandler idHandler;
-	
-	public GameRoom(IDHandler idHandler){
-		this.roomState = ROOM_STATE_LOBBY;
-		this.idHandler = idHandler;
-		playerContainer = new PlayerContainer(MAX_SIZE);
-	}
-	public boolean canJoin(){
-		if (roomState == ROOM_STATE_GAME) return false;
+	private GameSimulation gameSimulation;		
+
+	private RoomHandler roomHandler;
 		
+	public GameRoom(RoomHandler roomHandler){
+		this.roomHandler = roomHandler;
+		playerContainer = new PlayerContainer(MAX_SIZE);
+		playersReady = new ArrayList<>();
+		switchState(STATE_LOBBY);			
+	}
+	public int getRoomState(){
+		return roomState;
+	}	
+	/**
+	 * Sets match end time
+	 * @param MatchLenght in seconds
+	 */
+	public void startClock(long matchLenght){
+		gameSimulation.resetTime(matchLenght);
+	}
+	public boolean hasRoom(){
 		if(playerContainer.getPlayersConcurrentSafe().size() == MAX_SIZE){
 			return false;
 		} else{
 			return true;
 		}
-	}	
+	}
+	public boolean isEmpty(){
+		return playerContainer.getPlayersConcurrentSafe().isEmpty();
+	}
 	public void update(float delta){		
 		switch (roomState) {
-			case ROOM_STATE_LOBBY:
+			case STATE_LOBBY:
 				break;
-			case ROOM_STATE_GAME:
+			case STATE_GAME:
 				gameSimulation.update(delta, playerContainer);
+				boolean winnerFound = gameSimulation.findWinner();
+				if(winnerFound){
+					roomHandler.switchToLobby(this);
+				}			
 				break;
 		}
 	}	
@@ -87,7 +107,7 @@ public class GameRoom extends Thread {
 		}
 	}
 	
-	private void changeRoomState(int state) {
+	public void switchState(int state) {
 		roomState = state;
 		
 		ChangeState changeState = new ChangeState();
@@ -95,44 +115,38 @@ public class GameRoom extends Thread {
 	
 		playerContainer.sendObjectToAll(changeState);
 	}
-	private void generateBerries(int amount){
+	public void generateBerries(int amount, IDHandler idHandler){
 		Random r = new Random();
 		Entity[][] collisionMap = currentMap.getCollisionMap();
 		
 		int x;
-		int y;
+		int y;		
 		
-		for (int i = 0; i < amount; i++) {
+		int berriesAdded = 0;		
+		while(berriesAdded < amount){
 			x = r.nextInt(currentMap.getWidth());
 			y = r.nextInt(currentMap.getHeight());
 			if(collisionMap[x][y].getClass().equals(Empty.class)){
 				Berry berry = new Berry(x, y, idHandler.getFreeID());
 				gameSimulation.addBerry(berry);
-				currentMap.addEntity(berry);
-			} else i--;
+				currentMap.addEntity(berry);	
+				berriesAdded++;
+			} 
 		}
 	}
+	/*
+	 * Player is ready command from client
+	 * Starts game if everyone ready
+	 */
 	public void playerReady(PlayerConnection player){	
 		playersReady.add(player);
 		
 		// If same amount of players in lobby and ready
-		if(playerContainer.getPlayersConcurrentSafe().size() == playersReady.size()){
-			startGame();
+		if(playerContainer.getPlayersConcurrentSafe().size() == playersReady.size()){		
+			roomHandler.startGame(this);
 		}
 	}
-	public void startGame() {
-		if (roomState == ROOM_STATE_GAME) return;
-		
-		// SET AND SEND MAP	
-		changeMap(GameMapSharedConfig.DEBUG_MAP);
-		
-		// INIT GAME SIMULATION
-		gameSimulation = new GameSimulation(playerContainer, currentMap);
-		
-		// ADD CHASERS
-		// TODO
-		
-		// ADD CHASED
+	public void setChasedsAndChasers(){
 		int counter = 0;
 		for (PlayerConnection player : playerContainer.getPlayersConcurrentSafe()) {
 			if ((counter % 2) == 0) {
@@ -146,18 +160,15 @@ public class GameRoom extends Thread {
 			}
 			counter++;
 		}
-		
-		// ADD BERRIES
-		generateBerries(GameMapServerSide.TOTAL_BERRIES);
-
-		// SET STATE
-		changeRoomState(ROOM_STATE_GAME);
+	}
+	public void startSimulation() {		
+		gameSimulation = new GameSimulation(playerContainer, currentMap);		
 	}
 	/**
 	 * Set current map and inform players about the map
 	 * @param map
 	 */
-	private void changeMap(GameMapSharedConfig mapConfig){
+	public void changeMap(GameMapSharedConfig mapConfig){
 		currentMap = new GameMapServerSide(mapConfig);
 		playerContainer.sendObjectToAll(new SetMap(currentMap.getName()));
 	}	
@@ -167,8 +178,8 @@ public class GameRoom extends Thread {
 	 */
 	public void addPlayerToRoom(PlayerConnection player) {
 		playerContainer.addPlayer(player);
+		player.setMyCurrentRoom(this);
 
-		// SEND NEW PLAYER INFORMATION TO OLD PLAYERS
 		AddPlayer addPlayer = new AddPlayer();
 		addPlayer.id = player.getMyId();
 		addPlayer.name = player.getName();
@@ -199,13 +210,16 @@ public class GameRoom extends Thread {
 	 * Removes player and informs other players about it
 	 * @param player
 	 */
-	public void removePlayer(final PlayerConnection player) {
-		playerContainer.removePlayer(player);
-		
-		// INFORM ABOUT DELETION
+	public boolean removePlayer(PlayerConnection playerConnection) {			
 		RemovePlayer removePlayer = new RemovePlayer();
-		removePlayer.id = player.getMyId();
-		playerContainer.sendObjectToAllExcept(player, removePlayer);
+		removePlayer.id = playerConnection.getMyId();
+		playerContainer.sendObjectToAllExcept(playerConnection, removePlayer);
+		
+		playerContainer.removePlayer(playerConnection);	
+		
+		playerConnection.setMyCurrentRoom(null);
+		
+		return true;
 	}
 	/**
 	 * Moves player
@@ -215,10 +229,21 @@ public class GameRoom extends Thread {
 	public void move(PlayerConnection player, Move move) {
 		gameSimulation.move(player.getEntity(), move.x, move.y, move.direction);		
 		playerContainer.sendObjectToAllExcept(player, move);		
-	}
-
-	
+	}	
 	public PlayerContainer getPlayerContainer() {
 		return playerContainer;
+	}
+	/*
+	 * Removes all players from room
+	 */
+	public void removePlayers() {
+		for(PlayerConnection playerConnection : playerContainer.getPlayersConcurrentSafe()){
+			removePlayer(playerConnection);
+		}
+	}
+	public void endMatch() {	
+		gameSimulation = null;
+		currentMap = null;
+		playersReady.clear();
 	}
 }

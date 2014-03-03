@@ -4,12 +4,11 @@ package net.megafoxhunt.core;
 
 
 import java.util.ArrayList;
-import java.util.concurrent.locks.ReentrantLock;
-
 import net.megafoxhunt.entities.Entity;
 import net.megafoxhunt.shared.GameMapSharedConfig;
+import net.megafoxhunt.shared.KryoNetwork.ChangeState;
 
-import com.badlogic.gdx.maps.MapProperties;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -18,9 +17,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 public class GameMapClientSide {
 	
 	private static final int TILEDMAP_COLLISION_LAYER = 0;	
-	
-	//public static GameMapClientSide MAP_DEBUG = new GameMapClientSide(GameMapSharedConfig.DEBUG_MAP);	
-	
+
 	private GameMapSharedConfig config;
 
 	public String getName(){return config.getName();}
@@ -51,12 +48,6 @@ public class GameMapClientSide {
 	}
 	public void load(){		
 		tiledMap = new TmxMapLoader().load(config.getTiledMapPath());
-		
-		/*
-		MapProperties prop = tiledMap.getProperties();
-		mapWidth = prop.get("width", Integer.class);
-		mapHeight = prop.get("height", Integer.class);
-		*/
 	}	
 	public int getWidth() {
 		return config.getWidth();
@@ -65,7 +56,12 @@ public class GameMapClientSide {
 		return config.getHeight();
 	}
 	public void dispose(){
-		tiledMap.dispose();
+		Gdx.app.postRunnable(new Runnable() {
+			@Override
+			public void run() {
+				tiledMap.dispose();
+			}
+		});		
 	}	
 
 }

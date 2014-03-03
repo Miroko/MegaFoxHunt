@@ -3,56 +3,64 @@ package net.megafoxhunt.server;
 import java.util.ArrayList;
 import java.util.concurrent.locks.ReentrantLock;
 
+import net.megafox.game.GameMapServerSide;
 import net.megafox.gameroom.GameRoom;
+import net.megafoxhunt.shared.GameMapSharedConfig;
 
 public class RoomHandler {
-	
-	public ReentrantLock lock;
 
 	private ArrayList<GameRoom> rooms;	
 	
 	private GameServer gameServer;
-	
+		
 	public RoomHandler(GameServer gameServer) {
 		this.gameServer = gameServer;
-		rooms = new ArrayList<GameRoom>();
-		lock = new ReentrantLock(true);
+		rooms = new ArrayList<GameRoom>();		
 	}	
 	/**
-	 * Add player to game on server
+	 * Add player to room on server
 	 * @param playerConnection
+	 * @return room player was added
 	 */
-	public void addPlayer(PlayerConnection playerConnection){		
-		lock.lock();
-		if(joinRoom(playerConnection) == false){
-			createNewRoom(playerConnection);
-		}
-		lock.unlock();
-	}
-	/**
-	 * Try join any available room
-	 * @return false if no place in current rooms
-	 */
-	private boolean joinRoom(PlayerConnection playerConnection){
+	public synchronized GameRoom addPlayer(PlayerConnection playerConnection){			
+		GameRoom roomAddedTo = null;
 		for(GameRoom room : rooms) {
-			if(room.canJoin()){				
-				room.addPlayerToRoom(playerConnection);
-				playerConnection.setMyCurrentRoom(room);
-				return true;
+			if(room.getRoomState() == GameRoom.STATE_LOBBY){
+				if(room.hasRoom()){				
+					room.addPlayerToRoom(playerConnection);				
+					roomAddedTo = room;					
+					break;
+				}
 			}
-		}
-		return false;
+		}	
+		return roomAddedTo;		
 	}
-	/**
-	 * Creates new room and adds player to that room
-	 * @param playerConnection
+	/*
+	 * Creates new room
 	 */
-	private void createNewRoom(PlayerConnection playerConnection){
-		GameRoom room = new GameRoom(gameServer.getIdHandler());
-		room.addPlayerToRoom(playerConnection);
-		playerConnection.setMyCurrentRoom(room);
-		rooms.add(room);
-		room.start();
+	public synchronized GameRoom createNewRoom(){
+		GameRoom room = new GameRoom(this);	
+		rooms.add(room);			
+		return room;
+	}
+	public synchronized void removeRoom(GameRoom room){	
+		room.removePlayers();
+		rooms.remove(room);
+	}
+	/*
+	 * Starts game in room
+	 */
+	public void switchToLobby(GameRoom room){
+		room.endMatch();
+		room.switchState(GameRoom.STATE_LOBBY);
+	}
+	public void startGame(GameRoom room){				
+		room.changeMap(GameMapSharedConfig.DEBUG_MAP);	
+		room.startSimulation();		
+		room.setChasedsAndChasers();
+		room.generateBerries(GameMapServerSide.TOTAL_BERRIES, gameServer.getIdHandler());
+		room.switchState(GameRoom.STATE_GAME);
+		room.startClock(GameRoom.MATCH_LENGHT_SECONDS_DEFAULT);
 	}
 	@SuppressWarnings("unchecked")
 	public ArrayList<GameRoom> getAllRoomsConcurrentSafe() {

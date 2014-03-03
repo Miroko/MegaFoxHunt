@@ -38,6 +38,7 @@ public class ServerDebugInput extends Thread{
 	}
 	
 	private void newCommand(String command) {
+		/*
 		ArrayList<GameRoom> rooms = server.getRoomHandler().getAllRoomsConcurrentSafe();
 		String[] commands = command.split(" ");
 		
@@ -78,6 +79,7 @@ public class ServerDebugInput extends Thread{
 		} else if (commands[0].equals("help")) {
 			printCommands();
 		}
+		*/
 	}
 	
 	public void shutdown() {

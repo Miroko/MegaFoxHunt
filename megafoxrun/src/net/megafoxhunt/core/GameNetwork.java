@@ -23,6 +23,7 @@ import net.megafoxhunt.shared.KryoNetwork.RemoveEntity;
 import net.megafoxhunt.shared.KryoNetwork.RemovePlayer;
 import net.megafoxhunt.shared.KryoNetwork.SetMap;
 import net.megafoxhunt.shared.KryoNetwork.WelcomePlayer;
+import net.megafoxhunt.shared.KryoNetwork.Winner;
 
 import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryonet.Client;
@@ -31,25 +32,14 @@ import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Listener.ThreadedListener;
 
 public class GameNetwork {
-	
-	// LOGIN TIMEOUT
+
 	private static final int TIMEOUT_MS = 50000;
-	
-	// LOCAL USER
+
 	private User localUser = new User(0, null);
 	public User getLocalUser(){return localUser;}
 
-	// KRYO CLIENT
 	private Client kryoClient = new Client();
 	public Client getKryoClient(){return kryoClient;}
-	
-	// GAME
-	private MyGdxGame game;
-	
-	public GameNetwork(MyGdxGame game){
-		this.game = game;
-		init();
-	}
 		
 	public void init(){
 		KryoNetwork.register(kryoClient);	
@@ -86,6 +76,14 @@ public class GameNetwork {
 					//DebugConsole.msg("player left: (" + removePlayer.id + ")");
 				} 
 				/*
+				 * WINNER				 
+				 */
+				else if (object instanceof Winner) {
+					Winner winner = (Winner)object;			
+					System.out.println(winner.winner);
+					MyGdxGame.screenHandler.setScreenLobby();
+				} 
+				/*
 				 * CHANGE GAME STATE
 				 */
 				else if (object instanceof ChangeState) {
@@ -93,10 +91,10 @@ public class GameNetwork {
 					Gdx.app.postRunnable(new Runnable() {
 						@Override
 						public void run() {
-							if (changeState.roomState == ChangeState.GAME) {
-								game.setScreen(new GameScreen(game));
-							} else if (changeState.roomState == ChangeState.LOBBY) {
-								game.setScreen(new LobbyScreen(game));
+							if (changeState.roomState == ChangeState.GAME) {								
+								MyGdxGame.screenHandler.setScreenGame();
+							} else if (changeState.roomState == ChangeState.LOBBY) {								
+								MyGdxGame.screenHandler.setScreenLobby();
 							}
 						}
 					});
@@ -120,7 +118,7 @@ public class GameNetwork {
 				 */
 				else if (object instanceof AddBerry) {
 					AddBerry addBerry = (AddBerry)object;
-					MyGdxGame.gameMap.addStaticObject(new Berry(addBerry.id, addBerry.x, addBerry.y));
+					MyGdxGame.mapHandler.currentMap.addStaticObject(new Berry(addBerry.id, addBerry.x, addBerry.y));
 				}
 				/*
 				 * REMOVE ENTITY 
@@ -128,7 +126,7 @@ public class GameNetwork {
 				else if (object instanceof RemoveEntity) {
 					RemoveEntity removeEntity = (RemoveEntity)object;
 					// DELETE FROM MAP
-					MyGdxGame.gameMap.removeStaticObjectByID(removeEntity.id);
+					MyGdxGame.mapHandler.currentMap.removeStaticObjectByID(removeEntity.id);
 					
 					// TODO
 					// Refactor this to its own kryo command
@@ -151,20 +149,15 @@ public class GameNetwork {
 				 * CHANGE MAP
 				 */						
 				else if(object instanceof SetMap){					
-					SetMap setMap = (SetMap)object;	
-					//DebugConsole.msg("Set map: " + setMap.mapName);
-					
-					// TODO MAKE THIS BETTER
-					if(setMap.mapName.equals(GameMapSharedConfig.DEBUG_MAP.getName())){
-						MyGdxGame.gameMap = new GameMapClientSide(GameMapSharedConfig.DEBUG_MAP);
-					}					
+					SetMap setMap = (SetMap)object;											
+					MyGdxGame.mapHandler.switchMap(setMap.mapName);				
 				}				
 			}
 
 			@Override
 			public void disconnected (Connection connection) {
-				// TODO null pointer on disconnection
-				//DebugConsole.msg("Disconnected from: " + connection.getRemoteAddressTCP().getHostString());
+				
+				
 				MyGdxGame.shutdown();
 			}
 		}));		
@@ -180,12 +173,10 @@ public class GameNetwork {
 			scanner.close();
 		}
 		localUser.setName(name);
-		UserContainer.addUser(localUser);
-		//DebugConsole.msg("Username set: " + localUser.getName());
+		UserContainer.addUser(localUser);		
 	}
 	public void connect(String host, int port){
-		try {
-			//DebugConsole.msg("Connecting to: " + host + " Port: " + port);
+		try {			
 			kryoClient.connect(TIMEOUT_MS, host, port);
 			Login login = new Login();
 			login.name = localUser.getName();

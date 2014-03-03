@@ -14,8 +14,11 @@ import net.megafoxhunt.shared.KryoNetwork.AddChased;
 import net.megafoxhunt.shared.KryoNetwork.AddBerry;
 import net.megafoxhunt.shared.KryoNetwork.Move;
 import net.megafoxhunt.shared.KryoNetwork.RemoveEntity;
+import net.megafoxhunt.shared.KryoNetwork.Winner;
 
 public class GameSimulation {
+
+	private long endTime;
 	
 	private GameMapServerSide gameMap;
 	
@@ -29,14 +32,27 @@ public class GameSimulation {
 
 	public GameSimulation(PlayerContainer playerContainer, GameMapServerSide gameMap){
 		this.gameMap = gameMap;
-		this.playerContainer = playerContainer;				
+		this.playerContainer = playerContainer;		
 		removable = new ArrayList<>();
 		chasers = new ArrayList<>();
 		chaseds = new ArrayList<>();
 		berries = new ArrayList<>();
 	}
-	
-	public void update(float delta, PlayerContainer players){
+	/**
+	 * @param matchLengh Match lenght in seconds
+	 */
+	public void resetTime(long matchLenght){
+		endTime = System.currentTimeMillis() + (matchLenght * 1000);		
+	}
+	private boolean isTimeFull(){
+		if(System.currentTimeMillis() > endTime){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}	
+	public void update(float delta, PlayerContainer players){		
 		Entity[][] map = gameMap.getCollisionMap();
 
 		for(Entity chased : chaseds){		
@@ -73,15 +89,43 @@ public class GameSimulation {
 			playerContainer.sendObjectToAll(removeEntity, entity.getVisibility());
 		}
 		removable.clear();
-		/*
-		 * IS GAME OVER
-		 */
-		if(berries.isEmpty()){
-			// chased won
-			// TODO add kryonet commands
+	}
+	/*
+	 * Checks for winner
+	 * false if no winner found
+	 * 
+	 * Chaced -> berries eaten
+	 * Chacers -> chaced eaten or time full
+	 * 
+	 */
+	public boolean findWinner(){
+		if(chacedWon()){
+			Winner winner = new Winner();
+			winner.winner = "Chaced";
+			playerContainer.sendObjectToAll(winner);
+			return true;
+		}else if(chacersWon() || isTimeFull()){
+			Winner winner = new Winner();
+			winner.winner = "Chacers";
+			playerContainer.sendObjectToAll(winner);
+			return true;
 		}
-		else if(chaseds.isEmpty()){
-			// chaser won
+		return false;	
+	}
+	private boolean chacersWon(){
+		if(chaseds.isEmpty()){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	private boolean chacedWon(){
+		if(berries.isEmpty()){
+			return true;
+		}
+		else{
+			return false;
 		}
 	}
 	
@@ -95,7 +139,7 @@ public class GameSimulation {
 		playerContainer.sendObjectToAll(new AddChased(chased.getID(), chased.getX(), chased.getY()));		
 	}
 	
-	public void addBerry(Berry berry){
+	public void addBerry(Berry berry){		
 		berries.add(berry);		
 		playerContainer.sendObjectToAll(new AddBerry(berry.getID(), berry.getX(), berry.getY()), berry.getVisibility());
 	}
