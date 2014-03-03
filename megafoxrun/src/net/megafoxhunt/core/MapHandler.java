@@ -12,7 +12,9 @@ public class MapHandler {
 		}	
 	}	
 	public void dispose() {
-		currentMap.dispose();
+		if(currentMap != null){
+			currentMap.dispose();
+		}
 	}
 	
 

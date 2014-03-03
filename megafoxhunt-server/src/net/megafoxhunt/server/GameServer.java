@@ -20,19 +20,14 @@ import com.esotericsoftware.kryonet.Listener.ThreadedListener;
 public class GameServer {
 
 	private static final int PORT = 6666;
-	
-	private Server kryoServer;	
-
-	private IDHandler idHandler;
-	public IDHandler getIdHandler(){return idHandler;}	
-
-	private RoomHandler roomHandler;
-	public RoomHandler getRoomHandler(){return roomHandler;}
-	
+	public Server kryoServer;	
+	public IDHandler idHandler;
+	public RoomHandler roomHandler;
+		
 	public GameServer(){
 		roomHandler = new RoomHandler(this);
 		idHandler = new IDHandler();		
-		init();
+		init();		
 	}
 	private void init(){
 		kryoServer = new Server(){
@@ -169,6 +164,10 @@ public class GameServer {
 	private void sendDisconnection(String message, PlayerConnection connection){
 		Message disconnectionMessage = new Message();
 		disconnectionMessage.message = message;
+	}
+	public void printInfo(){
+		System.out.println("Players: " + kryoServer.getConnections().length);
+		roomHandler.printInfo();
 	}
 	public void start(){
 		kryoServer.start();

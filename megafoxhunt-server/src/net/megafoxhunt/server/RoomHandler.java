@@ -1,8 +1,6 @@
 package net.megafoxhunt.server;
 
 import java.util.ArrayList;
-import java.util.concurrent.locks.ReentrantLock;
-
 import net.megafox.game.GameMapServerSide;
 import net.megafox.gameroom.GameRoom;
 import net.megafoxhunt.shared.GameMapSharedConfig;
@@ -58,12 +56,15 @@ public class RoomHandler {
 		room.changeMap(GameMapSharedConfig.DEBUG_MAP);	
 		room.startSimulation();		
 		room.setChasedsAndChasers();
-		room.generateBerries(GameMapServerSide.TOTAL_BERRIES, gameServer.getIdHandler());
+		room.generateBerries(GameMapServerSide.TOTAL_BERRIES, gameServer.idHandler);
 		room.switchState(GameRoom.STATE_GAME);
 		room.startClock(GameRoom.MATCH_LENGHT_SECONDS_DEFAULT);
 	}
 	@SuppressWarnings("unchecked")
 	public ArrayList<GameRoom> getAllRoomsConcurrentSafe() {
 		return (ArrayList<GameRoom>) rooms.clone();
+	}
+	public void printInfo() {
+		System.out.println("Rooms: " + rooms.size());		
 	}
 }

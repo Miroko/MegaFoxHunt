@@ -1,10 +1,5 @@
 package net.megafoxhunt.server;
-
-import java.util.ArrayList;
 import java.util.Scanner;
-
-import net.megafox.gameroom.GameRoom;
-
 
 public class ServerDebugInput extends Thread{
 
@@ -19,25 +14,42 @@ public class ServerDebugInput extends Thread{
 	
 	@Override
 	public void run() {
-		Scanner scanner = new Scanner(System.in);
-		
-		System.out.println("type help to get list of commands");
+		System.out.println("Type help to get list of commands");
+		Scanner scanner = new Scanner(System.in);			
 		while (running) {
-			System.out.println("Next command: ");
+			System.out.println("\nNext command: ");
 			newCommand(scanner.nextLine());
-		}
-		
+		}		
 		scanner.close();
 	}
 	
 	private void printCommands() {
+		System.out.println("'(i)nfo' Show server information");
+		System.out.println("'(s)tress' Stress test server");
+		/*
 		System.out.println("r/run: starts all rooms");
 		System.out.println("rooms.size: prints number of rooms active");
 		System.out.println("start_room 2: starts room at index 2 on list");
 		System.out.println("room_players 2: show players in room 2");
+		*/
 	}
-	
-	private void newCommand(String command) {
+	private void debugStressTest() {
+		int rooms = 1000;
+		for(int a = rooms; a > 0; a--){
+			server.roomHandler.createNewRoom();		
+		}
+	}
+	private void newCommand(String command) {	
+		String trimmedCommand = command.trim();
+		if(trimmedCommand.equals("info") || trimmedCommand.equals("i")){
+			server.printInfo();
+		}
+		else if (trimmedCommand.equals("stress") || trimmedCommand.equals("s")) {
+			debugStressTest();
+		}
+		else if (trimmedCommand.equals("help")) {
+			printCommands();
+		}
 		/*
 		ArrayList<GameRoom> rooms = server.getRoomHandler().getAllRoomsConcurrentSafe();
 		String[] commands = command.split(" ");
