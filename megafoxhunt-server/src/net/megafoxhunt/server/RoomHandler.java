@@ -51,6 +51,7 @@ public class RoomHandler {
 	 * Starts game in room
 	 */
 	public void switchToLobby(GameRoom room){
+		room.endMatch();
 		room.switchState(GameRoom.STATE_LOBBY);
 	}
 	public void startGame(GameRoom room){				
@@ -59,6 +60,7 @@ public class RoomHandler {
 		room.setChasedsAndChasers();
 		room.generateBerries(GameMapServerSide.TOTAL_BERRIES, gameServer.getIdHandler());
 		room.switchState(GameRoom.STATE_GAME);
+		room.startClock(GameRoom.MATCH_LENGHT_SECONDS_DEFAULT);
 	}
 	@SuppressWarnings("unchecked")
 	public ArrayList<GameRoom> getAllRoomsConcurrentSafe() {

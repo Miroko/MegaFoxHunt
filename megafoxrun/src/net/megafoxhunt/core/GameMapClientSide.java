@@ -4,12 +4,11 @@ package net.megafoxhunt.core;
 
 
 import java.util.ArrayList;
-import java.util.concurrent.locks.ReentrantLock;
-
 import net.megafoxhunt.entities.Entity;
 import net.megafoxhunt.shared.GameMapSharedConfig;
+import net.megafoxhunt.shared.KryoNetwork.ChangeState;
 
-import com.badlogic.gdx.maps.MapProperties;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -57,7 +56,12 @@ public class GameMapClientSide {
 		return config.getHeight();
 	}
 	public void dispose(){
-		tiledMap.dispose();
+		Gdx.app.postRunnable(new Runnable() {
+			@Override
+			public void run() {
+				tiledMap.dispose();
+			}
+		});		
 	}	
 
 }

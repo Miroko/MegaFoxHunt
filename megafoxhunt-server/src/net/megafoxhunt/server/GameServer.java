@@ -154,7 +154,11 @@ public class GameServer {
 	}
 	private boolean removePlayerFromRoom(PlayerConnection connection){
 		boolean playerRemovedFromRoom = false;
-		playerRemovedFromRoom = connection.getMyCurrentRoom().removePlayer(connection);
+		GameRoom room = connection.getMyCurrentRoom();
+		playerRemovedFromRoom = room.removePlayer(connection);
+		if(room.isEmpty()){
+			roomHandler.removeRoom(room);
+		}
 		return playerRemovedFromRoom;
 	}
 	private void sendWelcome(PlayerConnection connection){

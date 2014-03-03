@@ -33,23 +33,14 @@ public class GameScreen implements Screen {
 	
 	private SpriteBatch spriteBatch;
 
-	private MyGdxGame game;
+	private TouchJoystick touchJoystick;	
+	private GameInputProcessor gameInputProcessor;
 	
-	private TouchJoystick touchJoystick;
-	
-	public GameScreen(MyGdxGame game) {				
-		this.game = game;
+	public GameScreen() {			
 		spriteBatch = new SpriteBatch();		
 		touchJoystick = new TouchJoystick(MyGdxGame.network);
-		Gdx.input.setInputProcessor(new GameInputProcessor(MyGdxGame.network, touchJoystick));
-		
-		/*
-		 * LOAD MAP
-		 */
-		MyGdxGame.gameMap.load();
-		
-		renderer = new OrthogonalTiledMapRenderer(MyGdxGame.gameMap.getTiledMap(), UNIT_SCALE);
-				
+		gameInputProcessor = new GameInputProcessor(MyGdxGame.network, touchJoystick);		
+					
 		camera = new OrthographicCamera();	
 		camera.setToOrtho(false, FIT_TILES_WIDTH, FIT_TILES_HEIGHT);
 		camera.update();		
@@ -64,7 +55,7 @@ public class GameScreen implements Screen {
 		EntityMovable entity = null;
 		for(User user : UserContainer.getUsersConcurrentSafe()){
 			entity = user.getControlledEntity();
-			if (entity != null) entity.update(delta, MyGdxGame.network, MyGdxGame.gameMap.getCollisionLayer());
+			if (entity != null) entity.update(delta, MyGdxGame.network, MyGdxGame.mapHandler.currentMap.getCollisionLayer());
 		}
 		
 		// FOCUS CAMERA ON PLAYER ENTITY
@@ -94,7 +85,7 @@ public class GameScreen implements Screen {
         	if (entity != null) entity.render(batch);
         }    
         // DRAW BERRIES
-        for(Entity object : MyGdxGame.gameMap.getAllObjectsConcurrentSafe()){
+        for(Entity object : MyGdxGame.mapHandler.currentMap.getAllObjectsConcurrentSafe()){
         	object.render(batch);
         }
         
@@ -109,14 +100,14 @@ public class GameScreen implements Screen {
 	private void keepCameraInBoundaries() {
 		if (camera.position.x < FIT_TILES_WIDTH / 2) {
     		camera.position.x = FIT_TILES_WIDTH / 2;
-    	} if (camera.position.x > (MyGdxGame.gameMap.getWidth() - (FIT_TILES_WIDTH / 2))) {
-    		camera.position.x = MyGdxGame.gameMap.getWidth() - (FIT_TILES_WIDTH / 2);
+    	} if (camera.position.x > (MyGdxGame.mapHandler.currentMap.getWidth() - (FIT_TILES_WIDTH / 2))) {
+    		camera.position.x = MyGdxGame.mapHandler.currentMap.getWidth() - (FIT_TILES_WIDTH / 2);
     	}
     	
     	if (camera.position.y < FIT_TILES_HEIGHT / 2) {
     		camera.position.y = FIT_TILES_HEIGHT / 2;
-    	} if (camera.position.y > (MyGdxGame.gameMap.getHeight() - (FIT_TILES_HEIGHT / 2))) {
-    		camera.position.y = MyGdxGame.gameMap.getHeight() - (FIT_TILES_HEIGHT / 2);
+    	} if (camera.position.y > (MyGdxGame.mapHandler.currentMap.getHeight() - (FIT_TILES_HEIGHT / 2))) {
+    		camera.position.y = MyGdxGame.mapHandler.currentMap.getHeight() - (FIT_TILES_HEIGHT / 2);
     	}
 	}
 
@@ -127,13 +118,16 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void show() {		
+		MyGdxGame.mapHandler.currentMap.load();
+		renderer = new OrthogonalTiledMapRenderer(MyGdxGame.mapHandler.currentMap.getTiledMap(), UNIT_SCALE);	
 		
+		Gdx.input.setInputProcessor(gameInputProcessor);
 	}
 
 	@Override
-	public void hide() {
-		// TODO Auto-generated method stub
+	public void hide() {	
 		
+		MyGdxGame.mapHandler.currentMap.dispose();			
 	}
 
 	@Override

@@ -17,9 +17,8 @@ import net.megafoxhunt.shared.KryoNetwork.RemoveEntity;
 import net.megafoxhunt.shared.KryoNetwork.Winner;
 
 public class GameSimulation {
-	
-	private long startTime;
-	private long matchLenght;
+
+	private long endTime;
 	
 	private GameMapServerSide gameMap;
 	
@@ -31,25 +30,22 @@ public class GameSimulation {
 	
 	private PlayerContainer playerContainer;
 
-	/**
-	 * 
-	 * @param matchLengh Match lenght in seconds
-	 */
-	
-	public GameSimulation(PlayerContainer playerContainer, GameMapServerSide gameMap, long matchLengh){
+	public GameSimulation(PlayerContainer playerContainer, GameMapServerSide gameMap){
 		this.gameMap = gameMap;
 		this.playerContainer = playerContainer;		
-		resetTime();
 		removable = new ArrayList<>();
 		chasers = new ArrayList<>();
 		chaseds = new ArrayList<>();
 		berries = new ArrayList<>();
 	}
-	private void resetTime(){
-		startTime = System.currentTimeMillis();
+	/**
+	 * @param matchLengh Match lenght in seconds
+	 */
+	public void resetTime(long matchLenght){
+		endTime = System.currentTimeMillis() + (matchLenght * 1000);		
 	}
 	private boolean isTimeFull(){
-		if((System.currentTimeMillis() - startTime) > (matchLenght * 1000)){
+		if(System.currentTimeMillis() > endTime){
 			return true;
 		}
 		else{

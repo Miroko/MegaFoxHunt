@@ -12,9 +12,8 @@ public class MenuScreen implements Screen {
 	
 	private Stage stageUI;		
 	
-	public MenuScreen(MyGdxGame game){	  		
-		stageUI = new Stage();
-	    Gdx.input.setInputProcessor(stageUI);		    
+	public MenuScreen(){	  		
+		stageUI = new Stage();	        
 		
 	    MenuUI menuUI = new MenuUI();	  
 	    menuUI.setPosition(0, 0);
@@ -38,8 +37,7 @@ public class MenuScreen implements Screen {
 
 	@Override
 	public void show() {
-		// TODO Auto-generated method stub
-		
+		Gdx.input.setInputProcessor(stageUI);				
 	}
 
 	@Override

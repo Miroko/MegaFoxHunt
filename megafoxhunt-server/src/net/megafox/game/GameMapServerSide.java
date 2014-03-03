@@ -69,6 +69,7 @@ public class GameMapServerSide {
 	public void removeEntity(Entity entity) {
 		collisionMap[entity.getX()][entity.getY()] = E;
 	}
+
 }
 
 

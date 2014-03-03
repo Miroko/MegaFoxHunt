@@ -29,7 +29,7 @@ public class GameRoom extends Thread {
 	private static final int MAX_SIZE = 12;
 	private static final long UPDATE_RATE_MS = 100;
 	
-	public static final int MATCH_LENGHT_SECONDS_DEFAULT = 60 * 3;
+	public static final int MATCH_LENGHT_SECONDS_DEFAULT =  5;
 	
 	public static final int STATE_LOBBY = KryoNetwork.ChangeState.LOBBY;
 	public static final int STATE_GAME = KryoNetwork.ChangeState.GAME;
@@ -37,7 +37,7 @@ public class GameRoom extends Thread {
 	private int roomState;
 	private boolean roomRunning = true;
 	
-	private ArrayList<PlayerConnection> playersReady = new ArrayList<>();
+	private ArrayList<PlayerConnection> playersReady;
 	
 	private GameMapServerSide currentMap;	
 	private PlayerContainer playerContainer;
@@ -48,17 +48,28 @@ public class GameRoom extends Thread {
 	public GameRoom(RoomHandler roomHandler){
 		this.roomHandler = roomHandler;
 		playerContainer = new PlayerContainer(MAX_SIZE);
+		playersReady = new ArrayList<>();
 		switchState(STATE_LOBBY);			
 	}
 	public int getRoomState(){
 		return roomState;
 	}	
+	/**
+	 * Sets match end time
+	 * @param MatchLenght in seconds
+	 */
+	public void startClock(long matchLenght){
+		gameSimulation.resetTime(matchLenght);
+	}
 	public boolean hasRoom(){
 		if(playerContainer.getPlayersConcurrentSafe().size() == MAX_SIZE){
-			return true;
-		} else{
 			return false;
+		} else{
+			return true;
 		}
+	}
+	public boolean isEmpty(){
+		return playerContainer.getPlayersConcurrentSafe().isEmpty();
 	}
 	public void update(float delta){		
 		switch (roomState) {
@@ -151,7 +162,7 @@ public class GameRoom extends Thread {
 		}
 	}
 	public void startSimulation() {		
-		gameSimulation = new GameSimulation(playerContainer, currentMap, MATCH_LENGHT_SECONDS_DEFAULT);		
+		gameSimulation = new GameSimulation(playerContainer, currentMap);		
 	}
 	/**
 	 * Set current map and inform players about the map
@@ -204,7 +215,9 @@ public class GameRoom extends Thread {
 		removePlayer.id = playerConnection.getMyId();
 		playerContainer.sendObjectToAllExcept(playerConnection, removePlayer);
 		
-		playerContainer.removePlayer(playerConnection);			
+		playerContainer.removePlayer(playerConnection);	
+		
+		playerConnection.setMyCurrentRoom(null);
 		
 		return true;
 	}
@@ -227,5 +240,10 @@ public class GameRoom extends Thread {
 		for(PlayerConnection playerConnection : playerContainer.getPlayersConcurrentSafe()){
 			removePlayer(playerConnection);
 		}
+	}
+	public void endMatch() {	
+		gameSimulation = null;
+		currentMap = null;
+		playersReady.clear();
 	}
 }
