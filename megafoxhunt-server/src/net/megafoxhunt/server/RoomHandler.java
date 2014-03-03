@@ -33,9 +33,6 @@ public class RoomHandler {
 		}	
 		return roomAddedTo;		
 	}
-	/*
-	 * Creates new room
-	 */
 	public synchronized GameRoom createNewRoom(){
 		GameRoom room = new GameRoom(this);	
 		rooms.add(room);			
@@ -45,9 +42,6 @@ public class RoomHandler {
 		room.removePlayers();
 		rooms.remove(room);
 	}
-	/*
-	 * Starts game in room
-	 */
 	public void switchToLobby(GameRoom room){
 		room.endMatch();
 		room.switchState(GameRoom.STATE_LOBBY);
