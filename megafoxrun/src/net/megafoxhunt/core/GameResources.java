@@ -27,7 +27,7 @@ public class GameResources {
 		 BERRY_TEXTURE = new Texture("data/berry.png");
 		 
 		 BERRY_ANIMATIONS[BERRY_DEFAULT_ANIMATION] = generateAnimation(BERRY_TEXTURE, 0.025f, 1, 1);
-		 FOX_ANIMATIONS[FOX_DEFAULT_ANIMATION] = generateAnimation(FOX_TEXTURE, 0.025f, 6, 5);
+		 FOX_ANIMATIONS[FOX_DEFAULT_ANIMATION] = generateAnimation(FOX_TEXTURE, 0.025f, 5, 5);
 		 DOG_ANIMATIONS[DOG_DEFAULT_ANIMATION] = generateAnimation(DOG_TEXTURE, 0.025f, 1, 1);		 
 	}
 	private Animation generateAnimation(Texture texture, float frameDuration, int cols, int rows){
