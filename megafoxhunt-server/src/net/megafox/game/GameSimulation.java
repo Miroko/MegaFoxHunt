@@ -87,11 +87,12 @@ public class GameSimulation {
 					int i = random.nextInt(holes.size());
 					targetHole = holes.get(i);
 				}
-				move(chased, targetHole.getX(), targetHole.getY(), Shared.DIRECTION_STOP);
-				playerContainer.sendObjectToAll(new Move(chased.getID(), Shared.DIRECTION_STOP, targetHole.getX(), targetHole.getY()), Visibility.BOTH);
 				
 				((Hole)targetHole).setHoleCooldown(true);
 				((Hole)collidedEntity).setHoleCooldown(true);
+				
+				move(chased, targetHole.getX(), targetHole.getY(), Shared.DIRECTION_STOP);
+				playerContainer.sendObjectToAll(new Move(chased.getID(), Shared.DIRECTION_STOP, targetHole.getX(), targetHole.getY()), Visibility.BOTH);
 				
 				timer.schedule(new TimerListener(collidedEntity), 5000);
 				timer.schedule(new TimerListener(targetHole), 5000);
