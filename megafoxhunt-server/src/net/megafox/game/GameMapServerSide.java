@@ -17,6 +17,7 @@ import net.megafoxhunt.shared.GameMapSharedConfig;
 public class GameMapServerSide {
 	
 	public static final int TOTAL_BERRIES = 30;
+	public static final int TOTAL_HOLES = 4;
 	
 	private static final Wall W = new Wall();
 	private static final Empty E = new Empty();

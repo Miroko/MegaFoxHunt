@@ -6,6 +6,7 @@ import net.megafox.entities.Berry;
 import net.megafox.entities.Chaser;
 import net.megafox.entities.Empty;
 import net.megafox.entities.Entity;
+import net.megafox.entities.Hole;
 
 
 
@@ -115,6 +116,7 @@ public class GameRoom extends Thread {
 	
 		playerContainer.sendObjectToAll(changeState);
 	}
+	
 	public void generateBerries(int amount, IDHandler idHandler){
 		Random r = new Random();
 		Entity[][] collisionMap = currentMap.getCollisionMap();
@@ -131,6 +133,26 @@ public class GameRoom extends Thread {
 				gameSimulation.addBerry(berry);
 				currentMap.addEntity(berry);	
 				berriesAdded++;
+			} 
+		}
+	}
+	
+	public void generateHoles(int amount, IDHandler idHandler){
+		Random r = new Random();
+		Entity[][] collisionMap = currentMap.getCollisionMap();
+		
+		int x;
+		int y;		
+		
+		int holesAdded = 0;		
+		while(holesAdded < amount){
+			x = r.nextInt(currentMap.getWidth());
+			y = r.nextInt(currentMap.getHeight());
+			if(collisionMap[x][y].getClass().equals(Empty.class)){
+				Hole hole = new Hole(x, y, idHandler.getFreeID());
+				gameSimulation.addHole(hole);
+				currentMap.addEntity(hole);	
+				holesAdded++;
 			} 
 		}
 	}

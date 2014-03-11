@@ -21,6 +21,7 @@ public class KryoNetwork {
 		kryo.register(PlayerReady.class);
 		kryo.register(Message.class);
 		kryo.register(Winner.class);
+		kryo.register(AddHole.class);
 	}	
 	/*
 	 * MESSAGE
@@ -94,6 +95,19 @@ public class KryoNetwork {
 		
 		public AddBerry(){}
 		public AddBerry(int id, int x, int y) {
+			this.id = id;
+			this.x = x;
+			this.y = y;
+		}
+	}
+	
+	public static class AddHole {
+		public int id;
+		public int x;
+		public int y;
+		
+		public AddHole(){}
+		public AddHole(int id, int x, int y) {
 			this.id = id;
 			this.x = x;
 			this.y = y;
