@@ -86,15 +86,16 @@ public class GameScreen implements Screen {
 		Batch batch = renderer.getSpriteBatch();
 		batch.begin();		
              
+        // DRAW BERRIES AND HOLES
+        for(Entity object : MyGdxGame.mapHandler.currentMap.getAllObjectsConcurrentSafe()){
+        	object.render(batch);
+        }
+        
         // DRAW ENTITIES
         for(User user : UserContainer.getUsersConcurrentSafe()){
         	entity = user.getControlledEntity();
         	if (entity != null) entity.render(batch);
         }    
-        // DRAW BERRIES
-        for(Entity object : MyGdxGame.mapHandler.currentMap.getAllObjectsConcurrentSafe()){
-        	object.render(batch);
-        }
         
         batch.end();
         
