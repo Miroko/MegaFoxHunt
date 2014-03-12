@@ -12,6 +12,7 @@ import net.megafoxhunt.entities.EntityMovable;
 import net.megafoxhunt.entities.Entity;
 import net.megafoxhunt.ui.TouchJoystick;
 
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.FPSLogger;
@@ -99,11 +100,13 @@ public class GameScreen implements Screen {
         
         batch.end();
         
-        // DRAW JOYSTICK
-        spriteBatch.begin();
-        touchJoystick.draw(spriteBatch);
-        font.draw(spriteBatch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 25, 25);
-        spriteBatch.end(); 
+        if (Gdx.app.getType() == ApplicationType.Android) {
+	        // DRAW JOYSTICK
+	        spriteBatch.begin();
+	        touchJoystick.draw(spriteBatch);
+	        font.draw(spriteBatch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 25, 25);
+	        spriteBatch.end();
+        }
 	}
 
 	private void keepCameraInBoundaries() {
