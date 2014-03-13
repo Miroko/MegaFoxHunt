@@ -124,6 +124,7 @@ public class EntityMovable extends Entity{
 		else if (direction == DIRECTION_RIGHT) destinationX += 1;
 		else if (direction == DIRECTION_DOWN) destinationY -= 1;
 		else if (direction == DIRECTION_LEFT) destinationX -= 1;
+		else return;
 		
 		if (!collisionMap.getCell(destinationX, destinationY).getTile().getProperties().containsKey("wall")) {
 			isMoving = true;
@@ -136,8 +137,9 @@ public class EntityMovable extends Entity{
 			if (network.getLocalUser().getControlledEntity() == this && destinationDirection != DIRECTION_STOP) {
 				Move move = new Move(id, direction, (int)x, (int)y);
 				network.getKryoClient().sendTCP(move);
-	    		destinationDirection = DIRECTION_STOP;
 			}
+			destinationDirection = DIRECTION_STOP;
+			direction = DIRECTION_STOP;
 		}
 	}
 	

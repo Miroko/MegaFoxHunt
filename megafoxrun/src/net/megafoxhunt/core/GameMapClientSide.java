@@ -64,4 +64,7 @@ public class GameMapClientSide {
 		});		
 	}	
 
+	public void changeTile(int x, int y, int type) {
+		((TiledMapTileLayer)tiledMap.getLayers().get(0)).getCell(x, y).setTile(tiledMap.getTileSets().getTile(type));
+	}
 }

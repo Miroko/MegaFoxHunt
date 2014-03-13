@@ -19,6 +19,8 @@ import net.megafoxhunt.shared.KryoNetwork.AddChaser;
 import net.megafoxhunt.shared.KryoNetwork.AddHole;
 import net.megafoxhunt.shared.KryoNetwork.AddPlayer;
 import net.megafoxhunt.shared.KryoNetwork.ChangeState;
+import net.megafoxhunt.shared.KryoNetwork.ChangeTilesTypes;
+import net.megafoxhunt.shared.KryoNetwork.ChangeTilesTypes.Tile;
 import net.megafoxhunt.shared.KryoNetwork.Login;
 import net.megafoxhunt.shared.KryoNetwork.Move;
 import net.megafoxhunt.shared.KryoNetwork.RemoveEntity;
@@ -161,13 +163,23 @@ public class GameNetwork {
 				else if(object instanceof SetMap){					
 					SetMap setMap = (SetMap)object;											
 					MyGdxGame.mapHandler.switchMap(setMap.mapName);				
-				}				
+				}
+				
+				
+				/*
+				 * CHANGE TILE TYPE
+				 */
+				else if (object instanceof ChangeTilesTypes) {
+					ChangeTilesTypes changeTileType = (ChangeTilesTypes)object;
+					
+					for (Tile tile : changeTileType.getTiles()) {
+						MyGdxGame.mapHandler.currentMap.changeTile(tile.x, tile.y, tile.type);
+					}
+				}
 			}
 
 			@Override
 			public void disconnected (Connection connection) {
-				
-				
 				MyGdxGame.shutdown();
 			}
 		}));		

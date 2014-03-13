@@ -2,6 +2,7 @@ package net.megafoxhunt.server;
 
 import net.megafox.entities.Entity;
 import net.megafox.gameroom.GameRoom;
+import net.megafox.items.Item;
 
 import com.esotericsoftware.kryonet.Connection;
 
@@ -16,6 +17,8 @@ public class PlayerConnection extends Connection {
 	
 	private int myId;
 	public int getMyId(){ return myId; }
+	
+	private Item currentItem;
 	
 	public PlayerConnection(int id, String name) {
 		super();	
@@ -42,4 +45,11 @@ public class PlayerConnection extends Connection {
 		idHandler.freeID(myId);
 	}
 
+	public Item getCurrentItem() {
+		return currentItem;
+	}
+	
+	public void setCurrentItem(Item item) {
+		this.currentItem = item;
+	}
 }

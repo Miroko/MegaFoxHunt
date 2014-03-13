@@ -1,7 +1,5 @@
 package net.megafox.game;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Timer;
@@ -15,11 +13,13 @@ import net.megafox.entities.Entity;
 import net.megafox.entities.Hole;
 import net.megafox.entities.Entity.Visibility;
 import net.megafox.gameroom.PlayerContainer;
-import net.megafoxhunt.shared.GameMapSharedConfig;
+import net.megafox.items.Bomb;
+import net.megafox.items.Item;
 import net.megafoxhunt.shared.KryoNetwork.AddChaser;
 import net.megafoxhunt.shared.KryoNetwork.AddChased;
 import net.megafoxhunt.shared.KryoNetwork.AddBerry;
 import net.megafoxhunt.shared.KryoNetwork.AddHole;
+import net.megafoxhunt.shared.KryoNetwork.ChangeTilesTypes;
 import net.megafoxhunt.shared.KryoNetwork.Move;
 import net.megafoxhunt.shared.KryoNetwork.RemoveEntity;
 import net.megafoxhunt.shared.KryoNetwork.Winner;
@@ -210,6 +210,33 @@ public class GameSimulation {
 		public void run() {
 			if (entity instanceof Hole) {
 				((Hole)entity).setHoleCooldown(false);
+			}
+		}
+	}
+
+	public void useItem(Item item, int x, int y) {
+		if (item instanceof Bomb) {
+			ChangeTilesTypes changeTilesTypes = new ChangeTilesTypes();
+			
+			if (gameMap.isBlocked(x - 1, y)) {
+				gameMap.setEmpty(x - 1, y);
+				changeTilesTypes.addTile(x - 1, y, 13);
+			}
+			if (gameMap.isBlocked(x + 1, y)) {
+				gameMap.setEmpty(x + 1, y);
+				changeTilesTypes.addTile(x + 1, y, 13);
+			}
+			if (gameMap.isBlocked(x, y - 1)) {
+				gameMap.setEmpty(x, y - 1);
+				changeTilesTypes.addTile(x, y - 1, 13);
+			}
+			if (gameMap.isBlocked(x, y + 1)) {
+				gameMap.setEmpty(x, y + 1);
+				changeTilesTypes.addTile(x, y + 1, 13);
+			}
+			
+			if (!changeTilesTypes.getTiles().isEmpty()) {
+				playerContainer.sendObjectToAll(changeTilesTypes);
 			}
 		}
 	}
