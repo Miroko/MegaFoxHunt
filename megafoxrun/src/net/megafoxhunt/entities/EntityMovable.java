@@ -100,10 +100,12 @@ public class EntityMovable extends Entity{
 		if (destinationDirection == DIRECTION_LEFT || destinationDirection == DIRECTION_RIGHT){
 			lastXDirection = destinationDirection;
 		}
-		if (animationNumber == GameResources.FRONT_ANIMATION || animationNumber == GameResources.BACK_ANIMATION)
-			batch.draw(currentFrame, x - 0.07f, y, 1.14f, 1.4f);
+		if (animationNumber == GameResources.FRONT_ANIMATION)
+			batch.draw(currentFrame, x, y, 1f, 1.51f);
+		else if (animationNumber == GameResources.BACK_ANIMATION)
+			batch.draw(currentFrame, x, y, 1f, 1.65f);
 		else 
-			batch.draw(currentFrame, x - 0.5f, y, 2.11f, 1.53f);
+			batch.draw(currentFrame, x - 0.45f, y, 1.9f, 1.1f);
 	}
 	private void setNewDestination(GameNetwork network) {
 		if (direction == DIRECTION_STOP) {

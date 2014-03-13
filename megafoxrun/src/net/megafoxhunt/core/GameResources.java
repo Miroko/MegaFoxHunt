@@ -12,9 +12,6 @@ public class GameResources {
 	public Texture DEBUG_TEXTURE;
 	
 	public Texture FOX_TEXTURE;
-	public Texture FOX_BACK_TEXTURE;
-	public Texture FOX_FRONT_TEXTURE;
-	public Texture FOX_FRONT_BACK_TEXTURE;
 	
 	public Texture DOG_TEXTURE;
 	public Texture DOG_BACK_TEXTURE;
@@ -34,10 +31,7 @@ public class GameResources {
 	public void init(){
 		 DEBUG_TEXTURE = new Texture("data/libgdx.png");
 		 
-		 FOX_TEXTURE = new Texture("data/kettu_sivusta.png");
-		 FOX_FRONT_TEXTURE = new Texture("data/kettu_edesta.png");
-		 FOX_BACK_TEXTURE = new Texture("data/kettu_takaa.png");
-		 FOX_FRONT_BACK_TEXTURE = new Texture("data/kettu_edesta_takaa.png");
+		 FOX_TEXTURE = new Texture("data/fox.png");
 		 
 		 DOG_TEXTURE = new Texture("data/dog.png");
 		 DOG_FRONT_TEXTURE = new Texture("data/dog.png");
@@ -49,14 +43,32 @@ public class GameResources {
 		 BERRY_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(BERRY_TEXTURE, 0.025f, 1, 1);
 		 HOLE_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(HOLE_TEXTURE, 0.025f, 1, 1);
 		 
-		 FOX_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(FOX_TEXTURE, 0.025f, 5, 5);
-		 FOX_ANIMATIONS[FRONT_ANIMATION] = generateAnimation(FOX_FRONT_BACK_TEXTURE, 0.025f, 10, 5, 0, 5, 0, 5);
-		 FOX_ANIMATIONS[BACK_ANIMATION] = generateAnimation(FOX_FRONT_BACK_TEXTURE, 0.025f, 10, 5, 5, 10, 0, 5);
+		 FOX_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(FOX_TEXTURE, 0.025f, 0, 0, 104, 64, 1, 13);
+		 FOX_ANIMATIONS[FRONT_ANIMATION] = generateAnimation(FOX_TEXTURE, 0.025f, 0, 66, 64, 97, 1, 13);
+		 FOX_ANIMATIONS[BACK_ANIMATION] = generateAnimation(FOX_TEXTURE, 0.025f, 0, 166, 64, 106, 1, 13);
 		 
 		 DOG_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(DOG_TEXTURE, 0.025f, 1, 1);
 		 DOG_ANIMATIONS[FRONT_ANIMATION] = generateAnimation(DOG_TEXTURE, 0.025f, 1, 1);
 		 DOG_ANIMATIONS[BACK_ANIMATION] = generateAnimation(DOG_TEXTURE, 0.025f, 1, 1);
 	}
+	
+	private Animation generateAnimation(Texture texture, float frameDuration, int startX, int startY, int width, int height, int rows, int cols) {
+		Animation animation = null;
+		TextureRegion[] frames = new TextureRegion[rows * cols];
+		
+		int framesIndex = 0;
+		
+		for (int y = 0; y < rows; y++) {
+			for (int x = 0; x < cols; x++) {
+				frames[framesIndex] = new TextureRegion(texture, x * width + startX, y * height + startY, width, height);
+				framesIndex++;
+			}
+		}
+		
+		animation = new Animation(frameDuration, frames);
+        return animation;
+	}
+	
 	private Animation generateAnimation(Texture texture, float frameDuration, int cols, int rows){
 		Animation animation = null;
         TextureRegion[][] tmp = TextureRegion.split(texture, texture.getWidth() / cols, texture.getHeight() / rows); 
@@ -71,21 +83,6 @@ public class GameResources {
         return animation;
 	}
 	
-	private Animation generateAnimation(Texture texture, float frameDuration, int cols, int rows, int startX, int endX, int startY, int endY) {
-		Animation animation = null;
-		
-		TextureRegion[][] tmp = TextureRegion.split(texture, texture.getWidth() / cols, texture.getHeight() / rows);
-        TextureRegion[] frames = new TextureRegion[(endX - startX) * (endY - startY)];
-        int index = 0;
-        for (int i = startY; i < endY; i++) {
-                for (int j = startX; j < endX; j++) {
-                        frames[index++] = tmp[i][j];
-                }
-        }
-        
-        animation = new Animation(frameDuration, frames);
-		return animation;
-	}
 	public void dispose(){
 		DEBUG_TEXTURE.dispose();
 		FOX_TEXTURE.dispose();
