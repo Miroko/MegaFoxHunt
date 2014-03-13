@@ -5,6 +5,7 @@ import java.io.IOException;
 import net.megafox.gameroom.GameRoom;
 import net.megafoxhunt.shared.KryoNetwork;
 
+import net.megafoxhunt.shared.KryoNetwork.ActivateItem;
 import net.megafoxhunt.shared.KryoNetwork.Login;
 import net.megafoxhunt.shared.KryoNetwork.Message;
 import net.megafoxhunt.shared.KryoNetwork.Move;
@@ -59,6 +60,14 @@ public class GameServer {
 				 */
 				else if (object instanceof PlayerReady) {					
 					playerConnection.getMyCurrentRoom().playerReady(playerConnection);
+				}
+				
+				/*
+				 * ITEM ACTIVATE
+				 */
+				
+				else if (object instanceof ActivateItem) {
+					playerConnection.getMyCurrentRoom().activateItem(playerConnection);
 				}
 			}
 			

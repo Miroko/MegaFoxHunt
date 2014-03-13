@@ -8,6 +8,7 @@ import net.megafoxhunt.entities.Berry;
 import net.megafoxhunt.entities.Chased;
 import net.megafoxhunt.entities.Chaser;
 import net.megafoxhunt.entities.EntityMovable;
+import net.megafoxhunt.entities.Hole;
 import net.megafoxhunt.screens.GameScreen;
 import net.megafoxhunt.screens.LobbyScreen;
 import net.megafoxhunt.shared.GameMapSharedConfig;
@@ -15,8 +16,11 @@ import net.megafoxhunt.shared.KryoNetwork;
 import net.megafoxhunt.shared.KryoNetwork.AddBerry;
 import net.megafoxhunt.shared.KryoNetwork.AddChased;
 import net.megafoxhunt.shared.KryoNetwork.AddChaser;
+import net.megafoxhunt.shared.KryoNetwork.AddHole;
 import net.megafoxhunt.shared.KryoNetwork.AddPlayer;
 import net.megafoxhunt.shared.KryoNetwork.ChangeState;
+import net.megafoxhunt.shared.KryoNetwork.ChangeTilesTypes;
+import net.megafoxhunt.shared.KryoNetwork.ChangeTilesTypes.Tile;
 import net.megafoxhunt.shared.KryoNetwork.Login;
 import net.megafoxhunt.shared.KryoNetwork.Move;
 import net.megafoxhunt.shared.KryoNetwork.RemoveEntity;
@@ -120,6 +124,14 @@ public class GameNetwork {
 					AddBerry addBerry = (AddBerry)object;
 					MyGdxGame.mapHandler.currentMap.addStaticObject(new Berry(addBerry.id, addBerry.x, addBerry.y));
 				}
+				
+				/*
+				 * ADD HOLE TO MAP
+				 */
+				else if (object instanceof AddHole) {
+					AddHole addHole = (AddHole)object;
+					MyGdxGame.mapHandler.currentMap.addStaticObject(new Hole(addHole.id, addHole.x, addHole.y));
+				}
 				/*
 				 * REMOVE ENTITY 
 				 */
@@ -151,13 +163,23 @@ public class GameNetwork {
 				else if(object instanceof SetMap){					
 					SetMap setMap = (SetMap)object;											
 					MyGdxGame.mapHandler.switchMap(setMap.mapName);				
-				}				
+				}
+				
+				
+				/*
+				 * CHANGE TILE TYPE
+				 */
+				else if (object instanceof ChangeTilesTypes) {
+					ChangeTilesTypes changeTileType = (ChangeTilesTypes)object;
+					
+					for (Tile tile : changeTileType.getTiles()) {
+						MyGdxGame.mapHandler.currentMap.changeTile(tile.x, tile.y, tile.type);
+					}
+				}
 			}
 
 			@Override
 			public void disconnected (Connection connection) {
-				
-				
 				MyGdxGame.shutdown();
 			}
 		}));		

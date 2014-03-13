@@ -51,6 +51,7 @@ public class RoomHandler {
 		room.startSimulation();		
 		room.setChasedsAndChasers();
 		room.generateBerries(GameMapServerSide.TOTAL_BERRIES, gameServer.idHandler);
+		room.generateHoles(GameMapServerSide.TOTAL_HOLES, gameServer.idHandler);
 		room.switchState(GameRoom.STATE_GAME);
 		room.startClock(GameRoom.MATCH_LENGHT_SECONDS_DEFAULT);
 	}

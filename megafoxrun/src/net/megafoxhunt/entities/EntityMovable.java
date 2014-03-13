@@ -1,6 +1,7 @@
 package net.megafoxhunt.entities;
 
 import net.megafoxhunt.core.GameNetwork;
+import net.megafoxhunt.core.GameResources;
 import net.megafoxhunt.shared.KryoNetwork.Move;
 
 import com.badlogic.gdx.Gdx;
@@ -67,33 +68,44 @@ public class EntityMovable extends Entity{
 	}
 	@Override
 	public void render(Batch batch){
-		stateTime += Gdx.graphics.getDeltaTime();
+		if (destinationDirection != DIRECTION_STOP)
+			stateTime += Gdx.graphics.getDeltaTime();
+		
 		currentFrame = animations[animationNumber].getKeyFrame(stateTime, true);
-		switch (lastXDirection) {
-		case DIRECTION_STOP:
-
-			break;
-		case DIRECTION_DOWN:
-
-			break;
-		case DIRECTION_UP:
-
-			break;
-		case DIRECTION_LEFT:
-			if(currentFrame.isFlipX() == false){
-				currentFrame.flip(true, false);				
-			}
-			break;
-		case DIRECTION_RIGHT:
-			if(currentFrame.isFlipX() == true){
-				currentFrame.flip(true, false);
-			}
-			break;
+		
+		switch (destinationDirection) {
+			case DIRECTION_STOP:
+				break;
+			case DIRECTION_DOWN:
+				animationNumber = GameResources.FRONT_ANIMATION;
+				break;
+			case DIRECTION_UP:
+				animationNumber = GameResources.BACK_ANIMATION;
+				break;
+			case DIRECTION_LEFT:
+				animationNumber = GameResources.DEFAULT_ANIMATION;
+				currentFrame = animations[animationNumber].getKeyFrame(stateTime, true);
+				if(currentFrame.isFlipX() == false){
+					currentFrame.flip(true, false);				
+				}
+				break;
+			case DIRECTION_RIGHT:
+				animationNumber = GameResources.DEFAULT_ANIMATION;
+				currentFrame = animations[animationNumber].getKeyFrame(stateTime, true);
+				if(currentFrame.isFlipX() == true){
+					currentFrame.flip(true, false);
+				}
+				break;
 		}
 		if (destinationDirection == DIRECTION_LEFT || destinationDirection == DIRECTION_RIGHT){
 			lastXDirection = destinationDirection;
 		}
-		batch.draw(currentFrame, x - 0.35f, y, 1.7f, 1.7f);
+		if (animationNumber == GameResources.FRONT_ANIMATION)
+			batch.draw(currentFrame, x, y, 1f, 1.51f);
+		else if (animationNumber == GameResources.BACK_ANIMATION)
+			batch.draw(currentFrame, x, y, 1f, 1.65f);
+		else 
+			batch.draw(currentFrame, x - 0.45f, y, 1.9f, 1.1f);
 	}
 	private void setNewDestination(GameNetwork network) {
 		if (direction == DIRECTION_STOP) {
@@ -112,6 +124,7 @@ public class EntityMovable extends Entity{
 		else if (direction == DIRECTION_RIGHT) destinationX += 1;
 		else if (direction == DIRECTION_DOWN) destinationY -= 1;
 		else if (direction == DIRECTION_LEFT) destinationX -= 1;
+		else return;
 		
 		if (!collisionMap.getCell(destinationX, destinationY).getTile().getProperties().containsKey("wall")) {
 			isMoving = true;
@@ -124,8 +137,9 @@ public class EntityMovable extends Entity{
 			if (network.getLocalUser().getControlledEntity() == this && destinationDirection != DIRECTION_STOP) {
 				Move move = new Move(id, direction, (int)x, (int)y);
 				network.getKryoClient().sendTCP(move);
-	    		destinationDirection = DIRECTION_STOP;
 			}
+			destinationDirection = DIRECTION_STOP;
+			direction = DIRECTION_STOP;
 		}
 	}
 	

@@ -1,5 +1,9 @@
 package net.megafoxhunt.shared;
 
+
+import java.util.ArrayList;
+import java.util.List;
+
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
 
@@ -21,6 +25,11 @@ public class KryoNetwork {
 		kryo.register(PlayerReady.class);
 		kryo.register(Message.class);
 		kryo.register(Winner.class);
+		kryo.register(AddHole.class);
+		kryo.register(ActivateItem.class);
+		kryo.register(ChangeTilesTypes.class);
+		kryo.register(ArrayList.class);
+		kryo.register(ChangeTilesTypes.Tile.class);
 	}	
 	/*
 	 * MESSAGE
@@ -99,6 +108,19 @@ public class KryoNetwork {
 			this.y = y;
 		}
 	}
+	
+	public static class AddHole {
+		public int id;
+		public int x;
+		public int y;
+		
+		public AddHole(){}
+		public AddHole(int id, int x, int y) {
+			this.id = id;
+			this.x = x;
+			this.y = y;
+		}
+	}
 	public static class RemoveEntity {
 		public int id;
 	}
@@ -128,6 +150,37 @@ public class KryoNetwork {
 			this.direction = direction;
 			this.x = x;
 			this.y = y;
+		}
+	}
+	
+	public static class ActivateItem { }
+	
+	public static class ChangeTilesTypes {
+		private List<Tile> tiles;
+		
+		public ChangeTilesTypes() {
+			tiles = new ArrayList<Tile>();
+		}
+		
+		public void addTile(int x, int y, int type) {
+			tiles.add(new Tile(x, y, type));
+		}
+		
+		public List<Tile> getTiles() {
+			return tiles;
+		}
+		
+		public static class Tile {
+			public int x;
+			public int y;
+			public int type;
+			
+			private Tile() {}
+			private Tile(int x, int y, int type) {
+				this.x = x;
+				this.y = y;
+				this.type = type;
+			}
 		}
 	}
 }

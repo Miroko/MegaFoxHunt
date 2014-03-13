@@ -6,12 +6,15 @@ import net.megafox.entities.Berry;
 import net.megafox.entities.Chaser;
 import net.megafox.entities.Empty;
 import net.megafox.entities.Entity;
+import net.megafox.entities.Hole;
 
 
 
 import net.megafox.entities.Chased;
 import net.megafox.game.GameMapServerSide;
 import net.megafox.game.GameSimulation;
+import net.megafox.items.Bomb;
+import net.megafox.items.Item;
 import net.megafoxhunt.server.IDHandler;
 import net.megafoxhunt.server.PlayerConnection;
 import net.megafoxhunt.server.RoomHandler;
@@ -115,6 +118,7 @@ public class GameRoom extends Thread {
 	
 		playerContainer.sendObjectToAll(changeState);
 	}
+	
 	public void generateBerries(int amount, IDHandler idHandler){
 		Random r = new Random();
 		Entity[][] collisionMap = currentMap.getCollisionMap();
@@ -131,6 +135,26 @@ public class GameRoom extends Thread {
 				gameSimulation.addBerry(berry);
 				currentMap.addEntity(berry);	
 				berriesAdded++;
+			} 
+		}
+	}
+	
+	public void generateHoles(int amount, IDHandler idHandler){
+		Random r = new Random();
+		Entity[][] collisionMap = currentMap.getCollisionMap();
+		
+		int x;
+		int y;		
+		
+		int holesAdded = 0;		
+		while(holesAdded < amount){
+			x = r.nextInt(currentMap.getWidth());
+			y = r.nextInt(currentMap.getHeight());
+			if(collisionMap[x][y].getClass().equals(Empty.class)){
+				Hole hole = new Hole(x, y, idHandler.getFreeID());
+				gameSimulation.addHole(hole);
+				currentMap.addEntity(hole);	
+				holesAdded++;
 			} 
 		}
 	}
@@ -156,6 +180,7 @@ public class GameRoom extends Thread {
 			} else {
 				Chaser chaser = new Chaser(33, 13 + (counter * 1), player.getMyId());
 				player.setEntity(chaser);
+				player.setCurrentItem(new Bomb(gameSimulation));
 				gameSimulation.addChaser(chaser);
 			}
 			counter++;
@@ -245,5 +270,13 @@ public class GameRoom extends Thread {
 		gameSimulation = null;
 		currentMap = null;
 		playersReady.clear();
+	}
+	
+	public void activateItem(PlayerConnection playerConnection) {
+		Item item = playerConnection.getCurrentItem();
+		if (item == null) return;
+		
+		item.activateItem(playerConnection.getEntity().getX(), playerConnection.getEntity().getY());
+		//playerConnection.setCurrentItem(null);
 	}
 }

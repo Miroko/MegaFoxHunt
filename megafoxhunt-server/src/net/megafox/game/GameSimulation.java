@@ -1,20 +1,29 @@
 package net.megafox.game;
 
 import java.util.ArrayList;
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 import net.megafox.entities.Berry;
 import net.megafox.entities.Chased;
 import net.megafox.entities.Chaser;
 import net.megafox.entities.Entity;
+import net.megafox.entities.Hole;
+import net.megafox.entities.Entity.Visibility;
 import net.megafox.gameroom.PlayerContainer;
-import net.megafoxhunt.shared.GameMapSharedConfig;
+import net.megafox.items.Bomb;
+import net.megafox.items.Item;
 import net.megafoxhunt.shared.KryoNetwork.AddChaser;
 import net.megafoxhunt.shared.KryoNetwork.AddChased;
 import net.megafoxhunt.shared.KryoNetwork.AddBerry;
+import net.megafoxhunt.shared.KryoNetwork.AddHole;
+import net.megafoxhunt.shared.KryoNetwork.ChangeTilesTypes;
 import net.megafoxhunt.shared.KryoNetwork.Move;
 import net.megafoxhunt.shared.KryoNetwork.RemoveEntity;
 import net.megafoxhunt.shared.KryoNetwork.Winner;
+import net.megafoxhunt.shared.Shared;
 
 public class GameSimulation {
 
@@ -28,8 +37,14 @@ public class GameSimulation {
 	private ArrayList<Entity> chaseds;
 	private ArrayList<Entity> berries;
 	
+	private ArrayList<Entity> holes;
+	
 	private PlayerContainer playerContainer;
 
+	private Random random;
+	
+	private Timer timer;
+	
 	public GameSimulation(PlayerContainer playerContainer, GameMapServerSide gameMap){
 		this.gameMap = gameMap;
 		this.playerContainer = playerContainer;		
@@ -37,6 +52,9 @@ public class GameSimulation {
 		chasers = new ArrayList<>();
 		chaseds = new ArrayList<>();
 		berries = new ArrayList<>();
+		holes = new ArrayList<>();
+		random = new Random();
+		timer = new Timer();
 	}
 	/**
 	 * @param matchLengh Match lenght in seconds
@@ -61,6 +79,23 @@ public class GameSimulation {
 
 			if (collidedEntity instanceof Berry) {
 				addBerryToRemove((Berry)collidedEntity);
+			} else if (collidedEntity instanceof Hole) {
+				if (((Hole)collidedEntity).isHoleCooldown()) continue;
+				
+				Entity targetHole = null;
+				while (targetHole == collidedEntity || targetHole == null) {
+					int i = random.nextInt(holes.size());
+					targetHole = holes.get(i);
+				}
+				
+				((Hole)targetHole).setHoleCooldown(true);
+				((Hole)collidedEntity).setHoleCooldown(true);
+				
+				move(chased, targetHole.getX(), targetHole.getY(), Shared.DIRECTION_STOP);
+				playerContainer.sendObjectToAll(new Move(chased.getID(), Shared.DIRECTION_STOP, targetHole.getX(), targetHole.getY()), Visibility.BOTH);
+				
+				timer.schedule(new TimerListener(collidedEntity), 5000);
+				timer.schedule(new TimerListener(targetHole), 5000);
 			}
 		}
 		
@@ -149,7 +184,60 @@ public class GameSimulation {
 		gameMap.removeEntity(berry);
 	}
 	
+	public void addHole(Hole hole) {
+		holes.add(hole);
+		playerContainer.sendObjectToAll(new AddHole(hole.getID(), hole.getX(), hole.getY()), hole.getVisibility());
+	}
+	
+	public void addHoleToRemove(Hole hole) {
+		removable.add(hole);
+		gameMap.removeEntity(hole);
+	}
+	
 	public void move(Entity entity, int x, int y, int direction){
 		entity.move(x, y, direction, gameMap);
+	}
+	
+	class TimerListener extends TimerTask {
+
+		private Entity entity;
+		
+		public TimerListener(Entity entity) {
+			this.entity = entity;
+		}
+
+		@Override
+		public void run() {
+			if (entity instanceof Hole) {
+				((Hole)entity).setHoleCooldown(false);
+			}
+		}
+	}
+
+	public void useItem(Item item, int x, int y) {
+		if (item instanceof Bomb) {
+			ChangeTilesTypes changeTilesTypes = new ChangeTilesTypes();
+			
+			if (gameMap.isBlocked(x - 1, y)) {
+				gameMap.setEmpty(x - 1, y);
+				changeTilesTypes.addTile(x - 1, y, 13);
+			}
+			if (gameMap.isBlocked(x + 1, y)) {
+				gameMap.setEmpty(x + 1, y);
+				changeTilesTypes.addTile(x + 1, y, 13);
+			}
+			if (gameMap.isBlocked(x, y - 1)) {
+				gameMap.setEmpty(x, y - 1);
+				changeTilesTypes.addTile(x, y - 1, 13);
+			}
+			if (gameMap.isBlocked(x, y + 1)) {
+				gameMap.setEmpty(x, y + 1);
+				changeTilesTypes.addTile(x, y + 1, 13);
+			}
+			
+			if (!changeTilesTypes.getTiles().isEmpty()) {
+				playerContainer.sendObjectToAll(changeTilesTypes);
+			}
+		}
 	}
 }

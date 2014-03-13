@@ -17,9 +17,10 @@ import net.megafoxhunt.shared.GameMapSharedConfig;
 public class GameMapServerSide {
 	
 	public static final int TOTAL_BERRIES = 30;
+	public static final int TOTAL_HOLES = 4;
 	
-	private static final Wall W = new Wall();
-	private static final Empty E = new Empty();
+	private static final Wall WALL = new Wall();
+	private static final Empty EMPTY = new Empty();
 	
 	private GameMapSharedConfig config;
 	
@@ -51,7 +52,7 @@ public class GameMapServerSide {
 			        int n = Integer.parseInt(nums[col]);
 			        
 			        // (height - 1 - row) to flip y 
-			        collisionMap[col][(getHeight() - 1) - row] = (n == 0 ? E : W);
+			        collisionMap[col][(getHeight() - 1) - row] = (n == 0 ? EMPTY : WALL);
 			    }
 			    row++;
 			}
@@ -61,15 +62,28 @@ public class GameMapServerSide {
 		}
 
 	}
+	
+	public boolean isBlocked(int x, int y) {
+		if (collisionMap[x][y] == WALL) return true;
+		
+		return false;
+	}
 
 	public void addEntity(Entity entity) {
 		collisionMap[entity.getX()][entity.getY()] = entity;
 	}
 	
 	public void removeEntity(Entity entity) {
-		collisionMap[entity.getX()][entity.getY()] = E;
+		collisionMap[entity.getX()][entity.getY()] = EMPTY;
 	}
 
+	public void setEmpty(int x, int y) {
+		collisionMap[x][y] = EMPTY;
+	}
+	
+	public void setWall(int x, int y) {
+		collisionMap[x][y] = WALL;
+	}
 }
 
 
