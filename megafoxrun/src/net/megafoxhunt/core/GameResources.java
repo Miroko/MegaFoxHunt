@@ -14,6 +14,7 @@ public class GameResources {
 	public Texture FOX_TEXTURE;
 	public Texture FOX_BACK_TEXTURE;
 	public Texture FOX_FRONT_TEXTURE;
+	public Texture FOX_FRONT_BACK_TEXTURE;
 	
 	public Texture DOG_TEXTURE;
 	public Texture DOG_BACK_TEXTURE;
@@ -36,6 +37,7 @@ public class GameResources {
 		 FOX_TEXTURE = new Texture("data/kettu_sivusta.png");
 		 FOX_FRONT_TEXTURE = new Texture("data/kettu_edesta.png");
 		 FOX_BACK_TEXTURE = new Texture("data/kettu_takaa.png");
+		 FOX_FRONT_BACK_TEXTURE = new Texture("data/kettu_edesta_takaa.png");
 		 
 		 DOG_TEXTURE = new Texture("data/dog.png");
 		 DOG_FRONT_TEXTURE = new Texture("data/dog.png");
@@ -48,8 +50,8 @@ public class GameResources {
 		 HOLE_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(HOLE_TEXTURE, 0.025f, 1, 1);
 		 
 		 FOX_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(FOX_TEXTURE, 0.025f, 5, 5);
-		 FOX_ANIMATIONS[FRONT_ANIMATION] = generateAnimation(FOX_FRONT_TEXTURE, 0.025f, 5, 5);
-		 FOX_ANIMATIONS[BACK_ANIMATION] = generateAnimation(FOX_BACK_TEXTURE, 0.025f, 5, 5);
+		 FOX_ANIMATIONS[FRONT_ANIMATION] = generateAnimation(FOX_FRONT_BACK_TEXTURE, 0.025f, 10, 5, 0, 5, 0, 5);
+		 FOX_ANIMATIONS[BACK_ANIMATION] = generateAnimation(FOX_FRONT_BACK_TEXTURE, 0.025f, 10, 5, 5, 10, 0, 5);
 		 
 		 DOG_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(DOG_TEXTURE, 0.025f, 1, 1);
 		 DOG_ANIMATIONS[FRONT_ANIMATION] = generateAnimation(DOG_TEXTURE, 0.025f, 1, 1);
@@ -67,6 +69,22 @@ public class GameResources {
         }
         animation = new Animation(frameDuration, frames);
         return animation;
+	}
+	
+	private Animation generateAnimation(Texture texture, float frameDuration, int cols, int rows, int startX, int endX, int startY, int endY) {
+		Animation animation = null;
+		
+		TextureRegion[][] tmp = TextureRegion.split(texture, texture.getWidth() / cols, texture.getHeight() / rows);
+        TextureRegion[] frames = new TextureRegion[(endX - startX) * (endY - startY)];
+        int index = 0;
+        for (int i = startY; i < endY; i++) {
+                for (int j = startX; j < endX; j++) {
+                        frames[index++] = tmp[i][j];
+                }
+        }
+        
+        animation = new Animation(frameDuration, frames);
+		return animation;
 	}
 	public void dispose(){
 		DEBUG_TEXTURE.dispose();

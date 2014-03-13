@@ -100,7 +100,10 @@ public class EntityMovable extends Entity{
 		if (destinationDirection == DIRECTION_LEFT || destinationDirection == DIRECTION_RIGHT){
 			lastXDirection = destinationDirection;
 		}
-		batch.draw(currentFrame, x - 0.35f, y, 1.7f, 1.7f);
+		if (animationNumber == GameResources.FRONT_ANIMATION || animationNumber == GameResources.BACK_ANIMATION)
+			batch.draw(currentFrame, x - 0.07f, y, 1.14f, 1.4f);
+		else 
+			batch.draw(currentFrame, x - 0.5f, y, 2.11f, 1.53f);
 	}
 	private void setNewDestination(GameNetwork network) {
 		if (direction == DIRECTION_STOP) {

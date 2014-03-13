@@ -100,13 +100,12 @@ public class GameScreen implements Screen {
         
         batch.end();
         
-        if (Gdx.app.getType() == ApplicationType.Android) {
-	        // DRAW JOYSTICK
-	        spriteBatch.begin();
-	        touchJoystick.draw(spriteBatch);
-	        font.draw(spriteBatch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 25, 25);
-	        spriteBatch.end();
-        }
+        
+        // DRAW JOYSTICK AND FPS
+        spriteBatch.begin();
+        if (Gdx.app.getType() == ApplicationType.Android) touchJoystick.draw(spriteBatch);
+        font.draw(spriteBatch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 25, 25);
+        spriteBatch.end();
 	}
 
 	private void keepCameraInBoundaries() {
