@@ -80,13 +80,12 @@ public class GameServer {
 					System.out.println("Disconnection error");
 				}
 			}
-		}));				
-		
+		}));					
 		try {
 			kryoServer.bind(PORT);
 		} catch (IOException e) {
 			e.printStackTrace();
-		}		
+		}
 	}
 	private boolean handleDisconnection(PlayerConnection connection) throws Exception{		
 		boolean playerRemovedFromRoom = removePlayerFromRoom(connection);

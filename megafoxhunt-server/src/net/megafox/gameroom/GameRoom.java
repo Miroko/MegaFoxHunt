@@ -39,9 +39,7 @@ public class GameRoom extends Thread {
 		
 	private int roomState;
 	private boolean roomRunning = true;
-	
-	private ArrayList<PlayerConnection> playersReady;
-	
+
 	private GameMapServerSide currentMap;	
 	private PlayerContainer playerContainer;
 	private GameSimulation gameSimulation;		
@@ -51,7 +49,6 @@ public class GameRoom extends Thread {
 	public GameRoom(RoomHandler roomHandler){
 		this.roomHandler = roomHandler;
 		playerContainer = new PlayerContainer(MAX_SIZE);
-		playersReady = new ArrayList<>();
 		switchState(STATE_LOBBY);			
 	}
 	public int getRoomState(){
@@ -162,13 +159,16 @@ public class GameRoom extends Thread {
 	 * Player is ready command from client
 	 * Starts game if everyone ready
 	 */
-	public void playerReady(PlayerConnection player){	
+	public void setStatus(PlayerConnection player){	
 		playersReady.add(player);
 		
 		// If same amount of players in lobby and ready
 		if(playerContainer.getPlayersConcurrentSafe().size() == playersReady.size()){		
 			roomHandler.startGame(this);
 		}
+	}
+	public void setPreferedTeam(){
+		
 	}
 	public void setChasedsAndChasers(){
 		int counter = 0;
