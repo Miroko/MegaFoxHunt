@@ -129,8 +129,8 @@ public class GameSimulation {
 	 * Checks for winner
 	 * false if no winner found
 	 * 
-	 * Chaced -> berries eaten
-	 * Chacers -> chaced eaten or time full
+	 * Chased -> berries eaten
+	 * Chasers -> chased eaten or time full
 	 * 
 	 */
 	public boolean findWinner(){

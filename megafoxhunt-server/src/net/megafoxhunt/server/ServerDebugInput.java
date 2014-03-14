@@ -36,7 +36,7 @@ public class ServerDebugInput extends Thread{
 	private void debugStressTest() {
 		int rooms = 1000;
 		for(int a = rooms; a > 0; a--){
-			server.roomHandler.createNewRoom();		
+			server.serverRooms.createNewRoom();		
 		}
 	}
 	private void newCommand(String command) {	

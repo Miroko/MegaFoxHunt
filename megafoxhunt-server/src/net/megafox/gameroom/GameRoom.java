@@ -1,5 +1,6 @@
 package net.megafox.gameroom;
 import java.util.ArrayList;
+
 import java.util.Random;
 
 import net.megafox.entities.Berry;
@@ -17,7 +18,8 @@ import net.megafox.items.Bomb;
 import net.megafox.items.Item;
 import net.megafoxhunt.server.IDHandler;
 import net.megafoxhunt.server.PlayerConnection;
-import net.megafoxhunt.server.RoomHandler;
+
+import net.megafoxhunt.server.ServerRooms;
 import net.megafoxhunt.shared.GameMapSharedConfig;
 import net.megafoxhunt.shared.KryoNetwork;
 import net.megafoxhunt.shared.KryoNetwork.AddPlayer;
@@ -25,7 +27,6 @@ import net.megafoxhunt.shared.KryoNetwork.ChangeState;
 import net.megafoxhunt.shared.KryoNetwork.Move;
 import net.megafoxhunt.shared.KryoNetwork.RemovePlayer;
 import net.megafoxhunt.shared.KryoNetwork.SetMap;
-import net.megafoxhunt.shared.KryoNetwork.Winner;
 
 public class GameRoom extends Thread {
 	
@@ -39,15 +40,15 @@ public class GameRoom extends Thread {
 		
 	private int roomState;
 	private boolean roomRunning = true;
-
+	
 	private GameMapServerSide currentMap;	
 	private PlayerContainer playerContainer;
 	private GameSimulation gameSimulation;		
 
-	private RoomHandler roomHandler;
+	private ServerRooms serverRooms;
 		
-	public GameRoom(RoomHandler roomHandler){
-		this.roomHandler = roomHandler;
+	public GameRoom(ServerRooms serverRooms){
+		this.serverRooms = serverRooms;
 		playerContainer = new PlayerContainer(MAX_SIZE);
 		switchState(STATE_LOBBY);			
 	}
@@ -79,7 +80,7 @@ public class GameRoom extends Thread {
 				gameSimulation.update(delta, playerContainer);
 				boolean winnerFound = gameSimulation.findWinner();
 				if(winnerFound){
-					roomHandler.switchToLobby(this);
+					serverRooms.switchToLobby(this);
 				}			
 				break;
 		}
@@ -155,36 +156,79 @@ public class GameRoom extends Thread {
 			} 
 		}
 	}
-	/*
-	 * Player is ready command from client
-	 * Starts game if everyone ready
-	 */
-	public void setStatus(PlayerConnection player){	
-		playersReady.add(player);
-		
-		// If same amount of players in lobby and ready
-		if(playerContainer.getPlayersConcurrentSafe().size() == playersReady.size()){		
-			roomHandler.startGame(this);
-		}
-	}
-	public void setPreferedTeam(){
-		
-	}
-	public void setChasedsAndChasers(){
-		int counter = 0;
-		for (PlayerConnection player : playerContainer.getPlayersConcurrentSafe()) {
-			if ((counter % 2) == 0) {
-				Chased chased = new Chased(2, 13 + (counter * 1), player.getMyId());
-				player.setEntity(chased);
-				gameSimulation.addChased(chased);
-			} else {
-				Chaser chaser = new Chaser(33, 13 + (counter * 1), player.getMyId());
-				player.setEntity(chaser);
-				player.setCurrentItem(new Bomb(gameSimulation));
-				gameSimulation.addChaser(chaser);
+	public boolean allPlayersReady(){
+		boolean allReady = false;
+		int playersReady = 0;
+		for(PlayerConnection player : playerContainer.getPlayersConcurrentSafe()){
+			if(player.isReady()){
+				playersReady++;
 			}
-			counter++;
 		}
+		if(playersReady == playerContainer.getPlayersConcurrentSafe().size()){				
+			allReady = true;
+		}
+		return allReady;
+	}
+	public void setChasedsAndChasers(){	
+		ArrayList<PlayerConnection> connectionsNeedingTeam = new ArrayList<>();
+		ArrayList<PlayerConnection> allConnections = (ArrayList<PlayerConnection>) playerContainer.getPlayersConcurrentSafe();
+		ArrayList<PlayerConnection> chasers = new ArrayList<>();
+		ArrayList<PlayerConnection> chased = new ArrayList<>();
+		int playersInOneTeam = connectionsNeedingTeam.size()/2;
+		Random random = new Random();
+		
+		for(PlayerConnection connection : allConnections){
+			if(connection.getPreferedTeam() != null){
+			switch (connection.getPreferedTeam()) {
+				case Chasers:
+					chasers.add(connection);
+					break;
+				case Chased:
+					chased.add(connection);
+					break;
+				}
+			}
+		}
+	
+		while(chased.size() > playersInOneTeam){
+			PlayerConnection player = chased.get(random.nextInt(chased.size()));
+			chased.remove(player);
+			connectionsNeedingTeam.add(player);			
+		}
+		while(chasers.size() > playersInOneTeam){
+			PlayerConnection player = chasers.get(random.nextInt(chasers.size()));
+			chasers.remove(player);
+			connectionsNeedingTeam.add(player);
+		}	
+		for (PlayerConnection player : connectionsNeedingTeam) {
+			if(chased.size() > chasers.size()){
+				chasers.add(player);
+			}
+			else{
+				chased.add(player);
+			}	
+		}
+		for (PlayerConnection player : chased) {
+			int index = 0;
+			setPlayerToChased(player, index);	
+			index++;
+		}
+		for (PlayerConnection player : chasers) {			
+			int index = 0;
+			setPlayerToChaser(player, index);	
+			index++;			
+		}
+	}
+	private void setPlayerToChaser(PlayerConnection connection, int positionOffset){
+		Chaser chaser = new Chaser(33, 12 + (positionOffset), connection.getMyId());
+		connection.setEntity(chaser);
+		connection.setCurrentItem(new Bomb(gameSimulation));
+		gameSimulation.addChaser(chaser);
+	}
+	private void setPlayerToChased(PlayerConnection connection, int positionOffset){
+		Chased chased = new Chased(2, 12 + (positionOffset), connection.getMyId());
+		connection.setEntity(chased);
+		gameSimulation.addChased(chased);
 	}
 	public void startSimulation() {		
 		gameSimulation = new GameSimulation(playerContainer, currentMap);		
@@ -269,7 +313,9 @@ public class GameRoom extends Thread {
 	public void endMatch() {	
 		gameSimulation = null;
 		currentMap = null;
-		playersReady.clear();
+		for(PlayerConnection playerConnection : playerContainer.getPlayersConcurrentSafe()){
+			playerConnection.resetData();
+		}
 	}
 	
 	public void activateItem(PlayerConnection playerConnection) {
