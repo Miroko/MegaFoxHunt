@@ -22,6 +22,7 @@ public class Robot extends Thread {
 	private TiledMapTileLayer map;
 	
 	private int previousMove = 0;
+	private int counter = 0;
 	
 	public Robot(GameNetwork network, int waitTimeInMillis) {
 		this.waitTimeInMillis = waitTimeInMillis;
@@ -62,21 +63,25 @@ public class Robot extends Thread {
 					} else if (direction == EntityMovable.DIRECTION_RIGHT) {
 						if (map.getCell((int)myEntity.getX() + 1, (int)myEntity.getY()).getTile().getProperties().containsKey("wall")) continue;
 					} else if (direction == EntityMovable.DIRECTION_UP) {
-						if (map.getCell((int)myEntity.getX(), (int)myEntity.getY() - 1).getTile().getProperties().containsKey("wall")) continue;
-					} else if (direction == EntityMovable.DIRECTION_DOWN) {
 						if (map.getCell((int)myEntity.getX(), (int)myEntity.getY() + 1).getTile().getProperties().containsKey("wall")) continue;
+					} else if (direction == EntityMovable.DIRECTION_DOWN) {
+						if (map.getCell((int)myEntity.getX(), (int)myEntity.getY() - 1).getTile().getProperties().containsKey("wall")) continue;
 					}
 					
 					break;
 				}
 			}
 			
-			if (direction == EntityMovable.DIRECTION_LEFT && previousMove == EntityMovable.DIRECTION_RIGHT) continue;
-			else if (direction == EntityMovable.DIRECTION_RIGHT && previousMove == EntityMovable.DIRECTION_LEFT) continue;
-			else if (direction == EntityMovable.DIRECTION_UP && previousMove == EntityMovable.DIRECTION_DOWN) continue;
-			else if (direction == EntityMovable.DIRECTION_DOWN && previousMove == EntityMovable.DIRECTION_UP) continue;
+			counter++;
+			if (counter < 5) {  
+				if (direction == EntityMovable.DIRECTION_LEFT && previousMove == EntityMovable.DIRECTION_RIGHT) continue;
+				else if (direction == EntityMovable.DIRECTION_RIGHT && previousMove == EntityMovable.DIRECTION_LEFT) continue;
+				else if (direction == EntityMovable.DIRECTION_UP && previousMove == EntityMovable.DIRECTION_DOWN) continue;
+				else if (direction == EntityMovable.DIRECTION_DOWN && previousMove == EntityMovable.DIRECTION_UP) continue;
+			}
 			
 			previousMove = direction;
+			counter = 0;
 			
 			if (myEntity != null) myEntity.setDirection(direction);
 			
