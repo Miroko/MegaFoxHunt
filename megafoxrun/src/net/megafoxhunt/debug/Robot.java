@@ -62,9 +62,9 @@ public class Robot extends Thread {
 					} else if (direction == EntityMovable.DIRECTION_RIGHT) {
 						if (map.getCell((int)myEntity.getX() + 1, (int)myEntity.getY()).getTile().getProperties().containsKey("wall")) continue;
 					} else if (direction == EntityMovable.DIRECTION_UP) {
-						if (map.getCell((int)myEntity.getX(), (int)myEntity.getY() + 1).getTile().getProperties().containsKey("wall")) continue;
-					} else if (direction == EntityMovable.DIRECTION_DOWN) {
 						if (map.getCell((int)myEntity.getX(), (int)myEntity.getY() - 1).getTile().getProperties().containsKey("wall")) continue;
+					} else if (direction == EntityMovable.DIRECTION_DOWN) {
+						if (map.getCell((int)myEntity.getX(), (int)myEntity.getY() + 1).getTile().getProperties().containsKey("wall")) continue;
 					}
 					
 					break;
