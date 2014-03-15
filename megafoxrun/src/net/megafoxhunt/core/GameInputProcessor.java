@@ -92,18 +92,11 @@ public class GameInputProcessor extends InputAdapter {
 		int width = Gdx.graphics.getWidth();
 		int height = Gdx.graphics.getHeight();
 		
-		System.out.println("width: " + width + " height: " + height);
+		int calculatedTopAndDownAreas = (int)(height * 0.35f);
 		
-		int test = (int)(height * 0.35f);
-		
-		System.out.println("test: " + test);
-		System.out.println("mouseX: " + mouseX + " mouseY: " + mouseY);
-		
-		if (mouseY < test) sendDirection(EntityMovable.DIRECTION_UP);
-		else if (mouseY > (height - test)) sendDirection(EntityMovable.DIRECTION_DOWN);
+		if (mouseY < calculatedTopAndDownAreas) sendDirection(EntityMovable.DIRECTION_UP);
+		else if (mouseY > (height - calculatedTopAndDownAreas)) sendDirection(EntityMovable.DIRECTION_DOWN);
 		else if (mouseX <= (width / 2)) sendDirection(EntityMovable.DIRECTION_LEFT);
 		else if (mouseX > (width / 2)) sendDirection(EntityMovable.DIRECTION_RIGHT);
-		
-		System.out.println();
 	}
 }
