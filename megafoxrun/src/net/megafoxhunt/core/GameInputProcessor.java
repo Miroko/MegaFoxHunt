@@ -76,7 +76,10 @@ public class GameInputProcessor extends InputAdapter {
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 		numFingersOnScreen--;
-		if (numFingersOnScreen <= 0) sendDirection(EntityMovable.DIRECTION_STOP);
+		if (numFingersOnScreen <= 0) {
+			numFingersOnScreen = 0;
+			sendDirection(EntityMovable.DIRECTION_STOP);
+		}
 		
 		return super.touchUp(screenX, screenY, pointer, button);
 	}
