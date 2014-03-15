@@ -11,22 +11,14 @@ public class GameResources {
 	public static final int BACK_ANIMATION = 2;
 	
 	public Texture DEBUG_TEXTURE;
-	
 	public Texture FOX_TEXTURE;
-	
 	public Texture DOG_TEXTURE;
-	public Texture DOG_BACK_TEXTURE;
-	public Texture DOG_FRONT_TEXTURE;
-	
 	public Texture BERRY_TEXTURE;
 	public Texture HOLE_TEXTURE;
 	
 	public Animation[] BERRY_ANIMATIONS = new Animation[10];
-	
 	public Animation[] HOLE_ANIMATIONS = new Animation[10];
-	
 	public Animation[] FOX_ANIMATIONS = new Animation[10];
-	
 	public Animation[] DOG_ANIMATIONS  = new Animation[10];
 	
 	public void init(){
@@ -36,8 +28,6 @@ public class GameResources {
 		 FOX_TEXTURE.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		 
 		 DOG_TEXTURE = new Texture("data/dog.png");
-		 DOG_FRONT_TEXTURE = new Texture("data/dog.png");
-		 DOG_BACK_TEXTURE = new Texture("data/dog.png");
 		 
 		 BERRY_TEXTURE = new Texture("data/berry.png");
 		 BERRY_TEXTURE.setFilter(TextureFilter.Linear, TextureFilter.Linear);
