@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import java.util.Scanner;
 
+import net.megafoxhunt.debug.Robot;
 import net.megafoxhunt.entities.Berry;
 import net.megafoxhunt.entities.Chased;
 import net.megafoxhunt.entities.Chaser;
@@ -97,6 +98,7 @@ public class GameNetwork {
 						public void run() {
 							if (changeState.roomState == ChangeState.GAME) {								
 								MyGdxGame.screenHandler.setScreenGame();
+								//Robot robot = new Robot(MyGdxGame.network, 500);
 							} else if (changeState.roomState == ChangeState.LOBBY) {								
 								MyGdxGame.screenHandler.setScreenLobby();
 							}

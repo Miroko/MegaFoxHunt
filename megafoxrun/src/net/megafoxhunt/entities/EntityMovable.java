@@ -39,6 +39,11 @@ public class EntityMovable extends Entity{
 		super(id, x, y, animations);
 		this.movementSpeed = movementSpeed;
 	}
+	
+	/**
+	 * TODO
+	 * Is giving all these parameters really required every frame?
+	 */
 	public void update(float delta, GameNetwork network, TiledMapTileLayer collisionMap){
 		float speed = movementSpeed * delta;
 		this.collisionMap = collisionMap;
