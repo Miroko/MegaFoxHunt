@@ -40,6 +40,8 @@ public class GameResources {
 		 DOG_BACK_TEXTURE = new Texture("data/dog.png");
 		 
 		 BERRY_TEXTURE = new Texture("data/berry.png");
+		 BERRY_TEXTURE.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		 
 		 HOLE_TEXTURE = new Texture("data/hole.png");
 		 
 		 BERRY_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(BERRY_TEXTURE, 0.025f, 1, 1);
