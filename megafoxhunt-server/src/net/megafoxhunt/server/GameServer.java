@@ -85,7 +85,7 @@ public class GameServer {
 				 * ITEM ACTIVATE
 				 */				
 				else if (object instanceof ActivateItem) {
-					playerConnection.getMyCurrentRoom().activateItem(playerConnection);
+					playerConnection.activateItem();
 				}
 			}
 			

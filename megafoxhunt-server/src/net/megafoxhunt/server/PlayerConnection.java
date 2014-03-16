@@ -44,8 +44,7 @@ public class PlayerConnection extends Connection {
 	
 	public void setEntity(Entity entity) {
 		this.entity = entity;
-	}
-	
+	}	
 	public Entity getEntity() {
 		return entity;
 	}
@@ -64,7 +63,15 @@ public class PlayerConnection extends Connection {
 	public Item getCurrentItem() {
 		return currentItem;
 	}
-	
+	public void activateItem() {
+		Item item = getCurrentItem();
+		if (item == null) return;
+		
+		item.activateItem(getEntity().getX(), getEntity().getY());
+		
+		// remove used item
+		//playerConnection.setCurrentItem(null);
+	}	
 	public void setCurrentItem(Item item) {
 		this.currentItem = item;
 	}

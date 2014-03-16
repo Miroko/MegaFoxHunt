@@ -1,6 +1,5 @@
 package net.megafox.entities;
 
-import net.megafox.entities.Entity.Visibility;
 
 public class Chased extends Entity {
 

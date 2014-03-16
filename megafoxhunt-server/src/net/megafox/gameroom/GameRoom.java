@@ -317,12 +317,4 @@ public class GameRoom extends Thread {
 			playerConnection.resetData();
 		}
 	}
-	
-	public void activateItem(PlayerConnection playerConnection) {
-		Item item = playerConnection.getCurrentItem();
-		if (item == null) return;
-		
-		item.activateItem(playerConnection.getEntity().getX(), playerConnection.getEntity().getY());
-		//playerConnection.setCurrentItem(null);
-	}
 }
