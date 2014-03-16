@@ -98,7 +98,7 @@ public class GameNetwork {
 						public void run() {
 							if (changeState.roomState == ChangeState.GAME) {								
 								MyGdxGame.screenHandler.setScreenGame();
-								Robot robot = new Robot(MyGdxGame.network, 400);
+								//Robot robot = new Robot(MyGdxGame.network, 400);
 							} else if (changeState.roomState == ChangeState.LOBBY) {								
 								MyGdxGame.screenHandler.setScreenLobby();
 							}
