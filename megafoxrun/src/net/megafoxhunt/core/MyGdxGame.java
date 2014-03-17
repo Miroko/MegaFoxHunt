@@ -5,11 +5,18 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 
 public class MyGdxGame extends Game {	
+<<<<<<< HEAD
 
 	
 	//public static final String IP_SERVER = "54.72.36.237";
 	public static final String IP_SERVER = "54.72.36.237";
 
+=======
+	
+	//public static final String IP_SERVER = "54.72.36.237";
+	public static final String IP_SERVER = "54.72.36.237";
+			
+>>>>>>> master
 	public static final int VIRTUAL_WIDTH = 800;
 	public static final int VIRTUAL_HEIGHT = 600;
 	
