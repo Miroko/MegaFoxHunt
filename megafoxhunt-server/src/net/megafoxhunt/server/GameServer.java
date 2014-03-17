@@ -3,6 +3,7 @@ package net.megafoxhunt.server;
 import java.io.IOException;
 
 import net.megafox.gameroom.GameRoom;
+import net.megafoxhunt.server.PlayerConnection.Team;
 import net.megafoxhunt.shared.KryoNetwork;
 
 import net.megafoxhunt.shared.KryoNetwork.ActivateItem;
@@ -10,6 +11,7 @@ import net.megafoxhunt.shared.KryoNetwork.Login;
 import net.megafoxhunt.shared.KryoNetwork.Message;
 import net.megafoxhunt.shared.KryoNetwork.Move;
 import net.megafoxhunt.shared.KryoNetwork.PlayerReady;
+import net.megafoxhunt.shared.KryoNetwork.SetPreferedTeam;
 
 import net.megafoxhunt.shared.KryoNetwork.WelcomePlayer;
 
@@ -23,10 +25,10 @@ public class GameServer {
 	private static final int PORT = 6666;
 	public Server kryoServer;	
 	public IDHandler idHandler;
-	public RoomHandler roomHandler;
+	public ServerRooms serverRooms;
 		
 	public GameServer(){
-		roomHandler = new RoomHandler(this);
+		serverRooms = new ServerRooms(this);
 		idHandler = new IDHandler();		
 		init();		
 	}
@@ -56,18 +58,34 @@ public class GameServer {
 					playerConnection.getMyCurrentRoom().move(playerConnection, move);
 				}
 				/*
-				 * LOBBY 
+				 * PLAYER READY 
 				 */
-				else if (object instanceof PlayerReady) {					
-					playerConnection.getMyCurrentRoom().playerReady(playerConnection);
+				else if (object instanceof PlayerReady) {				
+					playerConnection.setReady();
+					/*
+					 * START GAME IF EVERYONE READY
+					 */
+					if(playerConnection.getMyCurrentRoom().allPlayersReady()){
+						serverRooms.startGame(playerConnection.getMyCurrentRoom());	
+					}									
 				}
-				
+				/*
+				 * SET PREFERED TEAM 
+				 */
+				else if(object instanceof SetPreferedTeam){
+					SetPreferedTeam setPreferedTeam = (SetPreferedTeam) object;
+					if(setPreferedTeam.team == "Chasers"){
+						playerConnection.setPreferedTeam(Team.Chased);
+					}
+					else if(setPreferedTeam.team == "Chased"){
+						playerConnection.setPreferedTeam(Team.Chasers);
+					}				
+				}
 				/*
 				 * ITEM ACTIVATE
-				 */
-				
+				 */				
 				else if (object instanceof ActivateItem) {
-					playerConnection.getMyCurrentRoom().activateItem(playerConnection);
+					playerConnection.activateItem();
 				}
 			}
 			
@@ -80,13 +98,12 @@ public class GameServer {
 					System.out.println("Disconnection error");
 				}
 			}
-		}));				
-		
+		}));					
 		try {
 			kryoServer.bind(PORT);
 		} catch (IOException e) {
 			e.printStackTrace();
-		}		
+		}
 	}
 	private boolean handleDisconnection(PlayerConnection connection) throws Exception{		
 		boolean playerRemovedFromRoom = removePlayerFromRoom(connection);
@@ -138,9 +155,9 @@ public class GameServer {
 	 * if none available creates new
 	 */
 	private boolean addPlayer(PlayerConnection connection){
-		GameRoom roomAddedTo = roomHandler.addPlayer(connection);
+		GameRoom roomAddedTo = serverRooms.addPlayer(connection);
 		if(roomAddedTo == null){			
-			GameRoom room = roomHandler.createNewRoom();
+			GameRoom room = serverRooms.createNewRoom();
 			room.addPlayerToRoom(connection);				
 			room.start();
 			roomAddedTo = room;
@@ -161,7 +178,7 @@ public class GameServer {
 		GameRoom room = connection.getMyCurrentRoom();
 		playerRemovedFromRoom = room.removePlayer(connection);
 		if(room.isEmpty()){
-			roomHandler.removeRoom(room);
+			serverRooms.removeRoom(room);
 		}
 		return playerRemovedFromRoom;
 	}
@@ -176,7 +193,7 @@ public class GameServer {
 	}
 	public void printInfo(){
 		System.out.println("Players: " + kryoServer.getConnections().length);
-		roomHandler.printInfo();
+		serverRooms.printInfo();
 	}
 	public void start(){
 		kryoServer.start();

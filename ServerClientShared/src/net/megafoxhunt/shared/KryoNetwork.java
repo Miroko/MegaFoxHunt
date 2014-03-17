@@ -62,6 +62,12 @@ public class KryoNetwork {
 	public static class PlayerReady {		
 		
 	}
+	public static class SetPreferedTeam{
+		public static final String Chasers = "Chasers";
+		public static final String Chased = "Chased";
+		
+		public String team;
+	}
 	public static class AddPlayer{
 		public String name;
 		public int id;

@@ -9,8 +9,8 @@ public abstract class Item {
 	public Item(GameSimulation gameSimulation) {
 		this.gameSimulation = gameSimulation;
 	}
-	
 	public void activateItem(int x, int y) {
 		gameSimulation.useItem(this, x, y);
 	}
+	
 }

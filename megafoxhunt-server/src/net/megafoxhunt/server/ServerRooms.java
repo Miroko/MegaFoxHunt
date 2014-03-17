@@ -5,13 +5,13 @@ import net.megafox.game.GameMapServerSide;
 import net.megafox.gameroom.GameRoom;
 import net.megafoxhunt.shared.GameMapSharedConfig;
 
-public class RoomHandler {
+public class ServerRooms {
 
 	private ArrayList<GameRoom> rooms;	
 	
 	private GameServer gameServer;
 		
-	public RoomHandler(GameServer gameServer) {
+	public ServerRooms(GameServer gameServer) {
 		this.gameServer = gameServer;
 		rooms = new ArrayList<GameRoom>();		
 	}	
@@ -46,14 +46,16 @@ public class RoomHandler {
 		room.endMatch();
 		room.switchState(GameRoom.STATE_LOBBY);
 	}
-	public void startGame(GameRoom room){				
-		room.changeMap(GameMapSharedConfig.DEBUG_MAP);	
-		room.startSimulation();		
-		room.setChasedsAndChasers();
-		room.generateBerries(GameMapServerSide.TOTAL_BERRIES, gameServer.idHandler);
-		room.generateHoles(GameMapServerSide.TOTAL_HOLES, gameServer.idHandler);
-		room.switchState(GameRoom.STATE_GAME);
-		room.startClock(GameRoom.MATCH_LENGHT_SECONDS_DEFAULT);
+	public void startGame(GameRoom room){	
+		if(room.getRoomState() == GameRoom.STATE_LOBBY){
+			room.changeMap(GameMapSharedConfig.DEBUG_MAP);	
+			room.startSimulation();		
+			room.setChasedsAndChasers();
+			room.generateBerries(GameMapServerSide.TOTAL_BERRIES, gameServer.idHandler);
+			room.generateHoles(GameMapServerSide.TOTAL_HOLES, gameServer.idHandler);
+			room.switchState(GameRoom.STATE_GAME);
+			room.startClock(GameRoom.MATCH_LENGHT_SECONDS_DEFAULT);
+		}
 	}
 	@SuppressWarnings("unchecked")
 	public ArrayList<GameRoom> getAllRoomsConcurrentSafe() {
