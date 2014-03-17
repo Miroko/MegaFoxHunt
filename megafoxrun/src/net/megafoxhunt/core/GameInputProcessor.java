@@ -6,6 +6,7 @@ import net.megafoxhunt.ui.TouchJoystick;
 import net.megafoxhunt.shared.KryoNetwork.ActivateItem;
 
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 
 public class GameInputProcessor extends InputAdapter {
@@ -15,6 +16,8 @@ public class GameInputProcessor extends InputAdapter {
 	
 	private GameNetwork network;
 	private TouchJoystick touchJoystick;
+	
+	private int numFingersOnScreen = 0;
 	
 	public GameInputProcessor(GameNetwork network, TouchJoystick touchJoystick) {
 		this.touchJoystick = touchJoystick;
@@ -64,24 +67,39 @@ public class GameInputProcessor extends InputAdapter {
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		touchJoystick.mouseDown(screenX, screenY);
+		numFingersOnScreen++;
+		handleTouchInput(screenX, screenY);
 		
 		return super.touchDown(screenX, screenY, pointer, button);
 	}
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		touchJoystick.mouseUp(screenX, screenY);
+		numFingersOnScreen--;
+		if (numFingersOnScreen <= 0) {
+			numFingersOnScreen = 0;
+			sendDirection(EntityMovable.DIRECTION_STOP);
+		}
 		
 		return super.touchUp(screenX, screenY, pointer, button);
 	}
 
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
-		touchJoystick.mouseDown(screenX, screenY);
+		handleTouchInput(screenX, screenY);
 		
 		return super.touchDragged(screenX, screenY, pointer);
 	}
 	
-	
+	private void handleTouchInput(int mouseX, int mouseY) {
+		int width = Gdx.graphics.getWidth();
+		int height = Gdx.graphics.getHeight();
+		
+		int calculatedTopAndDownAreas = (int)(height * 0.35f);
+		
+		if (mouseY < calculatedTopAndDownAreas) sendDirection(EntityMovable.DIRECTION_UP);
+		else if (mouseY > (height - calculatedTopAndDownAreas)) sendDirection(EntityMovable.DIRECTION_DOWN);
+		else if (mouseX <= (width / 2)) sendDirection(EntityMovable.DIRECTION_LEFT);
+		else if (mouseX > (width / 2)) sendDirection(EntityMovable.DIRECTION_RIGHT);
+	}
 }
