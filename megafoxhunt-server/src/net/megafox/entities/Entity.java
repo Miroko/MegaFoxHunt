@@ -1,8 +1,7 @@
 package net.megafox.entities;
 
-import java.util.ArrayList;
-
 import net.megafox.game.GameMapServerSide;
+import net.megafoxhunt.server.PlayerConnection;
 import net.megafoxhunt.shared.Shared;
 
 public class Entity {
@@ -11,7 +10,7 @@ public class Entity {
 		CHASER, CHASED, BOTH;
 	};
 	
-	private static final int COLLISION_VALUE = 1;
+	private PlayerConnection player;
 		
 	private int id;
 	public int getID(){return id;}
@@ -32,7 +31,7 @@ public class Entity {
 	
 	private Visibility visibility;
 	
-	public Entity(int x, int y, int id, int speed, Visibility visibility){
+	public Entity(int x, int y, int id, int speed, Visibility visibility, PlayerConnection player){
 		this.x = x;
 		this.y = y;
 		this.destinationX = x;
@@ -40,6 +39,7 @@ public class Entity {
 		this.id = id;
 		this.speed = speed;
 		this.visibility = visibility;
+		this.player = player;
 	}
 	/**
 	 * Moves to coordinates if possible and sets entity direction
@@ -137,5 +137,8 @@ public class Entity {
 	
 	public Visibility getVisibility() {
 		return this.visibility;
+	}
+	public PlayerConnection getPlayer() {		
+		return player;
 	}
 }

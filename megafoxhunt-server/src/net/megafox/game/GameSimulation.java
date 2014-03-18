@@ -27,7 +27,7 @@ import net.megafoxhunt.shared.Shared;
 
 public class GameSimulation {
 
-	private long endTime;
+	private long endTime;	
 	
 	private GameMapServerSide gameMap;
 	
@@ -80,23 +80,26 @@ public class GameSimulation {
 			if (collidedEntity instanceof Berry) {
 				addBerryToRemove((Berry)collidedEntity);
 			} else if (collidedEntity instanceof Hole) {
-				if (((Hole)collidedEntity).isHoleCooldown()) continue;
-				
-				Entity targetHole = null;
-				while (targetHole == collidedEntity || targetHole == null) {
-					int i = random.nextInt(holes.size());
-					targetHole = holes.get(i);
-				}
-				
-				((Hole)targetHole).setHoleCooldown(true);
-				((Hole)collidedEntity).setHoleCooldown(true);
-				
-				move(chased, targetHole.getX(), targetHole.getY(), Shared.DIRECTION_STOP);
-				playerContainer.sendObjectToAll(new Move(chased.getID(), Shared.DIRECTION_STOP, targetHole.getX(), targetHole.getY()), Visibility.BOTH);
-				
-				timer.schedule(new TimerListener(collidedEntity), 5000);
-				timer.schedule(new TimerListener(targetHole), 5000);
-			}
+				if(chased.getPlayer().isGoingInHole()){
+					if (((Hole)collidedEntity).isHoleCooldown() == false){							
+						Entity targetHole = null;
+						while (targetHole == collidedEntity || targetHole == null) {
+							int i = random.nextInt(holes.size());
+							targetHole = holes.get(i);
+						}
+						
+						((Hole)targetHole).setHoleCooldown(true);
+						((Hole)collidedEntity).setHoleCooldown(true);
+						
+						move(chased, targetHole.getX(), targetHole.getY(), Shared.DIRECTION_STOP);
+						playerContainer.sendObjectToAll(new Move(chased.getID(), Shared.DIRECTION_STOP, targetHole.getX(), targetHole.getY()), Visibility.BOTH);
+						
+						timer.schedule(new TimerListener(collidedEntity), 5000);
+						timer.schedule(new TimerListener(targetHole), 5000);	
+					}
+					chased.getPlayer().setGoInHole(false);
+				}				
+			}			
 		}
 		
 		for(Entity chaser : chasers){

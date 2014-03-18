@@ -20,9 +20,13 @@ public class PlayerConnection extends Connection {
 	
 	private Item currentItem;
 	
-	private boolean playerReady;
+	private boolean playerReady = false;
 	public boolean isReady(){return playerReady;}
 	public void setReady(){playerReady = true;}
+	
+	private boolean goInHole = false;
+	public void setGoInHole(boolean go){goInHole = go;}
+	public boolean isGoingInHole(){return goInHole;}	
 	
 	public enum Team{
 		Chasers, Chased

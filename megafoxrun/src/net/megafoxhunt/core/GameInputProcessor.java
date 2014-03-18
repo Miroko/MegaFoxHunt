@@ -2,8 +2,10 @@ package net.megafoxhunt.core;
 
 
 import net.megafoxhunt.entities.EntityMovable;
+
 import net.megafoxhunt.ui.TouchJoystick;
 import net.megafoxhunt.shared.KryoNetwork.ActivateItem;
+import net.megafoxhunt.shared.KryoNetwork.GoInHole;
 
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Gdx;
@@ -33,9 +35,12 @@ public class GameInputProcessor extends InputAdapter {
     		last_direction = direction;
 		}
 	}
-	
+	private void sendGoInHole(){
+		
+	}
 	public boolean keyDown(int k) {
 		if (k == Keys.SPACE) return true;
+		
 		
 		if(k == Keys.UP) {
 			sendDirection(EntityMovable.DIRECTION_UP);
@@ -61,6 +66,9 @@ public class GameInputProcessor extends InputAdapter {
 		
 		if (k == Keys.SPACE) {
 			network.getKryoClient().sendTCP(new ActivateItem());
+		}
+		if(k == Keys.ENTER){
+			network.getKryoClient().sendTCP(new GoInHole());
 		}
 		return true;
 	}

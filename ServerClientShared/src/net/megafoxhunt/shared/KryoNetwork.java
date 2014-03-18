@@ -30,6 +30,7 @@ public class KryoNetwork {
 		kryo.register(ChangeTilesTypes.class);
 		kryo.register(ArrayList.class);
 		kryo.register(ChangeTilesTypes.Tile.class);
+		kryo.register(GoInHole.class);
 	}	
 	/*
 	 * MESSAGE
@@ -158,7 +159,9 @@ public class KryoNetwork {
 			this.y = y;
 		}
 	}
-	
+	public static class GoInHole {		
+		
+	}	
 	public static class ActivateItem { }
 	
 	public static class ChangeTilesTypes {

@@ -7,6 +7,7 @@ import net.megafoxhunt.server.PlayerConnection.Team;
 import net.megafoxhunt.shared.KryoNetwork;
 
 import net.megafoxhunt.shared.KryoNetwork.ActivateItem;
+import net.megafoxhunt.shared.KryoNetwork.GoInHole;
 import net.megafoxhunt.shared.KryoNetwork.Login;
 import net.megafoxhunt.shared.KryoNetwork.Message;
 import net.megafoxhunt.shared.KryoNetwork.Move;
@@ -86,6 +87,12 @@ public class GameServer {
 				 */				
 				else if (object instanceof ActivateItem) {
 					playerConnection.activateItem();
+				}
+				/**
+				 * GO IN HOLE
+				 */
+				else if (object instanceof GoInHole) {
+					playerConnection.setGoInHole(true);
 				}
 			}
 			
