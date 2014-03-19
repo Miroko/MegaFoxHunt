@@ -133,8 +133,8 @@ public class GameSimulation {
 				if (chaser.getX() == chased.getX() && chaser.getY() == chased.getY()) {
 					
 					// Powerup active
-					if(powerupActive == true){
-						removable.add(chaser);
+					if(powerupActive == true){						
+						reSpawnChaser((Chaser) chaser);
 					}
 					else{					
 						removable.add(chased);
@@ -197,12 +197,13 @@ public class GameSimulation {
 		if(berries.isEmpty()){
 			return true;
 		}
-		else if(chasers.isEmpty()){
-			return true;
-		}
 		else{
 			return false;
 		}
+	}
+	private void reSpawnChaser(Chaser chaser){		
+		move(chaser, 33, 12, Shared.DIRECTION_STOP);
+		playerContainer.sendObjectToAll(new Move(chaser.getID(), Shared.DIRECTION_STOP, chaser.getX(), chaser.getY()), Visibility.BOTH);
 	}
 	public void addPowerup(Powerup powerup){
 		powerups.add(powerup);		
@@ -243,7 +244,7 @@ public class GameSimulation {
 	}
 	
 	public void move(Entity entity, int x, int y, int direction){
-		entity.move(x, y, direction, gameMap);
+		entity.move(x, y, direction, gameMap);		
 	}
 	
 	class TimerListener extends TimerTask {

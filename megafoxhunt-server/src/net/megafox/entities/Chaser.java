@@ -1,6 +1,4 @@
 package net.megafox.entities;
-
-import net.megafox.entities.Entity.Visibility;
 import net.megafoxhunt.server.PlayerConnection;
 
 public class Chaser extends Entity{
