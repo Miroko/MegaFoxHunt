@@ -1,5 +1,6 @@
 package net.megafoxrun.game;
 
+
 import net.megafoxhunt.core.MyGdxGame;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
