@@ -189,27 +189,34 @@ public class GameRoom extends Thread {
 		}
 		return allReady;
 	}
-	public void setChasedsAndChasers(){	
-		ArrayList<PlayerConnection> connectionsNeedingTeam = new ArrayList<>();
-		ArrayList<PlayerConnection> allConnections = (ArrayList<PlayerConnection>) playerContainer.getPlayersConcurrentSafe();
-		ArrayList<PlayerConnection> chasers = new ArrayList<>();
-		ArrayList<PlayerConnection> chased = new ArrayList<>();
-		int playersInOneTeam = connectionsNeedingTeam.size()/2;
+	@SuppressWarnings("unchecked")
+	public void setChasedsAndChasers(){		
 		Random random = new Random();
+		ArrayList<PlayerConnection> allConnections = (ArrayList<PlayerConnection>) playerContainer.getPlayersConcurrentSafe();
+		ArrayList<PlayerConnection> connectionsNeedingTeam = new ArrayList<>();
+		ArrayList<PlayerConnection> chasers = new ArrayList<>();
+		ArrayList<PlayerConnection> chased = new ArrayList<>();		
 		
-		for(PlayerConnection connection : allConnections){
+		connectionsNeedingTeam.addAll(allConnections);		
+		
+		int playersInOneTeam = connectionsNeedingTeam.size()/2;	
+		
+		// Set to prefered team
+		for(PlayerConnection connection : (ArrayList<PlayerConnection>)connectionsNeedingTeam.clone()){
 			if(connection.getPreferedTeam() != null){
 			switch (connection.getPreferedTeam()) {
 				case Chasers:
 					chasers.add(connection);
+					connectionsNeedingTeam.remove(connection);
 					break;
 				case Chased:
 					chased.add(connection);
+					connectionsNeedingTeam.remove(connection);
 					break;
 				}
 			}
-		}
-	
+		}	
+		// Trim to max size
 		while(chased.size() > playersInOneTeam){
 			PlayerConnection player = chased.get(random.nextInt(chased.size()));
 			chased.remove(player);
@@ -220,6 +227,7 @@ public class GameRoom extends Thread {
 			chasers.remove(player);
 			connectionsNeedingTeam.add(player);
 		}	
+		// Add to random team
 		for (PlayerConnection player : connectionsNeedingTeam) {
 			if(chased.size() > chasers.size()){
 				chasers.add(player);
@@ -228,6 +236,7 @@ public class GameRoom extends Thread {
 				chased.add(player);
 			}	
 		}
+		// Set teams
 		for (PlayerConnection player : chased) {
 			int index = 0;
 			setPlayerToChased(player, index);	
