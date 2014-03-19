@@ -71,7 +71,7 @@ public class PlayerConnection extends Connection {
 		Item item = getCurrentItem();
 		if (item == null) return;
 		
-		item.activateItem(getEntity().getX(), getEntity().getY());
+		item.activateItem(getEntity().getRoundedX(), getEntity().getRoundedY());
 		
 		// remove used item
 		//playerConnection.setCurrentItem(null);
