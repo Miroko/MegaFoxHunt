@@ -8,6 +8,7 @@ import net.megafox.entities.Chaser;
 import net.megafox.entities.Empty;
 import net.megafox.entities.Entity;
 import net.megafox.entities.Hole;
+import net.megafox.entities.Powerup;
 
 
 
@@ -153,6 +154,25 @@ public class GameRoom extends Thread {
 				gameSimulation.addHole(hole);
 				currentMap.addEntity(hole);	
 				holesAdded++;
+			} 
+		}
+	}
+	public void addPowerups(int amount, IDHandler idHandler){
+		Random r = new Random();
+		Entity[][] collisionMap = currentMap.getCollisionMap();
+		
+		int x;
+		int y;		
+		
+		int powerupsAdded = 0;		
+		while(powerupsAdded < amount){
+			x = r.nextInt(currentMap.getWidth());
+			y = r.nextInt(currentMap.getHeight());
+			if(collisionMap[x][y].getClass().equals(Empty.class)){
+				Powerup powerup = new Powerup(x, y, idHandler.getFreeID());
+				gameSimulation.addPowerup(powerup);
+				currentMap.addEntity(powerup);	
+				powerupsAdded++;
 			} 
 		}
 	}

@@ -1,6 +1,7 @@
 package net.megafox.game;
 
 import java.util.ArrayList;
+
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -11,12 +12,15 @@ import net.megafox.entities.Chased;
 import net.megafox.entities.Chaser;
 import net.megafox.entities.Entity;
 import net.megafox.entities.Hole;
+import net.megafox.entities.Powerup;
 import net.megafox.entities.Entity.Visibility;
 import net.megafox.gameroom.PlayerContainer;
 import net.megafox.items.Bomb;
 import net.megafox.items.Item;
+import net.megafoxhunt.shared.KryoNetwork.ActivatePowerup;
 import net.megafoxhunt.shared.KryoNetwork.AddChaser;
 import net.megafoxhunt.shared.KryoNetwork.AddChased;
+import net.megafoxhunt.shared.KryoNetwork.AddPowerup;
 import net.megafoxhunt.shared.KryoNetwork.AddBerry;
 import net.megafoxhunt.shared.KryoNetwork.AddHole;
 import net.megafoxhunt.shared.KryoNetwork.ChangeTilesTypes;
@@ -37,6 +41,8 @@ public class GameSimulation {
 	private ArrayList<Entity> chaseds;
 	private ArrayList<Entity> berries;
 	
+	private ArrayList<Entity> powerups;
+	
 	private ArrayList<Entity> holes;
 	
 	private PlayerContainer playerContainer;
@@ -45,6 +51,8 @@ public class GameSimulation {
 	
 	private Timer timer;
 	
+	private boolean powerupActive = false;
+	
 	public GameSimulation(PlayerContainer playerContainer, GameMapServerSide gameMap){
 		this.gameMap = gameMap;
 		this.playerContainer = playerContainer;		
@@ -52,6 +60,7 @@ public class GameSimulation {
 		chasers = new ArrayList<>();
 		chaseds = new ArrayList<>();
 		berries = new ArrayList<>();
+		powerups = new ArrayList<>();
 		holes = new ArrayList<>();
 		random = new Random();
 		timer = new Timer();
@@ -75,11 +84,27 @@ public class GameSimulation {
 
 		for(Entity chased : chaseds){		
 			chased.update(delta, gameMap);
-			Entity collidedEntity = map[chased.getX()][chased.getY()];
+			Entity collidedEntity = map[chased.getX()][chased.getY()];			
 
 			if (collidedEntity instanceof Berry) {
 				addBerryToRemove((Berry)collidedEntity);
-			} else if (collidedEntity instanceof Hole) {
+			}
+			else if(collidedEntity instanceof Powerup){
+				addPowerupToRemove((Powerup) collidedEntity);
+				ActivatePowerup activatePowerup = new ActivatePowerup();
+				playerContainer.sendObjectToAll(activatePowerup);
+				
+				powerupActive = true;
+		
+				Timer powerupTimer = new Timer();
+				powerupTimer.schedule(new TimerTask() {					
+					@Override
+					public void run() {
+						powerupActive = false;			
+					}
+				}, Powerup.TIME_SECONDS * 1000);						
+			}
+			else if (collidedEntity instanceof Hole) {
 				if(chased.getPlayer().isGoingInHole()){
 					if (((Hole)collidedEntity).isHoleCooldown() == false){							
 						Entity targetHole = null;
@@ -106,7 +131,14 @@ public class GameSimulation {
 			chaser.update(delta, gameMap);
 			for (Entity chased : chaseds) {
 				if (chaser.getX() == chased.getX() && chaser.getY() == chased.getY()) {
-					removable.add(chased);
+					
+					// Powerup active
+					if(powerupActive == true){
+						removable.add(chaser);
+					}
+					else{					
+						removable.add(chased);
+					}
 				}
 			}
 		}
@@ -120,6 +152,9 @@ public class GameSimulation {
 			}
 			else if(entity instanceof Berry){
 				berries.remove(entity);
+			}
+			else if(entity instanceof Powerup){
+				powerups.remove(entity);
 			}
 			// INFORM ABOUT ENTITY DELETION
 			RemoveEntity removeEntity = new RemoveEntity();
@@ -162,11 +197,17 @@ public class GameSimulation {
 		if(berries.isEmpty()){
 			return true;
 		}
+		else if(chasers.isEmpty()){
+			return true;
+		}
 		else{
 			return false;
 		}
 	}
-	
+	public void addPowerup(Powerup powerup){
+		powerups.add(powerup);		
+		playerContainer.sendObjectToAll(new AddPowerup(powerup.getID(), powerup.getX(), powerup.getY()));	
+	}
 	public void addChaser(Chaser chaser){
 		chasers.add(chaser);		
 		playerContainer.sendObjectToAll(new AddChaser(chaser.getID(), chaser.getX(), chaser.getY()));	
@@ -185,6 +226,10 @@ public class GameSimulation {
 	public void addBerryToRemove(Berry berry) {
 		removable.add(berry);
 		gameMap.removeEntity(berry);
+	}
+	public void addPowerupToRemove(Powerup powerup){
+		removable.add(powerup);
+		gameMap.removeEntity(powerup);
 	}
 	
 	public void addHole(Hole hole) {

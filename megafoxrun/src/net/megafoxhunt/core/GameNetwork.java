@@ -10,6 +10,7 @@ import net.megafoxhunt.entities.Chased;
 import net.megafoxhunt.entities.Chaser;
 import net.megafoxhunt.entities.EntityMovable;
 import net.megafoxhunt.entities.Hole;
+import net.megafoxhunt.entities.Powerup;
 import net.megafoxhunt.screens.GameScreen;
 import net.megafoxhunt.screens.LobbyScreen;
 import net.megafoxhunt.shared.GameMapSharedConfig;
@@ -19,6 +20,7 @@ import net.megafoxhunt.shared.KryoNetwork.AddChased;
 import net.megafoxhunt.shared.KryoNetwork.AddChaser;
 import net.megafoxhunt.shared.KryoNetwork.AddHole;
 import net.megafoxhunt.shared.KryoNetwork.AddPlayer;
+import net.megafoxhunt.shared.KryoNetwork.AddPowerup;
 import net.megafoxhunt.shared.KryoNetwork.ChangeState;
 import net.megafoxhunt.shared.KryoNetwork.ChangeTilesTypes;
 import net.megafoxhunt.shared.KryoNetwork.ChangeTilesTypes.Tile;
@@ -126,7 +128,13 @@ public class GameNetwork {
 					AddBerry addBerry = (AddBerry)object;
 					MyGdxGame.mapHandler.currentMap.addStaticObject(new Berry(addBerry.id, addBerry.x, addBerry.y));
 				}
-				
+				/*
+				 * ADD POWERUP TO MAP
+				 */
+				else if (object instanceof AddPowerup) {
+					AddPowerup addPowerup = (AddPowerup)object;
+					MyGdxGame.mapHandler.currentMap.addStaticObject(new Powerup(addPowerup.id, addPowerup.x, addPowerup.y));
+				}
 				/*
 				 * ADD HOLE TO MAP
 				 */

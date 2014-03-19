@@ -15,14 +15,18 @@ public class GameResources {
 	public Texture DOG_TEXTURE;
 	public Texture BERRY_TEXTURE;
 	public Texture HOLE_TEXTURE;
+	public Texture POWERRUP_TEXTURE;
 	
 	public Animation[] BERRY_ANIMATIONS = new Animation[10];
 	public Animation[] HOLE_ANIMATIONS = new Animation[10];
 	public Animation[] FOX_ANIMATIONS = new Animation[10];
 	public Animation[] DOG_ANIMATIONS  = new Animation[10];
+	public Animation[] POWERRUP_ANIMATIONS = new Animation[10];
 	
 	public void init(){
 		 DEBUG_TEXTURE = new Texture("data/libgdx.png");
+		 
+		 POWERRUP_TEXTURE = new Texture("data/powerup.png");
 		 
 		 FOX_TEXTURE = new Texture("data/fox.png");
 		 FOX_TEXTURE.setFilter(TextureFilter.Linear, TextureFilter.Linear);
@@ -33,6 +37,8 @@ public class GameResources {
 		 BERRY_TEXTURE.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		 
 		 HOLE_TEXTURE = new Texture("data/hole.png");
+		 
+		 POWERRUP_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(POWERRUP_TEXTURE, 0.025f, 1, 1);
 		 
 		 BERRY_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(BERRY_TEXTURE, 0.025f, 1, 1);
 		 HOLE_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(HOLE_TEXTURE, 0.025f, 1, 1);
@@ -83,6 +89,7 @@ public class GameResources {
 		DOG_TEXTURE.dispose();
 		BERRY_TEXTURE.dispose();
 		HOLE_TEXTURE.dispose();
+		POWERRUP_TEXTURE.dispose();
 	}
 	
 	

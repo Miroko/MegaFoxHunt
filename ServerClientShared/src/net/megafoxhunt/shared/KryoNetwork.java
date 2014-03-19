@@ -31,6 +31,8 @@ public class KryoNetwork {
 		kryo.register(ArrayList.class);
 		kryo.register(ChangeTilesTypes.Tile.class);
 		kryo.register(GoInHole.class);
+		kryo.register(ActivatePowerup.class);
+		kryo.register(AddPowerup.class);
 	}	
 	/*
 	 * MESSAGE
@@ -79,6 +81,18 @@ public class KryoNetwork {
 	/*
 	 * ENTITIES
 	 */
+	public static class AddPowerup{
+		public int id;
+		public int x;
+		public int y;
+		
+		public AddPowerup(){}
+		public AddPowerup(int id, int x, int y) {
+			this.id = id;
+			this.x = x;
+			this.y = y;
+		}
+	}
 	public static class AddChaser {
 		public int id;
 		public int x;
@@ -162,6 +176,9 @@ public class KryoNetwork {
 	public static class GoInHole {		
 		
 	}	
+	public static class ActivatePowerup{
+		
+	}
 	public static class ActivateItem { }
 	
 	public static class ChangeTilesTypes {
