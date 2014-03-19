@@ -144,7 +144,6 @@ public class GameSimulation {
 					chaserX == chased.getLastX() && chaserY == chased.getLastY() ||
 					chaserLastX == Math.round(chased.getX() + 0.4f)  && chaserLastY == Math.round(chased.getY() + 0.4f)  ||
 					chaserLastX == chased.getLastX() && chaserLastY == chased.getLastY()) {
-					System.out.println("HIT");
 					// Powerup active
 					if(powerupActive == true){
 						removable.add(chaser);
