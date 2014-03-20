@@ -215,7 +215,7 @@ public class GameSimulation {
 	}
 	private void reSpawnChaser(Chaser chaser){		
 		move(chaser, 33, 12, Shared.DIRECTION_STOP);
-		playerContainer.sendObjectToAll(new Move(chaser.getID(), Shared.DIRECTION_STOP, chaser.getX(), chaser.getY()), Visibility.BOTH);
+		playerContainer.sendObjectToAll(new Move(chaser.getID(), Shared.DIRECTION_STOP, chaser.getRoundedX(), chaser.getRoundedY()), Visibility.BOTH);
 	}
 	public void addPowerup(Powerup powerup){
 		powerups.add(powerup);		
