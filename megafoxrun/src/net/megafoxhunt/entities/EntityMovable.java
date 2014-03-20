@@ -29,7 +29,7 @@ public class EntityMovable extends Entity{
 	protected int destinationDirection;
 	
 	// for flip
-	private int lastXDirection = 2;
+	protected int lastXDirection = 2;
 	
 	private Move newMove;
 
@@ -71,47 +71,7 @@ public class EntityMovable extends Entity{
 			newMove = null;
 		}
 	}
-	@Override
-	public void render(Batch batch){
-		if (destinationDirection != DIRECTION_STOP)
-			stateTime += Gdx.graphics.getDeltaTime();
-		
-		currentFrame = animations[animationNumber].getKeyFrame(stateTime, true);
-		
-		switch (destinationDirection) {
-			case DIRECTION_STOP:
-				break;
-			case DIRECTION_DOWN:
-				animationNumber = GameResources.FRONT_ANIMATION;
-				break;
-			case DIRECTION_UP:
-				animationNumber = GameResources.BACK_ANIMATION;
-				break;
-			case DIRECTION_LEFT:
-				animationNumber = GameResources.DEFAULT_ANIMATION;
-				currentFrame = animations[animationNumber].getKeyFrame(stateTime, true);
-				if(currentFrame.isFlipX() == false){
-					currentFrame.flip(true, false);				
-				}
-				break;
-			case DIRECTION_RIGHT:
-				animationNumber = GameResources.DEFAULT_ANIMATION;
-				currentFrame = animations[animationNumber].getKeyFrame(stateTime, true);
-				if(currentFrame.isFlipX() == true){
-					currentFrame.flip(true, false);
-				}
-				break;
-		}
-		if (destinationDirection == DIRECTION_LEFT || destinationDirection == DIRECTION_RIGHT){
-			lastXDirection = destinationDirection;
-		}
-		if (animationNumber == GameResources.FRONT_ANIMATION)
-			batch.draw(currentFrame, x, y, 1f, 1.51f);
-		else if (animationNumber == GameResources.BACK_ANIMATION)
-			batch.draw(currentFrame, x, y, 1f, 1.65f);
-		else 
-			batch.draw(currentFrame, x - 0.45f, y, 1.9f, 1.1f);
-	}
+
 	private void setNewDestination(GameNetwork network) {
 		if (direction == DIRECTION_STOP) {
 			if (network.getLocalUser().getControlledEntity() == this && destinationDirection != direction) {

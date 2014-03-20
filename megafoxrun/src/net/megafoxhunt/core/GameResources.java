@@ -47,7 +47,7 @@ public class GameResources {
 		 FOX_ANIMATIONS[FRONT_ANIMATION] = generateAnimation(FOX_TEXTURE, 0.025f, 0, 66, 64, 99 , 1, 10);
 		 FOX_ANIMATIONS[BACK_ANIMATION] = generateAnimation(FOX_TEXTURE, 0.025f, 0, 166, 64, 106, 1, 10);
 		 
-		 DOG_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(DOG_TEXTURE, 0.060f, 0, 0, 142, 90, 1, 8);
+		 DOG_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(DOG_TEXTURE, 0.050f, 0, 0, 188, 114, 1, 8);
 		 DOG_ANIMATIONS[FRONT_ANIMATION] = generateAnimation(DOG_TEXTURE, 0.025f, 0, 0, 142, 90, 1, 1);
 		 DOG_ANIMATIONS[BACK_ANIMATION] = generateAnimation(DOG_TEXTURE, 0.025f, 0, 0, 142, 90, 1, 1);
 	}
