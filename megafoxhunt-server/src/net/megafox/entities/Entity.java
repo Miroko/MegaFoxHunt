@@ -16,12 +16,17 @@ public class Entity {
 	public int getID(){return id;}
 	
 	private float x;
-	public int getX(){return (int) x;}
+	public float getX() { return x; }
+	public int getRoundedX(){return (int) x;}
 	
 	private float y;
-	public int getY(){return (int) y;}
+	public float getY() { return y; }
+	public int getRoundedY(){return (int) y;}
 	
 	private float speed;
+	
+	private int lastX;
+	private int lastY;
 	
 	private int currentDirection = Shared.DIRECTION_STOP;
 	public int getCurrentDirection(){return currentDirection;}
@@ -40,6 +45,9 @@ public class Entity {
 		this.speed = speed;
 		this.visibility = visibility;
 		this.player = player;
+		
+		this.lastX = x;
+		this.lastY = y;
 	}
 	/**
 	 * Moves to coordinates if possible and sets entity direction
@@ -100,6 +108,8 @@ public class Entity {
 	private void snapToGrid(int x, int y){
 		this.x = x;
 		this.y = y;
+		this.lastX = x;
+		this.lastY = y;
 	}
 	
 	private void moveTowardsDirection(float delta){		
@@ -140,5 +150,13 @@ public class Entity {
 	}
 	public PlayerConnection getPlayer() {		
 		return player;
+	}
+	
+	public int getLastX() {
+		return lastX;
+	}
+	
+	public int getLastY() {
+		return lastY;
 	}
 }

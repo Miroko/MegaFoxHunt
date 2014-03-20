@@ -84,7 +84,7 @@ public class GameSimulation {
 
 		for(Entity chased : chaseds){		
 			chased.update(delta, gameMap);
-			Entity collidedEntity = map[chased.getX()][chased.getY()];			
+			Entity collidedEntity = map[chased.getRoundedX()][chased.getRoundedY()];			
 
 			if (collidedEntity instanceof Berry) {
 				addBerryToRemove((Berry)collidedEntity);
@@ -116,8 +116,8 @@ public class GameSimulation {
 						((Hole)targetHole).setHoleCooldown(true);
 						((Hole)collidedEntity).setHoleCooldown(true);
 						
-						move(chased, targetHole.getX(), targetHole.getY(), Shared.DIRECTION_STOP);
-						playerContainer.sendObjectToAll(new Move(chased.getID(), Shared.DIRECTION_STOP, targetHole.getX(), targetHole.getY()), Visibility.BOTH);
+						move(chased, targetHole.getRoundedX(), targetHole.getRoundedY(), Shared.DIRECTION_STOP);
+						playerContainer.sendObjectToAll(new Move(chased.getID(), Shared.DIRECTION_STOP, targetHole.getRoundedX(), targetHole.getRoundedY()), Visibility.BOTH);
 						
 						timer.schedule(new TimerListener(collidedEntity), 5000);
 						timer.schedule(new TimerListener(targetHole), 5000);	
@@ -127,11 +127,23 @@ public class GameSimulation {
 			}			
 		}
 		
+		int chaserX = 0;
+		int chaserY = 0;
+		int chaserLastX = 0;
+		int chaserLastY = 0;
+		
 		for(Entity chaser : chasers){
 			chaser.update(delta, gameMap);
+			chaserX = Math.round(chaser.getX() + 0.4f);
+			chaserY = Math.round(chaser.getY() + 0.4f);
+			chaserLastX = chaser.getLastX();
+			chaserLastY = chaser.getLastY();
+			
 			for (Entity chased : chaseds) {
-				if (chaser.getX() == chased.getX() && chaser.getY() == chased.getY()) {
-					
+				if (chaserX == Math.round(chased.getX() + 0.4f) && chaserY == Math.round(chased.getY() + 0.4f)  ||
+					chaserX == chased.getLastX() && chaserY == chased.getLastY() ||
+					chaserLastX == Math.round(chased.getX() + 0.4f)  && chaserLastY == Math.round(chased.getY() + 0.4f)  ||
+					chaserLastX == chased.getLastX() && chaserLastY == chased.getLastY()) {
 					// Powerup active
 					if(powerupActive == true){						
 						reSpawnChaser((Chaser) chaser);
@@ -207,21 +219,21 @@ public class GameSimulation {
 	}
 	public void addPowerup(Powerup powerup){
 		powerups.add(powerup);		
-		playerContainer.sendObjectToAll(new AddPowerup(powerup.getID(), powerup.getX(), powerup.getY()));	
+		playerContainer.sendObjectToAll(new AddPowerup(powerup.getID(), powerup.getRoundedX(), powerup.getRoundedY()));	
 	}
 	public void addChaser(Chaser chaser){
 		chasers.add(chaser);		
-		playerContainer.sendObjectToAll(new AddChaser(chaser.getID(), chaser.getX(), chaser.getY()));	
+		playerContainer.sendObjectToAll(new AddChaser(chaser.getID(), chaser.getRoundedX(), chaser.getRoundedY()));	
 	}
 	
 	public void addChased(Chased chased){
 		chaseds.add(chased);	
-		playerContainer.sendObjectToAll(new AddChased(chased.getID(), chased.getX(), chased.getY()));		
+		playerContainer.sendObjectToAll(new AddChased(chased.getID(), chased.getRoundedX(), chased.getRoundedY()));		
 	}
 	
 	public void addBerry(Berry berry){		
 		berries.add(berry);		
-		playerContainer.sendObjectToAll(new AddBerry(berry.getID(), berry.getX(), berry.getY()), berry.getVisibility());
+		playerContainer.sendObjectToAll(new AddBerry(berry.getID(), berry.getRoundedX(), berry.getRoundedY()), berry.getVisibility());
 	}
 	
 	public void addBerryToRemove(Berry berry) {
@@ -235,7 +247,7 @@ public class GameSimulation {
 	
 	public void addHole(Hole hole) {
 		holes.add(hole);
-		playerContainer.sendObjectToAll(new AddHole(hole.getID(), hole.getX(), hole.getY()), hole.getVisibility());
+		playerContainer.sendObjectToAll(new AddHole(hole.getID(), hole.getRoundedX(), hole.getRoundedY()), hole.getVisibility());
 	}
 	
 	public void addHoleToRemove(Hole hole) {
