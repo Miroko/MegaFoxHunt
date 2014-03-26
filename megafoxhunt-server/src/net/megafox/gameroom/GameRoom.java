@@ -325,11 +325,15 @@ public class GameRoom extends Thread {
 	 * @param move Move command received
 	 */
 	public void move(PlayerConnection player, Move move) {
-		gameSimulation.move(player.getEntity(), move.x, move.y, move.direction);		
+		gameSimulation.move(player.getEntity(), move.x, move.y, move.direction, false);		
 		playerContainer.sendObjectToAllExcept(player, move);		
 	}	
 	public PlayerContainer getPlayerContainer() {
 		return playerContainer;
+	}
+	
+	public void goToHole(PlayerConnection connection) {
+		gameSimulation.goToHole(connection);
 	}
 	/*
 	 * Removes all players from room

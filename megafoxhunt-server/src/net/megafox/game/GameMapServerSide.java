@@ -84,6 +84,10 @@ public class GameMapServerSide {
 	public void setWall(int x, int y) {
 		collisionMap[x][y] = WALL;
 	}
+	
+	public Entity getEntity(int x, int y) {
+		return collisionMap[x][y];
+	}
 }
 
 

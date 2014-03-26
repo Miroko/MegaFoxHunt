@@ -56,12 +56,25 @@ public class Entity {
 	 * @param direction
 	 * @param collisionMap
 	 */
-	public void move(int x, int y, int direction, GameMapServerSide map){		
-		if(collidesWithMap(x, y, map) == false){
+	public boolean move(int x, int y, int direction, GameMapServerSide map, boolean force) {
+		if (!force) {
+			int targetX = x;
+			int targetY = y;
+			if (direction == Shared.DIRECTION_RIGHT) targetX++;
+			else if (direction == Shared.DIRECTION_LEFT) targetX--;
+			else if (direction == Shared.DIRECTION_UP) targetY++;
+			else if (direction == Shared.DIRECTION_DOWN) targetY--;
+			if (Math.sqrt((targetX - this.x) * (targetX - this.x) + (targetY - this.y) * (targetY - this.y)) > 1.5) return false;
+		}
+		if(collidesWithMap(x, y, map) == false) {
 			snapToGrid(x, y);			
 			setNewDestination(direction, map);
-		}	
+			return true;
+		}
+		
+		return false;
 	}
+	
 	private boolean collidesWithMap(int x, int y, GameMapServerSide map){
 		if(x > 0 && x < map.getWidth() && y > 0 && y < map.getHeight()){
 			Entity[][] collisionMap = map.getCollisionMap();

@@ -39,7 +39,7 @@ public class GameInputProcessor extends InputAdapter {
 		
 	}
 	public boolean keyDown(int k) {
-		if (k == Keys.SPACE) return true;
+		if (k == Keys.SPACE || k == Keys.ENTER) return true;
 		
 		
 		if(k == Keys.UP) {

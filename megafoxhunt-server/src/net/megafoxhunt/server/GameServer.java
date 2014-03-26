@@ -92,7 +92,7 @@ public class GameServer {
 				 * GO IN HOLE
 				 */
 				else if (object instanceof GoInHole) {
-					playerConnection.setGoInHole(true);
+					playerConnection.getMyCurrentRoom().goToHole(playerConnection);
 				}
 			}
 			

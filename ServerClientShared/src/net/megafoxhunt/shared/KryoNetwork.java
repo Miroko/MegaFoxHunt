@@ -164,13 +164,15 @@ public class KryoNetwork {
 		public int direction;
 		public int x;
 		public int y;
+		public boolean force = false;
 		
 		public Move() { }
-		public Move(int id, int direction, int x, int y) {
+		public Move(int id, int direction, int x, int y, boolean force) {
 			this.id = id;
 			this.direction = direction;
 			this.x = x;
 			this.y = y;
+			this.force = force;
 		}
 	}
 	public static class GoInHole {		

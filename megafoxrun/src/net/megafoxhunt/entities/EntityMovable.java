@@ -1,5 +1,7 @@
 package net.megafoxhunt.entities;
 
+import java.util.concurrent.ConcurrentLinkedQueue;
+
 import net.megafoxhunt.core.GameNetwork;
 import net.megafoxhunt.core.GameResources;
 import net.megafoxhunt.shared.KryoNetwork.Move;
@@ -21,6 +23,7 @@ public class EntityMovable extends Entity{
 	protected int direction = DIRECTION_STOP;
 	
 	private float movementSpeed;
+	private float baseSpeed;
 	
 	private boolean isMoving = false;
 	
@@ -35,9 +38,17 @@ public class EntityMovable extends Entity{
 
 	private TiledMapTileLayer collisionMap;
 	
+	private ConcurrentLinkedQueue<Move> movementQueue;
+	
+	private int lastX = 0;
+	private int lastY = 0;
+	private int lastDirection = 0;
+	
 	public EntityMovable(int id, float x, float y, float movementSpeed, Animation[] animations) {
 		super(id, x, y, animations);
 		this.movementSpeed = movementSpeed;
+		this.baseSpeed = movementSpeed;
+		movementQueue = new ConcurrentLinkedQueue<Move>();
 	}
 	
 	/**
@@ -60,26 +71,24 @@ public class EntityMovable extends Entity{
 				isMoving = false;
 			}
 		}
-		
-		if (newMove != null) {
-			x = newMove.x;
-			y = newMove.y;
-			
-			isMoving = false;
-			setDirection(newMove.direction);
-			
-			newMove = null;
-		}
 	}
 
 	private void setNewDestination(GameNetwork network) {
-		if (direction == DIRECTION_STOP) {
-			if (network.getLocalUser().getControlledEntity() == this && destinationDirection != direction) {
-				Move move = new Move(id, direction, (int)x, (int)y);
-				network.getKryoClient().sendTCP(move);
+		if (network.getLocalUser().getControlledEntity() != this) {
+			if (!movementQueue.isEmpty()) {
+				newMove = movementQueue.poll();
+				if (newMove != null) {
+					movementSpeed = baseSpeed + (movementQueue.size() * (baseSpeed / 2));
+					x = newMove.x;
+					y = newMove.y;
+					setDirection(newMove.direction);
+					newMove = null;
+				}
 			}
+		}
+		
+		if (direction == DIRECTION_STOP) {
 			destinationDirection = DIRECTION_STOP;
-			return;
 		}
 		
 		destinationX = (int)x;
@@ -89,22 +98,23 @@ public class EntityMovable extends Entity{
 		else if (direction == DIRECTION_RIGHT) destinationX += 1;
 		else if (direction == DIRECTION_DOWN) destinationY -= 1;
 		else if (direction == DIRECTION_LEFT) destinationX -= 1;
-		else return;
 		
 		if (!collisionMap.getCell(destinationX, destinationY).getTile().getProperties().containsKey("wall")) {
 			isMoving = true;
-			if (network.getLocalUser().getControlledEntity() == this && destinationDirection != direction) {
-				Move move = new Move(id, direction, (int)x, (int)y);
-				network.getKryoClient().sendTCP(move);
-			}
 			destinationDirection = direction;
 		} else {
-			if (network.getLocalUser().getControlledEntity() == this && destinationDirection != DIRECTION_STOP) {
-				Move move = new Move(id, direction, (int)x, (int)y);
-				network.getKryoClient().sendTCP(move);
-			}
 			destinationDirection = DIRECTION_STOP;
 			direction = DIRECTION_STOP;
+		}
+		
+		if (network.getLocalUser().getControlledEntity() == this) {
+			if (!((int)x == lastX && (int)y == lastY && lastDirection == direction)) {
+				Move move = new Move(id, direction, (int)x, (int)y, false);
+				network.getKryoClient().sendTCP(move);
+				lastX = (int)x;
+				lastY = (int)y;
+				lastDirection = direction;
+			}
 		}
 	}
 	
@@ -137,7 +147,15 @@ public class EntityMovable extends Entity{
 	}
 	
 	public void move(Move newMove) {
-		this.newMove = newMove;
+		if (newMove.force) {
+			x = newMove.x;
+			y = newMove.y;
+			
+			isMoving = false;
+			setDirection(newMove.direction);
+			newMove = null;
+			movementQueue.clear();
+		} else movementQueue.offer(newMove);
 	}
 	
 	public void setDirection(int direction) {

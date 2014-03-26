@@ -17,6 +17,7 @@ import net.megafox.entities.Entity.Visibility;
 import net.megafox.gameroom.PlayerContainer;
 import net.megafox.items.Bomb;
 import net.megafox.items.Item;
+import net.megafoxhunt.server.PlayerConnection;
 import net.megafoxhunt.shared.KryoNetwork.ActivatePowerup;
 import net.megafoxhunt.shared.KryoNetwork.AddChaser;
 import net.megafoxhunt.shared.KryoNetwork.AddChased;
@@ -86,10 +87,7 @@ public class GameSimulation {
 			chased.update(delta, gameMap);
 			Entity collidedEntity = map[chased.getRoundedX()][chased.getRoundedY()];			
 
-			if (collidedEntity instanceof Berry) {
-				addBerryToRemove((Berry)collidedEntity);
-			}
-			else if(collidedEntity instanceof Powerup){
+			if(collidedEntity instanceof Powerup){
 				addPowerupToRemove((Powerup) collidedEntity);
 				ActivatePowerup activatePowerup = new ActivatePowerup();
 				playerContainer.sendObjectToAll(activatePowerup);
@@ -104,27 +102,6 @@ public class GameSimulation {
 					}
 				}, Powerup.TIME_SECONDS * 1000);						
 			}
-			else if (collidedEntity instanceof Hole) {
-				if(chased.getPlayer().isGoingInHole()){
-					if (((Hole)collidedEntity).isHoleCooldown() == false){							
-						Entity targetHole = null;
-						while (targetHole == collidedEntity || targetHole == null) {
-							int i = random.nextInt(holes.size());
-							targetHole = holes.get(i);
-						}
-						
-						((Hole)targetHole).setHoleCooldown(true);
-						((Hole)collidedEntity).setHoleCooldown(true);
-						
-						move(chased, targetHole.getRoundedX(), targetHole.getRoundedY(), Shared.DIRECTION_STOP);
-						playerContainer.sendObjectToAll(new Move(chased.getID(), Shared.DIRECTION_STOP, targetHole.getRoundedX(), targetHole.getRoundedY()), Visibility.BOTH);
-						
-						timer.schedule(new TimerListener(collidedEntity), 5000);
-						timer.schedule(new TimerListener(targetHole), 5000);	
-					}
-					chased.getPlayer().setGoInHole(false);
-				}				
-			}			
 		}
 		
 		int chaserX = 0;
@@ -214,8 +191,8 @@ public class GameSimulation {
 		}
 	}
 	private void reSpawnChaser(Chaser chaser){		
-		move(chaser, 33, 12, Shared.DIRECTION_STOP);
-		playerContainer.sendObjectToAll(new Move(chaser.getID(), Shared.DIRECTION_STOP, chaser.getRoundedX(), chaser.getRoundedY()), Visibility.BOTH);
+		move(chaser, 33, 12, Shared.DIRECTION_STOP, true);
+		playerContainer.sendObjectToAll(new Move(chaser.getID(), Shared.DIRECTION_STOP, chaser.getRoundedX(), chaser.getRoundedY(), true), Visibility.BOTH);
 	}
 	public void addPowerup(Powerup powerup){
 		powerups.add(powerup);		
@@ -255,8 +232,46 @@ public class GameSimulation {
 		gameMap.removeEntity(hole);
 	}
 	
-	public void move(Entity entity, int x, int y, int direction){
-		entity.move(x, y, direction, gameMap);		
+	public void move(Entity entity, int x, int y, int direction, boolean force) {
+		// Move accepted, check for collisions
+		if (entity.move(x, y, direction, gameMap, force)) {
+			Entity e = gameMap.getEntity(x, y);
+			if (e instanceof Berry) addBerryToRemove((Berry)e);
+			else if (e instanceof Hole) {
+				holeCollisionDetected(entity, (Hole)e);
+			}
+		}
+	}
+	
+	public void goToHole(PlayerConnection connection) {
+		connection.setGoInHole(true);
+		Entity playerEntity = connection.getEntity();
+		Entity targetEntity = gameMap.getEntity((int)playerEntity.getX(), (int)playerEntity.getY());
+		if (targetEntity instanceof Hole) {
+			holeCollisionDetected(playerEntity, (Hole)targetEntity);
+		}
+	}
+	
+	private void holeCollisionDetected(Entity entity, Hole hole) {
+		if(entity.getPlayer().isGoingInHole()){
+			if (!hole.isHoleCooldown()){
+				Entity targetHole = null;
+				while (targetHole == hole || targetHole == null) {
+					int i = random.nextInt(holes.size());
+					targetHole = holes.get(i);
+				}
+				
+				((Hole)targetHole).setHoleCooldown(true);
+				hole.setHoleCooldown(true);
+				
+				move(entity, targetHole.getRoundedX(), targetHole.getRoundedY(), Shared.DIRECTION_STOP, true);
+				playerContainer.sendObjectToAll(new Move(entity.getID(), Shared.DIRECTION_STOP, targetHole.getRoundedX(), targetHole.getRoundedY(), true), Visibility.BOTH);
+				
+				timer.schedule(new TimerListener(hole), 5000);
+				timer.schedule(new TimerListener(targetHole), 5000);	
+			}
+			entity.getPlayer().setGoInHole(false);
+		}				
 	}
 	
 	class TimerListener extends TimerTask {
