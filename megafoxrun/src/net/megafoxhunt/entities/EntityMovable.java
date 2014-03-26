@@ -84,7 +84,7 @@ public class EntityMovable extends Entity{
 					setDirection(newMove.direction);
 					newMove = null;
 				}
-			}
+			} else return;
 		}
 		
 		if (direction == DIRECTION_STOP) {

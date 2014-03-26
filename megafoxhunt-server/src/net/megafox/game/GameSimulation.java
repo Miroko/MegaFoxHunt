@@ -236,9 +236,10 @@ public class GameSimulation {
 		// Move accepted, check for collisions
 		if (entity.move(x, y, direction, gameMap, force)) {
 			Entity e = gameMap.getEntity(x, y);
-			if (e instanceof Berry) addBerryToRemove((Berry)e);
-			else if (e instanceof Hole) {
-				holeCollisionDetected(entity, (Hole)e);
+			if (e instanceof Berry)  {
+				if (entity instanceof Chased) addBerryToRemove((Berry)e);
+			} else if (e instanceof Hole) {
+				if (entity instanceof Chased) holeCollisionDetected(entity, (Hole)e);
 			}
 		}
 	}
