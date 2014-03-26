@@ -36,6 +36,7 @@ import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
+import com.esotericsoftware.kryonet.FrameworkMessage.Ping;
 import com.esotericsoftware.kryonet.Listener.ThreadedListener;
 
 public class GameNetwork {
@@ -47,13 +48,17 @@ public class GameNetwork {
 
 	private Client kryoClient = new Client();
 	public Client getKryoClient(){return kryoClient;}
+	
+	private boolean pingingServer = false;
+	
+	private int currentPing;
 		
 	public void init(){
 		KryoNetwork.register(kryoClient);	
 		kryoClient.addListener(new ThreadedListener(new Listener() {
 			@Override
 			public void connected (Connection connection) {
-				
+				startPingingServer();
 			}
 
 			@Override
@@ -186,6 +191,16 @@ public class GameNetwork {
 						MyGdxGame.mapHandler.currentMap.changeTile(tile.x, tile.y, tile.type);
 					}
 				}
+				
+				/*
+				 * PING
+				 */
+				else if (object instanceof Ping) {
+					 Ping ping = (Ping)object;
+                     if (ping.isReply) {
+                    	 currentPing = connection.getReturnTripTime();
+                     }
+				}
 			}
 
 			@Override
@@ -216,6 +231,30 @@ public class GameNetwork {
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
+	}
+	
+	public void startPingingServer() {
+		pingingServer = true;
+		
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				while (pingingServer) {
+					kryoClient.updateReturnTripTime();
+					try {
+						Thread.sleep(3000);
+					} catch (InterruptedException e) { return; }
+				}
+			}
+		}).start();
+	}
+	
+	public int getCurrentPing() {
+		return currentPing;
+	}
+	
+	public void stopPingingServer() {
+		pingingServer = false;
 	}
 
 	public void start() {

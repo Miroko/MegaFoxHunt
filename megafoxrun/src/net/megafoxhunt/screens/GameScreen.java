@@ -105,6 +105,7 @@ public class GameScreen implements Screen {
         spriteBatch.begin();
         //if (Gdx.app.getType() == ApplicationType.Android) touchJoystick.draw(spriteBatch);
         font.draw(spriteBatch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 25, 25);
+        font.draw(spriteBatch, "Ms: " + MyGdxGame.network.getCurrentPing(), 100, 25);
         spriteBatch.end();
 	}
 
