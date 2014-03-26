@@ -24,6 +24,11 @@ public class Chaser extends EntityMovable{
 		
 		switch (destinationDirection) {
 			case DIRECTION_STOP:
+				if (lastXDirection == DIRECTION_LEFT) {
+					if (currentFrame.isFlipX() == false) currentFrame.flip(true, false);
+				} else if (lastXDirection == DIRECTION_RIGHT) {
+					if (currentFrame.isFlipX() == true) currentFrame.flip(true, false);
+				}
 				break;
 			case DIRECTION_DOWN:
 				animationNumber = GameResources.FRONT_ANIMATION;
