@@ -1,74 +1,77 @@
 package net.megafoxhunt.ui;
 
+
 import net.megafoxhunt.core.MyGdxGame;
-import net.megafoxhunt.shared.KryoNetwork.Move;
+
 import net.megafoxhunt.shared.KryoNetwork.PlayerReady;
 import net.megafoxhunt.shared.KryoNetwork.SetPreferedTeam;
 
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
+
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
+
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 public class LobbyUI extends Table{
 	
-	private TextButton start;
-	private TextButton fox;
-	private TextButton dog;
-	
-	private Skin skin;
-
-	private TextButtonStyle buttonStyle;
+	private ImageButton startButton;
+	private ImageButton preferDogButton;
+	private ImageButton preferFoxButton;
 	
 	public LobbyUI(){
 		setFillParent(true);
-
-		buttonStyle = new TextButtonStyle();	
-		buttonStyle.font = new BitmapFont();
-		
-		start = new TextButton("CLICK TO START GAME", buttonStyle);			
-		start.addListener(new ChangeListener() {			
+			
+		TextureRegionDrawable startButtonImage = new TextureRegionDrawable(new TextureRegion(MyGdxGame.resources.readyButtonTexture));
+	
+		startButton = new ImageButton(startButtonImage);
+		startButton.addListener(new ChangeListener() {			
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {		
-				if(start.isPressed()){					
+				if(startButton.isPressed()){					
 					PlayerReady playerReady = new PlayerReady();
 					MyGdxGame.network.getKryoClient().sendTCP(playerReady);
 				}
 			}
 		});
-		add(start);
 		
-		/*
+		TextureRegionDrawable preferFoxButtonImage = new TextureRegionDrawable(new TextureRegion(MyGdxGame.resources.preferFoxButtonTexture));
 		
-		fox = new TextButton("CLICK TO SET PREFERED TEAM FOX", buttonStyle);			
-		fox.addListener(new ChangeListener() {			
+		preferFoxButton = new ImageButton(preferFoxButtonImage);
+		preferFoxButton.addListener(new ChangeListener() {			
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {		
-				if(fox.isPressed()){					
+				if(preferFoxButton.isPressed()){						
 					SetPreferedTeam setPreferedTeam = new SetPreferedTeam();
 					setPreferedTeam.team = SetPreferedTeam.Chased;
 					MyGdxGame.network.getKryoClient().sendTCP(setPreferedTeam);
 				}
 			}
 		});		
-		add(fox);
 		
-		dog = new TextButton("CLICK TO SET PREFERED TEAM DOG", buttonStyle);			
-		dog.addListener(new ChangeListener() {			
+		TextureRegionDrawable preferDogButtonImage = new TextureRegionDrawable(new TextureRegion(MyGdxGame.resources.preferDogButtonTexture));
+		
+		preferDogButton = new ImageButton(preferDogButtonImage);
+		preferDogButton.addListener(new ChangeListener() {			
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {		
-				if(dog.isPressed()){					
+				if(preferDogButton.isPressed()){					
 					SetPreferedTeam setPreferedTeam = new SetPreferedTeam();
 					setPreferedTeam.team = SetPreferedTeam.Chasers;
 					MyGdxGame.network.getKryoClient().sendTCP(setPreferedTeam);
 				}
 			}
 		});		
-		add(dog);
-		*/
+		
+		
+		add(startButton);
+		row();
+		add(preferDogButton).padTop(20);
+		row();
+		add(preferFoxButton).padTop(20);
 		
 	}
 

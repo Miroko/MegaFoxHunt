@@ -16,7 +16,7 @@ public class MenuScreen implements Screen {
 		stageUI = new Stage();	        
 		
 	    MenuUI menuUI = new MenuUI();	  
-	    menuUI.setPosition(0, 0);
+	  
 	    stageUI.addActor(menuUI);
 	}
 	@Override

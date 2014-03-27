@@ -25,18 +25,15 @@ public class LobbyScreen implements Screen {
 	public SpriteBatch batch;
 	
 	private OrthographicCamera camera;
-
 	
-	public LobbyScreen() {
-		
-		
+	public LobbyScreen() {		
 		stageUI = new Stage();
 				
 	    LobbyUI lobbyUI = new LobbyUI();	  
-	    lobbyUI.setPosition(MyGdxGame.VIRTUAL_WIDTH/2, 0);
+	    
 	    stageUI.addActor(lobbyUI);	    
 	    
-		this.batch = new SpriteBatch();
+		batch = new SpriteBatch();
 		font = new BitmapFont();
 		
 		camera = new OrthographicCamera();
