@@ -75,11 +75,11 @@ public class GameServer {
 				 */
 				else if(object instanceof SetPreferedTeam){
 					SetPreferedTeam setPreferedTeam = (SetPreferedTeam) object;
-					if(setPreferedTeam.team == "Chasers"){
-						playerConnection.setPreferedTeam(Team.Chased);
+					if(setPreferedTeam.team.equals("Chasers")){
+						playerConnection.setPreferedTeam(Team.Chasers);						
 					}
-					else if(setPreferedTeam.team == "Chased"){
-						playerConnection.setPreferedTeam(Team.Chasers);
+					else if(setPreferedTeam.team.equals("Chased")){
+						playerConnection.setPreferedTeam(Team.Chased);					
 					}				
 				}
 				/*

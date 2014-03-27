@@ -33,6 +33,7 @@ public class KryoNetwork {
 		kryo.register(GoInHole.class);
 		kryo.register(ActivatePowerup.class);
 		kryo.register(AddPowerup.class);
+		kryo.register(SetPreferedTeam.class);
 	}	
 	/*
 	 * MESSAGE

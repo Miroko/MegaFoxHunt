@@ -23,6 +23,12 @@ public class GameResources {
 	public Animation[] DOG_ANIMATIONS  = new Animation[10];
 	public Animation[] POWERRUP_ANIMATIONS = new Animation[10];
 	
+	public Texture connectButtonTexture;
+	public Texture quitButtonTexture;
+	public Texture preferDogButtonTexture;
+	public Texture preferFoxButtonTexture;
+	public Texture readyButtonTexture;
+	
 	public void init(){
 		 DEBUG_TEXTURE = new Texture("data/libgdx.png");
 		 
@@ -50,6 +56,13 @@ public class GameResources {
 		 DOG_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(DOG_TEXTURE, 0.050f, 0, 0, 188, 114, 1, 8);
 		 DOG_ANIMATIONS[FRONT_ANIMATION] = generateAnimation(DOG_TEXTURE, 0.025f, 0, 0, 142, 90, 1, 1);
 		 DOG_ANIMATIONS[BACK_ANIMATION] = generateAnimation(DOG_TEXTURE, 0.025f, 0, 0, 142, 90, 1, 1);
+		 
+		 connectButtonTexture = new Texture("data/connect.png"); 
+		 quitButtonTexture = new Texture("data/quit.png");
+		 preferDogButtonTexture = new Texture("data/preferDog.png");
+		 preferFoxButtonTexture = new Texture("data/preferFox.png");
+		 readyButtonTexture = new Texture("data/ready.png");
+		 
 	}
 	
 	private Animation generateAnimation(Texture texture, float frameDuration, int startX, int startY, int width, int height, int rows, int cols) {
