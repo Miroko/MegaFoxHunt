@@ -200,15 +200,11 @@ public class GameRoom extends Thread {
 		connectionsNeedingTeam.addAll(allConnections);		
 		
 		// Max team size
-		int playersInOneTeam = connectionsNeedingTeam.size()/2;
-		
-		// Round up if not even
-		if(playersInOneTeam % 2 != 0){
-			playersInOneTeam++;
-		}
+		int maxPlayersInOneTeam = connectionsNeedingTeam.size()/2;
+
 		// One player case...
-		else if(playersInOneTeam == 0){
-			playersInOneTeam++;
+		if(maxPlayersInOneTeam == 0){
+			maxPlayersInOneTeam++;
 		}
 		
 		// Set to prefered team
@@ -227,12 +223,12 @@ public class GameRoom extends Thread {
 			}
 		}	
 		// Trim to max size
-		while(chased.size() > playersInOneTeam){			
+		while(chased.size() >= maxPlayersInOneTeam){			
 			PlayerConnection player = chased.get(random.nextInt(chased.size()));
 			chased.remove(player);
 			connectionsNeedingTeam.add(player);			
 		}
-		while(chasers.size() > playersInOneTeam){			
+		while(chasers.size() >= maxPlayersInOneTeam){			
 			PlayerConnection player = chasers.get(random.nextInt(chasers.size()));
 			chasers.remove(player);
 			connectionsNeedingTeam.add(player);
