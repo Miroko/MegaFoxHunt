@@ -199,17 +199,27 @@ public class GameRoom extends Thread {
 		
 		connectionsNeedingTeam.addAll(allConnections);		
 		
-		int playersInOneTeam = connectionsNeedingTeam.size()/2;	
+		// Max team size
+		int playersInOneTeam = connectionsNeedingTeam.size()/2;
+		
+		// Round up if not even
+		if(playersInOneTeam % 2 != 0){
+			playersInOneTeam++;
+		}
+		// One player case...
+		else if(playersInOneTeam == 0){
+			playersInOneTeam++;
+		}
 		
 		// Set to prefered team
 		for(PlayerConnection connection : (ArrayList<PlayerConnection>)connectionsNeedingTeam.clone()){
 			if(connection.getPreferedTeam() != null){
 			switch (connection.getPreferedTeam()) {
-				case Chasers:
+				case Chasers:					
 					chasers.add(connection);
 					connectionsNeedingTeam.remove(connection);
 					break;
-				case Chased:
+				case Chased:					
 					chased.add(connection);
 					connectionsNeedingTeam.remove(connection);
 					break;
@@ -217,19 +227,19 @@ public class GameRoom extends Thread {
 			}
 		}	
 		// Trim to max size
-		while(chased.size() > playersInOneTeam){
+		while(chased.size() > playersInOneTeam){			
 			PlayerConnection player = chased.get(random.nextInt(chased.size()));
 			chased.remove(player);
 			connectionsNeedingTeam.add(player);			
 		}
-		while(chasers.size() > playersInOneTeam){
+		while(chasers.size() > playersInOneTeam){			
 			PlayerConnection player = chasers.get(random.nextInt(chasers.size()));
 			chasers.remove(player);
 			connectionsNeedingTeam.add(player);
 		}	
 		// Add to random team
-		for (PlayerConnection player : connectionsNeedingTeam) {
-			if(chased.size() > chasers.size()){
+		for (PlayerConnection player : connectionsNeedingTeam) {			
+			if(chased.size() > chasers.size()){				
 				chasers.add(player);
 			}
 			else{
