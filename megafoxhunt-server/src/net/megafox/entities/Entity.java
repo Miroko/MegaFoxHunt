@@ -39,27 +39,27 @@ public class Entity {
 	 * @param collisionMap
 	 */
 	public boolean move(int x, int y, int direction, GameMapServerSide map, boolean force) {
+		int targetX = x;
+		int targetY = y;
+		if (direction == Shared.DIRECTION_RIGHT) targetX++;
+		else if (direction == Shared.DIRECTION_LEFT) targetX--;
+		else if (direction == Shared.DIRECTION_UP) targetY++;
+		else if (direction == Shared.DIRECTION_DOWN) targetY--;
+		
 		if (!force) {
-			int targetX = x;
-			int targetY = y;
-			if (direction == Shared.DIRECTION_RIGHT) targetX++;
-			else if (direction == Shared.DIRECTION_LEFT) targetX--;
-			else if (direction == Shared.DIRECTION_UP) targetY++;
-			else if (direction == Shared.DIRECTION_DOWN) targetY--;
-
 			if (Math.sqrt((targetX - this.x) * (targetX - this.x) + (targetY - this.y) * (targetY - this.y)) > 3) return false;
 		}
 		
 		if(!collidesWithMap(x, y, map)) {
 			if (direction == Shared.DIRECTION_STOP) {
-				lastX = x;
-				lastY = y;
+				lastX = targetX;
+				lastY = targetY;
 			} else {
 				lastX = this.x;
 				lastY = this.y;
 			}
-			this.x = x;
-			this.y = y;
+			this.x = targetX;
+			this.y = targetY;
 			
 			return true;
 		}

@@ -199,24 +199,26 @@ public class GameSimulation {
 			int entityLastX = entity.getLastX();
 			int entityLastY = entity.getLastY();
 			
-			if (entity instanceof Chased && powerupActive) {
+			if (entity instanceof Chased) {
 				for (Entity chaser : chasers) {
 					if (entityX == chaser.getX() && entityY == chaser.getY() ||
 						entityX == chaser.getLastX() && entityY == chaser.getLastY() ||
 						entityLastX == chaser.getX() && entityLastY == chaser.getY()  ||
 						entityLastX == chaser.getLastX() && entityLastY == chaser.getLastY()) {
 						
-						reSpawnChaser((Chaser) chaser);
+						if (powerupActive) reSpawnChaser((Chaser) chaser);
+						else removable.add(entity);
 					}
 				}
-			} else if (entity instanceof Chaser && !powerupActive) {
+			} else if (entity instanceof Chaser) {
 				for (Entity chased : chaseds) {
 					if (entityX == chased.getX() && entityY == chased.getY() ||
 						entityX == chased.getLastX() && entityY == chased.getLastY() ||
 						entityLastX == chased.getX() && entityLastY == chased.getY()  ||
 						entityLastX == chased.getLastX() && entityLastY == chased.getLastY()) {
 						
-						removable.add(chased);
+						if (powerupActive) reSpawnChaser((Chaser) entity);
+						else removable.add(chased);
 					}
 				}
 			}
