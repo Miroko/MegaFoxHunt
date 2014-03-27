@@ -70,11 +70,11 @@ public class GameMapServerSide {
 	}
 
 	public void addEntity(Entity entity) {
-		collisionMap[entity.getRoundedX()][entity.getRoundedY()] = entity;
+		collisionMap[entity.getX()][entity.getY()] = entity;
 	}
 	
 	public void removeEntity(Entity entity) {
-		collisionMap[entity.getRoundedX()][entity.getRoundedY()] = EMPTY;
+		collisionMap[entity.getX()][entity.getY()] = EMPTY;
 	}
 
 	public void setEmpty(int x, int y) {

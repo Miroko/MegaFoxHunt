@@ -80,58 +80,7 @@ public class GameSimulation {
 			return false;
 		}
 	}	
-	public void update(float delta, PlayerContainer players){		
-		Entity[][] map = gameMap.getCollisionMap();
-
-		for(Entity chased : chaseds){		
-			chased.update(delta, gameMap);
-			Entity collidedEntity = map[chased.getRoundedX()][chased.getRoundedY()];			
-
-			if(collidedEntity instanceof Powerup){
-				addPowerupToRemove((Powerup) collidedEntity);
-				ActivatePowerup activatePowerup = new ActivatePowerup();
-				playerContainer.sendObjectToAll(activatePowerup);
-				
-				powerupActive = true;
-		
-				Timer powerupTimer = new Timer();
-				powerupTimer.schedule(new TimerTask() {					
-					@Override
-					public void run() {
-						powerupActive = false;			
-					}
-				}, Powerup.TIME_SECONDS * 1000);						
-			}
-		}
-		
-		int chaserX = 0;
-		int chaserY = 0;
-		int chaserLastX = 0;
-		int chaserLastY = 0;
-		
-		for(Entity chaser : chasers){
-			chaser.update(delta, gameMap);
-			chaserX = Math.round(chaser.getX() + 0.4f);
-			chaserY = Math.round(chaser.getY() + 0.4f);
-			chaserLastX = chaser.getLastX();
-			chaserLastY = chaser.getLastY();
-			
-			for (Entity chased : chaseds) {
-				if (chaserX == Math.round(chased.getX() + 0.4f) && chaserY == Math.round(chased.getY() + 0.4f)  ||
-					chaserX == chased.getLastX() && chaserY == chased.getLastY() ||
-					chaserLastX == Math.round(chased.getX() + 0.4f)  && chaserLastY == Math.round(chased.getY() + 0.4f)  ||
-					chaserLastX == chased.getLastX() && chaserLastY == chased.getLastY()) {
-					// Powerup active
-					if(powerupActive == true){						
-						reSpawnChaser((Chaser) chaser);
-					}
-					else{					
-						removable.add(chased);
-					}
-				}
-			}
-		}
-		
+	public void update(float delta, PlayerContainer players) {
 		/*
 		 * HANDLE REMOVABLE
 		 */
@@ -147,7 +96,7 @@ public class GameSimulation {
 			}
 			// INFORM ABOUT ENTITY DELETION
 			RemoveEntity removeEntity = new RemoveEntity();
-			removeEntity.id = entity.getID();
+			removeEntity.id = entity.getId();
 			playerContainer.sendObjectToAll(removeEntity, entity.getVisibility());
 		}
 		removable.clear();
@@ -192,25 +141,25 @@ public class GameSimulation {
 	}
 	private void reSpawnChaser(Chaser chaser){		
 		move(chaser, 33, 12, Shared.DIRECTION_STOP, true);
-		playerContainer.sendObjectToAll(new Move(chaser.getID(), Shared.DIRECTION_STOP, chaser.getRoundedX(), chaser.getRoundedY(), true), Visibility.BOTH);
+		playerContainer.sendObjectToAll(new Move(chaser.getId(), Shared.DIRECTION_STOP, chaser.getX(), chaser.getY(), true), Visibility.BOTH);
 	}
 	public void addPowerup(Powerup powerup){
 		powerups.add(powerup);		
-		playerContainer.sendObjectToAll(new AddPowerup(powerup.getID(), powerup.getRoundedX(), powerup.getRoundedY()));	
+		playerContainer.sendObjectToAll(new AddPowerup(powerup.getId(), powerup.getX(), powerup.getY()));	
 	}
 	public void addChaser(Chaser chaser){
 		chasers.add(chaser);		
-		playerContainer.sendObjectToAll(new AddChaser(chaser.getID(), chaser.getRoundedX(), chaser.getRoundedY()));	
+		playerContainer.sendObjectToAll(new AddChaser(chaser.getId(), chaser.getX(), chaser.getY()));	
 	}
 	
 	public void addChased(Chased chased){
 		chaseds.add(chased);	
-		playerContainer.sendObjectToAll(new AddChased(chased.getID(), chased.getRoundedX(), chased.getRoundedY()));		
+		playerContainer.sendObjectToAll(new AddChased(chased.getId(), chased.getX(), chased.getY()));		
 	}
 	
 	public void addBerry(Berry berry){		
 		berries.add(berry);		
-		playerContainer.sendObjectToAll(new AddBerry(berry.getID(), berry.getRoundedX(), berry.getRoundedY()), berry.getVisibility());
+		playerContainer.sendObjectToAll(new AddBerry(berry.getId(), berry.getX(), berry.getY()), berry.getVisibility());
 	}
 	
 	public void addBerryToRemove(Berry berry) {
@@ -224,7 +173,7 @@ public class GameSimulation {
 	
 	public void addHole(Hole hole) {
 		holes.add(hole);
-		playerContainer.sendObjectToAll(new AddHole(hole.getID(), hole.getRoundedX(), hole.getRoundedY()), hole.getVisibility());
+		playerContainer.sendObjectToAll(new AddHole(hole.getId(), hole.getX(), hole.getY()), hole.getVisibility());
 	}
 	
 	public void addHoleToRemove(Hole hole) {
@@ -233,15 +182,64 @@ public class GameSimulation {
 	}
 	
 	public void move(Entity entity, int x, int y, int direction, boolean force) {
-		// Move accepted, check for collisions
 		if (entity.move(x, y, direction, gameMap, force)) {
 			Entity e = gameMap.getEntity(x, y);
-			if (e instanceof Berry)  {
-				if (entity instanceof Chased) addBerryToRemove((Berry)e);
-			} else if (e instanceof Hole) {
-				if (entity instanceof Chased) holeCollisionDetected(entity, (Hole)e);
+			if (entity instanceof Chased) {
+				if (e instanceof Berry)  {
+					addBerryToRemove((Berry)e);
+				} else if (e instanceof Hole) {
+					holeCollisionDetected(entity, (Hole)e);
+				} else if(e instanceof Powerup){
+					powerupCollisionDetected(e);						
+				}
 			}
+			
+			int entityX = entity.getX();
+			int entityY = entity.getY();
+			int entityLastX = entity.getLastX();
+			int entityLastY = entity.getLastY();
+			
+			if (entity instanceof Chased && powerupActive) {
+				for (Entity chaser : chasers) {
+					if (entityX == chaser.getX() && entityY == chaser.getY() ||
+						entityX == chaser.getLastX() && entityY == chaser.getLastY() ||
+						entityLastX == chaser.getX() && entityLastY == chaser.getY()  ||
+						entityLastX == chaser.getLastX() && entityLastY == chaser.getLastY()) {
+						
+						reSpawnChaser((Chaser) chaser);
+					}
+				}
+			} else if (entity instanceof Chaser && !powerupActive) {
+				for (Entity chased : chaseds) {
+					if (entityX == chased.getX() && entityY == chased.getY() ||
+						entityX == chased.getLastX() && entityY == chased.getLastY() ||
+						entityLastX == chased.getX() && entityLastY == chased.getY()  ||
+						entityLastX == chased.getLastX() && entityLastY == chased.getLastY()) {
+						
+						removable.add(chased);
+					}
+				}
+			}
+		} else {
+			Move backMove = new Move(entity.getId(), 0, entity.getX(), entity.getY(), true);
+			entity.getPlayer().sendTCP(backMove);
 		}
+	}
+	
+	private void powerupCollisionDetected(Entity collidedEntity) {
+		addPowerupToRemove((Powerup) collidedEntity);
+		ActivatePowerup activatePowerup = new ActivatePowerup();
+		playerContainer.sendObjectToAll(activatePowerup);
+		
+		powerupActive = true;
+
+		Timer powerupTimer = new Timer();
+		powerupTimer.schedule(new TimerTask() {					
+			@Override
+			public void run() {
+				powerupActive = false;			
+			}
+		}, Powerup.TIME_SECONDS * 1000);
 	}
 	
 	public void goToHole(PlayerConnection connection) {
@@ -265,8 +263,8 @@ public class GameSimulation {
 				((Hole)targetHole).setHoleCooldown(true);
 				hole.setHoleCooldown(true);
 				
-				move(entity, targetHole.getRoundedX(), targetHole.getRoundedY(), Shared.DIRECTION_STOP, true);
-				playerContainer.sendObjectToAll(new Move(entity.getID(), Shared.DIRECTION_STOP, targetHole.getRoundedX(), targetHole.getRoundedY(), true), Visibility.BOTH);
+				move(entity, targetHole.getX(), targetHole.getY(), Shared.DIRECTION_STOP, true);
+				playerContainer.sendObjectToAll(new Move(entity.getId(), Shared.DIRECTION_STOP, targetHole.getX(), targetHole.getY(), true), Visibility.BOTH);
 				
 				timer.schedule(new TimerListener(hole), 5000);
 				timer.schedule(new TimerListener(targetHole), 5000);	
