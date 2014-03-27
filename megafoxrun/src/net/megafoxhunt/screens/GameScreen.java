@@ -8,6 +8,8 @@ import net.megafoxhunt.core.MyGdxGame;
 import net.megafoxhunt.core.User;
 import net.megafoxhunt.core.UserContainer;
 
+import net.megafoxhunt.entities.Chased;
+import net.megafoxhunt.entities.Chaser;
 import net.megafoxhunt.entities.EntityMovable;
 import net.megafoxhunt.entities.Entity;
 import net.megafoxhunt.ui.TouchJoystick;
@@ -17,11 +19,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.Logger;
 
@@ -76,8 +81,7 @@ public class GameScreen implements Screen {
         camera.update();
 		
 		// CLEAR SCREEN
-		Gdx.gl.glClearColor(0.7f, 0.7f, 1.0f, 1);
-		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		// DRAW MAP
         renderer.setView(camera);
@@ -88,14 +92,22 @@ public class GameScreen implements Screen {
 		batch.begin();		
              
         // DRAW BERRIES AND HOLES
-        for(Entity object : MyGdxGame.mapHandler.currentMap.getAllObjectsConcurrentSafe()){
-        	object.render(batch);
+        for(Entity object : MyGdxGame.mapHandler.currentMap.getAllObjectsConcurrentSafe()) {
+        	if (object != null) {
+        		object.render(batch);
+        	}
         }
         
-        // DRAW ENTITIES
+        // DRAW Chased
         for(User user : UserContainer.getUsersConcurrentSafe()){
         	entity = user.getControlledEntity();
-        	if (entity != null) entity.render(batch);
+        	if (entity != null && entity instanceof Chased) entity.render(batch);
+        }
+        
+        // DRAW Chaser
+        for(User user : UserContainer.getUsersConcurrentSafe()){
+        	entity = user.getControlledEntity();
+        	if (entity != null && entity instanceof Chaser) entity.render(batch);
         }    
         
         batch.end();
@@ -103,6 +115,7 @@ public class GameScreen implements Screen {
         
         // DRAW JOYSTICK AND FPS
         spriteBatch.begin();
+        touchJoystick.draw(spriteBatch);
         //if (Gdx.app.getType() == ApplicationType.Android) touchJoystick.draw(spriteBatch);
         font.draw(spriteBatch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 25, 25);
         font.draw(spriteBatch, "Ms: " + MyGdxGame.network.getCurrentPing(), 100, 25);
@@ -131,7 +144,7 @@ public class GameScreen implements Screen {
 	@Override
 	public void show() {		
 		MyGdxGame.mapHandler.currentMap.load();
-		renderer = new OrthogonalTiledMapRenderer(MyGdxGame.mapHandler.currentMap.getTiledMap(), UNIT_SCALE);	
+		renderer = new OrthogonalTiledMapRenderer(MyGdxGame.mapHandler.currentMap.getTiledMap(), UNIT_SCALE);
 		
 		Gdx.input.setInputProcessor(gameInputProcessor);
 	}

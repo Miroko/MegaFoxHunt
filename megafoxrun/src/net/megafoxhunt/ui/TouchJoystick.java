@@ -3,66 +3,74 @@ package net.megafoxhunt.ui;
 import net.megafoxhunt.core.GameNetwork;
 
 import net.megafoxhunt.entities.EntityMovable;
+import net.megafoxhunt.shared.Shared;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
 
 public class TouchJoystick {
-
-	private static final int CIRCLE_SIZE = 200;
-	private static final int JOYSTICK_SIZE = 50;
 	
-	private Vector2 circlePos;
-	private Vector2 joystickPos;
+	private static final int WIDTH = 256;
+	private static final int HEIGHT = 256;
+	private static final int XPOS = Gdx.graphics.getWidth() - WIDTH - 30;
+	private static final int YPOS = 30;
 	
-	private Texture circle;
-	private Texture joystick;
+	private Texture pad;
 	
 	private GameNetwork network;
 	
 	public TouchJoystick(GameNetwork network) {
 		this.network = network;
 		
-		circlePos = new Vector2(200, 200);
-		joystickPos = new Vector2();
-		
-		circle = new Texture(Gdx.files.internal("data/circle.png"));
-		joystick = new Texture(Gdx.files.internal("data/joystick.png"));
+		pad = new Texture(Gdx.files.internal("data/pad.png"));
 	}
 	
 	public void draw(SpriteBatch batch) {
-		batch.draw(circle, circlePos.x - (CIRCLE_SIZE / 2), circlePos.y - (CIRCLE_SIZE / 2), CIRCLE_SIZE, CIRCLE_SIZE);
-		batch.draw(joystick, (joystickPos.x + circlePos.x) - (JOYSTICK_SIZE / 2), (joystickPos.y + circlePos.y) - (JOYSTICK_SIZE / 2), JOYSTICK_SIZE, JOYSTICK_SIZE);
+		batch.draw(pad, XPOS, YPOS, WIDTH, HEIGHT);
 	}
 	
 	public void mouseDown(int x, int y) {
 		y = Gdx.graphics.getHeight() - y;
-
-		joystickPos.x = x - circlePos.x;
-		joystickPos.y = y - circlePos.y;
 		
-		joystickPos.clamp(0, 55);
+		double shortestDistance = 0;
+		int direction = 0;
 		
-		float distance = circlePos.dst(x, y);
+		// UP
+		double dist = getDistance(XPOS + 128, YPOS + 208, x, y);
+		shortestDistance = dist;
+		direction = Shared.DIRECTION_UP;
 		
-		float angle = joystickPos.angle();
-		if (angle < 45 && angle > 0 || angle < 360 && angle > 315) {
-			sendDirection(EntityMovable.DIRECTION_RIGHT);
-		} else if (angle > 45 && angle < 135) {
-			sendDirection(EntityMovable.DIRECTION_UP);
-		} else if (angle > 135 && angle < 225) {
-			sendDirection(EntityMovable.DIRECTION_LEFT);
-		} else if (angle > 225 && angle < 315) {
-			sendDirection(EntityMovable.DIRECTION_DOWN);
+		// DOWN
+		dist = getDistance(XPOS + 128, YPOS + 48, x, y);
+		if (dist < shortestDistance) {
+			shortestDistance = dist;
+			direction = Shared.DIRECTION_DOWN;
 		}
+		
+		// LEFT
+		dist = getDistance(XPOS + 48, YPOS + 128, x, y);
+		if (dist < shortestDistance) {
+			shortestDistance = dist;
+			direction = Shared.DIRECTION_LEFT;
+		}
+		
+		// RIGHT
+		dist = getDistance(XPOS + 208, YPOS + 128, x, y);
+		if (dist < shortestDistance) {
+			shortestDistance = dist;
+			direction = Shared.DIRECTION_RIGHT;
+		}
+	
+		if (shortestDistance < 80) sendDirection(direction);
+	}
+	
+	private double getDistance(int centerX, int centerY, int x, int y) {
+	    double dist = Math.sqrt((centerX - x) * (centerX - x) + (centerY - y) * (centerY - y));
+	    return dist;
 	}
 	
 	public void mouseUp(int x, int y) {
-		joystickPos.x = 0;
-		joystickPos.y = 0;
-		
 		sendDirection(EntityMovable.DIRECTION_STOP);
 	}
 	

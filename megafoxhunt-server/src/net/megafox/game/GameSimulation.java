@@ -245,11 +245,13 @@ public class GameSimulation {
 	}
 	
 	public void goToHole(PlayerConnection connection) {
-		connection.setGoInHole(true);
-		Entity playerEntity = connection.getEntity();
-		Entity targetEntity = gameMap.getEntity((int)playerEntity.getX(), (int)playerEntity.getY());
-		if (targetEntity instanceof Hole) {
-			holeCollisionDetected(playerEntity, (Hole)targetEntity);
+		if (connection.getEntity() instanceof Chased) {
+			connection.setGoInHole(true);
+			Entity playerEntity = connection.getEntity();
+			Entity targetEntity = gameMap.getEntity((int)playerEntity.getX(), (int)playerEntity.getY());
+			if (targetEntity instanceof Hole) {
+				holeCollisionDetected(playerEntity, (Hole)targetEntity);
+			}
 		}
 	}
 	

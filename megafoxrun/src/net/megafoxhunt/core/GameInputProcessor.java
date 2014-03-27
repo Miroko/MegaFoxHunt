@@ -35,9 +35,7 @@ public class GameInputProcessor extends InputAdapter {
     		last_direction = direction;
 		}
 	}
-	private void sendGoInHole(){
-		
-	}
+
 	public boolean keyDown(int k) {
 		if (k == Keys.SPACE || k == Keys.ENTER) return true;
 		
@@ -87,6 +85,7 @@ public class GameInputProcessor extends InputAdapter {
 		if (numFingersOnScreen <= 0) {
 			numFingersOnScreen = 0;
 			sendDirection(EntityMovable.DIRECTION_STOP);
+			touchJoystick.mouseUp(screenX, screenY);
 		}
 		
 		return super.touchUp(screenX, screenY, pointer, button);
@@ -103,11 +102,14 @@ public class GameInputProcessor extends InputAdapter {
 		int width = Gdx.graphics.getWidth();
 		int height = Gdx.graphics.getHeight();
 		
+		touchJoystick.mouseDown(mouseX, mouseY);
+		
+		/*
 		int calculatedTopAndDownAreas = (int)(height * 0.35f);
 		
 		if (mouseY < calculatedTopAndDownAreas) sendDirection(EntityMovable.DIRECTION_UP);
 		else if (mouseY > (height - calculatedTopAndDownAreas)) sendDirection(EntityMovable.DIRECTION_DOWN);
 		else if (mouseX <= (width / 2)) sendDirection(EntityMovable.DIRECTION_LEFT);
-		else if (mouseX > (width / 2)) sendDirection(EntityMovable.DIRECTION_RIGHT);
+		else if (mouseX > (width / 2)) sendDirection(EntityMovable.DIRECTION_RIGHT);*/
 	}
 }
