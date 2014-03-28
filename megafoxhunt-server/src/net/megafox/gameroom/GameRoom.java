@@ -331,6 +331,8 @@ public class GameRoom extends Thread {
 	 * @param move Move command received
 	 */
 	public void move(PlayerConnection player, Move move) {
+		if (gameSimulation == null || playerContainer == null) return;
+		
 		gameSimulation.move(player.getEntity(), move.x, move.y, move.direction, false);		
 		playerContainer.sendObjectToAllExcept(player, move);		
 	}	

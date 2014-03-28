@@ -170,7 +170,7 @@ public class GameNetwork {
 				else if (object instanceof Move) {
 					Move move = (Move)object;					
 					EntityMovable entity = (EntityMovable)UserContainer.getUserByID(move.id).getControlledEntity();
-					entity.move(move);
+					if (entity != null) entity.move(move);
 				}			
 				/*
 				 * CHANGE MAP
