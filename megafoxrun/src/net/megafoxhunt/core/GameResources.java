@@ -28,6 +28,8 @@ public class GameResources {
 	public Texture preferDogButtonTexture;
 	public Texture preferFoxButtonTexture;
 	public Texture readyButtonTexture;
+	public Texture btnNormal;
+	public Texture btnPressed;
 	
 	public void init(){
 		 DEBUG_TEXTURE = new Texture("data/libgdx.png");
@@ -53,9 +55,9 @@ public class GameResources {
 		 FOX_ANIMATIONS[FRONT_ANIMATION] = generateAnimation(FOX_TEXTURE, 0.025f, 0, 66, 64, 99 , 1, 10);
 		 FOX_ANIMATIONS[BACK_ANIMATION] = generateAnimation(FOX_TEXTURE, 0.025f, 0, 166, 64, 106, 1, 10);
 		 
-		 DOG_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(DOG_TEXTURE, 0.050f, 0, 0, 188, 114, 1, 8);
-		 DOG_ANIMATIONS[FRONT_ANIMATION] = generateAnimation(DOG_TEXTURE, 0.025f, 0, 0, 142, 90, 1, 1);
-		 DOG_ANIMATIONS[BACK_ANIMATION] = generateAnimation(DOG_TEXTURE, 0.025f, 0, 0, 142, 90, 1, 1);
+		 DOG_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(DOG_TEXTURE, 0.042f, 0, 0, 187, 114, 1, 8);
+		 DOG_ANIMATIONS[FRONT_ANIMATION] = generateAnimation(DOG_TEXTURE, 0.042f, 0, 114, 79, 150, 1, 8);
+		 DOG_ANIMATIONS[BACK_ANIMATION] = generateAnimation(DOG_TEXTURE, 0.042f, 0, 114, 79, 150, 1, 8);
 		 
 		 connectButtonTexture = new Texture("data/connect.png"); 
 		 quitButtonTexture = new Texture("data/quit.png");
@@ -63,6 +65,8 @@ public class GameResources {
 		 preferFoxButtonTexture = new Texture("data/preferFox.png");
 		 readyButtonTexture = new Texture("data/ready.png");
 		 
+		 btnNormal = new Texture("data/btn_normal.png");
+		 btnPressed = new Texture("data/btn_pressed.png");
 	}
 	
 	private Animation generateAnimation(Texture texture, float frameDuration, int startX, int startY, int width, int height, int rows, int cols) {
@@ -103,6 +107,15 @@ public class GameResources {
 		BERRY_TEXTURE.dispose();
 		HOLE_TEXTURE.dispose();
 		POWERRUP_TEXTURE.dispose();
+		
+		connectButtonTexture.dispose();
+		quitButtonTexture.dispose();
+		preferDogButtonTexture.dispose();
+		preferFoxButtonTexture.dispose();
+		readyButtonTexture.dispose();
+		
+		btnNormal.dispose();
+		btnPressed.dispose();
 	}
 	
 	

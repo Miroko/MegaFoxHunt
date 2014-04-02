@@ -99,8 +99,8 @@ public class GameInputProcessor extends InputAdapter {
 	}
 	
 	private void handleTouchInput(int mouseX, int mouseY) {
-		int width = Gdx.graphics.getWidth();
-		int height = Gdx.graphics.getHeight();
+		//int width = Gdx.graphics.getWidth();
+		//int height = Gdx.graphics.getHeight();
 		
 		touchJoystick.mouseDown(mouseX, mouseY);
 		
