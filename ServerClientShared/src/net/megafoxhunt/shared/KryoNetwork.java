@@ -35,6 +35,7 @@ public class KryoNetwork {
 		kryo.register(ActivatePowerup.class);
 		kryo.register(AddPowerup.class);
 		kryo.register(SetPreferedTeam.class);
+		kryo.register(AddBomb.class);
 	}	
 	/*
 	 * MESSAGE
@@ -152,6 +153,18 @@ public class KryoNetwork {
 		
 		public AddBarricade(){}
 		public AddBarricade(int id, int x, int y) {
+			this.id = id;
+			this.x = x;
+			this.y = y;
+		}
+	}
+	public static class AddBomb{
+		public int id;
+		public int x;
+		public int y;
+		
+		public AddBomb(){}
+		public AddBomb(int id, int x, int y) {
 			this.id = id;
 			this.x = x;
 			this.y = y;

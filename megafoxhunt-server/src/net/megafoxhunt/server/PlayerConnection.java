@@ -63,19 +63,19 @@ public class PlayerConnection extends Connection {
 	public void dispose(IDHandler idHandler){
 		idHandler.freeID(myId);
 	}
-
-	public Item getCurrentItem() {
-		return currentItem;
-	}
 	public void activateItem() {
 		Item item = getCurrentItem();
 		if (item == null) return;
-		
-		item.activateItem(getEntity().getX(), getEntity().getY(), this);
+		else{
+			item.activate(getEntity().getX(), getEntity().getY(), this);
+		}
 		
 		// remove used item
 		//playerConnection.setCurrentItem(null);
 	}	
+	public Item getCurrentItem() {
+		return currentItem;
+	}
 	public void setCurrentItem(Item item) {
 		this.currentItem = item;
 	}
