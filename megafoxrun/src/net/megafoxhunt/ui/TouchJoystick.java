@@ -53,43 +53,44 @@ public class TouchJoystick {
 		double shortestDistance = 0;
 		int direction = 0;
 		
-		// UP
-		double dist = getDistance(PAD_X, PAD_Y + SPACING + (HEIGHT / 2), x, y);
-		shortestDistance = dist;
-		direction = Shared.DIRECTION_UP;
-		
-		// DOWN
-		dist = getDistance(PAD_X, PAD_Y - SPACING - (HEIGHT / 2), x, y);
-		if (dist < shortestDistance) {
+		if (x > 0 && x < Gdx.graphics.getWidth() / 3 && y > 0 && y < Gdx.graphics.getHeight() / 2) {
+			// UP
+			double dist = getDistance(PAD_X, PAD_Y + SPACING + (HEIGHT / 2), x, y);
 			shortestDistance = dist;
-			direction = Shared.DIRECTION_DOWN;
+			direction = Shared.DIRECTION_UP;
+			
+			// DOWN
+			dist = getDistance(PAD_X, PAD_Y - SPACING - (HEIGHT / 2), x, y);
+			if (dist < shortestDistance) {
+				shortestDistance = dist;
+				direction = Shared.DIRECTION_DOWN;
+			}
+			
+			// LEFT
+			dist = getDistance(PAD_X - SPACING - (WIDTH / 2), PAD_Y, x, y);
+			if (dist < shortestDistance) {
+				shortestDistance = dist;
+				direction = Shared.DIRECTION_LEFT;
+			}
+			
+			// RIGHT
+			dist = getDistance(PAD_X + SPACING + (WIDTH / 2), PAD_Y, x, y);
+			if (dist < shortestDistance) {
+				shortestDistance = dist;
+				direction = Shared.DIRECTION_RIGHT;
+			}
+			if (shortestDistance < WIDTH) sendDirection(direction);
+		} else {
+			if (actionBtnPressed != 1 && getDistance(BTN1_X, BTN1_Y, x, y) < WIDTH) {
+				actionBtnPressed = 1;
+				network.getKryoClient().sendTCP(new ActivateItem());
+			} 
+			
+			if (actionBtnPressed != 2 && getDistance(BTN2_X, BTN2_Y, x, y) < WIDTH) {
+				actionBtnPressed = 2;
+				network.getKryoClient().sendTCP(new GoInHole());
+			}
 		}
-		
-		// LEFT
-		dist = getDistance(PAD_X - SPACING - (WIDTH / 2), PAD_Y, x, y);
-		if (dist < shortestDistance) {
-			shortestDistance = dist;
-			direction = Shared.DIRECTION_LEFT;
-		}
-		
-		// RIGHT
-		dist = getDistance(PAD_X + SPACING + (WIDTH / 2), PAD_Y, x, y);
-		if (dist < shortestDistance) {
-			shortestDistance = dist;
-			direction = Shared.DIRECTION_RIGHT;
-		}
-		
-		if (actionBtnPressed != 1 && getDistance(BTN1_X, BTN1_Y, x, y) < WIDTH) {
-			actionBtnPressed = 1;
-			network.getKryoClient().sendTCP(new ActivateItem());
-		} 
-		
-		if (actionBtnPressed != 2 && getDistance(BTN2_X, BTN2_Y, x, y) < WIDTH) {
-			actionBtnPressed = 2;
-			network.getKryoClient().sendTCP(new GoInHole());
-		}
-	
-		if (shortestDistance < WIDTH) sendDirection(direction);
 	}
 	
 	private double getDistance(int centerX, int centerY, int x, int y) {

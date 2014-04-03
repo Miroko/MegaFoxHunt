@@ -40,6 +40,7 @@ public class GameResources {
 		 FOX_TEXTURE.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		 
 		 DOG_TEXTURE = new Texture("data/dog.png");
+		 DOG_TEXTURE.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		 
 		 BERRY_TEXTURE = new Texture("data/berry.png");
 		 BERRY_TEXTURE.setFilter(TextureFilter.Linear, TextureFilter.Linear);
