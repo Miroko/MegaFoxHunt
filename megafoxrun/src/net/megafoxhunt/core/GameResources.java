@@ -15,10 +15,12 @@ public class GameResources {
 	public Texture DOG_TEXTURE;
 	public Texture BERRY_TEXTURE;
 	public Texture HOLE_TEXTURE;
+	public Texture BARRICADE_TEXTURE;
 	public Texture POWERRUP_TEXTURE;
 	
 	public Animation[] BERRY_ANIMATIONS = new Animation[10];
 	public Animation[] HOLE_ANIMATIONS = new Animation[10];
+	public Animation[] BARRICADE_ANIMATIONS = new Animation[10];
 	public Animation[] FOX_ANIMATIONS = new Animation[10];
 	public Animation[] DOG_ANIMATIONS  = new Animation[10];
 	public Animation[] POWERRUP_ANIMATIONS = new Animation[10];
@@ -47,10 +49,13 @@ public class GameResources {
 		 
 		 HOLE_TEXTURE = new Texture("data/hole.png");
 		 
+		 BARRICADE_TEXTURE = new Texture("data/barricade.png");
+		 
 		 POWERRUP_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(POWERRUP_TEXTURE, 0.025f, 1, 1);
 		 
-		 BERRY_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(BERRY_TEXTURE, 0.025f, 1, 1);
-		 HOLE_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(HOLE_TEXTURE, 0.025f, 1, 1);
+		 BERRY_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(BERRY_TEXTURE, 1f, 1, 1);
+		 HOLE_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(HOLE_TEXTURE, 1f, 1, 1);
+		 BARRICADE_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(BARRICADE_TEXTURE, 1f, 1, 1);
 		 
 		 FOX_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(FOX_TEXTURE, 0.025f, 0, 0, 104, 66 , 1, 10);
 		 FOX_ANIMATIONS[FRONT_ANIMATION] = generateAnimation(FOX_TEXTURE, 0.025f, 0, 66, 64, 99 , 1, 10);
@@ -107,6 +112,7 @@ public class GameResources {
 		DOG_TEXTURE.dispose();
 		BERRY_TEXTURE.dispose();
 		HOLE_TEXTURE.dispose();
+		BARRICADE_TEXTURE.dispose();
 		POWERRUP_TEXTURE.dispose();
 		
 		connectButtonTexture.dispose();

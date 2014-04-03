@@ -49,7 +49,7 @@ public class ServerRooms {
 	public void startGame(GameRoom room){	
 		if(room.getRoomState() == GameRoom.STATE_LOBBY){
 			room.changeMap(GameMapSharedConfig.DEBUG_MAP);	
-			room.startSimulation();		
+			room.startSimulation(gameServer.idHandler);		
 			room.setChasedsAndChasers();
 			room.generateBerries(GameMapServerSide.TOTAL_BERRIES, gameServer.idHandler);
 			room.generateHoles(GameMapServerSide.TOTAL_HOLES, gameServer.idHandler);

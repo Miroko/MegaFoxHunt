@@ -15,6 +15,7 @@ import net.megafox.entities.Powerup;
 import net.megafox.entities.Chased;
 import net.megafox.game.GameMapServerSide;
 import net.megafox.game.GameSimulation;
+import net.megafox.items.Barricade;
 import net.megafox.items.Bomb;
 import net.megafox.items.Item;
 import net.megafoxhunt.server.IDHandler;
@@ -263,10 +264,11 @@ public class GameRoom extends Thread {
 	private void setPlayerToChased(PlayerConnection connection, int positionOffset){
 		Chased chased = new Chased(2, 12 + (positionOffset), connection.getMyId(), connection);
 		connection.setEntity(chased);
+		connection.setCurrentItem(new Barricade(gameSimulation));
 		gameSimulation.addChased(chased);
 	}
-	public void startSimulation() {		
-		gameSimulation = new GameSimulation(playerContainer, currentMap);		
+	public void startSimulation(IDHandler idHandler) {		
+		gameSimulation = new GameSimulation(playerContainer, currentMap, idHandler);		
 	}
 	/**
 	 * Set current map and inform players about the map

@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 import net.megafoxhunt.debug.Robot;
+import net.megafoxhunt.entities.Barricade;
 import net.megafoxhunt.entities.Berry;
 import net.megafoxhunt.entities.Chased;
 import net.megafoxhunt.entities.Chaser;
@@ -15,6 +16,7 @@ import net.megafoxhunt.screens.GameScreen;
 import net.megafoxhunt.screens.LobbyScreen;
 import net.megafoxhunt.shared.GameMapSharedConfig;
 import net.megafoxhunt.shared.KryoNetwork;
+import net.megafoxhunt.shared.KryoNetwork.AddBarricade;
 import net.megafoxhunt.shared.KryoNetwork.AddBerry;
 import net.megafoxhunt.shared.KryoNetwork.AddChased;
 import net.megafoxhunt.shared.KryoNetwork.AddChaser;
@@ -146,6 +148,11 @@ public class GameNetwork {
 				else if (object instanceof AddHole) {
 					AddHole addHole = (AddHole)object;
 					MyGdxGame.mapHandler.currentMap.addStaticObject(new Hole(addHole.id, addHole.x, addHole.y));
+				}
+				
+				else if (object instanceof AddBarricade) {
+					AddBarricade addBarricade = (AddBarricade)object;
+					MyGdxGame.mapHandler.currentMap.addStaticObject(new Barricade(addBarricade.id, addBarricade.x, addBarricade.y));
 				}
 				/*
 				 * REMOVE ENTITY 

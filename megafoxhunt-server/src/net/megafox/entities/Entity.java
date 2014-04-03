@@ -18,6 +18,7 @@ public class Entity {
 	private int y;
 	private int lastX;
 	private int lastY;
+	private int facingDirection;
 
 	private Visibility visibility;
 	
@@ -60,6 +61,8 @@ public class Entity {
 			}
 			this.x = targetX;
 			this.y = targetY;
+			
+			if (direction != 0) facingDirection = direction;
 			
 			return true;
 		}
@@ -104,5 +107,9 @@ public class Entity {
 	
 	public int getId() {
 		return id;
+	}
+	
+	public int getFacingDirection() {
+		return facingDirection;
 	}
 }

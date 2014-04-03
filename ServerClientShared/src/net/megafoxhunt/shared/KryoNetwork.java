@@ -26,6 +26,7 @@ public class KryoNetwork {
 		kryo.register(Message.class);
 		kryo.register(Winner.class);
 		kryo.register(AddHole.class);
+		kryo.register(AddBarricade.class);
 		kryo.register(ActivateItem.class);
 		kryo.register(ChangeTilesTypes.class);
 		kryo.register(ArrayList.class);
@@ -143,6 +144,20 @@ public class KryoNetwork {
 			this.y = y;
 		}
 	}
+	
+	public static class AddBarricade {
+		public int id;
+		public int x;
+		public int y;
+		
+		public AddBarricade(){}
+		public AddBarricade(int id, int x, int y) {
+			this.id = id;
+			this.x = x;
+			this.y = y;
+		}
+	}
+	
 	public static class RemoveEntity {
 		public int id;
 	}

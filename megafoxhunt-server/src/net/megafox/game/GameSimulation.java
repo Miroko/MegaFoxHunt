@@ -10,15 +10,19 @@ import java.util.TimerTask;
 import net.megafox.entities.Berry;
 import net.megafox.entities.Chased;
 import net.megafox.entities.Chaser;
+import net.megafox.entities.Empty;
 import net.megafox.entities.Entity;
 import net.megafox.entities.Hole;
 import net.megafox.entities.Powerup;
 import net.megafox.entities.Entity.Visibility;
 import net.megafox.gameroom.PlayerContainer;
+import net.megafox.items.Barricade;
 import net.megafox.items.Bomb;
 import net.megafox.items.Item;
+import net.megafoxhunt.server.IDHandler;
 import net.megafoxhunt.server.PlayerConnection;
 import net.megafoxhunt.shared.KryoNetwork.ActivatePowerup;
+import net.megafoxhunt.shared.KryoNetwork.AddBarricade;
 import net.megafoxhunt.shared.KryoNetwork.AddChaser;
 import net.megafoxhunt.shared.KryoNetwork.AddChased;
 import net.megafoxhunt.shared.KryoNetwork.AddPowerup;
@@ -54,9 +58,12 @@ public class GameSimulation {
 	
 	private boolean powerupActive = false;
 	
-	public GameSimulation(PlayerContainer playerContainer, GameMapServerSide gameMap){
+	private IDHandler idHandler;
+	
+	public GameSimulation(PlayerContainer playerContainer, GameMapServerSide gameMap, IDHandler idHandler){
 		this.gameMap = gameMap;
-		this.playerContainer = playerContainer;		
+		this.playerContainer = playerContainer;
+		this.idHandler = idHandler;
 		removable = new ArrayList<>();
 		chasers = new ArrayList<>();
 		chaseds = new ArrayList<>();
@@ -284,16 +291,25 @@ public class GameSimulation {
 		public TimerListener(Entity entity) {
 			this.entity = entity;
 		}
+		
 
 		@Override
 		public void run() {
-			if (entity instanceof Hole) {
-				((Hole)entity).setHoleCooldown(false);
+			if (entity instanceof Hole)((Hole)entity).setHoleCooldown(false);
+			else if (entity instanceof net.megafox.entities.Barricade) {
+				gameMap.setEmpty(entity.getX(), entity.getY());
+				RemoveEntity removeEntity = new RemoveEntity();
+				removeEntity.id = entity.getId();
+				idHandler.freeID(entity.getId());
+				
+				ChangeTilesTypes changeTilesTypes = new ChangeTilesTypes();
+				changeTilesTypes.addTile(entity.getX(), entity.getY(), 13);
+				playerContainer.sendObjectToAll(changeTilesTypes);
 			}
 		}
 	}
 
-	public void useItem(Item item, int x, int y) {
+	public void useItem(Item item, int x, int y, PlayerConnection player) {
 		if (item instanceof Bomb) {
 			ChangeTilesTypes changeTilesTypes = new ChangeTilesTypes();
 			
@@ -316,6 +332,26 @@ public class GameSimulation {
 			
 			if (!changeTilesTypes.getTiles().isEmpty()) {
 				playerContainer.sendObjectToAll(changeTilesTypes);
+			}
+		} else if (item instanceof Barricade) {
+			int targetX = x;
+			int targetY = y;
+			
+			int direction = player.getEntity().getFacingDirection();
+			if (direction == Shared.DIRECTION_RIGHT) targetX++;
+			else if (direction == Shared.DIRECTION_LEFT) targetX--;
+			else if (direction == Shared.DIRECTION_UP) targetY++;
+			else if (direction == Shared.DIRECTION_DOWN) targetY--;
+			
+			if (gameMap.getEntity(targetX, targetY) instanceof Empty) {
+				ChangeTilesTypes changeTilesTypes = new ChangeTilesTypes();
+				changeTilesTypes.addTile(targetX, targetY, 20);
+				
+				net.megafox.entities.Barricade barricade = new net.megafox.entities.Barricade(targetX, targetY, idHandler.getFreeID());
+				gameMap.setWall(targetX, targetY);
+				playerContainer.sendObjectToAll(new Move(player.getMyId(), 0, x, y, true));
+				playerContainer.sendObjectToAll(changeTilesTypes);
+				timer.schedule(new TimerListener(barricade), 5000);
 			}
 		}
 	}
