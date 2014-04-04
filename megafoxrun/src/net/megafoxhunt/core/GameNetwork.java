@@ -161,7 +161,6 @@ public class GameNetwork {
 				else if (object instanceof AddBomb) {
 					AddBomb addBomb = (AddBomb)object;
 					MyGdxGame.mapHandler.currentMap.addStaticObject(new Bomb(addBomb.id, addBomb.x, addBomb.y));
-					System.out.println(addBomb.x + "," + addBomb.y);
 				}
 				/*
 				 * REMOVE ENTITY 
