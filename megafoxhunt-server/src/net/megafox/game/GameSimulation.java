@@ -2,6 +2,7 @@ package net.megafox.game;
 
 import java.util.ArrayList;
 
+
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -10,25 +11,19 @@ import java.util.TimerTask;
 import net.megafox.entities.Berry;
 import net.megafox.entities.Chased;
 import net.megafox.entities.Chaser;
-import net.megafox.entities.Empty;
 import net.megafox.entities.Entity;
 import net.megafox.entities.Hole;
 import net.megafox.entities.Powerup;
 import net.megafox.entities.Entity.Visibility;
 import net.megafox.gameroom.PlayerContainer;
-import net.megafox.items.Barricade;
-import net.megafox.items.Bomb;
-import net.megafox.items.Item;
 import net.megafoxhunt.server.IDHandler;
 import net.megafoxhunt.server.PlayerConnection;
 import net.megafoxhunt.shared.KryoNetwork.ActivatePowerup;
-import net.megafoxhunt.shared.KryoNetwork.AddBarricade;
 import net.megafoxhunt.shared.KryoNetwork.AddChaser;
 import net.megafoxhunt.shared.KryoNetwork.AddChased;
 import net.megafoxhunt.shared.KryoNetwork.AddPowerup;
 import net.megafoxhunt.shared.KryoNetwork.AddBerry;
 import net.megafoxhunt.shared.KryoNetwork.AddHole;
-import net.megafoxhunt.shared.KryoNetwork.ChangeTilesTypes;
 import net.megafoxhunt.shared.KryoNetwork.Move;
 import net.megafoxhunt.shared.KryoNetwork.RemoveEntity;
 import net.megafoxhunt.shared.KryoNetwork.Winner;
@@ -38,7 +33,7 @@ public class GameSimulation {
 
 	private long endTime;	
 	
-	private GameMapServerSide gameMap;
+	public GameMapServerSide gameMap;
 	
 	private ArrayList<Entity> removable;
 	
@@ -50,15 +45,15 @@ public class GameSimulation {
 	
 	private ArrayList<Entity> holes;
 	
-	private PlayerContainer playerContainer;
+	public PlayerContainer playerContainer;
 
 	private Random random;
 	
-	private Timer timer;
+	public Timer timer;
 	
 	private boolean powerupActive = false;
 	
-	private IDHandler idHandler;
+	public IDHandler idHandler;
 	
 	public GameSimulation(PlayerContainer playerContainer, GameMapServerSide gameMap, IDHandler idHandler){
 		this.gameMap = gameMap;
@@ -168,7 +163,6 @@ public class GameSimulation {
 		berries.add(berry);		
 		playerContainer.sendObjectToAll(new AddBerry(berry.getId(), berry.getX(), berry.getY()), berry.getVisibility());
 	}
-	
 	public void addBerryToRemove(Berry berry) {
 		removable.add(berry);
 		gameMap.removeEntity(berry);
@@ -295,64 +289,8 @@ public class GameSimulation {
 
 		@Override
 		public void run() {
-			if (entity instanceof Hole)((Hole)entity).setHoleCooldown(false);
-			else if (entity instanceof net.megafox.entities.Barricade) {
-				gameMap.setEmpty(entity.getX(), entity.getY());
-				RemoveEntity removeEntity = new RemoveEntity();
-				removeEntity.id = entity.getId();
-				idHandler.freeID(entity.getId());
-				
-				ChangeTilesTypes changeTilesTypes = new ChangeTilesTypes();
-				changeTilesTypes.addTile(entity.getX(), entity.getY(), 13);
-				playerContainer.sendObjectToAll(changeTilesTypes);
-			}
+			if (entity instanceof Hole)((Hole)entity).setHoleCooldown(false);			
 		}
 	}
-
-	public void useItem(Item item, int x, int y, PlayerConnection player) {
-		if (item instanceof Bomb) {
-			ChangeTilesTypes changeTilesTypes = new ChangeTilesTypes();
-			
-			if (gameMap.isBlocked(x - 1, y)) {
-				gameMap.setEmpty(x - 1, y);
-				changeTilesTypes.addTile(x - 1, y, 13);
-			}
-			if (gameMap.isBlocked(x + 1, y)) {
-				gameMap.setEmpty(x + 1, y);
-				changeTilesTypes.addTile(x + 1, y, 13);
-			}
-			if (gameMap.isBlocked(x, y - 1)) {
-				gameMap.setEmpty(x, y - 1);
-				changeTilesTypes.addTile(x, y - 1, 13);
-			}
-			if (gameMap.isBlocked(x, y + 1)) {
-				gameMap.setEmpty(x, y + 1);
-				changeTilesTypes.addTile(x, y + 1, 13);
-			}
-			
-			if (!changeTilesTypes.getTiles().isEmpty()) {
-				playerContainer.sendObjectToAll(changeTilesTypes);
-			}
-		} else if (item instanceof Barricade) {
-			int targetX = x;
-			int targetY = y;
-			
-			int direction = player.getEntity().getFacingDirection();
-			if (direction == Shared.DIRECTION_RIGHT) targetX++;
-			else if (direction == Shared.DIRECTION_LEFT) targetX--;
-			else if (direction == Shared.DIRECTION_UP) targetY++;
-			else if (direction == Shared.DIRECTION_DOWN) targetY--;
-			
-			if (gameMap.getEntity(targetX, targetY) instanceof Empty) {
-				ChangeTilesTypes changeTilesTypes = new ChangeTilesTypes();
-				changeTilesTypes.addTile(targetX, targetY, 20);
-				
-				net.megafox.entities.Barricade barricade = new net.megafox.entities.Barricade(targetX, targetY, idHandler.getFreeID());
-				gameMap.setWall(targetX, targetY);
-				playerContainer.sendObjectToAll(new Move(player.getMyId(), 0, x, y, true));
-				playerContainer.sendObjectToAll(changeTilesTypes);
-				timer.schedule(new TimerListener(barricade), 5000);
-			}
-		}
-	}
+	
 }

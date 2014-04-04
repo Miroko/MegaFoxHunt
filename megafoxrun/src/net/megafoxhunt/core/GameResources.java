@@ -17,6 +17,7 @@ public class GameResources {
 	public Texture HOLE_TEXTURE;
 	public Texture BARRICADE_TEXTURE;
 	public Texture POWERRUP_TEXTURE;
+	public Texture BOMB_TEXTURE;
 	
 	public Animation[] BERRY_ANIMATIONS = new Animation[10];
 	public Animation[] HOLE_ANIMATIONS = new Animation[10];
@@ -24,6 +25,7 @@ public class GameResources {
 	public Animation[] FOX_ANIMATIONS = new Animation[10];
 	public Animation[] DOG_ANIMATIONS  = new Animation[10];
 	public Animation[] POWERRUP_ANIMATIONS = new Animation[10];
+	public Animation[] BOMB_ANIMATIONS = new Animation[10];
 	
 	public Texture connectButtonTexture;
 	public Texture quitButtonTexture;
@@ -37,6 +39,7 @@ public class GameResources {
 		 DEBUG_TEXTURE = new Texture("data/libgdx.png");
 		 
 		 POWERRUP_TEXTURE = new Texture("data/powerup.png");
+		 BOMB_TEXTURE = new Texture("data/bomb.png");
 		 
 		 FOX_TEXTURE = new Texture("data/fox.png");
 		 FOX_TEXTURE.setFilter(TextureFilter.Linear, TextureFilter.Linear);
@@ -53,13 +56,15 @@ public class GameResources {
 		 
 		 POWERRUP_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(POWERRUP_TEXTURE, 0.025f, 1, 1);
 		 
+		 BOMB_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(BOMB_TEXTURE, 0.025f, 1, 1);	 
+		 
 		 BERRY_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(BERRY_TEXTURE, 1f, 1, 1);
 		 HOLE_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(HOLE_TEXTURE, 1f, 1, 1);
 		 BARRICADE_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(BARRICADE_TEXTURE, 1f, 1, 1);
 		 
-		 FOX_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(FOX_TEXTURE, 0.025f, 0, 0, 104, 66 , 1, 10);
-		 FOX_ANIMATIONS[FRONT_ANIMATION] = generateAnimation(FOX_TEXTURE, 0.025f, 0, 66, 64, 99 , 1, 10);
-		 FOX_ANIMATIONS[BACK_ANIMATION] = generateAnimation(FOX_TEXTURE, 0.025f, 0, 166, 64, 106, 1, 10);
+		 FOX_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(FOX_TEXTURE, 0.042f, 0, 0, 104, 64 , 1, 10);
+		 FOX_ANIMATIONS[FRONT_ANIMATION] = generateAnimation(FOX_TEXTURE, 0.042f, 0, 64, 64, 104 , 1, 10);
+		 FOX_ANIMATIONS[BACK_ANIMATION] = generateAnimation(FOX_TEXTURE, 0.042f, 0, 168, 64, 104, 1, 10);
 		 
 		 DOG_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(DOG_TEXTURE, 0.042f, 0, 0, 187, 114, 1, 8);
 		 DOG_ANIMATIONS[FRONT_ANIMATION] = generateAnimation(DOG_TEXTURE, 0.042f, 0, 114, 79, 150, 1, 8);
@@ -114,7 +119,7 @@ public class GameResources {
 		HOLE_TEXTURE.dispose();
 		BARRICADE_TEXTURE.dispose();
 		POWERRUP_TEXTURE.dispose();
-		
+			
 		connectButtonTexture.dispose();
 		quitButtonTexture.dispose();
 		preferDogButtonTexture.dispose();

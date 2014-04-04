@@ -64,8 +64,11 @@ public class GameMapServerSide {
 	}
 	
 	public boolean isBlocked(int x, int y) {
-		if (collisionMap[x][y] == WALL) return true;
-		
+		if(x > 0 && x < getWidth()){
+			if(y > 0 && y < getHeight()){
+				if (collisionMap[x][y] == WALL) return true;
+			}
+		}		
 		return false;
 	}
 

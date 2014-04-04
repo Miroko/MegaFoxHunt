@@ -10,7 +10,6 @@ public class Chased extends EntityMovable{
 	
 	private static final float MOVEMENT_SPEED = 5;
 	
-	
 	public Chased(int id, float x, float y) {
 		super(id, x, y, MOVEMENT_SPEED, MyGdxGame.resources.FOX_ANIMATIONS);
 	}
@@ -34,9 +33,11 @@ public class Chased extends EntityMovable{
 				break;
 			case DIRECTION_DOWN:
 				animationNumber = GameResources.FRONT_ANIMATION;
+				lastXDirection = 0;
 				break;
 			case DIRECTION_UP:
 				animationNumber = GameResources.BACK_ANIMATION;
+				lastXDirection = 0;
 				break;
 			case DIRECTION_LEFT:
 				animationNumber = GameResources.DEFAULT_ANIMATION;
@@ -59,7 +60,7 @@ public class Chased extends EntityMovable{
 		if (animationNumber == GameResources.FRONT_ANIMATION)
 			batch.draw(currentFrame, x + 0.05f, y, 0.9f, 1.4f);
 		else if (animationNumber == GameResources.BACK_ANIMATION)
-			batch.draw(currentFrame, x + 0.05f, y, 0.9f, 1.55f);
+			batch.draw(currentFrame, x + 0.05f, y, 0.9f, 1.4f);
 		else 
 			batch.draw(currentFrame, x - 0.33f, y, 1.6f, 1.0f);
 	}

@@ -7,6 +7,7 @@ import java.util.Scanner;
 import net.megafoxhunt.debug.Robot;
 import net.megafoxhunt.entities.Barricade;
 import net.megafoxhunt.entities.Berry;
+import net.megafoxhunt.entities.Bomb;
 import net.megafoxhunt.entities.Chased;
 import net.megafoxhunt.entities.Chaser;
 import net.megafoxhunt.entities.EntityMovable;
@@ -18,6 +19,7 @@ import net.megafoxhunt.shared.GameMapSharedConfig;
 import net.megafoxhunt.shared.KryoNetwork;
 import net.megafoxhunt.shared.KryoNetwork.AddBarricade;
 import net.megafoxhunt.shared.KryoNetwork.AddBerry;
+import net.megafoxhunt.shared.KryoNetwork.AddBomb;
 import net.megafoxhunt.shared.KryoNetwork.AddChased;
 import net.megafoxhunt.shared.KryoNetwork.AddChaser;
 import net.megafoxhunt.shared.KryoNetwork.AddHole;
@@ -149,10 +151,16 @@ public class GameNetwork {
 					AddHole addHole = (AddHole)object;
 					MyGdxGame.mapHandler.currentMap.addStaticObject(new Hole(addHole.id, addHole.x, addHole.y));
 				}
-				
 				else if (object instanceof AddBarricade) {
 					AddBarricade addBarricade = (AddBarricade)object;
 					MyGdxGame.mapHandler.currentMap.addStaticObject(new Barricade(addBarricade.id, addBarricade.x, addBarricade.y));
+				}
+				/*
+				 * ADD BOMB
+				 */
+				else if (object instanceof AddBomb) {
+					AddBomb addBomb = (AddBomb)object;
+					MyGdxGame.mapHandler.currentMap.addStaticObject(new Bomb(addBomb.id, addBomb.x, addBomb.y));
 				}
 				/*
 				 * REMOVE ENTITY 
