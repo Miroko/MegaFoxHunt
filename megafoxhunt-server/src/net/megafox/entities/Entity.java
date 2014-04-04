@@ -51,7 +51,7 @@ public class Entity {
 			if (Math.sqrt((targetX - this.x) * (targetX - this.x) + (targetY - this.y) * (targetY - this.y)) > 3) return false;
 		}
 		
-		if(!collidesWithMap(x, y, map)) {
+		if(!collidesWithMap(targetX, targetY, map)) {
 			if (direction == Shared.DIRECTION_STOP) {
 				lastX = targetX;
 				lastY = targetY;

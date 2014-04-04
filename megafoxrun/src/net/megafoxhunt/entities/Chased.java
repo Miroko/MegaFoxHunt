@@ -1,5 +1,6 @@
 package net.megafoxhunt.entities;
 
+import net.megafoxhunt.core.GameMapClientSide;
 import net.megafoxhunt.core.GameResources;
 import net.megafoxhunt.core.MyGdxGame;
 
@@ -10,8 +11,8 @@ public class Chased extends EntityMovable{
 	
 	private static final float MOVEMENT_SPEED = 5;
 	
-	public Chased(int id, float x, float y) {
-		super(id, x, y, MOVEMENT_SPEED, MyGdxGame.resources.FOX_ANIMATIONS);
+	public Chased(int id, float x, float y, GameMapClientSide gameMap) {
+		super(id, x, y, MOVEMENT_SPEED, MyGdxGame.resources.FOX_ANIMATIONS, gameMap);
 	}
 
 	

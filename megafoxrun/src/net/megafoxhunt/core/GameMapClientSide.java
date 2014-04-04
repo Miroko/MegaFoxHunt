@@ -4,6 +4,8 @@ package net.megafoxhunt.core;
 
 
 import java.util.ArrayList;
+
+import net.megafoxhunt.entities.Barricade;
 import net.megafoxhunt.entities.Entity;
 import net.megafoxhunt.shared.GameMapSharedConfig;
 import net.megafoxhunt.shared.KryoNetwork.ChangeState;
@@ -29,20 +31,37 @@ public class GameMapClientSide {
 	@SuppressWarnings("unchecked")
 	public ArrayList<Entity> getAllObjectsConcurrentSafe(){return (ArrayList<Entity>) allObjects.clone();}
 	
+	public ArrayList<Barricade> barricades;
+	
 	public GameMapClientSide(GameMapSharedConfig mapConfig){		
 		this.config = mapConfig;		
 		this.allObjects = new ArrayList<Entity>();
+		this.barricades = new ArrayList<Barricade>();
 	}
 	public void addStaticObject(Entity object){		
-		allObjects.add(object);		
+		allObjects.add(object);
+		if (object instanceof Barricade) barricades.add((Barricade)object);
 	}
 	public void removeStaticObjectByID(int id){		
 		for(Entity object : getAllObjectsConcurrentSafe()){
 			if(object.getId() == id){
 				allObjects.remove(object);
+				if (object instanceof Barricade) barricades.remove(object);
 			}
 		}		
 	}
+	
+	public boolean isBlocked(int x, int y) {
+		TiledMapTileLayer m = (TiledMapTileLayer) tiledMap.getLayers().get(TILEDMAP_COLLISION_LAYER);
+		if (m.getCell(x, y).getTile().getProperties().containsKey("wall")) return true;
+		
+		for (Barricade barricade : barricades) {
+			if (barricade.getX() == x && barricade.getY() == y) return true;
+		}
+		
+		return false;
+	}
+	
 	public TiledMapTileLayer getCollisionLayer(){		
 		return (TiledMapTileLayer)tiledMap.getLayers().get(TILEDMAP_COLLISION_LAYER);
 	}

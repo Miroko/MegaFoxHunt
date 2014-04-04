@@ -335,8 +335,7 @@ public class GameRoom extends Thread {
 	public void move(PlayerConnection player, Move move) {
 		if (gameSimulation == null || playerContainer == null) return;
 		
-		gameSimulation.move(player.getEntity(), move.x, move.y, move.direction, false);		
-		playerContainer.sendObjectToAllExcept(player, move);		
+		gameSimulation.move(player.getEntity(), move.x, move.y, move.direction, false);			
 	}	
 	public PlayerContainer getPlayerContainer() {
 		return playerContainer;

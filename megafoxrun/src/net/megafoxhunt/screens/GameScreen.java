@@ -68,7 +68,7 @@ public class GameScreen implements Screen {
 		EntityMovable entity = null;
 		for(User user : UserContainer.getUsersConcurrentSafe()){
 			entity = user.getControlledEntity();
-			if (entity != null) entity.update(delta, MyGdxGame.network, MyGdxGame.mapHandler.currentMap.getCollisionLayer());
+			if (entity != null) entity.update(delta, MyGdxGame.network);
 		}
 		
 		// FOCUS CAMERA ON PLAYER ENTITY

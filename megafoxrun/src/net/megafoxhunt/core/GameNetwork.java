@@ -121,14 +121,14 @@ public class GameNetwork {
 				 */
 				else if (object instanceof AddChaser) {
 					AddChaser addChaser = (AddChaser)object;
-					UserContainer.getUserByID(addChaser.id).setControlledEntity(new Chaser(addChaser.id, addChaser.x, addChaser.y));
+					UserContainer.getUserByID(addChaser.id).setControlledEntity(new Chaser(addChaser.id, addChaser.x, addChaser.y, MyGdxGame.mapHandler.currentMap));
 				}
 				/*
 				 * ADD CHASED
 				 */
 				else if (object instanceof AddChased) {
 					AddChased addChased = (AddChased)object;
-					UserContainer.getUserByID(addChased.id).setControlledEntity(new Chased(addChased.id, addChased.x, addChased.y));
+					UserContainer.getUserByID(addChased.id).setControlledEntity(new Chased(addChased.id, addChased.x, addChased.y, MyGdxGame.mapHandler.currentMap));
 				}
 				/*
 				 * ADD BERRY TO MAP

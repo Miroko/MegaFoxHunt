@@ -39,7 +39,10 @@ public class GameResources {
 		 DEBUG_TEXTURE = new Texture("data/libgdx.png");
 		 
 		 POWERRUP_TEXTURE = new Texture("data/powerup.png");
+		 POWERRUP_TEXTURE.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		 
 		 BOMB_TEXTURE = new Texture("data/bomb.png");
+		 BOMB_TEXTURE.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		 
 		 FOX_TEXTURE = new Texture("data/fox.png");
 		 FOX_TEXTURE.setFilter(TextureFilter.Linear, TextureFilter.Linear);
@@ -51,8 +54,10 @@ public class GameResources {
 		 BERRY_TEXTURE.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		 
 		 HOLE_TEXTURE = new Texture("data/hole.png");
+		 HOLE_TEXTURE.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		 
 		 BARRICADE_TEXTURE = new Texture("data/barricade.png");
+		 BARRICADE_TEXTURE.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		 
 		 POWERRUP_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(POWERRUP_TEXTURE, 0.025f, 1, 1);
 		 

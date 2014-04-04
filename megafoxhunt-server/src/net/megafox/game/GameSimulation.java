@@ -184,6 +184,7 @@ public class GameSimulation {
 	
 	public void move(Entity entity, int x, int y, int direction, boolean force) {
 		if (entity.move(x, y, direction, gameMap, force)) {
+			playerContainer.sendObjectToAllExcept(entity.getPlayer(), new Move(entity.getId(), direction, x, y, force));	
 			Entity e = gameMap.getEntity(x, y);
 			if (entity instanceof Chased) {
 				if (e instanceof Berry)  {

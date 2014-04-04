@@ -4,6 +4,7 @@ package net.megafoxhunt.entities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 
+import net.megafoxhunt.core.GameMapClientSide;
 import net.megafoxhunt.core.GameResources;
 import net.megafoxhunt.core.MyGdxGame;
 
@@ -11,8 +12,8 @@ public class Chaser extends EntityMovable{
 		
 	private static final float MOVEMENT_SPEED = 6;
 	
-	public Chaser(int id, float x, float y) {
-		super(id, x, y, MOVEMENT_SPEED, MyGdxGame.resources.DOG_ANIMATIONS);
+	public Chaser(int id, float x, float y, GameMapClientSide gameMap) {
+		super(id, x, y, MOVEMENT_SPEED, MyGdxGame.resources.DOG_ANIMATIONS, gameMap);
 	}
 
 	@Override

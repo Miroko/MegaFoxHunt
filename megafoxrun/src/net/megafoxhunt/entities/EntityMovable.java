@@ -2,6 +2,7 @@ package net.megafoxhunt.entities;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import net.megafoxhunt.core.GameMapClientSide;
 import net.megafoxhunt.core.GameNetwork;
 import net.megafoxhunt.core.GameResources;
 import net.megafoxhunt.shared.KryoNetwork.Move;
@@ -36,7 +37,7 @@ public class EntityMovable extends Entity{
 	
 	private Move newMove;
 
-	private TiledMapTileLayer collisionMap;
+	private GameMapClientSide collisionMap;
 	
 	private ConcurrentLinkedQueue<Move> movementQueue;
 	
@@ -44,21 +45,21 @@ public class EntityMovable extends Entity{
 	private int lastY = 0;
 	private int lastDirection = 0;
 	
-	public EntityMovable(int id, float x, float y, float movementSpeed, Animation[] animations) {
+	public EntityMovable(int id, float x, float y, float movementSpeed, Animation[] animations, GameMapClientSide collisionMap) {
 		super(id, x, y, animations);
 		this.movementSpeed = movementSpeed;
 		this.baseSpeed = movementSpeed;
 		movementQueue = new ConcurrentLinkedQueue<Move>();
+		this.collisionMap = collisionMap;
 	}
 	
 	/**
 	 * TODO
 	 * Is giving all these parameters really required every frame?
 	 */
-	public void update(float delta, GameNetwork network, TiledMapTileLayer collisionMap){
+	public void update(float delta, GameNetwork network){
 		float speed = movementSpeed * delta;
-		this.collisionMap = collisionMap;
-		
+
 		if (collisionMap == null) return;
 		
 		if (!isMoving) {
@@ -99,7 +100,7 @@ public class EntityMovable extends Entity{
 		else if (direction == DIRECTION_DOWN) destinationY -= 1;
 		else if (direction == DIRECTION_LEFT) destinationX -= 1;
 		
-		if (!collisionMap.getCell(destinationX, destinationY).getTile().getProperties().containsKey("wall")) {
+		if (!collisionMap.isBlocked(destinationX, destinationY)) {
 			isMoving = true;
 			destinationDirection = direction;
 		} else {
