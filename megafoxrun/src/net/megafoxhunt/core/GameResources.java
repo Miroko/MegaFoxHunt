@@ -9,6 +9,7 @@ public class GameResources {
 	public static final int DEFAULT_ANIMATION = 0;
 	public static final int FRONT_ANIMATION = 1;
 	public static final int BACK_ANIMATION = 2;
+	public static final int EXTRA_ANIMATION = 3;
 	
 	public Texture DEBUG_TEXTURE;
 	public Texture FOX_TEXTURE;
@@ -61,7 +62,8 @@ public class GameResources {
 		 
 		 POWERRUP_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(POWERRUP_TEXTURE, 0.025f, 1, 1);
 		 
-		 BOMB_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(BOMB_TEXTURE, 0.025f, 1, 1);	 
+		 BOMB_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(BOMB_TEXTURE, 0.125f, 0, 0, 64, 64 , 1, 13);
+		 BOMB_ANIMATIONS[EXTRA_ANIMATION] = generateAnimation(BOMB_TEXTURE, 0.125f, 512, 0, 64, 64 , 1, 5);
 		 
 		 BERRY_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(BERRY_TEXTURE, 1f, 1, 1);
 		 HOLE_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(HOLE_TEXTURE, 1f, 1, 1);

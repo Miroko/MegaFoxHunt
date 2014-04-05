@@ -60,7 +60,7 @@ public class Bomb extends Item{
 	}
 	class BombExplodeTimerTask extends TimerTask {
 		
-		private static final int EXPLODE_DELAY = 5000;
+		private static final int EXPLODE_DELAY = 1300;
 
 		private net.megafox.entities.Bomb bomb;
 		
