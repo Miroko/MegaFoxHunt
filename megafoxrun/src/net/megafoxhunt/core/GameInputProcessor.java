@@ -10,8 +10,10 @@ import net.megafoxhunt.shared.KryoNetwork.GoInHole;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.input.GestureDetector.GestureListener;
+import com.badlogic.gdx.math.Vector2;
 
-public class GameInputProcessor extends InputAdapter {
+public class GameInputProcessor extends InputAdapter implements GestureListener {
 		
 	private int last_direction = -1;
 	private int previousKey;
@@ -59,7 +61,7 @@ public class GameInputProcessor extends InputAdapter {
 	public boolean keyUp(int k) {
 		// KEY UP STOP		
 		if(k == previousKey){
-			sendDirection(EntityMovable.DIRECTION_STOP);
+			//sendDirection(EntityMovable.DIRECTION_STOP);
 		}
 		
 		if (k == Keys.SPACE) {
@@ -81,12 +83,7 @@ public class GameInputProcessor extends InputAdapter {
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		numFingersOnScreen--;
-		if (numFingersOnScreen <= 0) {
-			numFingersOnScreen = 0;
-			sendDirection(EntityMovable.DIRECTION_STOP);
-			touchJoystick.mouseUp(screenX, screenY);
-		}
+		touchJoystick.mouseUp(screenX, screenY);
 		
 		return super.touchUp(screenX, screenY, pointer, button);
 	}
@@ -111,5 +108,61 @@ public class GameInputProcessor extends InputAdapter {
 		else if (mouseY > (height - calculatedTopAndDownAreas)) sendDirection(EntityMovable.DIRECTION_DOWN);
 		else if (mouseX <= (width / 2)) sendDirection(EntityMovable.DIRECTION_LEFT);
 		else if (mouseX > (width / 2)) sendDirection(EntityMovable.DIRECTION_RIGHT);*/
+	}
+
+	@Override
+	public boolean touchDown(float x, float y, int pointer, int button) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean tap(float x, float y, int count, int button) {
+		touchJoystick.tap(x, y);
+		return false;
+	}
+
+	@Override
+	public boolean longPress(float x, float y) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean fling(float velocityX, float velocityY, int button) {
+		if(Math.abs(velocityX)>Math.abs(velocityY)) {
+			if(velocityX>0) sendDirection(EntityMovable.DIRECTION_RIGHT);
+			else sendDirection(EntityMovable.DIRECTION_LEFT);
+		} else {
+			if(velocityY>0) sendDirection(EntityMovable.DIRECTION_DOWN);
+			else sendDirection(EntityMovable.DIRECTION_UP);
+		}
+		
+		return false;
+	}
+
+	@Override
+	public boolean pan(float x, float y, float deltaX, float deltaY) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean panStop(float x, float y, int pointer, int button) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean zoom(float initialDistance, float distance) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean pinch(Vector2 initialPointer1, Vector2 initialPointer2,
+			Vector2 pointer1, Vector2 pointer2) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

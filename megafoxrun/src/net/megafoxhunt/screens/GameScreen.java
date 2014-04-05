@@ -16,6 +16,7 @@ import net.megafoxhunt.ui.TouchJoystick;
 
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL10;
@@ -24,6 +25,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.input.GestureDetector;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
@@ -50,7 +52,7 @@ public class GameScreen implements Screen {
 	public GameScreen() {			
 		spriteBatch = new SpriteBatch();		
 		touchJoystick = new TouchJoystick(MyGdxGame.network);
-		gameInputProcessor = new GameInputProcessor(MyGdxGame.network, touchJoystick);		
+		gameInputProcessor = new GameInputProcessor(MyGdxGame.network, touchJoystick);
 		
 		font = new BitmapFont();
 		
@@ -146,7 +148,10 @@ public class GameScreen implements Screen {
 		MyGdxGame.mapHandler.currentMap.load();
 		renderer = new OrthogonalTiledMapRenderer(MyGdxGame.mapHandler.currentMap.getTiledMap(), UNIT_SCALE);
 		
-		Gdx.input.setInputProcessor(gameInputProcessor);
+		InputMultiplexer multiplexer = new InputMultiplexer();
+		multiplexer.addProcessor(gameInputProcessor);
+		multiplexer.addProcessor(new GestureDetector(gameInputProcessor));
+		Gdx.input.setInputProcessor(multiplexer);
 	}
 
 	@Override

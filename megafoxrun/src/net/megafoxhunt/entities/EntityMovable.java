@@ -94,27 +94,39 @@ public class EntityMovable extends Entity{
 		
 		destinationX = (int)x;
 		destinationY = (int)y;
+		int tmpX = (int)x;
+		int tmpY = (int)y;
 
 		if (direction == DIRECTION_UP) destinationY += 1;
 		else if (direction == DIRECTION_RIGHT) destinationX += 1;
 		else if (direction == DIRECTION_DOWN) destinationY -= 1;
 		else if (direction == DIRECTION_LEFT) destinationX -= 1;
 		
-		if (!collisionMap.isBlocked(destinationX, destinationY)) {
+		if (lastDirection == DIRECTION_UP) tmpY += 1;
+		else if (lastDirection == DIRECTION_RIGHT) tmpX += 1;
+		else if (lastDirection == DIRECTION_DOWN) tmpY -= 1;
+		else if (lastDirection == DIRECTION_LEFT) tmpX -= 1;
+		
+		if (!collisionMap.isBlocked(destinationX, destinationY) && direction != DIRECTION_STOP) {
 			isMoving = true;
 			destinationDirection = direction;
+		} else if (!collisionMap.isBlocked(tmpX, tmpY) && direction != DIRECTION_STOP) {
+			isMoving = true;
+			destinationDirection = lastDirection;
+			destinationX = tmpX;
+			destinationY = tmpY;
 		} else {
 			destinationDirection = DIRECTION_STOP;
 			direction = DIRECTION_STOP;
 		}
 		
 		if (network.getLocalUser().getControlledEntity() == this) {
-			if (!((int)x == lastX && (int)y == lastY && lastDirection == direction)) {
-				Move move = new Move(id, direction, (int)x, (int)y, false);
+			if (!((int)x == lastX && (int)y == lastY && lastDirection == destinationDirection)) {
+				Move move = new Move(id, destinationDirection, (int)x, (int)y, false);
 				network.getKryoClient().sendTCP(move);
 				lastX = (int)x;
 				lastY = (int)y;
-				lastDirection = direction;
+				lastDirection = destinationDirection;
 			}
 		}
 	}

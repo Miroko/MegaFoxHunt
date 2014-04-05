@@ -38,10 +38,12 @@ public class TouchJoystick {
 	}
 	
 	public void draw(SpriteBatch batch) {
+		/*
 		batch.draw(direction == Shared.DIRECTION_LEFT ? MyGdxGame.resources.btnPressed : MyGdxGame.resources.btnNormal, PAD_X - SPACING - WIDTH, PAD_Y - (HEIGHT / 2), WIDTH, HEIGHT);
 		batch.draw(direction == Shared.DIRECTION_RIGHT ? MyGdxGame.resources.btnPressed : MyGdxGame.resources.btnNormal, PAD_X + SPACING, PAD_Y - (HEIGHT / 2), WIDTH, HEIGHT);
 		batch.draw(direction == Shared.DIRECTION_UP ? MyGdxGame.resources.btnPressed : MyGdxGame.resources.btnNormal, PAD_X - (WIDTH / 2), PAD_Y + SPACING, WIDTH, HEIGHT);
 		batch.draw(direction == Shared.DIRECTION_DOWN ? MyGdxGame.resources.btnPressed : MyGdxGame.resources.btnNormal, PAD_X - (WIDTH / 2), PAD_Y - SPACING - HEIGHT, WIDTH, HEIGHT);
+		*/
 		
 		batch.draw(actionBtnPressed == 1 ? MyGdxGame.resources.btnPressed : MyGdxGame.resources.btnNormal, BTN1_X - (WIDTH / 2), BTN1_Y - (HEIGHT / 2), WIDTH, HEIGHT);
 		batch.draw(actionBtnPressed == 2 ? MyGdxGame.resources.btnPressed : MyGdxGame.resources.btnNormal, BTN2_X - (WIDTH / 2), BTN2_Y - (HEIGHT / 2), WIDTH, HEIGHT);
@@ -54,6 +56,7 @@ public class TouchJoystick {
 		int direction = 0;
 		
 		if (x > 0 && x < Gdx.graphics.getWidth() / 3 && y > 0 && y < Gdx.graphics.getHeight() / 2) {
+			/*
 			// UP
 			double dist = getDistance(PAD_X, PAD_Y + SPACING + (HEIGHT / 2), x, y);
 			shortestDistance = dist;
@@ -80,16 +83,20 @@ public class TouchJoystick {
 				direction = Shared.DIRECTION_RIGHT;
 			}
 			if (shortestDistance < WIDTH) sendDirection(direction);
+			*/
 		} else {
-			if (actionBtnPressed != 1 && getDistance(BTN1_X, BTN1_Y, x, y) < WIDTH) {
-				actionBtnPressed = 1;
-				network.getKryoClient().sendTCP(new ActivateItem());
-			} 
 			
-			if (actionBtnPressed != 2 && getDistance(BTN2_X, BTN2_Y, x, y) < WIDTH) {
-				actionBtnPressed = 2;
-				network.getKryoClient().sendTCP(new GoInHole());
-			}
+		}
+	}
+	
+	public void tap(float x, float y) {
+		y = Gdx.graphics.getHeight() - y;
+		if (getDistance(BTN1_X, BTN1_Y, x, y) < WIDTH) {
+			network.getKryoClient().sendTCP(new ActivateItem());
+		}
+		
+		if (getDistance(BTN2_X, BTN2_Y, x, y) < WIDTH) {
+			network.getKryoClient().sendTCP(new GoInHole());
 		}
 	}
 	
@@ -98,10 +105,14 @@ public class TouchJoystick {
 	    return dist;
 	}
 	
+	private double getDistance(int centerX, int centerY, float x, float y) {
+	    double dist = Math.sqrt((centerX - x) * (centerX - x) + (centerY - y) * (centerY - y));
+	    return dist;
+	}
+	
 	public void mouseUp(int x, int y) {
 		direction = 0;
 		actionBtnPressed = 0;
-		sendDirection(EntityMovable.DIRECTION_STOP);
 	}
 	
 	private void sendDirection(int direction){
