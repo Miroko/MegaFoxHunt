@@ -29,9 +29,11 @@ public class MyGdxGame extends Game {
 		
 		screenHandler = new ScreenHandler(this);		
 		screenHandler.setSceenMenu();		
-	}	
+	}
+	
 	@Override
 	public void dispose() {
+		if (network.getKryoClient().isConnected()) network.getKryoClient().stop();
 		resources.dispose();		
 		mapHandler.dispose();
 		screenHandler.dispose();

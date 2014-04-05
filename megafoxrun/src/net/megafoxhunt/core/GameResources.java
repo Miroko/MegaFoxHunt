@@ -126,6 +126,7 @@ public class GameResources {
 		HOLE_TEXTURE.dispose();
 		BARRICADE_TEXTURE.dispose();
 		POWERRUP_TEXTURE.dispose();
+		BOMB_TEXTURE.dispose();
 			
 		connectButtonTexture.dispose();
 		quitButtonTexture.dispose();
