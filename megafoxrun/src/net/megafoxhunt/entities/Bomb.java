@@ -7,7 +7,7 @@ import net.megafoxhunt.core.MyGdxGame;
 
 public class Bomb extends Entity{
 
-	private static final float EXPLOSION_SCALE = 0.45f;
+	private static final float EXPLOSION_SCALE = 0.25f;
 	
 	public Bomb(int id, float x, float y) {
 		super(id, x, y, MyGdxGame.resources.BOMB_ANIMATIONS);		
@@ -19,7 +19,7 @@ public class Bomb extends Entity{
 		currentFrame = animations[animationNumber].getKeyFrame(stateTime, true);
 		int frameIndex = (int) (stateTime / 0.125);
 		
-		if (frameIndex >= 13) shouldBeRemoved = true;
+		if (frameIndex >= 18) shouldBeRemoved = true;
 		if (shouldBeRemoved) return;
 		
 		if (frameIndex <= 8) { 

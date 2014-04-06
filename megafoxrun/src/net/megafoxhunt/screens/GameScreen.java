@@ -89,7 +89,7 @@ public class GameScreen implements Screen {
 		
 		// DRAW MAP
         renderer.setView(camera);
-        renderer.render();
+        renderer.render(new int[] {0});
 		
 		// INIT BATCH
 		Batch batch = renderer.getSpriteBatch();
@@ -116,6 +116,8 @@ public class GameScreen implements Screen {
         
         batch.end();
         
+        
+        renderer.render(new int[] {1});
         
         // DRAW JOYSTICK AND FPS
         spriteBatch.begin();

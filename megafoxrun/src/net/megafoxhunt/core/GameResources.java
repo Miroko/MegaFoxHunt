@@ -61,7 +61,7 @@ public class GameResources {
 		 
 		 POWERRUP_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(POWERRUP_TEXTURE, 0.025f, 1, 1);
 		 
-		 BOMB_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(BOMB_TEXTURE, 0.125f, 0, 0, 100, 100 , 1, 13);
+		 BOMB_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(BOMB_TEXTURE, 0.125f, 0, 0, 120, 120 , 1, 18);
 		 
 		 BERRY_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(BERRY_TEXTURE, 0.042f, 0, 0, 64, 64 , 1, 20);
 		 HOLE_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(HOLE_TEXTURE, 1f, 1, 1);
