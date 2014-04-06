@@ -66,6 +66,8 @@ public class GameScreen implements Screen {
 		
 		// TODO syö kaiken suoritustehon?
 
+		MyGdxGame.mapHandler.currentMap.removeOldObjects();
+		
 		// UPDATE ENTITIES
 		EntityMovable entity = null;
 		for(User user : UserContainer.getUsersConcurrentSafe()){

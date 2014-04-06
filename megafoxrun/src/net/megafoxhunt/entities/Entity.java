@@ -17,6 +17,9 @@ public class Entity {
 	protected Animation[] animations;
 	protected TextureRegion currentFrame;
 	protected int animationNumber = 0;
+	
+	protected boolean shouldBeRemoved;
+	
 	public void setAnimation(int animationNumber){
 		if(animationNumber < animations.length){
 			this.animationNumber = animationNumber;
@@ -27,6 +30,7 @@ public class Entity {
 		this.x = x;
 		this.y = y;
 		this.animations = animations;
+		this.shouldBeRemoved = false;
 	}	
 	public void render(Batch batch){
 		stateTime += Gdx.graphics.getDeltaTime();
@@ -53,4 +57,11 @@ public class Entity {
 		this.y = y;
 	}
 
+	public boolean getShouldBeRemoved() {
+		return shouldBeRemoved;
+	}
+	
+	public void setShouldBeRemoved(boolean shouldBeRemoved) {
+		this.shouldBeRemoved = shouldBeRemoved;
+	}
 }

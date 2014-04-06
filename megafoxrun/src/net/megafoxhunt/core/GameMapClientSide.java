@@ -4,6 +4,7 @@ package net.megafoxhunt.core;
 
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import net.megafoxhunt.entities.Barricade;
 import net.megafoxhunt.entities.Entity;
@@ -45,10 +46,18 @@ public class GameMapClientSide {
 	public void removeStaticObjectByID(int id){		
 		for(Entity object : getAllObjectsConcurrentSafe()){
 			if(object.getId() == id){
-				allObjects.remove(object);
+				object.setShouldBeRemoved(true);
 				if (object instanceof Barricade) barricades.remove(object);
 			}
 		}		
+	}
+	
+	public void removeOldObjects() {
+		Iterator<Entity> i = allObjects.iterator();
+		while (i.hasNext()) {
+		   Entity s = i.next();
+		   if (s.getShouldBeRemoved()) i.remove();
+		}
 	}
 	
 	public boolean isBlocked(int x, int y) {
