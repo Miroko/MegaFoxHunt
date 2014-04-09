@@ -11,4 +11,8 @@ public class Berry extends Entity{
 		// TODO Auto-generated constructor stub
 	}
 
+	public void playEatSound(){
+		MyGdxGame.resources.BERRY_EAT.play();		
+	}
+
 }

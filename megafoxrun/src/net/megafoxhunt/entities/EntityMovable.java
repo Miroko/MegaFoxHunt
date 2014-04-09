@@ -13,7 +13,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 
-public class EntityMovable extends Entity{
+public abstract class EntityMovable extends Entity{
 
 	public static final int DIRECTION_STOP = 0;	
 	public static final int DIRECTION_UP = 1;
@@ -172,4 +172,5 @@ public class EntityMovable extends Entity{
 	public synchronized int getDirection() {
 		return direction;
 	}
+
 }

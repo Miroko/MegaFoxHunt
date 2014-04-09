@@ -10,4 +10,6 @@ public class Powerup extends Entity{
 		super(id, x, y, MyGdxGame.resources.POWERRUP_ANIMATIONS);
 	}
 
+
+
 }

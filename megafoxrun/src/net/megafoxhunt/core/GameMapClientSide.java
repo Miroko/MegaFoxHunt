@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import net.megafoxhunt.entities.Barricade;
+import net.megafoxhunt.entities.Berry;
 import net.megafoxhunt.entities.Entity;
 import net.megafoxhunt.shared.GameMapSharedConfig;
 import net.megafoxhunt.shared.KryoNetwork.ChangeState;
@@ -56,7 +57,12 @@ public class GameMapClientSide {
 		Iterator<Entity> i = allObjects.iterator();
 		while (i.hasNext()) {
 		   Entity s = i.next();
-		   if (s.getShouldBeRemoved()) i.remove();
+		   if (s.getShouldBeRemoved()){
+			   i.remove();			   
+			   if(s instanceof Berry){
+				   ((Berry)s).playEatSound();
+			   }
+		   }
 		}
 	}
 	

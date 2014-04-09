@@ -1,4 +1,9 @@
 package net.megafoxhunt.core;
+
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -35,7 +40,12 @@ public class GameResources {
 	public Texture btnNormal;
 	public Texture btnPressed;
 	
-	public void init(){
+	public Music MUSIC;
+	
+	public Sound BERRY_EAT;	
+	public Sound BOMB_EXPLOSION;
+	
+	public void init(){						
 		 DEBUG_TEXTURE = new Texture("data/libgdx.png");
 		 
 		 POWERRUP_TEXTURE = new Texture("data/powerup.png");
@@ -83,6 +93,10 @@ public class GameResources {
 		 
 		 btnNormal = new Texture("data/btn_normal.png");
 		 btnPressed = new Texture("data/btn_pressed.png");
+		 
+		 MUSIC = Gdx.audio.newMusic(Gdx.files.internal("data/audio/music.mp3"));
+		 BERRY_EAT = Gdx.audio.newSound(Gdx.files.internal("data/audio/berry_eat.mp3"));
+		 BOMB_EXPLOSION = Gdx.audio.newSound(Gdx.files.internal("data/audio/bomb_explosion.mp3"));
 	}
 	
 	private Animation generateAnimation(Texture texture, float frameDuration, int startX, int startY, int width, int height, int rows, int cols) {
@@ -117,6 +131,10 @@ public class GameResources {
 	}
 	
 	public void dispose(){
+		MUSIC.dispose();
+		BERRY_EAT.dispose();
+		BOMB_EXPLOSION.dispose();
+		
 		DEBUG_TEXTURE.dispose();
 		FOX_TEXTURE.dispose();
 		DOG_TEXTURE.dispose();

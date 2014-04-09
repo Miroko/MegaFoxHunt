@@ -65,4 +65,6 @@ public class Chased extends EntityMovable{
 		else 
 			batch.draw(currentFrame, x - 0.33f, y, 1.6f, 1.0f);
 	}
+
+
 }

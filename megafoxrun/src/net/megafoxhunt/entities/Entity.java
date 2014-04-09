@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 
-public class Entity {
+public abstract class Entity {
 	
 	protected int id;
 	protected float x;
@@ -64,4 +64,5 @@ public class Entity {
 	public void setShouldBeRemoved(boolean shouldBeRemoved) {
 		this.shouldBeRemoved = shouldBeRemoved;
 	}
+
 }

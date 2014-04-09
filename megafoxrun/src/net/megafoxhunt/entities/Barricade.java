@@ -16,5 +16,6 @@ public class Barricade extends Entity {
 		stateTime += Gdx.graphics.getDeltaTime();
 		currentFrame = animations[animationNumber].getKeyFrame(stateTime, true);
 		batch.draw(currentFrame, x - 0.15f, y, 1.25f, 1.25f);
-	}	
+	}
+
 }

@@ -9,6 +9,8 @@ public class Bomb extends Entity{
 
 	private static final float EXPLOSION_SCALE = 0.25f;
 	
+	private boolean exploding = false;
+	
 	public Bomb(int id, float x, float y) {
 		super(id, x, y, MyGdxGame.resources.BOMB_ANIMATIONS);		
 	}
@@ -25,6 +27,10 @@ public class Bomb extends Entity{
 		if (frameIndex <= 8) { 
 			batch.draw(currentFrame, x, y, 1, 1);	
 		} else  {
+			if(exploding == false){
+				playExplosionSound();
+				exploding = true;
+			}			
 			batch.draw(currentFrame, x - (float)((frameIndex - 8) * (EXPLOSION_SCALE / 2)), y - (float)((frameIndex - 8) * (EXPLOSION_SCALE / 2)), (float)((frameIndex - 8) * EXPLOSION_SCALE + 1), (float)((frameIndex - 8) * EXPLOSION_SCALE + 1));
 		}
 	}	
@@ -32,5 +38,8 @@ public class Bomb extends Entity{
 	@Override
 	public void setShouldBeRemoved(boolean shouldBeRemoved) {
 		// do not remove, it will be removed when animation is over
+	}
+	public void playExplosionSound(){
+		MyGdxGame.resources.BOMB_EXPLOSION.play();
 	}
 }

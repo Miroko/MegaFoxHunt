@@ -16,9 +16,9 @@ public class MyGdxGame extends Game {
 	public static GameNetwork network;
 	public static MapHandler mapHandler;
 	public static ScreenHandler screenHandler;
-
+	
 	@Override	
-	public void create() {	
+	public void create() {			
 		resources = new GameResources();
 		resources.init();
 		
@@ -28,7 +28,7 @@ public class MyGdxGame extends Game {
 		network.init();		
 		
 		screenHandler = new ScreenHandler(this);		
-		screenHandler.setSceenMenu();		
+		screenHandler.setSceenMenu();
 	}
 	
 	@Override
@@ -36,7 +36,7 @@ public class MyGdxGame extends Game {
 		if (network.getKryoClient().isConnected()) network.getKryoClient().stop();
 		resources.dispose();		
 		mapHandler.dispose();
-		screenHandler.dispose();
+		screenHandler.dispose();		
 	}
 	public static void shutdown(){
 		Gdx.app.log("INFO", "Shutdown");
