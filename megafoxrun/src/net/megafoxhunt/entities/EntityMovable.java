@@ -52,11 +52,6 @@ public class EntityMovable extends Entity{
 		movementQueue = new ConcurrentLinkedQueue<Move>();
 		this.collisionMap = collisionMap;
 	}
-	
-	/**
-	 * TODO
-	 * Is giving all these parameters really required every frame?
-	 */
 	public void update(float delta, GameNetwork network){
 		float speed = movementSpeed * delta;
 
@@ -73,7 +68,6 @@ public class EntityMovable extends Entity{
 			}
 		}
 	}
-
 	private void setNewDestination(GameNetwork network) {
 		if (network.getLocalUser().getControlledEntity() != this) {
 			if (!movementQueue.isEmpty()) {
