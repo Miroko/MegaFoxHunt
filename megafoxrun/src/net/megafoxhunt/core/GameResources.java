@@ -82,7 +82,7 @@ public class GameResources {
 		 FOX_ANIMATIONS[BACK_ANIMATION] = generateAnimation(FOX_TEXTURE, 0.042f, 0, 168, 64, 104, 1, 10);
 		 
 		 DOG_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(DOG_TEXTURE, 0.042f, 0, 0, 187, 114, 1, 8);
-		 DOG_ANIMATIONS[FRONT_ANIMATION] = generateAnimation(DOG_TEXTURE, 0.042f, 0, 114, 79, 150, 1, 8);
+		 DOG_ANIMATIONS[FRONT_ANIMATION] = generateAnimation(DOG_TEXTURE, 0.042f, 0, 264, 79, 175, 1, 8);
 		 DOG_ANIMATIONS[BACK_ANIMATION] = generateAnimation(DOG_TEXTURE, 0.042f, 0, 114, 79, 150, 1, 8);
 		 
 		 connectButtonTexture = new Texture("data/connect.png"); 
@@ -97,6 +97,8 @@ public class GameResources {
 		 MUSIC = Gdx.audio.newMusic(Gdx.files.internal("data/audio/music.mp3"));
 		 BERRY_EAT = Gdx.audio.newSound(Gdx.files.internal("data/audio/berry_eat.mp3"));
 		 BOMB_EXPLOSION = Gdx.audio.newSound(Gdx.files.internal("data/audio/bomb_explosion.mp3"));
+	
+		 MUSIC.setVolume(0.5f);
 	}
 	
 	private Animation generateAnimation(Texture texture, float frameDuration, int startX, int startY, int width, int height, int rows, int cols) {

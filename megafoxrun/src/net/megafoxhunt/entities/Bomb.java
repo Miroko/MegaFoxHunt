@@ -40,6 +40,7 @@ public class Bomb extends Entity{
 		// do not remove, it will be removed when animation is over
 	}
 	public void playExplosionSound(){
-		MyGdxGame.resources.BOMB_EXPLOSION.play();
+		long soundId = MyGdxGame.resources.BOMB_EXPLOSION.play();
+		MyGdxGame.resources.BOMB_EXPLOSION.setVolume(soundId, 0.4f);
 	}
 }
