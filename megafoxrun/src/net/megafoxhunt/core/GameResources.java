@@ -40,10 +40,19 @@ public class GameResources {
 	public Texture btnNormal;
 	public Texture btnPressed;
 	
-	public Music MUSIC;
+	public Music MUSIC;	
+	public Music LOSE_ANTHEM;
+	public Music VICTORY_ANTHEM;	
+	public Music ROUND_START;
 	
 	public Sound BERRY_EAT;	
 	public Sound BOMB_EXPLOSION;
+	public Sound BOMB_FUSE;
+	public Sound BARRICADE_BUILD;
+	public Sound PICKUP;	
+	public Sound MENU_BUTTON;
+	public Sound CAUGHT;
+	public Sound GOT_CAUGHT;
 	
 	public void init(){						
 		 DEBUG_TEXTURE = new Texture("data/libgdx.png");
@@ -95,8 +104,24 @@ public class GameResources {
 		 btnPressed = new Texture("data/btn_pressed.png");
 		 
 		 MUSIC = Gdx.audio.newMusic(Gdx.files.internal("data/audio/music.mp3"));
+		 
 		 BERRY_EAT = Gdx.audio.newSound(Gdx.files.internal("data/audio/berry_eat.mp3"));
+		 PICKUP = Gdx.audio.newSound(Gdx.files.internal("data/audio/berry_eat.mp3"));
+		 
 		 BOMB_EXPLOSION = Gdx.audio.newSound(Gdx.files.internal("data/audio/bomb_explosion.mp3"));
+		 BOMB_FUSE = Gdx.audio.newSound(Gdx.files.internal("data/audio/bomb_fuse.mp3"));
+		 
+		 BARRICADE_BUILD = Gdx.audio.newSound(Gdx.files.internal("data/audio/bomb_explosion.mp3"));
+		 
+		 LOSE_ANTHEM = Gdx.audio.newMusic(Gdx.files.internal("data/audio/music.mp3"));
+		 VICTORY_ANTHEM = Gdx.audio.newMusic(Gdx.files.internal("data/audio/music.mp3"));		
+		 
+		 ROUND_START = Gdx.audio.newMusic(Gdx.files.internal("data/audio/music.mp3"));		
+		 
+		 MENU_BUTTON = Gdx.audio.newSound(Gdx.files.internal("data/audio/bomb_explosion.mp3"));	
+		 
+		 CAUGHT = Gdx.audio.newSound(Gdx.files.internal("data/audio/bomb_explosion.mp3"));	
+		 GOT_CAUGHT = Gdx.audio.newSound(Gdx.files.internal("data/audio/bomb_explosion.mp3"));	
 	
 		 MUSIC.setVolume(0.5f);
 	}
@@ -135,7 +160,17 @@ public class GameResources {
 	public void dispose(){
 		MUSIC.dispose();
 		BERRY_EAT.dispose();
+		BOMB_EXPLOSION.dispose();		
+		LOSE_ANTHEM.dispose();
+		VICTORY_ANTHEM.dispose();	
+		ROUND_START.dispose();		
 		BOMB_EXPLOSION.dispose();
+		BOMB_FUSE.dispose();
+		BARRICADE_BUILD.dispose();
+		PICKUP.dispose();	
+		MENU_BUTTON.dispose();
+		CAUGHT.dispose();
+		GOT_CAUGHT.dispose();
 		
 		DEBUG_TEXTURE.dispose();
 		FOX_TEXTURE.dispose();

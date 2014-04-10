@@ -18,4 +18,8 @@ public class Barricade extends Entity {
 		batch.draw(currentFrame, x - 0.15f, y, 1.25f, 1.25f);
 	}
 
+	public void playBuildSound() {
+		MyGdxGame.resources.BARRICADE_BUILD.play();		
+	}
+
 }

@@ -43,4 +43,7 @@ public class Bomb extends Entity{
 		long soundId = MyGdxGame.resources.BOMB_EXPLOSION.play();
 		MyGdxGame.resources.BOMB_EXPLOSION.setVolume(soundId, 0.4f);
 	}
+	public void playFuseSound(){
+		MyGdxGame.resources.BOMB_FUSE.play();
+	}
 }

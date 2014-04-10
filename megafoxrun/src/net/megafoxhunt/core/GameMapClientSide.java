@@ -8,7 +8,10 @@ import java.util.Iterator;
 
 import net.megafoxhunt.entities.Barricade;
 import net.megafoxhunt.entities.Berry;
+import net.megafoxhunt.entities.Chased;
+import net.megafoxhunt.entities.Chaser;
 import net.megafoxhunt.entities.Entity;
+import net.megafoxhunt.entities.Powerup;
 import net.megafoxhunt.shared.GameMapSharedConfig;
 import net.megafoxhunt.shared.KryoNetwork.ChangeState;
 
@@ -42,13 +45,17 @@ public class GameMapClientSide {
 	}
 	public void addStaticObject(Entity object){		
 		allObjects.add(object);
-		if (object instanceof Barricade) barricades.add((Barricade)object);
+		if (object instanceof Barricade){
+			barricades.add((Barricade)object);			
+		}
 	}
 	public void removeStaticObjectByID(int id){		
 		for(Entity object : getAllObjectsConcurrentSafe()){
 			if(object.getId() == id){
 				object.setShouldBeRemoved(true);
-				if (object instanceof Barricade) barricades.remove(object);
+				if (object instanceof Barricade){
+					barricades.remove(object);
+				}
 			}
 		}		
 	}
@@ -61,6 +68,9 @@ public class GameMapClientSide {
 			   i.remove();			   
 			   if(s instanceof Berry){
 				   ((Berry)s).playEatSound();
+			   }
+			   else if (s instanceof Powerup){
+					MyGdxGame.resources.PICKUP.play();
 			   }
 		   }
 		}

@@ -97,6 +97,15 @@ public class GameNetwork {
 				else if (object instanceof Winner) {
 					Winner winner = (Winner)object;			
 					System.out.println(winner.winner);
+					if(winner.winner.equals("chased") && localUser.getControlledEntity() instanceof Chased){
+						MyGdxGame.resources.VICTORY_ANTHEM.play();
+					}
+					else if(winner.winner.equals("chaser") && localUser.getControlledEntity() instanceof Chaser){
+						MyGdxGame.resources.VICTORY_ANTHEM.play();
+					}
+					else{
+						MyGdxGame.resources.LOSE_ANTHEM.play();
+					}
 					MyGdxGame.screenHandler.setScreenLobby();
 				} 
 				/*
@@ -109,6 +118,9 @@ public class GameNetwork {
 						public void run() {
 							if (changeState.roomState == ChangeState.GAME) {								
 								MyGdxGame.screenHandler.setScreenGame();
+								
+								MyGdxGame.resources.ROUND_START.play();
+								
 								//Robot robot = new Robot(MyGdxGame.network, 400);
 							} else if (changeState.roomState == ChangeState.LOBBY) {								
 								MyGdxGame.screenHandler.setScreenLobby();
@@ -151,16 +163,23 @@ public class GameNetwork {
 					AddHole addHole = (AddHole)object;
 					MyGdxGame.mapHandler.currentMap.addStaticObject(new Hole(addHole.id, addHole.x, addHole.y));
 				}
+				/**
+				 * ADD BARRICADE
+				 */
 				else if (object instanceof AddBarricade) {
 					AddBarricade addBarricade = (AddBarricade)object;
-					MyGdxGame.mapHandler.currentMap.addStaticObject(new Barricade(addBarricade.id, addBarricade.x, addBarricade.y));
+					Barricade barricade = new Barricade(addBarricade.id, addBarricade.x, addBarricade.y);
+					MyGdxGame.mapHandler.currentMap.addStaticObject(barricade);
+					barricade.playBuildSound();
 				}
 				/*
 				 * ADD BOMB
 				 */
 				else if (object instanceof AddBomb) {
 					AddBomb addBomb = (AddBomb)object;
-					MyGdxGame.mapHandler.currentMap.addStaticObject(new Bomb(addBomb.id, addBomb.x, addBomb.y));
+					Bomb bomb = new Bomb(addBomb.id, addBomb.x, addBomb.y);
+					MyGdxGame.mapHandler.currentMap.addStaticObject(bomb);
+					bomb.playFuseSound();					
 				}
 				/*
 				 * REMOVE ENTITY 
@@ -168,13 +187,16 @@ public class GameNetwork {
 				else if (object instanceof RemoveEntity) {
 					RemoveEntity removeEntity = (RemoveEntity)object;
 					// DELETE FROM MAP
-					MyGdxGame.mapHandler.currentMap.removeStaticObjectByID(removeEntity.id);
-					
+					MyGdxGame.mapHandler.currentMap.removeStaticObjectByID(removeEntity.id);					
+										
 					// TODO
 					// Refactor this to its own kryo command
 					for(User user : UserContainer.getUsersConcurrentSafe()){  
-						if (user.getID() == removeEntity.id) {
-							user.setControlledEntity(null);
+						if (user.getControlledEntity().getId() == removeEntity.id) {
+							user.setControlledEntity(null);	
+							 
+							MyGdxGame.resources.GOT_CAUGHT.play();
+							
 							break;
 						}
 					}
