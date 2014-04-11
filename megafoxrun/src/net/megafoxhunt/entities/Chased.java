@@ -11,8 +11,6 @@ public class Chased extends EntityMovable{
 	
 	private static final float MOVEMENT_SPEED = 5;
 	
-	private boolean rageMode;
-	
 	public Chased(int id, float x, float y, GameMapClientSide gameMap) {
 		super(id, x, y, MOVEMENT_SPEED, MyGdxGame.resources.FOX_ANIMATIONS, gameMap);
 		rageMode = false;

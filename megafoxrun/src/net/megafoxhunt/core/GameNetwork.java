@@ -240,7 +240,6 @@ public class GameNetwork {
 				 */
 				else if (object instanceof PowerupRage) {
 					PowerupRage rage = (PowerupRage)object;
-					System.out.println(rage.on);
 					EntityMovable entity = (EntityMovable)UserContainer.getUserByID(rage.id).getControlledEntity();
 					if (entity != null) {
 						entity.setRageMode(rage.on);

@@ -343,7 +343,7 @@ public class GameSimulation {
 		@Override
 		public void run() {
 			player.deactivateRage();
-			PowerupSpeed rage = new PowerupSpeed();
+			PowerupRage rage = new PowerupRage();
 			rage.id = player.getEntity().getId();
 			rage.on = false;
 			playerContainer.sendObjectToAll(rage);				
@@ -360,7 +360,7 @@ public class GameSimulation {
 		@Override
 		public void run() {
 			player.deactivateSpeed();
-			PowerupRage speed = new PowerupRage();
+			PowerupSpeed speed = new PowerupSpeed();
 			speed.id = player.getEntity().getId();
 			speed.on = false;
 			playerContainer.sendObjectToAll(speed);				
