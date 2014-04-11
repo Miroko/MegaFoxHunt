@@ -282,12 +282,6 @@ public class GameNetwork {
 	 * @param name Set null for console input
 	 */
 	public void setUsername(String name){
-		if(name == null){
-			Scanner scanner = new Scanner(System.in);
-			System.out.print("Insert username: ");
-			name = scanner.nextLine();
-			scanner.close();
-		}
 		localUser.setName(name);
 		UserContainer.addUser(localUser);		
 	}
