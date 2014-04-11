@@ -119,7 +119,7 @@ public class GameNetwork {
 							if (changeState.roomState == ChangeState.GAME) {								
 								MyGdxGame.screenHandler.setScreenGame();
 								
-								MyGdxGame.resources.ROUND_START.play();
+								//MyGdxGame.resources.ROUND_START.play();
 								
 								//Robot robot = new Robot(MyGdxGame.network, 400);
 							} else if (changeState.roomState == ChangeState.LOBBY) {								

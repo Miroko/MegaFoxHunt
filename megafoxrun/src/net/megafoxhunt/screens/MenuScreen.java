@@ -19,8 +19,8 @@ public class MenuScreen implements Screen {
 	  
 	    stageUI.addActor(menuUI);
 	    
-	    MyGdxGame.resources.MUSIC.setLooping(true);
-	    MyGdxGame.resources.MUSIC.play();
+	    //MyGdxGame.resources.MUSIC.setLooping(true);
+	    //MyGdxGame.resources.MUSIC.play();
 	}
 	@Override
 	public void resize (int width, int height) {

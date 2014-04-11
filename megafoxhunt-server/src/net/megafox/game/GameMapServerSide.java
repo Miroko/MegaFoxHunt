@@ -64,8 +64,8 @@ public class GameMapServerSide {
 	}
 	
 	public boolean isBlocked(int x, int y) {
-		if(x > 0 && x < getWidth()){
-			if(y > 0 && y < getHeight()){
+		if(x >= 0 && x < getWidth()){
+			if(y >= 0 && y < getHeight()){
 				if (collisionMap[x][y] == WALL) return true;
 			}
 		}		
@@ -90,6 +90,14 @@ public class GameMapServerSide {
 	
 	public Entity getEntity(int x, int y) {
 		return collisionMap[x][y];
+	}
+	
+	public boolean canExplode(int x, int y) {
+		if (x <= 0 || x >= (getWidth() - 1) || y <= 0 || y >= (getHeight() - 1)) return false;
+		
+		if (collisionMap[x][y] == WALL) return true;
+		
+		return false;
 	}
 }
 

@@ -24,19 +24,19 @@ public class Bomb extends Item{
 		
 		GameMapServerSide gameMap = gameSimulation.gameMap;
 		
-		if (gameMap.isBlocked(x - 1, y)) {
+		if (gameMap.canExplode(x - 1, y)) {
 			gameMap.setEmpty(x - 1, y);
 			changeTilesTypes.addTile(x - 1, y, 13);
 		}
-		if (gameMap.isBlocked(x + 1, y)) {
+		if (gameMap.canExplode(x + 1, y)) {
 			gameMap.setEmpty(x + 1, y);
 			changeTilesTypes.addTile(x + 1, y, 13);
 		}
-		if (gameMap.isBlocked(x, y - 1)) {
+		if (gameMap.canExplode(x, y - 1)) {
 			gameMap.setEmpty(x, y - 1);
 			changeTilesTypes.addTile(x, y - 1, 13);
 		}
-		if (gameMap.isBlocked(x, y + 1)) {
+		if (gameMap.canExplode(x, y + 1)) {
 			gameMap.setEmpty(x, y + 1);
 			changeTilesTypes.addTile(x, y + 1, 13);
 		}
