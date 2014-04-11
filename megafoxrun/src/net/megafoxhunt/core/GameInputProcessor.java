@@ -30,12 +30,10 @@ public class GameInputProcessor extends InputAdapter implements GestureListener 
 	
 	private void sendDirection(int direction){
 		// IF DIRECTION HAS CHANGED
-		if(direction != last_direction){
-			EntityMovable entity = network.getLocalUser().getControlledEntity();
-			if (entity == null) return;
-    		entity.setDirection(direction);
-    		last_direction = direction;
-		}
+		EntityMovable entity = network.getLocalUser().getControlledEntity();
+		if (entity == null) return;
+		entity.setDirection(direction);
+		last_direction = direction;
 	}
 
 	public boolean keyDown(int k) {
