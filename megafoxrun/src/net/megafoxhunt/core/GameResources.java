@@ -7,6 +7,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class GameResources {
@@ -53,6 +54,8 @@ public class GameResources {
 	public Sound MENU_BUTTON;
 	public Sound CAUGHT;
 	public Sound GOT_CAUGHT;
+	
+	public BitmapFont BASIC_FONT;
 	
 	public void init(){						
 		 DEBUG_TEXTURE = new Texture("data/libgdx.png");
@@ -124,6 +127,8 @@ public class GameResources {
 		 GOT_CAUGHT = Gdx.audio.newSound(Gdx.files.internal("data/audio/bomb_explosion.mp3"));	
 	
 		 MUSIC.setVolume(0.5f);
+		 
+		 BASIC_FONT = new BitmapFont();
 	}
 	
 	private Animation generateAnimation(Texture texture, float frameDuration, int startX, int startY, int width, int height, int rows, int cols) {
@@ -189,6 +194,8 @@ public class GameResources {
 		
 		btnNormal.dispose();
 		btnPressed.dispose();
+		
+		BASIC_FONT.dispose();
 	}
 	
 	

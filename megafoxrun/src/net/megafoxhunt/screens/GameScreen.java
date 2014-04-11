@@ -62,7 +62,6 @@ public class GameScreen implements Screen {
 	
 	@Override
 	public void render(float delta) {
-		
 		// TODO syö kaiken suoritustehon?
 
 		MyGdxGame.mapHandler.currentMap.removeOldObjects();
@@ -122,7 +121,7 @@ public class GameScreen implements Screen {
         spriteBatch.begin();
         touchJoystick.draw(spriteBatch);
         //if (Gdx.app.getType() == ApplicationType.Android) touchJoystick.draw(spriteBatch);
-        gameUI.draw(spriteBatch);
+        gameUI.draw(spriteBatch, camera);
         spriteBatch.end();
 	}
 
@@ -142,7 +141,7 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
-
+		spriteBatch = new SpriteBatch();
 	}
 
 	@Override
@@ -157,8 +156,7 @@ public class GameScreen implements Screen {
 	}
 
 	@Override
-	public void hide() {	
-		
+	public void hide() {
 		MyGdxGame.mapHandler.currentMap.dispose();			
 	}
 

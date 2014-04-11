@@ -9,8 +9,8 @@ public class MyGdxGame extends Game {
 	public static final String IP_SERVER = "localhost";
 	//public static final String IP_SERVER = "54.72.36.237";
 
-	public static final int VIRTUAL_WIDTH = 800;
-	public static final int VIRTUAL_HEIGHT = 600;
+	public static int VIRTUAL_WIDTH = 800;
+	public static int VIRTUAL_HEIGHT = 600;
 	
 	public static GameResources resources; 	
 	public static GameNetwork network;
@@ -18,7 +18,10 @@ public class MyGdxGame extends Game {
 	public static ScreenHandler screenHandler;
 	
 	@Override	
-	public void create() {			
+	public void create() {
+		VIRTUAL_WIDTH = Gdx.graphics.getWidth();
+		VIRTUAL_HEIGHT = Gdx.graphics.getHeight();
+		
 		resources = new GameResources();
 		resources.init();
 		
@@ -31,6 +34,17 @@ public class MyGdxGame extends Game {
 		screenHandler.setSceenMenu();
 	}
 	
+	
+	
+	@Override
+	public void resize(int width, int height) {
+		VIRTUAL_WIDTH = width;
+		VIRTUAL_HEIGHT = height;
+		super.resize(width, height);
+	}
+
+
+
 	@Override
 	public void dispose() {
 		if (network.getKryoClient().isConnected()) network.getKryoClient().stop();
