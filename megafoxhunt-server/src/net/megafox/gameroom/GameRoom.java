@@ -8,6 +8,7 @@ import net.megafox.entities.Chaser;
 import net.megafox.entities.Empty;
 import net.megafox.entities.Entity;
 import net.megafox.entities.Hole;
+import net.megafox.entities.PickupItem;
 import net.megafox.entities.Powerup;
 
 
@@ -177,6 +178,25 @@ public class GameRoom extends Thread {
 			} 
 		}
 	}
+	public void addPickupItems(int amount, IDHandler idHandler){
+		Random r = new Random();
+		Entity[][] collisionMap = currentMap.getCollisionMap();
+		
+		int x;
+		int y;		
+		
+		int itemsAdded = 0;		
+		while(itemsAdded < amount){
+			x = r.nextInt(currentMap.getWidth());
+			y = r.nextInt(currentMap.getHeight());
+			if(collisionMap[x][y].getClass().equals(Empty.class)){
+				PickupItem item = new PickupItem(x, y, idHandler.getFreeID());
+				gameSimulation.addPickupItem(item);
+				currentMap.addEntity(item);	
+				itemsAdded++;
+			} 
+		}
+	}
 	public boolean allPlayersReady(){
 		boolean allReady = false;
 		int playersReady = 0;
@@ -257,14 +277,12 @@ public class GameRoom extends Thread {
 	}
 	private void setPlayerToChaser(PlayerConnection connection, int positionOffset){
 		Chaser chaser = new Chaser(33, 12 + (positionOffset), connection.getMyId(), connection);
-		connection.setEntity(chaser);
-		connection.setCurrentItem(new Bomb(gameSimulation));
+		connection.setEntity(chaser);		
 		gameSimulation.addChaser(chaser);
 	}
 	private void setPlayerToChased(PlayerConnection connection, int positionOffset){
 		Chased chased = new Chased(2, 12 + (positionOffset), connection.getMyId(), connection);
 		connection.setEntity(chased);
-		connection.setCurrentItem(new Barricade(gameSimulation));
 		gameSimulation.addChased(chased);
 	}
 	public void startSimulation(IDHandler idHandler) {		

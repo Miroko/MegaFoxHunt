@@ -24,6 +24,7 @@ public class GameResources {
 	public Texture BARRICADE_TEXTURE;
 	public Texture POWERRUP_TEXTURE;
 	public Texture BOMB_TEXTURE;
+	public Texture PICKUP_ITEM_TEXTURE;
 	
 	public Animation[] BERRY_ANIMATIONS = new Animation[10];
 	public Animation[] HOLE_ANIMATIONS = new Animation[10];
@@ -32,6 +33,7 @@ public class GameResources {
 	public Animation[] DOG_ANIMATIONS  = new Animation[10];
 	public Animation[] POWERRUP_ANIMATIONS = new Animation[10];
 	public Animation[] BOMB_ANIMATIONS = new Animation[10];
+	public Animation[] PICKUP_ITEM_ANIMATIONS = new Animation[10];
 	
 	public Texture connectButtonTexture;
 	public Texture quitButtonTexture;
@@ -83,6 +85,8 @@ public class GameResources {
 		 
 		 POWERRUP_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(POWERRUP_TEXTURE, 0.025f, 1, 1);
 		 
+		 PICKUP_ITEM_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(POWERRUP_TEXTURE, 0.025f, 1, 1);
+		 
 		 BOMB_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(BOMB_TEXTURE, 0.125f, 0, 0, 120, 120 , 1, 18);
 		 
 		 BERRY_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(BERRY_TEXTURE, 0.042f, 0, 0, 64, 64 , 1, 20);
@@ -126,8 +130,6 @@ public class GameResources {
 		 CAUGHT = Gdx.audio.newSound(Gdx.files.internal("data/audio/bomb_explosion.mp3"));	
 		 GOT_CAUGHT = Gdx.audio.newSound(Gdx.files.internal("data/audio/bomb_explosion.mp3"));	
 	
-		 MUSIC.setVolume(0.5f);
-		 
 		 BASIC_FONT = new BitmapFont();
 	}
 	
@@ -185,6 +187,7 @@ public class GameResources {
 		BARRICADE_TEXTURE.dispose();
 		POWERRUP_TEXTURE.dispose();
 		BOMB_TEXTURE.dispose();
+		PICKUP_ITEM_TEXTURE.dispose();
 			
 		connectButtonTexture.dispose();
 		quitButtonTexture.dispose();

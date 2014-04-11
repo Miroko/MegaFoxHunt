@@ -25,6 +25,13 @@ public abstract class EntityMovable extends Entity{
 	
 	private float movementSpeed;
 	private float baseSpeed;
+	private float speedMultiplier = 1f;
+	public void setSpeedMultiplier(float multiplier){
+		speedMultiplier = multiplier;
+	}
+	public void resetSpeedMultiplier(){
+		speedMultiplier = 1f;
+	}
 	
 	private boolean isMoving = false;
 	
@@ -53,7 +60,7 @@ public abstract class EntityMovable extends Entity{
 		this.collisionMap = collisionMap;
 	}
 	public void update(float delta, GameNetwork network){
-		float speed = movementSpeed * delta;
+		float speed = (movementSpeed * speedMultiplier) * delta;
 
 		if (collisionMap == null) return;
 		

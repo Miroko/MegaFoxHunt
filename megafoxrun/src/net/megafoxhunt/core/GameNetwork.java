@@ -2,6 +2,7 @@ package net.megafoxhunt.core;
 
 import java.io.IOException;
 
+
 import java.util.Scanner;
 
 import net.megafoxhunt.debug.Robot;
@@ -12,6 +13,7 @@ import net.megafoxhunt.entities.Chased;
 import net.megafoxhunt.entities.Chaser;
 import net.megafoxhunt.entities.EntityMovable;
 import net.megafoxhunt.entities.Hole;
+import net.megafoxhunt.entities.PickupItem;
 import net.megafoxhunt.entities.Powerup;
 import net.megafoxhunt.screens.GameScreen;
 import net.megafoxhunt.screens.LobbyScreen;
@@ -23,13 +25,17 @@ import net.megafoxhunt.shared.KryoNetwork.AddBomb;
 import net.megafoxhunt.shared.KryoNetwork.AddChased;
 import net.megafoxhunt.shared.KryoNetwork.AddChaser;
 import net.megafoxhunt.shared.KryoNetwork.AddHole;
+import net.megafoxhunt.shared.KryoNetwork.AddPickupItem;
+
 import net.megafoxhunt.shared.KryoNetwork.AddPlayer;
 import net.megafoxhunt.shared.KryoNetwork.AddPowerup;
 import net.megafoxhunt.shared.KryoNetwork.ChangeState;
 import net.megafoxhunt.shared.KryoNetwork.ChangeTilesTypes;
+import net.megafoxhunt.shared.KryoNetwork.PowerupSpeed;
 import net.megafoxhunt.shared.KryoNetwork.ChangeTilesTypes.Tile;
 import net.megafoxhunt.shared.KryoNetwork.Login;
 import net.megafoxhunt.shared.KryoNetwork.Move;
+import net.megafoxhunt.shared.KryoNetwork.PowerupRage;
 import net.megafoxhunt.shared.KryoNetwork.RemoveEntity;
 import net.megafoxhunt.shared.KryoNetwork.RemovePlayer;
 import net.megafoxhunt.shared.KryoNetwork.SetMap;
@@ -157,6 +163,13 @@ public class GameNetwork {
 					MyGdxGame.mapHandler.currentMap.addStaticObject(new Powerup(addPowerup.id, addPowerup.x, addPowerup.y));
 				}
 				/*
+				 * ADD PICKUP_ITEM TO MAP
+				 */
+				else if (object instanceof AddPickupItem) {
+					AddPickupItem addPickup = (AddPickupItem)object;
+					MyGdxGame.mapHandler.currentMap.addStaticObject(new PickupItem(addPickup.id, addPickup.x, addPickup.y));
+				}
+				/*
 				 * ADD HOLE TO MAP
 				 */
 				else if (object instanceof AddHole) {
@@ -208,7 +221,26 @@ public class GameNetwork {
 					Move move = (Move)object;					
 					EntityMovable entity = (EntityMovable)UserContainer.getUserByID(move.id).getControlledEntity();
 					if (entity != null) entity.move(move);
-				}			
+				}	
+				/*
+				 * POWERUP SPEED
+				 */
+				else if (object instanceof PowerupSpeed) {
+					PowerupSpeed speed = (PowerupSpeed) object;				
+					EntityMovable entity = (EntityMovable)UserContainer.getUserByID(speed.id).getControlledEntity();
+					if(speed.on == true){
+						entity.setSpeedMultiplier(1.5f);
+					}
+					else if (speed.on == false){
+						entity.resetSpeedMultiplier();
+					}
+				}
+				/*
+				 * POWERUP RAGE
+				 */
+				else if (object instanceof PowerupRage) {
+
+				}
 				/*
 				 * CHANGE MAP
 				 */						
