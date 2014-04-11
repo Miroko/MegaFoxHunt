@@ -261,7 +261,7 @@ public class GameSimulation {
 			speed.on = true;
 			playerContainer.sendObjectToAll(speed);				
 			
-			timer.schedule(new SpeedDeactivateTask(collidedEntity.getPlayer()), Powerup.DURATION_SPEED);
+			timer.schedule(new SpeedDeactivateTask(collidedEntity.getPlayer()), Powerup.DURATION_SPEED_MS);
 		}
 		else if(collidedEntity instanceof Chased){	
 			collidedEntity.getPlayer().activateRage();
@@ -271,7 +271,7 @@ public class GameSimulation {
 			rage.on = true;
 			playerContainer.sendObjectToAll(rage);			
 			
-			timer.schedule(new RageDeactivateTask(collidedEntity.getPlayer()), Powerup.DURATION_RAGE);
+			timer.schedule(new RageDeactivateTask(collidedEntity.getPlayer()), Powerup.DURATION_RAGE_MS);
 		}
 		addPowerupToRemove(powerup);		
 	}
