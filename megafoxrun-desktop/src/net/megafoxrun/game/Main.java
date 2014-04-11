@@ -15,5 +15,6 @@ public class Main {
 		cfg.height = 480;
 		cfg.vSyncEnabled = true;
 		new LwjglApplication(new MyGdxGame(), cfg);
+		
 	}
 }
