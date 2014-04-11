@@ -112,4 +112,5 @@ public class Entity {
 	public int getFacingDirection() {
 		return facingDirection;
 	}
+
 }

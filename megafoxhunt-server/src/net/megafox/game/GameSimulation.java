@@ -3,6 +3,9 @@ package net.megafox.game;
 import java.util.ArrayList;
 
 
+
+
+
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -13,19 +16,27 @@ import net.megafox.entities.Chased;
 import net.megafox.entities.Chaser;
 import net.megafox.entities.Entity;
 import net.megafox.entities.Hole;
+import net.megafox.entities.PickupItem;
 import net.megafox.entities.Powerup;
 import net.megafox.entities.Entity.Visibility;
 import net.megafox.gameroom.PlayerContainer;
+import net.megafox.items.Barricade;
+import net.megafox.items.Bomb;
 import net.megafoxhunt.server.IDHandler;
 import net.megafoxhunt.server.PlayerConnection;
-import net.megafoxhunt.shared.KryoNetwork.ActivatePowerup;
+
 import net.megafoxhunt.shared.KryoNetwork.AddChaser;
 import net.megafoxhunt.shared.KryoNetwork.AddChased;
 import net.megafoxhunt.shared.KryoNetwork.AddPowerup;
 import net.megafoxhunt.shared.KryoNetwork.AddBerry;
 import net.megafoxhunt.shared.KryoNetwork.AddHole;
 import net.megafoxhunt.shared.KryoNetwork.Move;
+import net.megafoxhunt.shared.KryoNetwork.PowerupRage;
+import net.megafoxhunt.shared.KryoNetwork.PowerupSpeed;
 import net.megafoxhunt.shared.KryoNetwork.RemoveEntity;
+import net.megafoxhunt.shared.KryoNetwork.AddPickupItem;
+
+
 import net.megafoxhunt.shared.KryoNetwork.Winner;
 import net.megafoxhunt.shared.Shared;
 
@@ -43,6 +54,8 @@ public class GameSimulation {
 	
 	private ArrayList<Entity> powerups;
 	
+	private ArrayList<Entity> pickups;
+	
 	private ArrayList<Entity> holes;
 	
 	public PlayerContainer playerContainer;
@@ -50,8 +63,6 @@ public class GameSimulation {
 	private Random random;
 	
 	public Timer timer;
-	
-	private boolean powerupActive = false;
 	
 	public IDHandler idHandler;
 	
@@ -64,6 +75,7 @@ public class GameSimulation {
 		chaseds = new ArrayList<>();
 		berries = new ArrayList<>();
 		powerups = new ArrayList<>();
+		pickups = new ArrayList<>();
 		holes = new ArrayList<>();
 		random = new Random();
 		timer = new Timer();
@@ -149,6 +161,10 @@ public class GameSimulation {
 		powerups.add(powerup);		
 		playerContainer.sendObjectToAll(new AddPowerup(powerup.getId(), powerup.getX(), powerup.getY()));	
 	}
+	public void addPickupItem(PickupItem item) {
+		pickups.add(item);
+		playerContainer.sendObjectToAll(new AddPickupItem(item.getId(), item.getX(), item.getY()));			
+	}
 	public void addChaser(Chaser chaser){
 		chasers.add(chaser);		
 		playerContainer.sendObjectToAll(new AddChaser(chaser.getId(), chaser.getX(), chaser.getY()));	
@@ -171,7 +187,10 @@ public class GameSimulation {
 		removable.add(powerup);
 		gameMap.removeEntity(powerup);
 	}
-	
+	public void addPickupToRemove(PickupItem item){
+		removable.add(item);
+		gameMap.removeEntity(item);
+	}	
 	public void addHole(Hole hole) {
 		holes.add(hole);
 		playerContainer.sendObjectToAll(new AddHole(hole.getId(), hole.getX(), hole.getY()), hole.getVisibility());
@@ -185,15 +204,18 @@ public class GameSimulation {
 	public void move(Entity entity, int x, int y, int direction, boolean force) {
 		if (entity.move(x, y, direction, gameMap, force)) {
 			playerContainer.sendObjectToAllExcept(entity.getPlayer(), new Move(entity.getId(), direction, x, y, force));	
-			Entity e = gameMap.getEntity(x, y);
+			Entity collidedEntity = gameMap.getEntity(x, y);
 			if (entity instanceof Chased) {
-				if (e instanceof Berry)  {
-					addBerryToRemove((Berry)e);
-				} else if (e instanceof Hole) {
-					holeCollisionDetected(entity, (Hole)e);
-				} else if(e instanceof Powerup){
-					powerupCollisionDetected(e);						
-				}
+				if (collidedEntity instanceof Berry)  {
+					addBerryToRemove((Berry)collidedEntity);
+				} else if (collidedEntity instanceof Hole) {
+					holeCollisionDetected(entity, (Hole)collidedEntity);
+				} 
+			}
+			if(collidedEntity instanceof Powerup){
+				powerupCollisionDetected((Powerup) collidedEntity, entity);						
+			} else if(collidedEntity instanceof PickupItem){
+				pickupCollision((PickupItem) collidedEntity, entity);
 			}
 			
 			int entityX = entity.getX();
@@ -208,7 +230,7 @@ public class GameSimulation {
 						entityLastX == chaser.getX() && entityLastY == chaser.getY()  ||
 						entityLastX == chaser.getLastX() && entityLastY == chaser.getLastY()) {
 						
-						if (powerupActive) reSpawnChaser((Chaser) chaser);
+						if (entity.getPlayer().isRageOn()) reSpawnChaser((Chaser) chaser);
 						else removable.add(entity);
 					}
 				}
@@ -219,7 +241,7 @@ public class GameSimulation {
 						entityLastX == chased.getX() && entityLastY == chased.getY()  ||
 						entityLastX == chased.getLastX() && entityLastY == chased.getLastY()) {
 						
-						if (powerupActive) reSpawnChaser((Chaser) entity);
+						if (chased.getPlayer().isRageOn()) reSpawnChaser((Chaser) entity);
 						else removable.add(chased);
 					}
 				}
@@ -230,22 +252,40 @@ public class GameSimulation {
 		}
 	}
 	
-	private void powerupCollisionDetected(Entity collidedEntity) {
-		addPowerupToRemove((Powerup) collidedEntity);
-		ActivatePowerup activatePowerup = new ActivatePowerup();
-		playerContainer.sendObjectToAll(activatePowerup);
-		
-		powerupActive = true;
-
-		Timer powerupTimer = new Timer();
-		powerupTimer.schedule(new TimerTask() {					
-			@Override
-			public void run() {
-				powerupActive = false;			
-			}
-		}, Powerup.TIME_SECONDS * 1000);
+	private void powerupCollisionDetected(Powerup powerup, Entity collidedEntity) {	
+		if(collidedEntity instanceof Chaser){
+			collidedEntity.getPlayer().activateSpeed();
+			
+			PowerupSpeed speed = new PowerupSpeed();
+			speed.id = collidedEntity.getId();
+			speed.on = true;
+			playerContainer.sendObjectToAll(speed);				
+			
+			timer.schedule(new SpeedDeactivateTask(collidedEntity.getPlayer()), Powerup.DURATION_SPEED);
+		}
+		else if(collidedEntity instanceof Chased){	
+			collidedEntity.getPlayer().activateRage();
+			
+			PowerupRage rage = new PowerupRage();
+			rage.id = collidedEntity.getId();
+			rage.on = true;
+			playerContainer.sendObjectToAll(rage);			
+			
+			timer.schedule(new RageDeactivateTask(collidedEntity.getPlayer()), Powerup.DURATION_RAGE);
+		}
+		addPowerupToRemove(powerup);		
 	}
-	
+	private void pickupCollision(PickupItem item, Entity collidedEntity){
+		if(collidedEntity.getPlayer().getCurrentItem() == null){
+			if(collidedEntity instanceof Chaser){
+				collidedEntity.getPlayer().setCurrentItem(new Bomb(this));
+			}
+			else if(collidedEntity instanceof Chased){	
+				collidedEntity.getPlayer().setCurrentItem(new Barricade(this));
+			}
+			addPickupToRemove(item);	
+		}
+	}
 	public void goToHole(PlayerConnection connection) {
 		if (connection.getEntity() instanceof Chased) {
 			connection.setGoInHole(true);
@@ -293,5 +333,40 @@ public class GameSimulation {
 			if (entity instanceof Hole)((Hole)entity).setHoleCooldown(false);			
 		}
 	}
+	class RageDeactivateTask extends TimerTask{
+		
+		private PlayerConnection player;
+
+		public RageDeactivateTask(PlayerConnection player){
+			this.player = player;
+		}	
+		@Override
+		public void run() {
+			player.deactivateRage();
+			PowerupSpeed rage = new PowerupSpeed();
+			rage.id = player.getEntity().getId();
+			rage.on = false;
+			playerContainer.sendObjectToAll(rage);				
+		}
+		
+	}
+	class SpeedDeactivateTask extends TimerTask{
+		
+		private PlayerConnection player;
+
+		public SpeedDeactivateTask(PlayerConnection player){
+			this.player = player;
+		}	
+		@Override
+		public void run() {
+			player.deactivateSpeed();
+			PowerupRage speed = new PowerupRage();
+			speed.id = player.getEntity().getId();
+			speed.on = false;
+			playerContainer.sendObjectToAll(speed);				
+		}
+		
+	}
+
 	
 }

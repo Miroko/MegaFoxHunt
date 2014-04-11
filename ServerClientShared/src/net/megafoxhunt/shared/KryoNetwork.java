@@ -32,10 +32,12 @@ public class KryoNetwork {
 		kryo.register(ArrayList.class);
 		kryo.register(ChangeTilesTypes.Tile.class);
 		kryo.register(GoInHole.class);
-		kryo.register(ActivatePowerup.class);
+		kryo.register(PowerupSpeed.class);
+		kryo.register(PowerupRage.class);
 		kryo.register(AddPowerup.class);
 		kryo.register(SetPreferedTeam.class);
 		kryo.register(AddBomb.class);
+		kryo.register(AddPickupItem.class);
 	}	
 	/*
 	 * MESSAGE
@@ -170,6 +172,18 @@ public class KryoNetwork {
 			this.y = y;
 		}
 	}
+	public static class AddPickupItem{
+		public int id;
+		public int x;
+		public int y;
+		
+		public AddPickupItem(){}
+		public AddPickupItem(int id, int x, int y) {
+			this.id = id;
+			this.x = x;
+			this.y = y;
+		}
+	}
 	
 	public static class RemoveEntity {
 		public int id;
@@ -207,10 +221,17 @@ public class KryoNetwork {
 	public static class GoInHole {		
 		
 	}	
-	public static class ActivatePowerup{
+	public static class PowerupRage{
+		public int id;
+		public boolean on;
+	}
+	public static class PowerupSpeed{
+		public int id;
+		public boolean on;
+	}
+	public static class ActivateItem {
 		
 	}
-	public static class ActivateItem { }
 	
 	public static class ChangeTilesTypes {
 		private List<Tile> tiles;

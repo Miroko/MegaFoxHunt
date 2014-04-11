@@ -18,7 +18,7 @@ public class PlayerConnection extends Connection {
 	private int myId;
 	public int getMyId(){ return myId; }
 	
-	private Item currentItem;
+	private Item currentItem = null;
 	
 	private boolean playerReady = false;
 	public boolean isReady(){return playerReady;}
@@ -27,6 +27,14 @@ public class PlayerConnection extends Connection {
 	private boolean goInHole = false;
 	public void setGoInHole(boolean go){goInHole = go;}
 	public boolean isGoingInHole(){return goInHole;}	
+	
+	private boolean rageOn = false;
+	public void activateRage(){rageOn = true;}
+	public void deactivateRage(){rageOn = false;}
+	
+	private boolean speedOn = false;
+	public void activateSpeed(){speedOn = true;}
+	public void deactivateSpeed(){speedOn = false;}
 	
 	public enum Team{
 		Chasers, Chased
@@ -68,10 +76,8 @@ public class PlayerConnection extends Connection {
 		if (item == null) return;
 		else{
 			item.activate(getEntity().getX(), getEntity().getY(), this);
-		}
-		
-		// remove used item
-		//playerConnection.setCurrentItem(null);
+			setCurrentItem(null);
+		}			
 	}	
 	public Item getCurrentItem() {
 		return currentItem;
@@ -79,4 +85,8 @@ public class PlayerConnection extends Connection {
 	public void setCurrentItem(Item item) {
 		this.currentItem = item;
 	}
+	public boolean isRageOn() {
+		return rageOn;
+	}
+
 }
