@@ -21,9 +21,11 @@ public class GameUI {
 		MyGdxGame.resources.BASIC_FONT.draw(batch, "Berries: " + berryCount, screenWidth - screenWidth / 2, screenHeight - 50);
 		
 		for (User user : UserContainer.getUsersConcurrentSafe()) {
-        	Vector3 v3 = new Vector3(user.getControlledEntity().getX(), user.getControlledEntity().getY(), 0);
-        	camera.project(v3);
-        	MyGdxGame.resources.BASIC_FONT.draw(batch, user.getName(), v3.x, v3.y);
+			if (user != null && user.getControlledEntity() != null) {
+	        	Vector3 v3 = new Vector3(user.getControlledEntity().getX(), user.getControlledEntity().getY(), 0);
+	        	camera.project(v3);
+	        	MyGdxGame.resources.BASIC_FONT.draw(batch, user.getName(), v3.x, v3.y);
+			}
         }
 	}
 }
