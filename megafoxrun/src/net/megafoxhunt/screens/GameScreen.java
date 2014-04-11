@@ -12,6 +12,7 @@ import net.megafoxhunt.entities.Chased;
 import net.megafoxhunt.entities.Chaser;
 import net.megafoxhunt.entities.EntityMovable;
 import net.megafoxhunt.entities.Entity;
+import net.megafoxhunt.ui.GameUI;
 import net.megafoxhunt.ui.TouchJoystick;
 
 import com.badlogic.gdx.Application.ApplicationType;
@@ -45,16 +46,14 @@ public class GameScreen implements Screen {
 	private SpriteBatch spriteBatch;
 
 	private TouchJoystick touchJoystick;	
+	private GameUI gameUI;
 	private GameInputProcessor gameInputProcessor;
-	
-	private BitmapFont font;
 	
 	public GameScreen() {			
 		spriteBatch = new SpriteBatch();		
 		touchJoystick = new TouchJoystick(MyGdxGame.network);
 		gameInputProcessor = new GameInputProcessor(MyGdxGame.network, touchJoystick);
-		
-		font = new BitmapFont();
+		gameUI = new GameUI();
 		
 		camera = new OrthographicCamera();	
 		camera.setToOrtho(false, FIT_TILES_WIDTH, FIT_TILES_HEIGHT);
@@ -123,8 +122,7 @@ public class GameScreen implements Screen {
         spriteBatch.begin();
         touchJoystick.draw(spriteBatch);
         //if (Gdx.app.getType() == ApplicationType.Android) touchJoystick.draw(spriteBatch);
-        font.draw(spriteBatch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 25, 25);
-        font.draw(spriteBatch, "Ms: " + MyGdxGame.network.getCurrentPing(), 100, 25);
+        gameUI.draw(spriteBatch);
         spriteBatch.end();
 	}
 

@@ -29,6 +29,8 @@ public class GameMapClientSide {
 
 	public String getName(){return config.getName();}
 	
+	private int berryCount = 0;
+	
 	private TiledMap tiledMap;
 	public TiledMap getTiledMap(){return tiledMap;}
 	
@@ -47,6 +49,8 @@ public class GameMapClientSide {
 		allObjects.add(object);
 		if (object instanceof Barricade){
 			barricades.add((Barricade)object);			
+		} else if (object instanceof Berry) {
+			berryCount++;
 		}
 	}
 	public void removeStaticObjectByID(int id){		
@@ -55,6 +59,8 @@ public class GameMapClientSide {
 				object.setShouldBeRemoved(true);
 				if (object instanceof Barricade){
 					barricades.remove(object);
+				} else if (object instanceof Berry) {
+					berryCount--;
 				}
 			}
 		}		
@@ -106,7 +112,11 @@ public class GameMapClientSide {
 				tiledMap.dispose();
 			}
 		});		
-	}	
+	}
+	
+	public int getBerryCount() {
+		return berryCount;
+	}
 
 	public void changeTile(int x, int y, int type) {
 		((TiledMapTileLayer)tiledMap.getLayers().get(0)).getCell(x, y).setTile(tiledMap.getTileSets().getTile(type));
