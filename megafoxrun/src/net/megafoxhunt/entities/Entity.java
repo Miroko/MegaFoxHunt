@@ -65,4 +65,7 @@ public abstract class Entity {
 		this.shouldBeRemoved = shouldBeRemoved;
 	}
 
+	public void setAnimationNumber(int animationNumber) {
+		this.animationNumber = animationNumber;
+	}
 }

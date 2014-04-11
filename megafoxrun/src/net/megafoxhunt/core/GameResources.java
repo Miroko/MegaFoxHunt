@@ -16,6 +16,10 @@ public class GameResources {
 	public static final int FRONT_ANIMATION = 1;
 	public static final int BACK_ANIMATION = 2;
 	
+	public static final int FOURTH_ANIMATION = 4;
+	public static final int FIFTH_ANIMATIN = 5;
+	public static final int SIXTH_ANIMATION = 6;
+	
 	public Texture DEBUG_TEXTURE;
 	public Texture FOX_TEXTURE;
 	public Texture DOG_TEXTURE;
@@ -96,6 +100,10 @@ public class GameResources {
 		 FOX_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(FOX_TEXTURE, 0.042f, 0, 0, 104, 64 , 1, 10);
 		 FOX_ANIMATIONS[FRONT_ANIMATION] = generateAnimation(FOX_TEXTURE, 0.042f, 0, 64, 64, 104 , 1, 10);
 		 FOX_ANIMATIONS[BACK_ANIMATION] = generateAnimation(FOX_TEXTURE, 0.042f, 0, 168, 64, 104, 1, 10);
+		 
+		 FOX_ANIMATIONS[FOURTH_ANIMATION] = generateAnimation(FOX_TEXTURE, 0.042f, 0, 277, 104, 64 , 1, 10);
+		 FOX_ANIMATIONS[FIFTH_ANIMATIN] = generateAnimation(FOX_TEXTURE, 0.042f, 0, 341, 64, 104 , 1, 10);
+		 FOX_ANIMATIONS[SIXTH_ANIMATION] = generateAnimation(FOX_TEXTURE, 0.042f, 0, 445, 64, 104, 1, 10);
 		 
 		 DOG_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(DOG_TEXTURE, 0.042f, 0, 0, 187, 114, 1, 8);
 		 DOG_ANIMATIONS[FRONT_ANIMATION] = generateAnimation(DOG_TEXTURE, 0.042f, 0, 264, 79, 175, 1, 8);

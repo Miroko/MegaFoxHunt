@@ -11,8 +11,11 @@ public class Chased extends EntityMovable{
 	
 	private static final float MOVEMENT_SPEED = 5;
 	
+	private boolean rageMode;
+	
 	public Chased(int id, float x, float y, GameMapClientSide gameMap) {
 		super(id, x, y, MOVEMENT_SPEED, MyGdxGame.resources.FOX_ANIMATIONS, gameMap);
+		rageMode = false;
 	}
 
 	
@@ -33,22 +36,30 @@ public class Chased extends EntityMovable{
 					
 				break;
 			case DIRECTION_DOWN:
-				animationNumber = GameResources.FRONT_ANIMATION;
+				if (rageMode) animationNumber = GameResources.FIFTH_ANIMATIN;
+				else animationNumber = GameResources.FRONT_ANIMATION;
+				
 				lastXDirection = 0;
 				break;
 			case DIRECTION_UP:
-				animationNumber = GameResources.BACK_ANIMATION;
+				if (rageMode) animationNumber = GameResources.SIXTH_ANIMATION;
+				else animationNumber = GameResources.BACK_ANIMATION;
+				
 				lastXDirection = 0;
 				break;
 			case DIRECTION_LEFT:
-				animationNumber = GameResources.DEFAULT_ANIMATION;
+				if (rageMode) animationNumber = GameResources.FOURTH_ANIMATION;
+				else animationNumber = GameResources.DEFAULT_ANIMATION;
+				
 				currentFrame = animations[animationNumber].getKeyFrame(stateTime, true);
 				if(currentFrame.isFlipX() == false){
 					currentFrame.flip(true, false);				
 				}
 				break;
 			case DIRECTION_RIGHT:
-				animationNumber = GameResources.DEFAULT_ANIMATION;
+				if (rageMode) animationNumber = GameResources.FOURTH_ANIMATION;
+				else animationNumber = GameResources.DEFAULT_ANIMATION;
+				
 				currentFrame = animations[animationNumber].getKeyFrame(stateTime, true);
 				if(currentFrame.isFlipX() == true){
 					currentFrame.flip(true, false);
@@ -58,13 +69,11 @@ public class Chased extends EntityMovable{
 		if (destinationDirection == DIRECTION_LEFT || destinationDirection == DIRECTION_RIGHT){
 			lastXDirection = destinationDirection;
 		}
-		if (animationNumber == GameResources.FRONT_ANIMATION)
+		if (animationNumber == GameResources.FRONT_ANIMATION || animationNumber == GameResources.FIFTH_ANIMATIN)
 			batch.draw(currentFrame, x + 0.05f, y, 0.9f, 1.4f);
-		else if (animationNumber == GameResources.BACK_ANIMATION)
+		else if (animationNumber == GameResources.BACK_ANIMATION || animationNumber == GameResources.SIXTH_ANIMATION)
 			batch.draw(currentFrame, x + 0.05f, y, 0.9f, 1.4f);
 		else 
 			batch.draw(currentFrame, x - 0.33f, y, 1.6f, 1.0f);
 	}
-
-
 }

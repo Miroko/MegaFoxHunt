@@ -26,6 +26,9 @@ public abstract class EntityMovable extends Entity{
 	private float movementSpeed;
 	private float baseSpeed;
 	private float speedMultiplier = 1f;
+	
+	protected boolean rageMode;
+	
 	public void setSpeedMultiplier(float multiplier){
 		speedMultiplier = multiplier;
 	}
@@ -179,5 +182,8 @@ public abstract class EntityMovable extends Entity{
 	public synchronized int getDirection() {
 		return direction;
 	}
-
+	
+	public void setRageMode(boolean rageMode) {
+		this.rageMode = rageMode;
+	}
 }

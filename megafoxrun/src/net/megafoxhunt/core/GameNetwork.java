@@ -104,13 +104,13 @@ public class GameNetwork {
 					Winner winner = (Winner)object;			
 					System.out.println(winner.winner);
 					if(winner.winner.equals("chased") && localUser.getControlledEntity() instanceof Chased){
-						MyGdxGame.resources.VICTORY_ANTHEM.play();
+						//MyGdxGame.resources.VICTORY_ANTHEM.play();
 					}
 					else if(winner.winner.equals("chaser") && localUser.getControlledEntity() instanceof Chaser){
-						MyGdxGame.resources.VICTORY_ANTHEM.play();
+						//MyGdxGame.resources.VICTORY_ANTHEM.play();
 					}
 					else{
-						MyGdxGame.resources.LOSE_ANTHEM.play();
+						//MyGdxGame.resources.LOSE_ANTHEM.play();
 					}
 					MyGdxGame.screenHandler.setScreenLobby();
 				} 
@@ -239,7 +239,12 @@ public class GameNetwork {
 				 * POWERUP RAGE
 				 */
 				else if (object instanceof PowerupRage) {
-
+					PowerupRage rage = (PowerupRage)object;
+					System.out.println(rage.on);
+					EntityMovable entity = (EntityMovable)UserContainer.getUserByID(rage.id).getControlledEntity();
+					if (entity != null) {
+						entity.setRageMode(rage.on);
+					}
 				}
 				/*
 				 * CHANGE MAP
