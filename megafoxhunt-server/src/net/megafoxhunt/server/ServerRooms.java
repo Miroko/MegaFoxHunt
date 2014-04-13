@@ -53,10 +53,11 @@ public class ServerRooms {
 			room.setChasedsAndChasers();
 			room.generateBerries(GameMapServerSide.TOTAL_BERRIES, gameServer.idHandler);
 			room.generateHoles(GameMapServerSide.TOTAL_HOLES, gameServer.idHandler);
-			room.addPowerups(3, gameServer.idHandler);
-			room.addPickupItems(6, gameServer.idHandler);
+			room.addInitialPowerups(GameMapSharedConfig.DEBUG_MAP.getMaxPowerups(), gameServer.idHandler);
+			room.addInitialPickupItems(GameMapSharedConfig.DEBUG_MAP.getMaxPickupItems(), gameServer.idHandler);
 			room.switchState(GameRoom.STATE_GAME);
 			room.startClock(GameRoom.MATCH_LENGHT_SECONDS_DEFAULT);
+			room.startRespawner(5000, gameServer.idHandler);
 		}
 	}
 	@SuppressWarnings("unchecked")

@@ -69,6 +69,9 @@ public class GameResources {
 		 POWERRUP_TEXTURE = new Texture("data/powerup.png");
 		 POWERRUP_TEXTURE.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		 
+		 PICKUP_ITEM_TEXTURE = new Texture("data/pickup_item.png");
+		 PICKUP_ITEM_TEXTURE.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		 
 		 BOMB_TEXTURE = new Texture("data/bomb.png");
 		 BOMB_TEXTURE.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		 
@@ -89,7 +92,7 @@ public class GameResources {
 		 
 		 POWERRUP_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(POWERRUP_TEXTURE, 0.025f, 1, 1);
 		 
-		 PICKUP_ITEM_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(POWERRUP_TEXTURE, 0.025f, 1, 1);
+		 PICKUP_ITEM_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(PICKUP_ITEM_TEXTURE, 0.025f, 1, 1);
 		 
 		 BOMB_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(BOMB_TEXTURE, 0.125f, 0, 0, 120, 120 , 1, 18);
 		 

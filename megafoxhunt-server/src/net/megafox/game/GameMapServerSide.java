@@ -23,6 +23,7 @@ public class GameMapServerSide {
 	private static final Empty EMPTY = new Empty();
 	
 	private GameMapSharedConfig config;
+	public GameMapSharedConfig getConfig(){return config;}
 	
 	public String getName(){return config.getName();}
 	

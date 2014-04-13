@@ -1,6 +1,9 @@
 package net.megafox.gameroom;
 import java.util.ArrayList;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import java.util.Random;
 
 import net.megafox.entities.Berry;
@@ -10,18 +13,11 @@ import net.megafox.entities.Entity;
 import net.megafox.entities.Hole;
 import net.megafox.entities.PickupItem;
 import net.megafox.entities.Powerup;
-
-
-
 import net.megafox.entities.Chased;
 import net.megafox.game.GameMapServerSide;
 import net.megafox.game.GameSimulation;
-import net.megafox.items.Barricade;
-import net.megafox.items.Bomb;
-import net.megafox.items.Item;
 import net.megafoxhunt.server.IDHandler;
 import net.megafoxhunt.server.PlayerConnection;
-
 import net.megafoxhunt.server.ServerRooms;
 import net.megafoxhunt.shared.GameMapSharedConfig;
 import net.megafoxhunt.shared.KryoNetwork;
@@ -49,10 +45,13 @@ public class GameRoom extends Thread {
 	private GameSimulation gameSimulation;		
 
 	private ServerRooms serverRooms;
+	
+	private Timer timer;
 		
 	public GameRoom(ServerRooms serverRooms){
 		this.serverRooms = serverRooms;
 		playerContainer = new PlayerContainer(MAX_SIZE);
+		timer = new Timer();
 		switchState(STATE_LOBBY);			
 	}
 	public int getRoomState(){
@@ -159,7 +158,7 @@ public class GameRoom extends Thread {
 			} 
 		}
 	}
-	public void addPowerups(int amount, IDHandler idHandler){
+	public void addInitialPowerups(int amount, IDHandler idHandler){
 		Random r = new Random();
 		Entity[][] collisionMap = currentMap.getCollisionMap();
 		
@@ -178,7 +177,7 @@ public class GameRoom extends Thread {
 			} 
 		}
 	}
-	public void addPickupItems(int amount, IDHandler idHandler){
+	public void addInitialPickupItems(int amount, IDHandler idHandler){
 		Random r = new Random();
 		Entity[][] collisionMap = currentMap.getCollisionMap();
 		
@@ -377,4 +376,59 @@ public class GameRoom extends Thread {
 			playerConnection.resetData();
 		}
 	}
-}
+	public void startRespawner(int reswpawnDelayMs, IDHandler idHandler) {
+		timer.schedule(new RespawnTask(idHandler), reswpawnDelayMs, reswpawnDelayMs);	
+	}
+	class RespawnTask extends TimerTask{
+		
+		private static final int maxPowerupAddPerCycle = 1;
+		private static final int maxPickupItemAddPerCycle = 1;
+		private IDHandler idHandler;
+		
+		public RespawnTask(IDHandler idHandler){
+			this.idHandler = idHandler;
+		}
+
+		@Override
+		public void run() {
+			if(gameSimulation.getPickupsAmount() < currentMap.getConfig().getMaxPickupItems()){
+				Random r = new Random();
+				Entity[][] collisionMap = currentMap.getCollisionMap();
+
+				int x;
+				int y;		
+				
+				int itemsAdded = 0;		
+				while(itemsAdded < maxPickupItemAddPerCycle){
+					x = r.nextInt(currentMap.getWidth());
+					y = r.nextInt(currentMap.getHeight());
+					if(collisionMap[x][y].getClass().equals(Empty.class)){
+						PickupItem item = new PickupItem(x, y, idHandler.getFreeID());
+						gameSimulation.addPickupItem(item);
+						currentMap.addEntity(item);	
+						itemsAdded++;
+					} 
+				}
+			}
+			if(gameSimulation.getPowerupsAmount() < currentMap.getConfig().getMaxPowerups()){
+				Random r = new Random();
+				Entity[][] collisionMap = currentMap.getCollisionMap();				
+				
+				int x;
+				int y;		
+				
+				int itemsAdded = 0;		
+				while(itemsAdded < maxPowerupAddPerCycle){
+					x = r.nextInt(currentMap.getWidth());
+					y = r.nextInt(currentMap.getHeight());
+					if(collisionMap[x][y].getClass().equals(Empty.class)){
+						Powerup powerup = new Powerup(x, y, idHandler.getFreeID());
+						gameSimulation.addPowerup(powerup);
+						currentMap.addEntity(powerup);	
+						itemsAdded++;
+					} 
+				}
+			}
+			}
+		}		
+	}

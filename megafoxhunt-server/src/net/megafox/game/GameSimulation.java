@@ -53,8 +53,10 @@ public class GameSimulation {
 	private ArrayList<Entity> berries;
 	
 	private ArrayList<Entity> powerups;
+	public int getPowerupsAmount(){return powerups.size();}
 	
 	private ArrayList<Entity> pickups;
+	public int getPickupsAmount(){return pickups.size();}
 	
 	private ArrayList<Entity> holes;
 	
@@ -107,6 +109,9 @@ public class GameSimulation {
 			}
 			else if(entity instanceof Powerup){
 				powerups.remove(entity);
+			}
+			else if(entity instanceof PickupItem){
+				pickups.remove(entity);
 			}
 			// INFORM ABOUT ENTITY DELETION
 			RemoveEntity removeEntity = new RemoveEntity();
