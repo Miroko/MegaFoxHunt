@@ -50,8 +50,7 @@ public class GameRoom extends Thread {
 		
 	public GameRoom(ServerRooms serverRooms){
 		this.serverRooms = serverRooms;
-		playerContainer = new PlayerContainer(MAX_SIZE);
-		timer = new Timer();
+		playerContainer = new PlayerContainer(MAX_SIZE);		
 		switchState(STATE_LOBBY);			
 	}
 	public int getRoomState(){
@@ -369,14 +368,16 @@ public class GameRoom extends Thread {
 			removePlayer(playerConnection);
 		}
 	}
-	public void endMatch() {	
+	public void endMatch() {
+		timer.cancel();
 		gameSimulation = null;
-		currentMap = null;
+		currentMap = null;		
 		for(PlayerConnection playerConnection : playerContainer.getPlayersConcurrentSafe()){
 			playerConnection.resetData();
 		}
 	}
 	public void startRespawner(int reswpawnDelayMs, IDHandler idHandler) {
+		timer = new Timer();
 		timer.schedule(new RespawnTask(idHandler), reswpawnDelayMs, reswpawnDelayMs);	
 	}
 	class RespawnTask extends TimerTask{
