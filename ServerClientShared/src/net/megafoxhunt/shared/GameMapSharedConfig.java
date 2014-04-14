@@ -3,6 +3,7 @@ package net.megafoxhunt.shared;
 public class GameMapSharedConfig {
 	
 	public static final GameMapSharedConfig DEBUG_MAP = new GameMapSharedConfig("Debug", "data/basic_map.tmx", "data/basic_map.txt", 35, 25, 10, 5 );	
+	public static final GameMapSharedConfig TEST_MAP = new GameMapSharedConfig("Test", "data/test_map.tmx", "data/test_map.txt", 15, 15, 2, 2);
 	
 	private String name;
 	private String tiledMapPath;

@@ -26,19 +26,19 @@ public class Bomb extends Item{
 		
 		if (gameMap.canExplode(x - 1, y)) {
 			gameMap.setEmpty(x - 1, y);
-			changeTilesTypes.addTile(x - 1, y, 13);
+			changeTilesTypes.addTile(x - 1, y, -1);
 		}
 		if (gameMap.canExplode(x + 1, y)) {
 			gameMap.setEmpty(x + 1, y);
-			changeTilesTypes.addTile(x + 1, y, 13);
+			changeTilesTypes.addTile(x + 1, y, -1);
 		}
 		if (gameMap.canExplode(x, y - 1)) {
 			gameMap.setEmpty(x, y - 1);
-			changeTilesTypes.addTile(x, y - 1, 13);
+			changeTilesTypes.addTile(x, y - 1, -1);
 		}
 		if (gameMap.canExplode(x, y + 1)) {
 			gameMap.setEmpty(x, y + 1);
-			changeTilesTypes.addTile(x, y + 1, 13);
+			changeTilesTypes.addTile(x, y + 1, -1);
 		}
 		
 		if (!changeTilesTypes.getTiles().isEmpty()) {			
@@ -46,18 +46,19 @@ public class Bomb extends Item{
 		}
 	}
 	@Override
-	public void activate(int x, int y, PlayerConnection player) {		
+	public boolean activate(int x, int y, PlayerConnection player) {		
 		this.x = x;
 		this.y = y;
-		plant(x, y, player);
-	}
-	public void plant(int x, int y, PlayerConnection player){		
 		if (gameSimulation.gameMap.getEntity(x, y) instanceof Empty) {			
 			net.megafox.entities.Bomb bomb = new net.megafox.entities.Bomb(x, y, gameSimulation.idHandler.getFreeID());
 			gameSimulation.playerContainer.sendObjectToAll(new AddBomb(bomb.getId(), bomb.getX(), bomb.getY()));				
 			gameSimulation.timer.schedule(new BombExplodeTimerTask(bomb), BombExplodeTimerTask.EXPLODE_DELAY);
+			return true;
 		}
+		
+		return false;
 	}
+
 	class BombExplodeTimerTask extends TimerTask {
 		
 		private static final int EXPLODE_DELAY = 1500;

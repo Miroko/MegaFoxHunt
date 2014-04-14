@@ -261,20 +261,21 @@ public class GameRoom extends Thread {
 				chased.add(player);
 			}	
 		}
+		int index = 0;
 		// Set teams
 		for (PlayerConnection player : chased) {
-			int index = 0;
 			setPlayerToChased(player, index);	
 			index++;
 		}
+		index = 0;
 		for (PlayerConnection player : chasers) {			
-			int index = 0;
+			
 			setPlayerToChaser(player, index);	
 			index++;			
 		}
 	}
 	private void setPlayerToChaser(PlayerConnection connection, int positionOffset){
-		Chaser chaser = new Chaser(33, 12 + (positionOffset), connection.getMyId(), connection);
+		Chaser chaser = new Chaser(13, 12 + (positionOffset), connection.getMyId(), connection);
 		connection.setEntity(chaser);		
 		gameSimulation.addChaser(chaser);
 	}

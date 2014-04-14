@@ -7,7 +7,7 @@ public abstract class Item {
 	
 	protected GameSimulation gameSimulation;
 	
-	public abstract void activate(int x, int y, PlayerConnection player);
+	public abstract boolean activate(int x, int y, PlayerConnection player);
 	
 	public Item(GameSimulation gameSimulation) {
 		this.gameSimulation = gameSimulation;

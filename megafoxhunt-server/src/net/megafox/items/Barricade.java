@@ -18,7 +18,7 @@ public class Barricade extends Item {
 	}
 
 	@Override
-	public void activate(int x, int y, PlayerConnection player) {		
+	public boolean activate(int x, int y, PlayerConnection player) {		
 		if (gameSimulation.gameMap.getEntity(x, y) instanceof Empty) {
 			int id = gameSimulation.idHandler.getFreeID();
 			AddBarricade addBarricade = new AddBarricade(id, x, y);
@@ -27,7 +27,9 @@ public class Barricade extends Item {
 			gameSimulation.gameMap.setWall(x, y);
 			gameSimulation.playerContainer.sendObjectToAll(addBarricade);
 			gameSimulation.timer.schedule(new RemoveBarricadeTimerTask(barricade), RemoveBarricadeTimerTask.REMOVE_DELAY);
+			return true;
 		}
+		return false;
 	}
 
 	class RemoveBarricadeTimerTask extends TimerTask {

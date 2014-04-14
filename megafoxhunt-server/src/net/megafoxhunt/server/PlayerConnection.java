@@ -75,8 +75,7 @@ public class PlayerConnection extends Connection {
 		Item item = getCurrentItem();
 		if (item == null) return;
 		else{
-			item.activate(getEntity().getX(), getEntity().getY(), this);
-			setCurrentItem(null);
+			if (item.activate(getEntity().getX(), getEntity().getY(), this)) setCurrentItem(null);
 		}			
 	}	
 	public Item getCurrentItem() {

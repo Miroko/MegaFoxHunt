@@ -18,12 +18,13 @@ import net.megafoxhunt.shared.KryoNetwork.ChangeState;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 
 
 public class GameMapClientSide {
 	
-	private static final int TILEDMAP_COLLISION_LAYER = 0;	
+	private static final int TILEDMAP_COLLISION_LAYER = 1;	
 
 	private GameMapSharedConfig config;
 
@@ -84,7 +85,9 @@ public class GameMapClientSide {
 	
 	public boolean isBlocked(int x, int y) {
 		TiledMapTileLayer m = (TiledMapTileLayer) tiledMap.getLayers().get(TILEDMAP_COLLISION_LAYER);
-		if (m.getCell(x, y).getTile().getProperties().containsKey("wall")) return true;
+		Cell cell = m.getCell(x, y);
+
+		if (cell != null && cell.getTile() != null && cell.getTile().getProperties().containsKey("wall")) return true;
 		
 		for (Barricade barricade : barricades) {
 			if (barricade.getX() == x && barricade.getY() == y) return true;
@@ -119,6 +122,6 @@ public class GameMapClientSide {
 	}
 
 	public void changeTile(int x, int y, int type) {
-		((TiledMapTileLayer)tiledMap.getLayers().get(0)).getCell(x, y).setTile(tiledMap.getTileSets().getTile(type));
+		((TiledMapTileLayer)tiledMap.getLayers().get(TILEDMAP_COLLISION_LAYER)).getCell(x, y).setTile(type == -1 ? null : tiledMap.getTileSets().getTile(type));
 	}
 }
