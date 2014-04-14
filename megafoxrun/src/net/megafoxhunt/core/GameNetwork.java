@@ -205,7 +205,7 @@ public class GameNetwork {
 					// TODO
 					// Refactor this to its own kryo command
 					for(User user : UserContainer.getUsersConcurrentSafe()){  
-						if (user.getControlledEntity().getId() == removeEntity.id) {
+						if (user != null && user.getControlledEntity() != null && user.getControlledEntity().getId() == removeEntity.id) {
 							user.setControlledEntity(null);	
 							 
 							MyGdxGame.resources.GOT_CAUGHT.play();

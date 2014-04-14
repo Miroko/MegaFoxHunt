@@ -6,7 +6,7 @@ public class Hole extends Entity {
 	private boolean holeCooldown;
 	
 	public Hole(int x, int y, int id) {
-		super(x, y, id, 0, Visibility.CHASED, null);
+		super(x, y, id, 0, Visibility.BOTH, null);
 		this.holeCooldown = false;
 	}
 	
