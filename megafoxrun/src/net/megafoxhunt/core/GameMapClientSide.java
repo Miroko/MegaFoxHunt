@@ -84,7 +84,7 @@ public class GameMapClientSide {
 	}
 	
 	public boolean isBlocked(int x, int y) {
-		if (x < 0 || x > config.getWidth() || y < 0 || y > config.getHeight()) return true;
+		if (x < 0 || x > config.getWidth() - 1 || y < 0 || y > config.getHeight() - 1) return true;
 		
 		TiledMapTileLayer m = (TiledMapTileLayer) tiledMap.getLayers().get(TILEDMAP_COLLISION_LAYER);
 		Cell cell = m.getCell(x, y);
