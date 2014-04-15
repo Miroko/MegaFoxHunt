@@ -24,6 +24,7 @@ import net.megafoxhunt.shared.KryoNetwork;
 import net.megafoxhunt.shared.KryoNetwork.AddPlayer;
 import net.megafoxhunt.shared.KryoNetwork.ChangeState;
 import net.megafoxhunt.shared.KryoNetwork.Move;
+import net.megafoxhunt.shared.KryoNetwork.PlayerReady;
 import net.megafoxhunt.shared.KryoNetwork.RemovePlayer;
 import net.megafoxhunt.shared.KryoNetwork.SetMap;
 
@@ -195,18 +196,19 @@ public class GameRoom extends Thread {
 			} 
 		}
 	}
-	public boolean allPlayersReady(){
-		boolean allReady = false;
+	public boolean canStart(float requiredPercentageReady){
+		boolean canStart = false;
 		int playersReady = 0;
+		int requiredPlayersReady = Math.round((playerContainer.getPlayersConcurrentSafe().size() * requiredPercentageReady));		
 		for(PlayerConnection player : playerContainer.getPlayersConcurrentSafe()){
 			if(player.isReady()){
 				playersReady++;
 			}
 		}
-		if(playersReady == playerContainer.getPlayersConcurrentSafe().size()){				
-			allReady = true;
+		if(playersReady >= requiredPlayersReady){				
+			canStart = true;
 		}
-		return allReady;
+		return canStart;
 	}
 	@SuppressWarnings("unchecked")
 	public void setChasedsAndChasers(){		
@@ -321,6 +323,11 @@ public class GameRoom extends Thread {
 				addPlayer.id = conn.getMyId();
 				addPlayer.name = conn.getName();
 				player.sendTCP(addPlayer);
+								
+				PlayerReady playerReady = new PlayerReady();
+				playerReady.id = conn.getMyId();
+				playerReady.ready = conn.isReady();
+				player.sendTCP(playerReady);
 			}
 		}
 		

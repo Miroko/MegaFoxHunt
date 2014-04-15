@@ -14,6 +14,10 @@ public class User {
 	public String getName(){return name;}
 	public void setName(String name){this.name = name;}
 	
+	private boolean ready = false;
+	public void setReady(boolean ready){this.ready = ready;}
+	public boolean getReady(){return ready;}
+	
 	private EntityMovable controlledEntity;
 	public void setControlledEntity(EntityMovable entity){controlledEntity = entity;}
 	public EntityMovable getControlledEntity(){return controlledEntity;}

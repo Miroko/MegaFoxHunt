@@ -22,7 +22,7 @@ public class PlayerConnection extends Connection {
 	
 	private boolean playerReady = false;
 	public boolean isReady(){return playerReady;}
-	public void setReady(){playerReady = true;}
+	public void setReady(boolean ready){playerReady = ready;}
 	
 	private boolean goInHole = false;
 	public void setGoInHole(boolean go){goInHole = go;}
