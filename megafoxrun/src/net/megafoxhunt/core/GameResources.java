@@ -69,7 +69,7 @@ public class GameResources {
 		 POWERRUP_TEXTURE = new Texture("data/powerup.png");
 		 POWERRUP_TEXTURE.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		 
-		 PICKUP_ITEM_TEXTURE = new Texture("data/pickup_item.png");
+		 PICKUP_ITEM_TEXTURE = new Texture("data/collectables.png");
 		 PICKUP_ITEM_TEXTURE.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		 
 		 BOMB_TEXTURE = new Texture("data/bomb.png");
