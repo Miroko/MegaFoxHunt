@@ -22,6 +22,7 @@ public class Entity {
 	private int facingDirection;
 	
 	// Anti hack
+	// TODO to player connection
 	private long lastDistanceCheckTime = 0;
 	private int distanceTraveledInSecond = 0;
 	private boolean cheating = false;
