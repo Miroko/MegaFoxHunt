@@ -31,6 +31,7 @@ import net.megafoxhunt.shared.KryoNetwork.AddPlayer;
 import net.megafoxhunt.shared.KryoNetwork.AddPowerup;
 import net.megafoxhunt.shared.KryoNetwork.ChangeState;
 import net.megafoxhunt.shared.KryoNetwork.ChangeTilesTypes;
+import net.megafoxhunt.shared.KryoNetwork.PlayerReady;
 import net.megafoxhunt.shared.KryoNetwork.PowerupSpeed;
 import net.megafoxhunt.shared.KryoNetwork.ChangeTilesTypes.Tile;
 import net.megafoxhunt.shared.KryoNetwork.Login;
@@ -77,25 +78,29 @@ public class GameNetwork {
 				 * WELCOME PLAYER
 				 */
 				if (object instanceof WelcomePlayer) {
-					WelcomePlayer welcomePlayer = (WelcomePlayer)object;
-					localUser.setID(welcomePlayer.id);
-					//DebugConsole.msg("Welcome, your id is: " + welcomePlayer.id);
+					WelcomePlayer welcomePlayer = (WelcomePlayer) object;
+					localUser.setID(welcomePlayer.id);					
 				}
 				/*
 				 * ADD USER
 				 */
 				else if (object instanceof AddPlayer) {
-					AddPlayer addPlayer = (AddPlayer)object;
-					UserContainer.addUser(new User(addPlayer.id, addPlayer.name));
-					//DebugConsole.msg("player joined: " + addPlayer.name + "(" + addPlayer.id + ")");
+					AddPlayer addPlayer = (AddPlayer) object;
+					UserContainer.addUser(new User(addPlayer.id, addPlayer.name));					
+				}
+				/*
+				 * PLAYER READY
+				 */
+				else if (object instanceof PlayerReady) {
+					PlayerReady playerReady = (PlayerReady) object;
+					UserContainer.getUserByID(playerReady.id).setReady(playerReady.ready);
 				}
 				/*
 				 * REMOVE USER
 				 */
 				else if (object instanceof RemovePlayer) {
-					RemovePlayer removePlayer = (RemovePlayer)object;
-					UserContainer.removeUserById(removePlayer.id);
-					//DebugConsole.msg("player left: (" + removePlayer.id + ")");
+					RemovePlayer removePlayer = (RemovePlayer) object;
+					UserContainer.removeUserById(removePlayer.id);					
 				} 
 				/*
 				 * WINNER				 

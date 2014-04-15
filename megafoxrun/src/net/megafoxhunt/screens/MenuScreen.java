@@ -25,7 +25,7 @@ public class MenuScreen implements Screen {
 	}
 	@Override
 	public void resize (int width, int height) {
-		stageUI.setViewport(MyGdxGame.VIRTUAL_WIDTH, MyGdxGame.VIRTUAL_HEIGHT, true);
+		stageUI.setViewport(width, height, true);
 	}
 	@Override
 	public void dispose() {

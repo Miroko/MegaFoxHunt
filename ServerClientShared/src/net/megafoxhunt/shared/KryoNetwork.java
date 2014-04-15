@@ -68,7 +68,8 @@ public class KryoNetwork {
 		public int roomState;
 	}
 	public static class PlayerReady {		
-		
+		public int id;
+		public boolean ready;
 	}
 	public static class SetPreferedTeam{
 		public static final String Chasers = "Chasers";

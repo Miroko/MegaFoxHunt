@@ -2,7 +2,7 @@ package net.megafoxhunt.ui;
 
 
 import net.megafoxhunt.core.MyGdxGame;
-
+import net.megafoxhunt.core.UserContainer;
 import net.megafoxhunt.shared.KryoNetwork.PlayerReady;
 import net.megafoxhunt.shared.KryoNetwork.SetPreferedTeam;
 
@@ -33,6 +33,8 @@ public class LobbyUI extends Table{
 			public void changed(ChangeEvent event, Actor actor) {		
 				if(startButton.isPressed()){					
 					PlayerReady playerReady = new PlayerReady();
+					playerReady.id = MyGdxGame.network.getLocalUser().getID();
+					playerReady.ready = true;
 					MyGdxGame.network.getKryoClient().sendTCP(playerReady);
 				}
 			}

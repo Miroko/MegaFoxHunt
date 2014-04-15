@@ -61,14 +61,21 @@ public class GameServer {
 				/*
 				 * PLAYER READY 
 				 */
-				else if (object instanceof PlayerReady) {				
-					playerConnection.setReady();
+				else if (object instanceof PlayerReady) {
+					PlayerReady playerReady = (PlayerReady) object;
+					playerConnection.setReady(playerReady.ready);
 					/*
-					 * START GAME IF EVERYONE READY
+					 * START GAME IF ENOUGH PLAYERS READY
 					 */
-					if(playerConnection.getMyCurrentRoom().allPlayersReady()){
+					if(playerConnection.getMyCurrentRoom().canStart(0.6f)){
 						serverRooms.startGame(playerConnection.getMyCurrentRoom());	
-					}									
+					}	
+					else{
+						/*
+						 * FORWARD READY TO OTHER PLAYERS
+						 */
+						playerConnection.getMyCurrentRoom().getPlayerContainer().sendObjectToAll(object);
+					}
 				}
 				/*
 				 * SET PREFERED TEAM 

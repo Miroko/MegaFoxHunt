@@ -1,7 +1,5 @@
 package net.megafoxhunt.ui;
 
-import java.text.Normalizer.Form;
-
 import net.megafoxhunt.core.MyGdxGame;
 
 

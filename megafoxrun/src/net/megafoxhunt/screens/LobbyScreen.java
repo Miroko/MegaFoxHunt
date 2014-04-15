@@ -1,11 +1,9 @@
 package net.megafoxhunt.screens;
 
-import net.megafoxhunt.core.MyGdxGame;
+
 import net.megafoxhunt.core.User;
 import net.megafoxhunt.core.UserContainer;
 import net.megafoxhunt.ui.LobbyUI;
-import net.megafoxhunt.ui.MenuUI;
-
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -48,8 +46,9 @@ public class LobbyScreen implements Screen {
 
 	    stageUI.act(Gdx.graphics.getDeltaTime());
 	    stageUI.draw();	
-               
+        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.update();
+
         batch.setProjectionMatrix(camera.combined);        
         
         batch.begin();
@@ -59,20 +58,19 @@ public class LobbyScreen implements Screen {
 	private void drawLobbyUsers(){	
 		for(int i = 0; i < UserContainer.numberOfUsers(); i++) {
 			User userToDraw = UserContainer.getUsersConcurrentSafe().get(i);
-			if(userToDraw == MyGdxGame.network.getLocalUser()){
-				// SELF
-		        font.setColor(Color.RED);
+			if(userToDraw.getReady() == true){
+		        font.setColor(Color.GREEN);
 			}
 			else{
-		        // OTHERS
-		        font.setColor(Color.WHITE);
-			}
-			font.draw(batch, userToDraw.getName(), 25, Gdx.graphics.getHeight() - ((i * 20) + 40));
+		        font.setColor(Color.RED);
+			}				
+			int posY = (int) (Gdx.graphics.getHeight() - (i*font.getLineHeight()));			
+			font.draw(batch, userToDraw.getName(), 20, posY);
 		}
 	}
 	@Override
-	public void resize (int width, int height) {
-		stageUI.setViewport(MyGdxGame.VIRTUAL_WIDTH, MyGdxGame.VIRTUAL_HEIGHT, true);
+	public void resize (int width, int height) {	
+		stageUI.setViewport(width, height, true);		
 	}
 
 	@Override
