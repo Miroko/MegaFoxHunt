@@ -84,6 +84,8 @@ public class GameMapClientSide {
 	}
 	
 	public boolean isBlocked(int x, int y) {
+		if (x < 0 || x > config.getWidth() || y < 0 || y > config.getHeight()) return true;
+		
 		TiledMapTileLayer m = (TiledMapTileLayer) tiledMap.getLayers().get(TILEDMAP_COLLISION_LAYER);
 		Cell cell = m.getCell(x, y);
 
@@ -92,6 +94,17 @@ public class GameMapClientSide {
 		for (Barricade barricade : barricades) {
 			if (barricade.getX() == x && barricade.getY() == y) return true;
 		}
+		
+		return false;
+	}
+	
+	public boolean isHole(int x, int y) {
+		if (x < 0 || x > config.getWidth() || y < 0 || y > config.getHeight()) return false;
+		
+		TiledMapTileLayer m = (TiledMapTileLayer) tiledMap.getLayers().get(TILEDMAP_COLLISION_LAYER);
+		Cell cell = m.getCell(x, y);
+
+		if (cell != null && cell.getTile() != null && cell.getTile().getProperties().containsKey("hole")) return true;
 		
 		return false;
 	}

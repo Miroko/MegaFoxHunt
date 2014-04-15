@@ -138,25 +138,6 @@ public class GameRoom extends Thread {
 		}
 	}
 	
-	public void generateHoles(int amount, IDHandler idHandler){
-		Random r = new Random();
-		Entity[][] collisionMap = currentMap.getCollisionMap();
-		
-		int x;
-		int y;		
-		
-		int holesAdded = 0;		
-		while(holesAdded < amount){
-			x = r.nextInt(currentMap.getWidth());
-			y = r.nextInt(currentMap.getHeight());
-			if(collisionMap[x][y].getClass().equals(Empty.class)){
-				Hole hole = new Hole(x, y, idHandler.getFreeID());
-				gameSimulation.addHole(hole);
-				currentMap.addEntity(hole);	
-				holesAdded++;
-			} 
-		}
-	}
 	public void addInitialPowerups(int amount, IDHandler idHandler){
 		Random r = new Random();
 		Entity[][] collisionMap = currentMap.getCollisionMap();
@@ -291,8 +272,8 @@ public class GameRoom extends Thread {
 	 * Set current map and inform players about the map
 	 * @param map
 	 */
-	public void changeMap(GameMapSharedConfig mapConfig){
-		currentMap = new GameMapServerSide(mapConfig);
+	public void changeMap(GameMapSharedConfig mapConfig, IDHandler idHandler){
+		currentMap = new GameMapServerSide(mapConfig, idHandler);
 		playerContainer.sendObjectToAll(new SetMap(currentMap.getName()));
 	}	
 	/**
@@ -358,9 +339,6 @@ public class GameRoom extends Thread {
 		return playerContainer;
 	}
 	
-	public void goToHole(PlayerConnection connection) {
-		gameSimulation.goToHole(connection);
-	}
 	/*
 	 * Removes all players from room
 	 */

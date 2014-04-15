@@ -71,11 +71,14 @@ public class Entity {
 	}
 	
 	private boolean collidesWithMap(int x, int y, GameMapServerSide map){
-		if(x > 0 && x < map.getWidth() && y > 0 && y < map.getHeight()){
+		if(x >= 0 && x < map.getWidth() && y >= 0 && y < map.getHeight()){
 			Entity[][] collisionMap = map.getCollisionMap();
 			if(collisionMap[x][y].getClass().equals(Wall.class)){
 				return true;					
-			} else{
+			} else if (collisionMap[x][y].getClass().equals(Hole.class)) {
+				if (((Hole)collisionMap[x][y]).isHoleCooldown()) return true;
+				else return false;
+			}else{
 				return false;
 			}
 		}

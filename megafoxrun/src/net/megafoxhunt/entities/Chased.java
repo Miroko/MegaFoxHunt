@@ -74,4 +74,15 @@ public class Chased extends EntityMovable{
 		else 
 			batch.draw(currentFrame, x - 0.33f, y, 1.6f, 1.0f);
 	}
+	
+	@Override
+	protected boolean isBlocked(int destX, int destY) {
+		if (direction == DIRECTION_UP && collisionMap.isHole((int)x, (int)y)) return true;
+		
+		if (collisionMap.isHole(destX, destY) && direction == DIRECTION_UP) return false;
+		
+		if (collisionMap.isBlocked(destX, destY)) return true;
+		
+		return false;
+	}
 }

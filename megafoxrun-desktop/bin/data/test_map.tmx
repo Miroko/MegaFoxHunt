@@ -92,6 +92,12 @@
     <property name="wall" value=""/>
    </properties>
   </tile>
+  <tile id="33">
+   <properties>
+    <property name="hole" value=""/>
+    <property name="wall" value=""/>
+   </properties>
+  </tile>
  </tileset>
  <layer name="bot" width="15" height="15">
   <data encoding="base64" compression="zlib">
@@ -100,7 +106,7 @@
  </layer>
  <layer name="collision" width="15" height="15">
   <data encoding="base64" compression="zlib">
-   eJwTYmBgkCID8wCxIAMEaDGQBgSR9MKAARZ1yGI6ePQyYFGHz158agjpRQasaHxxIJYgUi+xbiDkX3L1igKxGBb36GHRiy1uyLWXHL3oYaWPxEZOe/jsZWSApFtmHGai6yUlTYP0STKQl4+kgRgArjsHzQ==
+   eJwTYmBgkMKBlfDI8QCxIAMEaDFgAnUsYjAgiKQXBgywqEMW08GjlwGLOnz24lNDSC8yYEXjiwOxBJF6iXUDIf8S0svNgIhLZiQ5USAWw+IePSz24otLXPZS4mZCYaWPxEZOe/jsZWRADQN0M9H1oqdpQulZkgF3XsGHpYEYAKeKCFs=
   </data>
  </layer>
  <layer name="top" width="15" height="15">

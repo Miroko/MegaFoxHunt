@@ -7,11 +7,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 
 import net.megafox.entities.Berry;
 import net.megafox.entities.Empty;
 import net.megafox.entities.Entity;
+import net.megafox.entities.Hole;
 import net.megafox.entities.Wall;
+import net.megafoxhunt.server.IDHandler;
 import net.megafoxhunt.shared.GameMapSharedConfig;
 
 public class GameMapServerSide {
@@ -33,8 +36,14 @@ public class GameMapServerSide {
 	private Entity[][] collisionMap;
 	public Entity[][] getCollisionMap(){return collisionMap;}
 	
-	public GameMapServerSide(GameMapSharedConfig mapConfig){
+	private ArrayList<Hole> holes;
+	
+	private IDHandler idHandler;
+	
+	public GameMapServerSide(GameMapSharedConfig mapConfig, IDHandler idHandler){
 		this.config = mapConfig;
+		this.idHandler = idHandler;
+		holes = new ArrayList<Hole>();
 		loadCollisionMap(config.getBinaryMapPath());
 	}
 	private void loadCollisionMap(String path){
@@ -53,7 +62,13 @@ public class GameMapServerSide {
 			        int n = Integer.parseInt(nums[col]);
 			        
 			        // (height - 1 - row) to flip y 
-			        collisionMap[col][(getHeight() - 1) - row] = (n == 0 ? EMPTY : WALL);
+			        if (n == 0) collisionMap[col][(getHeight() - 1) - row] = EMPTY;
+			        else if (n == 1) collisionMap[col][(getHeight() - 1) - row] = WALL;
+			        else if (n == 2)  {
+			        	Hole hole = new Hole(col, getHeight() - 1 - row, idHandler.getFreeID());
+			        	holes.add(hole);
+			        	collisionMap[col][(getHeight() - 1) - row] = hole;
+			        }
 			    }
 			    row++;
 			}
@@ -82,6 +97,9 @@ public class GameMapServerSide {
 	}
 
 	public void setEmpty(int x, int y) {
+		if (collisionMap[x][y] instanceof Hole) {
+			holes.remove(collisionMap[x][y]);
+		}
 		collisionMap[x][y] = EMPTY;
 	}
 	
@@ -94,11 +112,13 @@ public class GameMapServerSide {
 	}
 	
 	public boolean canExplode(int x, int y) {
-		if (x <= 0 || x >= (getWidth() - 1) || y <= 0 || y >= (getHeight() - 1)) return false;
-		
-		if (collisionMap[x][y] == WALL) return true;
+		if (collisionMap[x][y] == WALL || collisionMap[x][y] instanceof Hole) return true;
 		
 		return false;
+	}
+
+	public ArrayList<Hole> getHoles() {
+		return holes;
 	}
 }
 

@@ -57,9 +57,6 @@ public class GameSimulation {
 	
 	private ArrayList<Entity> pickups;
 	public int getPickupsAmount(){return pickups.size();}
-	
-	private ArrayList<Entity> holes;
-	
 	public PlayerContainer playerContainer;
 
 	private Random random;
@@ -78,7 +75,6 @@ public class GameSimulation {
 		berries = new ArrayList<>();
 		powerups = new ArrayList<>();
 		pickups = new ArrayList<>();
-		holes = new ArrayList<>();
 		random = new Random();
 		timer = new Timer();
 	}
@@ -195,10 +191,6 @@ public class GameSimulation {
 	public void addPickupToRemove(PickupItem item){
 		removable.add(item);
 		gameMap.removeEntity(item);
-	}	
-	public void addHole(Hole hole) {
-		holes.add(hole);
-		playerContainer.sendObjectToAll(new AddHole(hole.getId(), hole.getX(), hole.getY()), hole.getVisibility());
 	}
 	
 	public void addHoleToRemove(Hole hole) {
@@ -291,37 +283,25 @@ public class GameSimulation {
 			addPickupToRemove(item);	
 		}
 	}
-	public void goToHole(PlayerConnection connection) {
-		if (connection.getEntity() instanceof Chased) {
-			connection.setGoInHole(true);
-			Entity playerEntity = connection.getEntity();
-			Entity targetEntity = gameMap.getEntity((int)playerEntity.getX(), (int)playerEntity.getY());
-			if (targetEntity instanceof Hole) {
-				holeCollisionDetected(playerEntity, (Hole)targetEntity);
-			}
-		}
-	}
 	
 	private void holeCollisionDetected(Entity entity, Hole hole) {
-		if(entity.getPlayer().isGoingInHole()){
-			if (!hole.isHoleCooldown()){
-				Entity targetHole = null;
-				while (targetHole == hole || targetHole == null) {
-					int i = random.nextInt(holes.size());
-					targetHole = holes.get(i);
-				}
-				
-				((Hole)targetHole).setHoleCooldown(true);
-				hole.setHoleCooldown(true);
-				
-				move(entity, targetHole.getX(), targetHole.getY(), Shared.DIRECTION_STOP, true);
-				playerContainer.sendObjectToAll(new Move(entity.getId(), Shared.DIRECTION_STOP, targetHole.getX(), targetHole.getY(), true), Visibility.BOTH);
-				
-				timer.schedule(new TimerListener(hole), 5000);
-				timer.schedule(new TimerListener(targetHole), 5000);	
+		if (!hole.isHoleCooldown()){
+			Entity targetHole = null;
+			while (targetHole == hole || targetHole == null) {
+				ArrayList<Hole> holes = gameMap.getHoles();
+				int i = random.nextInt(holes.size());
+				targetHole = holes.get(i);
 			}
-			entity.getPlayer().setGoInHole(false);
-		}				
+			
+			((Hole)targetHole).setHoleCooldown(true);
+			hole.setHoleCooldown(true);
+			
+			move(entity, targetHole.getX(), targetHole.getY() - 1, Shared.DIRECTION_STOP, true);
+			playerContainer.sendObjectToAll(new Move(entity.getId(), Shared.DIRECTION_STOP, targetHole.getX(), targetHole.getY() - 1, true), Visibility.BOTH);
+			
+			timer.schedule(new TimerListener(hole), 5000);
+			timer.schedule(new TimerListener(targetHole), 5000);	
+		}		
 	}
 	
 	class TimerListener extends TimerTask {
@@ -335,7 +315,8 @@ public class GameSimulation {
 
 		@Override
 		public void run() {
-			if (entity instanceof Hole)((Hole)entity).setHoleCooldown(false);			
+			if (entity == null) return;
+			else if (entity instanceof Hole)((Hole)entity).setHoleCooldown(false);			
 		}
 	}
 	class RageDeactivateTask extends TimerTask{

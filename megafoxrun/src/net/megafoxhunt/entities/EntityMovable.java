@@ -47,7 +47,7 @@ public abstract class EntityMovable extends Entity{
 	
 	private Move newMove;
 
-	private GameMapClientSide collisionMap;
+	protected GameMapClientSide collisionMap;
 	
 	private ConcurrentLinkedQueue<Move> movementQueue;
 	
@@ -111,10 +111,10 @@ public abstract class EntityMovable extends Entity{
 		else if (lastDirection == DIRECTION_DOWN) tmpY -= 1;
 		else if (lastDirection == DIRECTION_LEFT) tmpX -= 1;
 		
-		if (!collisionMap.isBlocked(destinationX, destinationY) && direction != DIRECTION_STOP) {
+		if (!isBlocked(destinationX, destinationY) && direction != DIRECTION_STOP) {
 			isMoving = true;
 			destinationDirection = direction;
-		} else if (!collisionMap.isBlocked(tmpX, tmpY) && direction != DIRECTION_STOP) {
+		} else if (!isBlocked(tmpX, tmpY) && direction != DIRECTION_STOP) {
 			isMoving = true;
 			destinationDirection = lastDirection;
 			destinationX = tmpX;
@@ -133,6 +133,10 @@ public abstract class EntityMovable extends Entity{
 				lastDirection = destinationDirection;
 			}
 		}
+	}
+	
+	protected boolean isBlocked(int destX, int destY) {
+		return collisionMap.isBlocked(destX, destY);
 	}
 	
 	private void moveTowardsDestination(float speed) {
