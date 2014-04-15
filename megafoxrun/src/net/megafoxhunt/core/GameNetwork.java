@@ -40,6 +40,7 @@ import net.megafoxhunt.shared.KryoNetwork.PowerupRage;
 import net.megafoxhunt.shared.KryoNetwork.RemoveEntity;
 import net.megafoxhunt.shared.KryoNetwork.RemovePlayer;
 import net.megafoxhunt.shared.KryoNetwork.SetMap;
+import net.megafoxhunt.shared.KryoNetwork.TunnelMove;
 import net.megafoxhunt.shared.KryoNetwork.WelcomePlayer;
 import net.megafoxhunt.shared.KryoNetwork.Winner;
 
@@ -223,9 +224,17 @@ public class GameNetwork {
 				 * MOVE ENTITY
 				 */
 				else if (object instanceof Move) {
-					Move move = (Move)object;					
+					Move move = (Move) object;					
 					EntityMovable entity = (EntityMovable)UserContainer.getUserByID(move.id).getControlledEntity();
 					if (entity != null) entity.move(move);
+				}	
+				/*
+				 * TUNNEL MOVE
+				 */
+				else if (object instanceof TunnelMove) {
+					TunnelMove tunnelMove = (TunnelMove) object;					
+					EntityMovable entity = (EntityMovable)UserContainer.getUserByID(tunnelMove.id).getControlledEntity();
+					if (entity != null) entity.setPosition(tunnelMove.x, tunnelMove.y);
 				}	
 				/*
 				 * POWERUP SPEED

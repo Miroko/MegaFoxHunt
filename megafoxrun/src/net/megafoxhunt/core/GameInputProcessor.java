@@ -3,9 +3,9 @@ package net.megafoxhunt.core;
 
 import net.megafoxhunt.entities.EntityMovable;
 
+
 import net.megafoxhunt.ui.TouchJoystick;
 import net.megafoxhunt.shared.KryoNetwork.ActivateItem;
-import net.megafoxhunt.shared.KryoNetwork.GoInHole;
 
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Gdx;
@@ -65,9 +65,11 @@ public class GameInputProcessor extends InputAdapter implements GestureListener 
 		if (k == Keys.SPACE) {
 			network.getKryoClient().sendTCP(new ActivateItem());
 		}
+		/*
 		if(k == Keys.ENTER){
 			network.getKryoClient().sendTCP(new GoInHole());
 		}
+		*/
 		return true;
 	}
 

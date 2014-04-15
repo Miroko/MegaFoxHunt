@@ -10,7 +10,8 @@ public class Entity {
 		CHASER, CHASED, BOTH;
 	};
 	
-	private PlayerConnection player;
+	private PlayerConnection player;	
+	private Visibility visibility;
 		
 	private int id;
 	
@@ -19,8 +20,11 @@ public class Entity {
 	private int lastX;
 	private int lastY;
 	private int facingDirection;
-
-	private Visibility visibility;
+	
+	// Anti hack
+	private long lastDistanceCheckTime = 0;
+	private int distanceTraveledInSecond = 0;
+	private boolean cheating = false;
 	
 	public Entity(int x, int y, int id, int speed, Visibility visibility, PlayerConnection player){
 		this.x = x;
@@ -39,7 +43,11 @@ public class Entity {
 	 * @param direction
 	 * @param collisionMap
 	 */
-	public boolean move(int x, int y, int direction, GameMapServerSide map, boolean force) {
+	public boolean move(int x, int y, int direction, GameMapServerSide map, boolean tunnelMove) {
+		if(tunnelMove){
+			distanceTraveledInSecond = 0;
+		}
+		
 		int targetX = x;
 		int targetY = y;
 		if (direction == Shared.DIRECTION_RIGHT) targetX++;
@@ -47,9 +55,11 @@ public class Entity {
 		else if (direction == Shared.DIRECTION_UP) targetY++;
 		else if (direction == Shared.DIRECTION_DOWN) targetY--;
 		
+		/*
 		if (!force) {
 			if (Math.sqrt((targetX - this.x) * (targetX - this.x) + (targetY - this.y) * (targetY - this.y)) > 3) return false;
 		}
+		*/
 		
 		if(!collidesWithMap(targetX, targetY, map)) {
 			if (direction == Shared.DIRECTION_STOP) {
@@ -68,6 +78,63 @@ public class Entity {
 		}
 		
 		return false;
+	}
+	public boolean networkMove(int x, int y, int direction, GameMapServerSide map){
+		if(cheating == false){
+			int newX = x;
+			int newY = y;
+			if (direction == Shared.DIRECTION_RIGHT) newX++;
+			else if (direction == Shared.DIRECTION_LEFT) newX--;
+			else if (direction == Shared.DIRECTION_UP) newY++;
+			else if (direction == Shared.DIRECTION_DOWN) newY--;
+	
+			if(collidesWithMap(newX, newY, map)) {
+				return false;
+			}	
+			else{
+				if (direction == Shared.DIRECTION_STOP) {
+					lastX = newX;
+					lastY = newY;
+				} else {
+					lastX = this.x;
+					lastY = this.y;
+				}
+				this.x = newX;
+				this.y = newY;
+				
+				if (direction != 0) facingDirection = direction;
+				
+				/*
+				 * SPEED HACK PREVENTION
+				 */				
+				long currentTime = System.currentTimeMillis();
+				long delta = currentTime - lastDistanceCheckTime;		
+	
+				distanceTraveledInSecond += Math.sqrt((this.x - x) * (this.x - x) + (this.y - y) * (this.y - y));
+				
+				// Check every second
+				if(delta > 1000){						
+					if(this instanceof Chased){
+						if(distanceTraveledInSecond > 6 && this.getPlayer().isSpeedOn() == false){
+							cheating = true;
+							return false;
+						}
+					}
+					else if (this instanceof Chaser){
+						if(distanceTraveledInSecond > 7 && this.getPlayer().isSpeedOn() == false){
+							cheating = true;
+							return false;
+						}
+					}
+					distanceTraveledInSecond = 0;
+					lastDistanceCheckTime = currentTime;
+				}					
+				return true;
+			}
+		}
+		else{
+			return false;
+		}
 	}
 	
 	private boolean collidesWithMap(int x, int y, GameMapServerSide map){

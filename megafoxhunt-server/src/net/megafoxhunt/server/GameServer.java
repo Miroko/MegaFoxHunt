@@ -2,17 +2,19 @@ package net.megafoxhunt.server;
 
 import java.io.IOException;
 
+
 import net.megafox.gameroom.GameRoom;
 import net.megafoxhunt.server.PlayerConnection.Team;
 import net.megafoxhunt.shared.KryoNetwork;
 
 import net.megafoxhunt.shared.KryoNetwork.ActivateItem;
-import net.megafoxhunt.shared.KryoNetwork.GoInHole;
+
 import net.megafoxhunt.shared.KryoNetwork.Login;
 import net.megafoxhunt.shared.KryoNetwork.Message;
 import net.megafoxhunt.shared.KryoNetwork.Move;
 import net.megafoxhunt.shared.KryoNetwork.PlayerReady;
 import net.megafoxhunt.shared.KryoNetwork.SetPreferedTeam;
+import net.megafoxhunt.shared.KryoNetwork.TunnelMove;
 
 import net.megafoxhunt.shared.KryoNetwork.WelcomePlayer;
 
@@ -55,8 +57,18 @@ public class GameServer {
 				 * MOVE 
 				 */
 				else if (object instanceof Move) {
-					Move move = (Move)object;
-					playerConnection.getMyCurrentRoom().move(playerConnection, move);
+					Move move = (Move)object;										
+					boolean validMove = playerConnection.getEntity().networkMove(move.x, move.y, move.direction, playerConnection.getMyCurrentRoom().getCurrentMap());
+					if(validMove){
+						playerConnection.getMyCurrentRoom().moveCollisionCheck(playerConnection, move);
+						playerConnection.getMyCurrentRoom().getPlayerContainer().sendObjectToAllExcept(playerConnection, move);
+					}
+					else {
+						// Client updates his position before sending move to server
+						// So we need to tell him to move back
+						TunnelMove backMove = new TunnelMove(playerConnection.getEntity().getId(), playerConnection.getEntity().getX(), playerConnection.getEntity().getY());
+						playerConnection.sendTCP(backMove);
+					}
 				}
 				/*
 				 * PLAYER READY 
@@ -95,11 +107,7 @@ public class GameServer {
 				else if (object instanceof ActivateItem) {
 					playerConnection.activateItem();
 				}
-				/**
-				 * GO IN HOLE
-				 */
-				else if (object instanceof GoInHole) {
-				}
+
 			}
 			
 			@Override
