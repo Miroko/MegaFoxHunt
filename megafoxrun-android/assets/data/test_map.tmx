@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="15" height="15" tilewidth="64" tileheight="64">
  <tileset firstgid="1" name="atlas" tilewidth="64" tileheight="64">
-  <image source="atlas.png" width="512" height="512"/>
+  <image source="atlas.png" width="1024" height="512"/>
   <tile id="0">
    <properties>
     <property name="wall" value=""/>
@@ -57,29 +57,34 @@
     <property name="wall" value=""/>
    </properties>
   </tile>
-  <tile id="20">
+  <tile id="19">
    <properties>
     <property name="wall" value=""/>
+   </properties>
+  </tile>
+  <tile id="20">
+   <properties>
+    <property name="" value=""/>
    </properties>
   </tile>
   <tile id="21">
    <properties>
-    <property name="wall" value=""/>
+    <property name="" value=""/>
    </properties>
   </tile>
   <tile id="22">
    <properties>
-    <property name="wall" value=""/>
+    <property name="" value=""/>
    </properties>
   </tile>
   <tile id="23">
    <properties>
-    <property name="wall" value=""/>
+    <property name="" value=""/>
    </properties>
   </tile>
   <tile id="24">
    <properties>
-    <property name="wall" value=""/>
+    <property name="" value=""/>
    </properties>
   </tile>
   <tile id="25">
@@ -92,7 +97,52 @@
     <property name="wall" value=""/>
    </properties>
   </tile>
+  <tile id="32">
+   <properties>
+    <property name="wall" value=""/>
+   </properties>
+  </tile>
   <tile id="33">
+   <properties>
+    <property name="wall" value=""/>
+   </properties>
+  </tile>
+  <tile id="34">
+   <properties>
+    <property name="wall" value=""/>
+   </properties>
+  </tile>
+  <tile id="36">
+   <properties>
+    <property name="wall" value=""/>
+   </properties>
+  </tile>
+  <tile id="37">
+   <properties>
+    <property name="wall" value=""/>
+   </properties>
+  </tile>
+  <tile id="39">
+   <properties>
+    <property name="wall" value=""/>
+   </properties>
+  </tile>
+  <tile id="48">
+   <properties>
+    <property name="wall" value=""/>
+   </properties>
+  </tile>
+  <tile id="49">
+   <properties>
+    <property name="wall" value=""/>
+   </properties>
+  </tile>
+  <tile id="50">
+   <properties>
+    <property name="wall" value=""/>
+   </properties>
+  </tile>
+  <tile id="65">
    <properties>
     <property name="hole" value=""/>
     <property name="wall" value=""/>
@@ -101,17 +151,17 @@
  </tileset>
  <layer name="bot" width="15" height="15">
   <data encoding="base64" compression="zlib">
-   eJzTZGBg0BzFo3gUDxgGAKcZJAo=
+   eJwLZGBgCBzFo3gUDxgGAL1bRzI=
   </data>
  </layer>
  <layer name="collision" width="15" height="15">
   <data encoding="base64" compression="zlib">
-   eJwTYmBgkMKBlfDI8QCxIAMEaDFgAnUsYjAgiKQXBgywqEMW08GjlwGLOnz24lNDSC8yYEXjiwOxBJF6iXUDIf8S0svNgIhLZiQ5USAWw+IePSz24otLXPZS4mZCYaWPxEZOe/jsZWRADQN0M9H1oqdpQulZkgF3XsGHpYEYAKeKCFs=
+   eJxTYmBgMMKBnfDIiQCxIgMEBDFgAncsYjCgiKQXBiKwqEMWC8GjlwGLOnz24lNDSC8yYMWiToNIvcS6gZB/CekVZkDEJTOSnCoQq2FxTxgWe/HFJS57KXEzobAKR2Ijpz189jIyoIYBupnoetHTNKH0bMiAO6/gw8ZADABqJQ+0
   </data>
  </layer>
  <layer name="top" width="15" height="15">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFyIAfiAUG2hFEAl4g5htoR4wCigEAfzAAOw==
+   eJxjYBh+gB2IOYCYkwy94kAsAcSSVHURbYAoEIsNtCNGAcUAAD9jAIw=
   </data>
  </layer>
 </map>
