@@ -21,7 +21,7 @@ public class Bomb extends Entity{
 		currentFrame = animations[animationNumber].getKeyFrame(stateTime, true);
 		int frameIndex = (int) (stateTime / 0.125);
 		
-		if (frameIndex >= 18) shouldBeRemoved = true;
+		if (frameIndex >= 16) shouldBeRemoved = true;
 		if (shouldBeRemoved) return;
 		
 		if (frameIndex <= 8) { 

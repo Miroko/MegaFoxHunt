@@ -23,15 +23,9 @@ public class GameResources {
 	public Texture DEBUG_TEXTURE;
 	public Texture FOX_TEXTURE;
 	public Texture DOG_TEXTURE;
-	public Texture BERRY_TEXTURE;
-	public Texture HOLE_TEXTURE;
-	public Texture BARRICADE_TEXTURE;
-	public Texture POWERRUP_TEXTURE;
-	public Texture BOMB_TEXTURE;
-	public Texture PICKUP_ITEM_TEXTURE;
+	public Texture ITEMS_TEXTURE;
 	
 	public Animation[] BERRY_ANIMATIONS = new Animation[10];
-	public Animation[] HOLE_ANIMATIONS = new Animation[10];
 	public Animation[] BARRICADE_ANIMATIONS = new Animation[10];
 	public Animation[] FOX_ANIMATIONS = new Animation[10];
 	public Animation[] DOG_ANIMATIONS  = new Animation[10];
@@ -57,6 +51,7 @@ public class GameResources {
 	public Sound BOMB_FUSE;
 	public Sound BARRICADE_BUILD;
 	public Sound PICKUP;	
+	public Sound BUBBLE;
 	public Sound MENU_BUTTON;
 	public Sound CAUGHT;
 	public Sound GOT_CAUGHT;
@@ -66,39 +61,22 @@ public class GameResources {
 	public void init(){						
 		 DEBUG_TEXTURE = new Texture("data/libgdx.png");
 		 
-		 POWERRUP_TEXTURE = new Texture("data/powerup.png");
-		 POWERRUP_TEXTURE.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		 
-		 PICKUP_ITEM_TEXTURE = new Texture("data/collectables.png");
-		 PICKUP_ITEM_TEXTURE.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		 
-		 BOMB_TEXTURE = new Texture("data/bomb.png");
-		 BOMB_TEXTURE.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		 
 		 FOX_TEXTURE = new Texture("data/fox.png");
 		 FOX_TEXTURE.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		 
 		 DOG_TEXTURE = new Texture("data/dog.png");
 		 DOG_TEXTURE.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		 
-		 BERRY_TEXTURE = new Texture("data/berry.png");
-		 BERRY_TEXTURE.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		 ITEMS_TEXTURE = new Texture("data/items.png");
+		 ITEMS_TEXTURE.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		 
-		 HOLE_TEXTURE = new Texture("data/hole.png");
-		 HOLE_TEXTURE.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		 BOMB_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(ITEMS_TEXTURE, 0.125f, 0, 312, 120, 120 , 2, 8);
+		 BARRICADE_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(ITEMS_TEXTURE, 1f, 0, 552, 80, 80 , 1, 1);
+		 BERRY_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(ITEMS_TEXTURE, 0.042f, 0, 0, 64, 64 , 2, 10);
+		 PICKUP_ITEM_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(ITEMS_TEXTURE, 0.066f, 0, 128, 64, 64, 1, 12);
+		 PICKUP_ITEM_ANIMATIONS[FOURTH_ANIMATION] = generateAnimation(ITEMS_TEXTURE, 0.066f, 0, 192, 120, 120, 1, 7);
+		 POWERRUP_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(ITEMS_TEXTURE, 1f, 0, 632, 80, 80, 1, 1);
 		 
-		 BARRICADE_TEXTURE = new Texture("data/barricade.png");
-		 BARRICADE_TEXTURE.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		 
-		 POWERRUP_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(POWERRUP_TEXTURE, 0.025f, 1, 1);
-		 
-		 PICKUP_ITEM_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(PICKUP_ITEM_TEXTURE, 0.025f, 1, 1);
-		 
-		 BOMB_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(BOMB_TEXTURE, 0.125f, 0, 0, 120, 120 , 1, 18);
-		 
-		 BERRY_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(BERRY_TEXTURE, 0.042f, 0, 0, 64, 64 , 1, 20);
-		 HOLE_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(HOLE_TEXTURE, 1f, 1, 1);
-		 BARRICADE_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(BARRICADE_TEXTURE, 1f, 1, 1);
 		 
 		 FOX_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(FOX_TEXTURE, 0.042f, 0, 0, 104, 64 , 1, 10);
 		 FOX_ANIMATIONS[FRONT_ANIMATION] = generateAnimation(FOX_TEXTURE, 0.042f, 0, 64, 64, 104 , 1, 10);
@@ -139,7 +117,9 @@ public class GameResources {
 		 MENU_BUTTON = Gdx.audio.newSound(Gdx.files.internal("data/audio/bomb_explosion.mp3"));	
 		 
 		 CAUGHT = Gdx.audio.newSound(Gdx.files.internal("data/audio/bomb_explosion.mp3"));	
-		 GOT_CAUGHT = Gdx.audio.newSound(Gdx.files.internal("data/audio/bomb_explosion.mp3"));	
+		 GOT_CAUGHT = Gdx.audio.newSound(Gdx.files.internal("data/audio/bomb_explosion.mp3"));
+		 
+		 BUBBLE = Gdx.audio.newSound(Gdx.files.internal("data/audio/bubble.mp3"));
 	
 		 BASIC_FONT = new BitmapFont();
 	}
@@ -189,16 +169,11 @@ public class GameResources {
 		MENU_BUTTON.dispose();
 		CAUGHT.dispose();
 		GOT_CAUGHT.dispose();
+		BUBBLE.dispose();
 		
 		DEBUG_TEXTURE.dispose();
 		FOX_TEXTURE.dispose();
 		DOG_TEXTURE.dispose();
-		BERRY_TEXTURE.dispose();
-		HOLE_TEXTURE.dispose();
-		BARRICADE_TEXTURE.dispose();
-		POWERRUP_TEXTURE.dispose();
-		BOMB_TEXTURE.dispose();
-		PICKUP_ITEM_TEXTURE.dispose();
 			
 		connectButtonTexture.dispose();
 		quitButtonTexture.dispose();

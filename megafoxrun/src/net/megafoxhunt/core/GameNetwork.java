@@ -12,7 +12,6 @@ import net.megafoxhunt.entities.Bomb;
 import net.megafoxhunt.entities.Chased;
 import net.megafoxhunt.entities.Chaser;
 import net.megafoxhunt.entities.EntityMovable;
-import net.megafoxhunt.entities.Hole;
 import net.megafoxhunt.entities.PickupItem;
 import net.megafoxhunt.entities.Powerup;
 import net.megafoxhunt.screens.GameScreen;
@@ -178,8 +177,6 @@ public class GameNetwork {
 				 * ADD HOLE TO MAP
 				 */
 				else if (object instanceof AddHole) {
-					AddHole addHole = (AddHole)object;
-					MyGdxGame.mapHandler.currentMap.addStaticObject(new Hole(addHole.id, addHole.x, addHole.y));
 				}
 				/**
 				 * ADD BARRICADE
