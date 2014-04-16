@@ -296,8 +296,8 @@ public class GameSimulation {
 			((Hole)targetHole).setHoleCooldown(true);
 			hole.setHoleCooldown(true);
 			
-			move(entity, targetHole.getX(), targetHole.getY() - 1, Shared.DIRECTION_STOP, true);
-			playerContainer.sendObjectToAll(new Move(entity.getId(), Shared.DIRECTION_STOP, targetHole.getX(), targetHole.getY() - 1, true), Visibility.BOTH);
+			move(entity, targetHole.getX(), targetHole.getY(), Shared.DIRECTION_DOWN, true);
+			playerContainer.sendObjectToAll(new Move(entity.getId(), Shared.DIRECTION_DOWN, targetHole.getX(), targetHole.getY(), true), Visibility.BOTH);
 			
 			timer.schedule(new TimerListener(hole), 5000);
 			timer.schedule(new TimerListener(targetHole), 5000);	

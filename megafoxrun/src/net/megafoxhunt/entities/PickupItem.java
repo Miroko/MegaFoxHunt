@@ -24,7 +24,7 @@ public class PickupItem extends Entity{
 		if (removing) {
 			animationNumber = GameResources.FOURTH_ANIMATION;
 			if (animations[animationNumber].isAnimationFinished(stateTime)) shouldBeRemoved = true;
-			else batch.draw(currentFrame, x, y, 1, 1);
+			else batch.draw(currentFrame, x - 0.25f, y - 0.25f, 1.5f, 1.5f);
 		} else {
 			batch.draw(currentFrame, x, y, 1, 1);
 		}
