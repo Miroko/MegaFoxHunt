@@ -2,6 +2,7 @@ package net.megafox.entities;
 
 import net.megafox.game.GameMapServerSide;
 import net.megafoxhunt.server.PlayerConnection;
+import net.megafoxhunt.shared.KryoNetwork.TunnelMove;
 import net.megafoxhunt.shared.Shared;
 
 public class Entity {
@@ -25,7 +26,6 @@ public class Entity {
 	// TODO to player connection
 	private long lastDistanceCheckTime = 0;
 	private int distanceTraveledInSecond = 0;
-	private boolean cheating = false;
 	
 	public Entity(int x, int y, int id, int speed, Visibility visibility, PlayerConnection player){
 		this.x = x;
@@ -80,8 +80,7 @@ public class Entity {
 		
 		return false;
 	}
-	public boolean networkMove(int x, int y, int direction, GameMapServerSide map){
-		if(cheating == false){
+	public boolean networkMove(int x, int y, int direction, GameMapServerSide map){		
 			int newX = x;
 			int newY = y;
 			if (direction == Shared.DIRECTION_RIGHT) newX++;
@@ -117,13 +116,15 @@ public class Entity {
 				if(delta > 1000){						
 					if(this instanceof Chased){
 						if(distanceTraveledInSecond > 6 && this.getPlayer().isSpeedOn() == false){
-							cheating = true;
+							this.x = lastX;
+							this.y = lastY;
 							return false;
 						}
 					}
 					else if (this instanceof Chaser){
-						if(distanceTraveledInSecond > 7 && this.getPlayer().isSpeedOn() == false){
-							cheating = true;
+						if(distanceTraveledInSecond > 7 && this.getPlayer().isSpeedOn() == false){		
+							this.x = lastX;
+							this.y = lastY;
 							return false;
 						}
 					}
@@ -132,11 +133,8 @@ public class Entity {
 				}					
 				return true;
 			}
-		}
-		else{
-			return false;
-		}
 	}
+
 	
 	private boolean collidesWithMap(int x, int y, GameMapServerSide map){
 		if(x >= 0 && x < map.getWidth() && y >= 0 && y < map.getHeight()){
