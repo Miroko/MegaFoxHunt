@@ -127,7 +127,7 @@ public abstract class EntityMovable extends Entity{
 		
 		if (network.getLocalUser().getControlledEntity() == this) {
 			if (!((int)x == lastX && (int)y == lastY && lastDirection == destinationDirection)) {
-				Move move = new Move(id, destinationDirection, (int)x, (int)y);
+				Move move = new Move(id, destinationDirection, (int)x, (int)y);				
 				network.getKryoClient().sendTCP(move);
 				lastX = (int)x;
 				lastY = (int)y;
@@ -176,7 +176,7 @@ public abstract class EntityMovable extends Entity{
 		this.y = y;
 		
 		isMoving = false;
-		setDirection(Shared.DIRECTION_STOP);
+		setDirection(Shared.DIRECTION_DOWN);
 		newMove = null;
 		movementQueue.clear();
 		

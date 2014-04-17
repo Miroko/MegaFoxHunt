@@ -30,7 +30,6 @@ import net.megafoxhunt.shared.KryoNetwork.AddChaser;
 import net.megafoxhunt.shared.KryoNetwork.AddChased;
 import net.megafoxhunt.shared.KryoNetwork.AddPowerup;
 import net.megafoxhunt.shared.KryoNetwork.AddBerry;
-import net.megafoxhunt.shared.KryoNetwork.AddHole;
 import net.megafoxhunt.shared.KryoNetwork.TunnelMove;
 import net.megafoxhunt.shared.KryoNetwork.Move;
 import net.megafoxhunt.shared.KryoNetwork.PowerupRage;
@@ -294,7 +293,7 @@ public class GameSimulation {
 			hole.setHoleCooldown(true);
 
 			entity.move(targetHole.getX(), targetHole.getY() - 1, Shared.DIRECTION_STOP, gameMap, true);
-			playerContainer.sendObjectToAll(new TunnelMove(entity.getId(), entity.getX(), entity.getY()));
+			playerContainer.sendObjectToAll(new TunnelMove(entity.getPlayer().getMyId(), entity.getX(), entity.getY()));
 			
 			timer.schedule(new TimerListener(hole), 5000);
 			timer.schedule(new TimerListener(targetHole), 5000);	

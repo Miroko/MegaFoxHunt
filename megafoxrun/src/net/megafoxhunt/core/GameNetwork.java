@@ -221,7 +221,8 @@ public class GameNetwork {
 				 * MOVE ENTITY
 				 */
 				else if (object instanceof Move) {
-					Move move = (Move) object;					
+					Move move = (Move) object;	
+					System.out.println(move.id);
 					EntityMovable entity = (EntityMovable)UserContainer.getUserByID(move.id).getControlledEntity();
 					if (entity != null) entity.move(move);
 				}	

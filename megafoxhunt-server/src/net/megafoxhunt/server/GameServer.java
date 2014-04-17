@@ -66,7 +66,7 @@ public class GameServer {
 					else {
 						// Client updates his position before sending move to server
 						// So we need to tell him to move back
-						TunnelMove backMove = new TunnelMove(playerConnection.getEntity().getId(), playerConnection.getEntity().getX(), playerConnection.getEntity().getY());
+						TunnelMove backMove = new TunnelMove(playerConnection.getEntity().getPlayer().getMyId(), playerConnection.getEntity().getX(), playerConnection.getEntity().getY());
 						playerConnection.sendTCP(backMove);
 					}
 				}
