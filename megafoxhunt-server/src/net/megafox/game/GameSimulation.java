@@ -296,6 +296,7 @@ public class GameSimulation {
 			((Hole)targetHole).setHoleCooldown(true);
 			hole.setHoleCooldown(true);
 			
+			
 			move(entity, targetHole.getX(), targetHole.getY(), Shared.DIRECTION_DOWN, true);
 			playerContainer.sendObjectToAll(new Move(entity.getId(), Shared.DIRECTION_DOWN, targetHole.getX(), targetHole.getY(), true), Visibility.BOTH);
 			
