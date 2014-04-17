@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 
 
+
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -29,7 +30,7 @@ import net.megafoxhunt.shared.KryoNetwork.AddChaser;
 import net.megafoxhunt.shared.KryoNetwork.AddChased;
 import net.megafoxhunt.shared.KryoNetwork.AddPowerup;
 import net.megafoxhunt.shared.KryoNetwork.AddBerry;
-import net.megafoxhunt.shared.KryoNetwork.AddHole;
+import net.megafoxhunt.shared.KryoNetwork.TunnelMove;
 import net.megafoxhunt.shared.KryoNetwork.Move;
 import net.megafoxhunt.shared.KryoNetwork.PowerupRage;
 import net.megafoxhunt.shared.KryoNetwork.PowerupSpeed;
@@ -155,8 +156,8 @@ public class GameSimulation {
 		}
 	}
 	private void reSpawnChaser(Chaser chaser){		
-		move(chaser, 33, 12, Shared.DIRECTION_STOP, true);
-		playerContainer.sendObjectToAll(new Move(chaser.getId(), Shared.DIRECTION_STOP, chaser.getX(), chaser.getY(), true), Visibility.BOTH);
+		chaser.move(33, 12, Shared.DIRECTION_STOP, gameMap, true);
+		playerContainer.sendObjectToAll(new Move(chaser.getId(), Shared.DIRECTION_STOP, chaser.getX(), chaser.getY()), Visibility.BOTH);
 	}
 	public void addPowerup(Powerup powerup){
 		powerups.add(powerup);		
@@ -196,12 +197,11 @@ public class GameSimulation {
 	public void addHoleToRemove(Hole hole) {
 		removable.add(hole);
 		gameMap.removeEntity(hole);
-	}
-	
-	public void move(Entity entity, int x, int y, int direction, boolean force) {
-		if (entity.move(x, y, direction, gameMap, force)) {
-			playerContainer.sendObjectToAllExcept(entity.getPlayer(), new Move(entity.getId(), direction, x, y, force));	
+	}	
+	public void checkCollision(Entity entity, int x, int y, int direction) {	
+			// static entities
 			Entity collidedEntity = gameMap.getEntity(x, y);
+			
 			if (entity instanceof Chased) {
 				if (collidedEntity instanceof Berry)  {
 					addBerryToRemove((Berry)collidedEntity);
@@ -214,12 +214,12 @@ public class GameSimulation {
 			} else if(collidedEntity instanceof PickupItem){
 				pickupCollision((PickupItem) collidedEntity, entity);
 			}
-			
+
+			// dynamic entities
 			int entityX = entity.getX();
 			int entityY = entity.getY();
 			int entityLastX = entity.getLastX();
-			int entityLastY = entity.getLastY();
-			
+			int entityLastY = entity.getLastY();				
 			if (entity instanceof Chased) {
 				for (Entity chaser : chasers) {
 					if (entityX == chaser.getX() && entityY == chaser.getY() ||
@@ -242,11 +242,7 @@ public class GameSimulation {
 						else removable.add(chased);
 					}
 				}
-			}
-		} else {
-			Move backMove = new Move(entity.getId(), 0, entity.getX(), entity.getY(), true);
-			entity.getPlayer().sendTCP(backMove);
-		}
+		}		
 	}
 	
 	private void powerupCollisionDetected(Powerup powerup, Entity collidedEntity) {	
@@ -295,9 +291,9 @@ public class GameSimulation {
 			
 			((Hole)targetHole).setHoleCooldown(true);
 			hole.setHoleCooldown(true);
-			
-			move(entity, targetHole.getX(), targetHole.getY(), Shared.DIRECTION_DOWN, true);
-			playerContainer.sendObjectToAll(new Move(entity.getId(), Shared.DIRECTION_DOWN, targetHole.getX(), targetHole.getY(), true), Visibility.BOTH);
+
+			entity.move(targetHole.getX(), targetHole.getY() - 1, Shared.DIRECTION_STOP, gameMap, true);
+			playerContainer.sendObjectToAll(new TunnelMove(entity.getPlayer().getMyId(), Shared.DIRECTION_DOWN, entity.getX(), entity.getY()));
 			
 			timer.schedule(new TimerListener(hole), 5000);
 			timer.schedule(new TimerListener(targetHole), 5000);	

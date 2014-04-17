@@ -31,7 +31,7 @@ public class KryoNetwork {
 		kryo.register(ChangeTilesTypes.class);
 		kryo.register(ArrayList.class);
 		kryo.register(ChangeTilesTypes.Tile.class);
-		kryo.register(GoInHole.class);
+		kryo.register(TunnelMove.class);
 		kryo.register(PowerupSpeed.class);
 		kryo.register(PowerupRage.class);
 		kryo.register(AddPowerup.class);
@@ -208,19 +208,28 @@ public class KryoNetwork {
 		public int direction;
 		public int x;
 		public int y;
-		public boolean force = false;
 		
 		public Move() { }
-		public Move(int id, int direction, int x, int y, boolean force) {
+		public Move(int id, int direction, int x, int y) {
 			this.id = id;
 			this.direction = direction;
 			this.x = x;
 			this.y = y;
-			this.force = force;
 		}
 	}
-	public static class GoInHole {		
+	public static class TunnelMove {		
+		public int id;
+		public int direction;
+		public int x;
+		public int y;
 		
+		public TunnelMove() { }
+		public TunnelMove(int id, int direction, int x, int y) {
+			this.direction = direction;
+			this.id = id;
+			this.x = x;
+			this.y = y;
+		}
 	}	
 	public static class PowerupRage{
 		public int id;

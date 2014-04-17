@@ -33,6 +33,7 @@ public class PlayerConnection extends Connection {
 	public void deactivateRage(){rageOn = false;}
 	
 	private boolean speedOn = false;
+	public boolean isSpeedOn(){return speedOn;}
 	public void activateSpeed(){speedOn = true;}
 	public void deactivateSpeed(){speedOn = false;}
 	

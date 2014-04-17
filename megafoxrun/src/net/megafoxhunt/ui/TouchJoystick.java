@@ -1,13 +1,14 @@
 package net.megafoxhunt.ui;
 
 import net.megafoxhunt.core.GameNetwork;
+
 import net.megafoxhunt.core.GameResources;
 import net.megafoxhunt.core.MyGdxGame;
 
 import net.megafoxhunt.entities.EntityMovable;
 import net.megafoxhunt.shared.Shared;
 import net.megafoxhunt.shared.KryoNetwork.ActivateItem;
-import net.megafoxhunt.shared.KryoNetwork.GoInHole;
+
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -95,9 +96,11 @@ public class TouchJoystick {
 			network.getKryoClient().sendTCP(new ActivateItem());
 		}
 		
+		/*
 		if (getDistance(BTN2_X, BTN2_Y, x, y) < WIDTH) {
 			network.getKryoClient().sendTCP(new GoInHole());
 		}
+		*/
 	}
 	
 	private double getDistance(int centerX, int centerY, int x, int y) {
