@@ -28,14 +28,10 @@ public class MyGdxGame extends Game {
 		screenHandler.setSceenMenu();
 	}
 	
-	
-	
 	@Override
 	public void resize(int width, int height) {
 		super.resize(width, height);
 	}
-
-
 
 	@Override
 	public void dispose() {
@@ -45,8 +41,6 @@ public class MyGdxGame extends Game {
 		screenHandler.dispose();		
 	}
 	public static void shutdown(){
-		Gdx.app.log("INFO", "Shutdown");
-		System.exit(0);
+		Gdx.app.exit();
 	}
-
 }
