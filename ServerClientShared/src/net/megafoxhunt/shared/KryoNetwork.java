@@ -219,11 +219,13 @@ public class KryoNetwork {
 	}
 	public static class TunnelMove {		
 		public int id;
+		public int direction;
 		public int x;
 		public int y;
 		
 		public TunnelMove() { }
-		public TunnelMove(int id, int x, int y) {
+		public TunnelMove(int id, int direction, int x, int y) {
+			this.direction = direction;
 			this.id = id;
 			this.x = x;
 			this.y = y;

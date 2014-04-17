@@ -15,6 +15,7 @@ import net.megafoxhunt.shared.KryoNetwork.Move;
 import net.megafoxhunt.shared.KryoNetwork.PlayerReady;
 import net.megafoxhunt.shared.KryoNetwork.SetPreferedTeam;
 import net.megafoxhunt.shared.KryoNetwork.TunnelMove;
+import net.megafoxhunt.shared.Shared;
 
 import net.megafoxhunt.shared.KryoNetwork.WelcomePlayer;
 
@@ -66,7 +67,7 @@ public class GameServer {
 					else {
 						// Client updates his position before sending move to server
 						// So we need to tell him to move back
-						TunnelMove backMove = new TunnelMove(playerConnection.getEntity().getPlayer().getMyId(), playerConnection.getEntity().getX(), playerConnection.getEntity().getY());
+						TunnelMove backMove = new TunnelMove(playerConnection.getEntity().getPlayer().getMyId(), Shared.DIRECTION_STOP, playerConnection.getEntity().getX(), playerConnection.getEntity().getY());
 						playerConnection.sendTCP(backMove);
 					}
 				}

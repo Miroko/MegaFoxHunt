@@ -232,7 +232,7 @@ public class GameNetwork {
 				else if (object instanceof TunnelMove) {
 					TunnelMove tunnelMove = (TunnelMove) object;					
 					EntityMovable entity = (EntityMovable)UserContainer.getUserByID(tunnelMove.id).getControlledEntity();
-					if (entity != null) entity.setPosition(tunnelMove.x, tunnelMove.y);
+					if (entity != null) entity.setPosition(tunnelMove.x, tunnelMove.y, tunnelMove.direction);
 				}	
 				/*
 				 * POWERUP SPEED

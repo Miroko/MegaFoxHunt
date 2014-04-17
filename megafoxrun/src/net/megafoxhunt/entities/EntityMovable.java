@@ -171,12 +171,12 @@ public abstract class EntityMovable extends Entity{
 	public void move(Move move) {
 		movementQueue.offer(move);
 	}
-	public void setPosition(int x, int y){
+	public void setPosition(int x, int y, int direction){
 		this.x = x;
 		this.y = y;
 		
 		isMoving = false;
-		setDirection(Shared.DIRECTION_DOWN);
+		setDirection(direction);
 		newMove = null;
 		movementQueue.clear();
 		
