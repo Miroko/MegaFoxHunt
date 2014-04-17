@@ -112,6 +112,8 @@ public class GameMapServerSide {
 	}
 	
 	public boolean canExplode(int x, int y) {
+		if (x < 0 || x >= getWidth() || y < 0 || y >= getHeight()) return false;
+		
 		if (collisionMap[x][y] == WALL || collisionMap[x][y] instanceof Hole) return true;
 		
 		return false;
@@ -119,6 +121,10 @@ public class GameMapServerSide {
 
 	public ArrayList<Hole> getHoles() {
 		return holes;
+	}
+	
+	public int getHolesSize() {
+		return holes.size();
 	}
 }
 

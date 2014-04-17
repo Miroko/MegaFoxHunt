@@ -76,7 +76,7 @@ public class Entity {
 			if(collisionMap[x][y].getClass().equals(Wall.class)){
 				return true;					
 			} else if (collisionMap[x][y].getClass().equals(Hole.class)) {
-				if (((Hole)collisionMap[x][y]).isHoleCooldown()) return true;
+				if (((Hole)collisionMap[x][y]).isHoleCooldown() || map.getHolesSize() <= 1) return true;
 				else return false;
 			}else{
 				return false;
