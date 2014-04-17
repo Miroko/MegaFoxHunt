@@ -117,6 +117,7 @@ public class Entity {
 							this.x = lastX;
 							this.y = lastY;
 							distanceTraveledInSecond = 0;
+							lastDistanceCheckTime = currentTime;
 							return false;
 						}
 					}
@@ -125,10 +126,11 @@ public class Entity {
 							this.x = lastX;
 							this.y = lastY;
 							distanceTraveledInSecond = 0;
+							lastDistanceCheckTime = currentTime;
 							return false;
 						}
-					}
-					distanceTraveledInSecond = 0;
+					}					
+					distanceTraveledInSecond = 0;	
 					lastDistanceCheckTime = currentTime;
 				}
 				distanceTraveledInSecond += Math.sqrt((this.x - x) * (this.x - x) + (this.y - y) * (this.y - y));
