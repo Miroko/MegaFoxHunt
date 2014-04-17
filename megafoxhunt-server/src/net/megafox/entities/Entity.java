@@ -45,9 +45,11 @@ public class Entity {
 	 * @param collisionMap
 	 */
 	public boolean move(int x, int y, int direction, GameMapServerSide map, boolean tunnelMove) {
+		/*
 		if(tunnelMove){
 			distanceTraveledInSecond = 0;
 		}
+		*/
 		
 		int targetX = x;
 		int targetY = y;
@@ -106,7 +108,8 @@ public class Entity {
 				
 				/*
 				 * SPEED HACK PREVENTION
-				 */				
+				 */			
+				/*
 				long currentTime = System.currentTimeMillis();
 				long delta = currentTime - lastDistanceCheckTime;
 				
@@ -134,6 +137,8 @@ public class Entity {
 					lastDistanceCheckTime = currentTime;
 				}
 				distanceTraveledInSecond += Math.sqrt((this.x - x) * (this.x - x) + (this.y - y) * (this.y - y));
+				*/
+				
 				return true;
 			}
 	}
