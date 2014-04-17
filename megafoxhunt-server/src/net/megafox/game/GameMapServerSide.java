@@ -61,14 +61,20 @@ public class GameMapServerSide {
 			    for (int col = 0; col < nums.length; col++){
 			        int n = Integer.parseInt(nums[col]);
 			        
-			        // (height - 1 - row) to flip y 
-			        if (n == 0) collisionMap[col][(getHeight() - 1) - row] = EMPTY;
-			        else if (n == 1) collisionMap[col][(getHeight() - 1) - row] = WALL;
-			        else if (n == 2)  {
+			        Entity target = null;
+			        
+			        if (n == 1 || n == 2 || n == 3 || n == 4 || n == 17 || n == 18 || n == 19 || n == 20 || n == 33 ||
+			        		n == 34 || n == 35 || n == 49 || n == 50 || n == 51 || n == 5 || n == 37 || n == 38) {
+			        	target = WALL;
+			        } else if (n == 66) {
 			        	Hole hole = new Hole(col, getHeight() - 1 - row, idHandler.getFreeID());
 			        	holes.add(hole);
-			        	collisionMap[col][(getHeight() - 1) - row] = hole;
+			        	target = hole;
+			        } else {
+			        	target = EMPTY;
 			        }
+
+			        collisionMap[col][(getHeight() - 1) - row] = target;
 			    }
 			    row++;
 			}
