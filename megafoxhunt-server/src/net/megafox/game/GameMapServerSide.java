@@ -63,7 +63,7 @@ public class GameMapServerSide {
 			        
 			        Entity target = null;
 			        
-			        if (n == 1 || n == 2 || n == 3 || n == 4 || n == 17 || n == 18 || n == 19 || n == 20 || n == 33 ||
+			        if (n == 1 || n == 2 || n == 3 || n == 40 || n == 17 || n == 18 || n == 19 || n == 20 || n == 33 ||
 			        		n == 34 || n == 35 || n == 49 || n == 50 || n == 51 || n == 5 || n == 37 || n == 38) {
 			        	target = WALL;
 			        } else if (n == 66) {

@@ -48,12 +48,12 @@ public class ServerRooms {
 	}
 	public void startGame(GameRoom room){	
 		if(room.getRoomState() == GameRoom.STATE_LOBBY){
-			room.changeMap(GameMapSharedConfig.TEST_MAP, gameServer.idHandler);	
+			room.changeMap(GameMapSharedConfig.MAP1, gameServer.idHandler);	
 			room.startSimulation(gameServer.idHandler);		
 			room.setChasedsAndChasers();
 			room.generateBerries(GameMapServerSide.TOTAL_BERRIES, gameServer.idHandler);
-			room.addInitialPowerups(GameMapSharedConfig.DEBUG_MAP.getMaxPowerups(), gameServer.idHandler);
-			room.addInitialPickupItems(GameMapSharedConfig.DEBUG_MAP.getMaxPickupItems(), gameServer.idHandler);
+			room.addInitialPowerups(GameMapSharedConfig.MAP1.getMaxPowerups(), gameServer.idHandler);
+			room.addInitialPickupItems(GameMapSharedConfig.MAP1.getMaxPickupItems(), gameServer.idHandler);
 			room.switchState(GameRoom.STATE_GAME);
 			room.startClock(GameRoom.MATCH_LENGHT_SECONDS_DEFAULT);
 			room.startRespawner(5000, gameServer.idHandler);

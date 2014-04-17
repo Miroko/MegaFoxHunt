@@ -37,8 +37,8 @@ public class GameScreen implements Screen {
 
 	public static final float UNIT_SCALE = 1 / 64f;
 	
-	private static final int FIT_TILES_WIDTH = 24;
-	private static final int FIT_TILES_HEIGHT = 16;
+	private static final int FIT_TILES_WIDTH = 20;
+	private static final int FIT_TILES_HEIGHT = 14;
 
 	private OrthogonalTiledMapRenderer renderer;
 	private OrthographicCamera camera;
@@ -87,7 +87,7 @@ public class GameScreen implements Screen {
 		
 		// DRAW MAP
         renderer.setView(camera);
-        renderer.render(new int[] {0, 1});
+        renderer.render(new int[] {0, 1, 2});
 		
 		// INIT BATCH
 		Batch batch = renderer.getSpriteBatch();
@@ -115,7 +115,7 @@ public class GameScreen implements Screen {
         batch.end();
         
         
-        renderer.render(new int[] {2});
+        renderer.render(new int[] {3});
         
         // DRAW JOYSTICK AND FPS
         spriteBatch.begin();
