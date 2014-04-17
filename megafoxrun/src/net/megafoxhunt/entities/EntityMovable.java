@@ -5,6 +5,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import net.megafoxhunt.core.GameMapClientSide;
 import net.megafoxhunt.core.GameNetwork;
 import net.megafoxhunt.core.GameResources;
+import net.megafoxhunt.shared.Shared;
 import net.megafoxhunt.shared.KryoNetwork.Move;
 
 import com.badlogic.gdx.Gdx;
@@ -126,7 +127,7 @@ public abstract class EntityMovable extends Entity{
 		
 		if (network.getLocalUser().getControlledEntity() == this) {
 			if (!((int)x == lastX && (int)y == lastY && lastDirection == destinationDirection)) {
-				Move move = new Move(id, destinationDirection, (int)x, (int)y, false);
+				Move move = new Move(id, destinationDirection, (int)x, (int)y);
 				network.getKryoClient().sendTCP(move);
 				lastX = (int)x;
 				lastY = (int)y;
@@ -167,16 +168,18 @@ public abstract class EntityMovable extends Entity{
 		y = destinationY;
 	}
 	
-	public void move(Move newMove) {
-		if (newMove.force) {
-			x = newMove.x;
-			y = newMove.y;
-			
-			isMoving = false;
-			setDirection(newMove.direction);
-			newMove = null;
-			movementQueue.clear();
-		} else movementQueue.offer(newMove);
+	public void move(Move move) {
+		movementQueue.offer(move);
+	}
+	public void setPosition(int x, int y){
+		this.x = x;
+		this.y = y;
+		
+		isMoving = false;
+		setDirection(Shared.DIRECTION_STOP);
+		newMove = null;
+		movementQueue.clear();
+		
 	}
 	
 	public void setDirection(int direction) {
