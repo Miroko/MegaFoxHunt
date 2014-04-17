@@ -24,8 +24,10 @@ public class Entity {
 	
 	// Anti hack
 	// TODO to player connection
+	/*
 	private long lastDistanceCheckTime = 0;
 	private int distanceTraveledInSecond = 0;
+	*/
 	
 	public Entity(int x, int y, int id, int speed, Visibility visibility, PlayerConnection player){
 		this.x = x;
