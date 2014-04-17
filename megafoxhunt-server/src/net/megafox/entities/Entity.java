@@ -108,9 +108,7 @@ public class Entity {
 				 * SPEED HACK PREVENTION
 				 */				
 				long currentTime = System.currentTimeMillis();
-				long delta = currentTime - lastDistanceCheckTime;		
-	
-				distanceTraveledInSecond += Math.sqrt((this.x - x) * (this.x - x) + (this.y - y) * (this.y - y));
+				long delta = currentTime - lastDistanceCheckTime;
 				
 				// Check every second
 				if(delta > 1000){						
@@ -118,6 +116,7 @@ public class Entity {
 						if(distanceTraveledInSecond > 6 && this.getPlayer().isSpeedOn() == false){
 							this.x = lastX;
 							this.y = lastY;
+							distanceTraveledInSecond = 0;
 							return false;
 						}
 					}
@@ -125,12 +124,14 @@ public class Entity {
 						if(distanceTraveledInSecond > 7 && this.getPlayer().isSpeedOn() == false){		
 							this.x = lastX;
 							this.y = lastY;
+							distanceTraveledInSecond = 0;
 							return false;
 						}
 					}
 					distanceTraveledInSecond = 0;
 					lastDistanceCheckTime = currentTime;
-				}					
+				}
+				distanceTraveledInSecond += Math.sqrt((this.x - x) * (this.x - x) + (this.y - y) * (this.y - y));
 				return true;
 			}
 	}
