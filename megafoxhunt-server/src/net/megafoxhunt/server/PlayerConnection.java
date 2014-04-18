@@ -1,16 +1,11 @@
 package net.megafoxhunt.server;
 
-
-import java.util.Timer;
-
 import net.megafox.entities.Entity;
 import net.megafox.gameroom.GameRoom;
 import net.megafox.items.Item;
 import com.esotericsoftware.kryonet.Connection;
 
 public class PlayerConnection extends Connection {
-	
-	public Timer timer;
 		
 	private GameRoom myCurrentRoom;
 	private Entity entity;
