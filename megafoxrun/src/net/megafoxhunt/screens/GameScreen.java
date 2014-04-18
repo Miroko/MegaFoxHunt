@@ -83,6 +83,7 @@ public class GameScreen implements Screen {
         camera.update();
 		
 		// CLEAR SCREEN
+        Gdx.gl.glClearColor(0.015f, 0.65f, 0.027f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		// DRAW MAP

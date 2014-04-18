@@ -68,7 +68,8 @@ public class GameMapClientSide {
 	}
 	
 	public void removeOldObjects() {
-		Iterator<Entity> i = allObjects.iterator();
+		ArrayList<Entity> tmp = getAllObjectsConcurrentSafe();
+		Iterator<Entity> i = tmp.iterator();
 		while (i.hasNext()) {
 		   Entity s = i.next();
 		   if (s.getShouldBeRemoved()){
@@ -81,6 +82,7 @@ public class GameMapClientSide {
 			   }
 		   }
 		}
+		allObjects = tmp;
 	}
 	
 	public boolean isBlocked(int x, int y) {
