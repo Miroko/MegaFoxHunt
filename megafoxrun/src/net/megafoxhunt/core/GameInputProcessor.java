@@ -38,8 +38,7 @@ public class GameInputProcessor extends InputAdapter implements GestureListener 
 
 	public boolean keyDown(int k) {
 		if (k == Keys.SPACE || k == Keys.ENTER) return true;
-		
-		
+
 		if(k == Keys.UP) {
 			sendDirection(EntityMovable.DIRECTION_UP);
 		}
