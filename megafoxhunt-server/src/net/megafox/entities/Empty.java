@@ -5,7 +5,7 @@ import net.megafox.entities.Entity.Visibility;
 public class Empty extends Entity{
 
 	public Empty() {
-		super(0, 0, 0, 0, Visibility.BOTH, null);
+		super(0, 0, 0, Visibility.BOTH, null);
 	}
 
 }

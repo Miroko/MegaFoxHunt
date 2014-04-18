@@ -333,11 +333,12 @@ public class GameRoom extends Thread {
 		return true;
 	}
 
-	public void moveCollisionCheck(PlayerConnection player, Move move) {
+	public void move(PlayerConnection player, Move move) {
 		if (gameSimulation == null || playerContainer == null) return;
 		
-		gameSimulation.checkCollision(player.getEntity(), move.x, move.y, move.direction);			
-	}	
+		gameSimulation.move(player.getEntity(), move.x, move.y, move.direction, false);
+	}
+	
 	public PlayerContainer getPlayerContainer() {
 		return playerContainer;
 	}
@@ -412,9 +413,6 @@ public class GameRoom extends Thread {
 					} 
 				}
 			}
-			}
 		}
-	public GameMapServerSide getCurrentMap() {
-		return currentMap;
-	}		
+	}	
 }

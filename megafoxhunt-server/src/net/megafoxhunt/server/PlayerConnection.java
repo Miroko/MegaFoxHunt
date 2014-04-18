@@ -23,10 +23,6 @@ public class PlayerConnection extends Connection {
 	public boolean isReady(){return playerReady;}
 	public void setReady(boolean ready){playerReady = ready;}
 	
-	private boolean goInHole = false;
-	public void setGoInHole(boolean go){goInHole = go;}
-	public boolean isGoingInHole(){return goInHole;}	
-	
 	private int currentRageId;
 	private boolean rageOn = false;
 	public void activateRage(int rageId){

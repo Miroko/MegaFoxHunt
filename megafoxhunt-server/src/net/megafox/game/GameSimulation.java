@@ -30,7 +30,6 @@ import net.megafoxhunt.shared.KryoNetwork.AddChaser;
 import net.megafoxhunt.shared.KryoNetwork.AddChased;
 import net.megafoxhunt.shared.KryoNetwork.AddPowerup;
 import net.megafoxhunt.shared.KryoNetwork.AddBerry;
-import net.megafoxhunt.shared.KryoNetwork.TunnelMove;
 import net.megafoxhunt.shared.KryoNetwork.Move;
 import net.megafoxhunt.shared.KryoNetwork.PowerupRage;
 import net.megafoxhunt.shared.KryoNetwork.PowerupSpeed;
@@ -156,8 +155,8 @@ public class GameSimulation {
 		}
 	}
 	private void reSpawnChaser(Chaser chaser){		
-		chaser.move(33, 12, Shared.DIRECTION_STOP, gameMap, true);
-		playerContainer.sendObjectToAll(new Move(chaser.getId(), Shared.DIRECTION_STOP, chaser.getX(), chaser.getY()), Visibility.BOTH);
+		move(chaser, 33, 12, Shared.DIRECTION_STOP, true);
+		playerContainer.sendObjectToAll(new Move(chaser.getId(), Shared.DIRECTION_STOP, chaser.getX(), chaser.getY(), true), Visibility.BOTH);
 	}
 	public void addPowerup(Powerup powerup){
 		powerups.add(powerup);		
@@ -198,51 +197,58 @@ public class GameSimulation {
 		removable.add(hole);
 		gameMap.removeEntity(hole);
 	}	
-	public void checkCollision(Entity entity, int x, int y, int direction) {	
-			// static entities
-			Entity collidedEntity = gameMap.getEntity(x, y);
-			
-			if (entity instanceof Chased) {
-				if (collidedEntity instanceof Berry)  {
-					addBerryToRemove((Berry)collidedEntity);
-				} else if (collidedEntity instanceof Hole) {
-					holeCollisionDetected(entity, (Hole)collidedEntity);
-				} 
-			}
-			if(collidedEntity instanceof Powerup){
-				powerupCollisionDetected((Powerup) collidedEntity, entity);						
-			} else if(collidedEntity instanceof PickupItem){
-				pickupCollision((PickupItem) collidedEntity, entity);
-			}
+	
+	public void move(Entity entity, int x, int y, int direction, boolean force) {
+		if (entity.move(x, y, direction, gameMap, force)) {
+			playerContainer.sendObjectToAllExcept(entity.getPlayer(), new Move(entity.getId(), direction, x, y, force));
+		}
+		// static entities
+		Entity collidedEntity = gameMap.getEntity(x, y);
+		
+		if (entity instanceof Chased) {
+			if (collidedEntity instanceof Berry)  {
+				addBerryToRemove((Berry)collidedEntity);
+			} else if (collidedEntity instanceof Hole) {
+				holeCollisionDetected(entity, (Hole)collidedEntity);
+			} 
+		}
+		if(collidedEntity instanceof Powerup){
+			powerupCollisionDetected((Powerup) collidedEntity, entity);						
+		} else if(collidedEntity instanceof PickupItem){
+			pickupCollision((PickupItem) collidedEntity, entity);
+		}
 
-			// dynamic entities
-			int entityX = entity.getX();
-			int entityY = entity.getY();
-			int entityLastX = entity.getLastX();
-			int entityLastY = entity.getLastY();				
-			if (entity instanceof Chased) {
-				for (Entity chaser : chasers) {
-					if (entityX == chaser.getX() && entityY == chaser.getY() ||
-						entityX == chaser.getLastX() && entityY == chaser.getLastY() ||
-						entityLastX == chaser.getX() && entityLastY == chaser.getY()  ||
-						entityLastX == chaser.getLastX() && entityLastY == chaser.getLastY()) {
-						
-						if (entity.getPlayer().isRageOn()) reSpawnChaser((Chaser) chaser);
-						else removable.add(entity);
-					}
+		// dynamic entities
+		int entityX = entity.getX();
+		int entityY = entity.getY();
+		int entityLastX = entity.getLastX();
+		int entityLastY = entity.getLastY();				
+		if (entity instanceof Chased) {
+			for (Entity chaser : chasers) {
+				if (entityX == chaser.getX() && entityY == chaser.getY() ||
+					entityX == chaser.getLastX() && entityY == chaser.getLastY() ||
+					entityLastX == chaser.getX() && entityLastY == chaser.getY()  ||
+					entityLastX == chaser.getLastX() && entityLastY == chaser.getLastY()) {
+					
+					if (entity.getPlayer().isRageOn()) reSpawnChaser((Chaser) chaser);
+					else removable.add(entity);
 				}
-			} else if (entity instanceof Chaser) {
-				for (Entity chased : chaseds) {
-					if (entityX == chased.getX() && entityY == chased.getY() ||
-						entityX == chased.getLastX() && entityY == chased.getLastY() ||
-						entityLastX == chased.getX() && entityLastY == chased.getY()  ||
-						entityLastX == chased.getLastX() && entityLastY == chased.getLastY()) {
-						
-						if (chased.getPlayer().isRageOn()) reSpawnChaser((Chaser) entity);
-						else removable.add(chased);
-					}
+			}
+		} else if (entity instanceof Chaser) {
+			for (Entity chased : chaseds) {
+				if (entityX == chased.getX() && entityY == chased.getY() ||
+					entityX == chased.getLastX() && entityY == chased.getLastY() ||
+					entityLastX == chased.getX() && entityLastY == chased.getY()  ||
+					entityLastX == chased.getLastX() && entityLastY == chased.getLastY()) {
+					
+					if (chased.getPlayer().isRageOn()) reSpawnChaser((Chaser) entity);
+					else removable.add(chased);
 				}
-		}		
+			}
+		} else {
+			Move backMove = new Move(entity.getId(), 0, entity.getX(), entity.getY(), true);
+			entity.getPlayer().sendTCP(backMove);
+		}
 	}
 	
 	private void powerupCollisionDetected(Powerup powerup, Entity collidedEntity) {	
@@ -294,8 +300,8 @@ public class GameSimulation {
 			((Hole)targetHole).setHoleCooldown(true);
 			hole.setHoleCooldown(true);
 
-			entity.move(targetHole.getX(), targetHole.getY() - 1, Shared.DIRECTION_STOP, gameMap, true);
-			playerContainer.sendObjectToAll(new TunnelMove(entity.getPlayer().getMyId(), Shared.DIRECTION_DOWN, entity.getX(), entity.getY()));
+			move(entity, targetHole.getX(), targetHole.getY(), Shared.DIRECTION_DOWN, true);
+			playerContainer.sendObjectToAll(new Move(entity.getId(), Shared.DIRECTION_DOWN, targetHole.getX(), targetHole.getY(), true), Visibility.BOTH);
 			
 			timer.schedule(new TimerListener(hole), 5000);
 			timer.schedule(new TimerListener(targetHole), 5000);	
@@ -357,6 +363,4 @@ public class GameSimulation {
 		}
 		
 	}
-
-	
 }

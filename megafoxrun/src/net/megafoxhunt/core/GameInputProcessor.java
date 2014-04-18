@@ -64,11 +64,6 @@ public class GameInputProcessor extends InputAdapter implements GestureListener 
 		if (k == Keys.SPACE) {
 			network.getKryoClient().sendTCP(new ActivateItem());
 		}
-		/*
-		if(k == Keys.ENTER){
-			network.getKryoClient().sendTCP(new GoInHole());
-		}
-		*/
 		return true;
 	}
 
