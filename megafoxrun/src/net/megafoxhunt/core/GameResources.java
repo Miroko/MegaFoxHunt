@@ -20,10 +20,8 @@ public class GameResources {
 	public static final int FIFTH_ANIMATIN = 5;
 	public static final int SIXTH_ANIMATION = 6;
 	
-	public Texture DEBUG_TEXTURE;
-	public Texture FOX_TEXTURE;
-	public Texture DOG_TEXTURE;
 	public Texture ITEMS_TEXTURE;
+	public Texture CHARACTERS_TEXTURE;
 	
 	public Animation[] BERRY_ANIMATIONS = new Animation[10];
 	public Animation[] BARRICADE_ANIMATIONS = new Animation[10];
@@ -59,16 +57,11 @@ public class GameResources {
 	public BitmapFont BASIC_FONT;
 	
 	public void init(){						
-		 DEBUG_TEXTURE = new Texture("data/libgdx.png");
-		 
-		 FOX_TEXTURE = new Texture("data/fox.png");
-		 FOX_TEXTURE.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		 
-		 DOG_TEXTURE = new Texture("data/dog.png");
-		 DOG_TEXTURE.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		 
 		 ITEMS_TEXTURE = new Texture("data/items.png");
 		 ITEMS_TEXTURE.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		 
+		 CHARACTERS_TEXTURE = new Texture("data/characters.png");
+		 CHARACTERS_TEXTURE.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		 
 		 BOMB_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(ITEMS_TEXTURE, 0.125f, 0, 312, 120, 120 , 2, 8);
 		 BARRICADE_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(ITEMS_TEXTURE, 1f, 0, 552, 80, 80 , 1, 1);
@@ -77,18 +70,17 @@ public class GameResources {
 		 PICKUP_ITEM_ANIMATIONS[FOURTH_ANIMATION] = generateAnimation(ITEMS_TEXTURE, 0.066f, 0, 192, 120, 120, 1, 7);
 		 POWERRUP_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(ITEMS_TEXTURE, 1f, 0, 632, 80, 80, 1, 1);
 		 
+		 FOX_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(CHARACTERS_TEXTURE, 0.042f, 0, 0, 104, 64 , 1, 10);
+		 FOX_ANIMATIONS[FRONT_ANIMATION] = generateAnimation(CHARACTERS_TEXTURE, 0.042f, 0, 64, 64, 104 , 1, 10);
+		 FOX_ANIMATIONS[BACK_ANIMATION] = generateAnimation(CHARACTERS_TEXTURE, 0.042f, 0, 168, 64, 104, 1, 10);
 		 
-		 FOX_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(FOX_TEXTURE, 0.042f, 0, 0, 104, 64 , 1, 10);
-		 FOX_ANIMATIONS[FRONT_ANIMATION] = generateAnimation(FOX_TEXTURE, 0.042f, 0, 64, 64, 104 , 1, 10);
-		 FOX_ANIMATIONS[BACK_ANIMATION] = generateAnimation(FOX_TEXTURE, 0.042f, 0, 168, 64, 104, 1, 10);
+		 FOX_ANIMATIONS[FOURTH_ANIMATION] = generateAnimation(CHARACTERS_TEXTURE, 0.042f, 0, 277, 104, 64 , 1, 10);
+		 FOX_ANIMATIONS[FIFTH_ANIMATIN] = generateAnimation(CHARACTERS_TEXTURE, 0.042f, 0, 341, 64, 104 , 1, 10);
+		 FOX_ANIMATIONS[SIXTH_ANIMATION] = generateAnimation(CHARACTERS_TEXTURE, 0.042f, 0, 445, 64, 104, 1, 10);
 		 
-		 FOX_ANIMATIONS[FOURTH_ANIMATION] = generateAnimation(FOX_TEXTURE, 0.042f, 0, 277, 104, 64 , 1, 10);
-		 FOX_ANIMATIONS[FIFTH_ANIMATIN] = generateAnimation(FOX_TEXTURE, 0.042f, 0, 341, 64, 104 , 1, 10);
-		 FOX_ANIMATIONS[SIXTH_ANIMATION] = generateAnimation(FOX_TEXTURE, 0.042f, 0, 445, 64, 104, 1, 10);
-		 
-		 DOG_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(DOG_TEXTURE, 0.042f, 0, 0, 187, 114, 1, 8);
-		 DOG_ANIMATIONS[FRONT_ANIMATION] = generateAnimation(DOG_TEXTURE, 0.042f, 0, 264, 79, 175, 1, 8);
-		 DOG_ANIMATIONS[BACK_ANIMATION] = generateAnimation(DOG_TEXTURE, 0.042f, 0, 114, 79, 150, 1, 8);
+		 DOG_ANIMATIONS[DEFAULT_ANIMATION] = generateAnimation(CHARACTERS_TEXTURE, 0.042f, 0, 575, 187, 114, 1, 8);
+		 DOG_ANIMATIONS[FRONT_ANIMATION] = generateAnimation(CHARACTERS_TEXTURE, 0.042f, 0, 839, 79, 175, 1, 8);
+		 DOG_ANIMATIONS[BACK_ANIMATION] = generateAnimation(CHARACTERS_TEXTURE, 0.042f, 0, 689, 79, 150, 1, 8);
 		 
 		 connectButtonTexture = new Texture("data/connect.png"); 
 		 quitButtonTexture = new Texture("data/quit.png");
@@ -170,11 +162,7 @@ public class GameResources {
 		CAUGHT.dispose();
 		GOT_CAUGHT.dispose();
 		BUBBLE.dispose();
-		
-		DEBUG_TEXTURE.dispose();
-		FOX_TEXTURE.dispose();
-		DOG_TEXTURE.dispose();
-			
+
 		connectButtonTexture.dispose();
 		quitButtonTexture.dispose();
 		preferDogButtonTexture.dispose();
