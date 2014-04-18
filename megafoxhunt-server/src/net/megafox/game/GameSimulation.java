@@ -201,6 +201,10 @@ public class GameSimulation {
 	public void move(Entity entity, int x, int y, int direction, boolean force) {
 		if (entity.move(x, y, direction, gameMap, force)) {
 			playerContainer.sendObjectToAllExcept(entity.getPlayer(), new Move(entity.getId(), direction, x, y, force));
+		} else {
+			Move backMove = new Move(entity.getId(), 0, entity.getX(), entity.getY(), true);
+			entity.getPlayer().sendTCP(backMove);
+			return;
 		}
 		// static entities
 		Entity collidedEntity = gameMap.getEntity(x, y);
@@ -245,9 +249,6 @@ public class GameSimulation {
 					else removable.add(chased);
 				}
 			}
-		} else {
-			Move backMove = new Move(entity.getId(), 0, entity.getX(), entity.getY(), true);
-			entity.getPlayer().sendTCP(backMove);
 		}
 	}
 	
