@@ -247,24 +247,26 @@ public class GameSimulation {
 	
 	private void powerupCollisionDetected(Powerup powerup, Entity collidedEntity) {	
 		if(collidedEntity instanceof Chaser){
-			collidedEntity.getPlayer().activateSpeed();
+			int speedId = idHandler.getFreeID();			
+			collidedEntity.getPlayer().activateSpeed(speedId);
 			
 			PowerupSpeed speed = new PowerupSpeed();
 			speed.id = collidedEntity.getId();
 			speed.on = true;
 			playerContainer.sendObjectToAll(speed);				
 			
-			timer.schedule(new SpeedDeactivateTask(collidedEntity.getPlayer()), Powerup.DURATION_SPEED_MS);
+			timer.schedule(new SpeedDeactivateTask(collidedEntity.getPlayer(), speedId), Powerup.DURATION_SPEED_MS);
 		}
 		else if(collidedEntity instanceof Chased){	
-			collidedEntity.getPlayer().activateRage();
+			int rageId = idHandler.getFreeID();			
+			collidedEntity.getPlayer().activateRage(rageId);
 			
 			PowerupRage rage = new PowerupRage();
 			rage.id = collidedEntity.getId();
 			rage.on = true;
 			playerContainer.sendObjectToAll(rage);			
 			
-			timer.schedule(new RageDeactivateTask(collidedEntity.getPlayer()), Powerup.DURATION_RAGE_MS);
+			timer.schedule(new RageDeactivateTask(collidedEntity.getPlayer(), rageId), Powerup.DURATION_RAGE_MS);
 		}
 		addPowerupToRemove(powerup);		
 	}
@@ -317,35 +319,41 @@ public class GameSimulation {
 	}
 	class RageDeactivateTask extends TimerTask{
 		
-		private PlayerConnection player;
+		private PlayerConnection player;	
+		private int rageId;
 
-		public RageDeactivateTask(PlayerConnection player){
+		public RageDeactivateTask(PlayerConnection player, int rageId){
 			this.player = player;
+			this.rageId = rageId;
 		}	
 		@Override
 		public void run() {
-			player.deactivateRage();
-			PowerupRage rage = new PowerupRage();
-			rage.id = player.getEntity().getId();
-			rage.on = false;
-			playerContainer.sendObjectToAll(rage);				
+			if(player.deactivateRage(rageId)){
+				PowerupRage rage = new PowerupRage();
+				rage.id = player.getEntity().getId();
+				rage.on = false;
+				playerContainer.sendObjectToAll(rage);
+			}
 		}
 		
 	}
 	class SpeedDeactivateTask extends TimerTask{
 		
 		private PlayerConnection player;
+		private int speedId;
 
-		public SpeedDeactivateTask(PlayerConnection player){
+		public SpeedDeactivateTask(PlayerConnection player, int speedId){
 			this.player = player;
+			this.speedId = speedId;
 		}	
 		@Override
 		public void run() {
-			player.deactivateSpeed();
-			PowerupSpeed speed = new PowerupSpeed();
-			speed.id = player.getEntity().getId();
-			speed.on = false;
-			playerContainer.sendObjectToAll(speed);				
+			if(player.deactivateSpeed(speedId)){
+				PowerupSpeed speed = new PowerupSpeed();
+				speed.id = player.getEntity().getId();
+				speed.on = false;
+				playerContainer.sendObjectToAll(speed);
+			}
 		}
 		
 	}

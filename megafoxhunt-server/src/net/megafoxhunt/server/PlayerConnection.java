@@ -1,13 +1,12 @@
 package net.megafoxhunt.server;
 
-
 import net.megafox.entities.Entity;
 import net.megafox.gameroom.GameRoom;
 import net.megafox.items.Item;
 import com.esotericsoftware.kryonet.Connection;
 
 public class PlayerConnection extends Connection {
-	
+		
 	private GameRoom myCurrentRoom;
 	private Entity entity;
 	
@@ -28,14 +27,34 @@ public class PlayerConnection extends Connection {
 	public void setGoInHole(boolean go){goInHole = go;}
 	public boolean isGoingInHole(){return goInHole;}	
 	
+	private int currentRageId;
 	private boolean rageOn = false;
-	public void activateRage(){rageOn = true;}
-	public void deactivateRage(){rageOn = false;}
+	public void activateRage(int rageId){
+		rageOn = true;
+		currentRageId = rageId;
+	}
+	public boolean deactivateRage(int rageId){
+		if(currentRageId == rageId){
+			rageOn = false;
+			return true;
+		}
+		return false;
+	}
 	
+	private int currentSpeedId;
 	private boolean speedOn = false;
 	public boolean isSpeedOn(){return speedOn;}
-	public void activateSpeed(){speedOn = true;}
-	public void deactivateSpeed(){speedOn = false;}
+	public void activateSpeed(int speedId){
+		speedOn = true;
+		currentSpeedId = speedId;
+	}
+	public boolean deactivateSpeed(int speedId){
+		if(currentSpeedId == speedId){
+			speedOn = false;
+			return true;
+		}
+		return false;
+	}
 	
 	public enum Team{
 		Chasers, Chased
