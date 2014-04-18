@@ -31,14 +31,18 @@ import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Logger;
 
-public class GameScreen implements Screen {
+public class GameScreen implements Screen{
 
 	public static final float UNIT_SCALE = 1 / 64f;
 	
 	private static final int FIT_TILES_WIDTH = 20;
 	private static final int FIT_TILES_HEIGHT = 15;
+	
+	private Stage stageUI;	
 
 	private OrthogonalTiledMapRenderer renderer;
 	private OrthographicCamera camera;
@@ -66,6 +70,9 @@ public class GameScreen implements Screen {
 
 		MyGdxGame.mapHandler.currentMap.removeOldObjects();
 		
+	    stageUI.act(Gdx.graphics.getDeltaTime());
+	    stageUI.draw();	
+		
 		// UPDATE ENTITIES
 		EntityMovable entity = null;
 		for(User user : UserContainer.getUsersConcurrentSafe()){
@@ -80,7 +87,10 @@ public class GameScreen implements Screen {
         	camera.position.y = myEntity.getY();
         	keepCameraInBoundaries();
         }
+        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.update();
+        
+        
 		
 		// CLEAR SCREEN
         Gdx.gl.glClearColor(0.015f, 0.65f, 0.027f, 1);

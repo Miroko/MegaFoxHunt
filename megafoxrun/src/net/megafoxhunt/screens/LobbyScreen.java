@@ -27,8 +27,7 @@ public class LobbyScreen implements Screen {
 	public LobbyScreen() {		
 		stageUI = new Stage();
 				
-	    LobbyUI lobbyUI = new LobbyUI();	  
-	    
+	    LobbyUI lobbyUI = new LobbyUI();	    
 	    stageUI.addActor(lobbyUI);	    
 	    
 		batch = new SpriteBatch();

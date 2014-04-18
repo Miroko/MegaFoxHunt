@@ -8,8 +8,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
-public class GameUI {
+public class GameUI extends Table{
 	
 	public void draw(SpriteBatch batch, Camera camera) {
 		int berryCount = MyGdxGame.mapHandler.currentMap.getBerryCount();
