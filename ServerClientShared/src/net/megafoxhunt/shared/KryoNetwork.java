@@ -37,6 +37,7 @@ public class KryoNetwork {
 		kryo.register(SetPreferedTeam.class);
 		kryo.register(AddBomb.class);
 		kryo.register(AddPickupItem.class);
+		kryo.register(Disconnect.class);
 	}	
 	/*
 	 * MESSAGE
@@ -54,6 +55,9 @@ public class KryoNetwork {
 	public static class Login{
 		public String name;
 	}	
+	public static class Disconnect{
+		
+	}
 	public static class WelcomePlayer{
 		public int id;
 	}	

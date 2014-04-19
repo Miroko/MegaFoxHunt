@@ -19,6 +19,7 @@ public class MapHandler {
 		if(currentMap != null){
 			currentMap.dispose();
 		}
+		currentMap = null;
 	}
 	
 

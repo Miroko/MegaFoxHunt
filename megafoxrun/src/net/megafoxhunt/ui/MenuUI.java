@@ -41,6 +41,12 @@ public class MenuUI extends Table{
 		
 		fieldStyle.background = backgroundImage;
 		nameField = new TextField("player", fieldStyle);
+		if(MyGdxGame.network.getLocalUser().getName() == null){
+			nameField.setText("player");
+		}
+		else{
+			nameField.setText(MyGdxGame.network.getLocalUser().getName());
+		}
 		
 		TextureRegionDrawable connectButtonImage = new TextureRegionDrawable(new TextureRegion(MyGdxGame.resources.connectButtonTexture));
 		
@@ -49,8 +55,7 @@ public class MenuUI extends Table{
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {		
 				if(connectButton.isPressed()){					
-					MyGdxGame.network.setUsername(nameField.getText());	
-					MyGdxGame.network.start();	
+					MyGdxGame.network.setUsername(nameField.getText());						
 					MyGdxGame.network.connect(MyGdxGame.IP_SERVER, 6666);
 				}
 			}

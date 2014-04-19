@@ -326,7 +326,7 @@ public class GameRoom extends Thread {
 		removePlayer.id = playerConnection.getMyId();
 		playerContainer.sendObjectToAllExcept(playerConnection, removePlayer);
 		
-		playerContainer.removePlayer(playerConnection);	
+		playerContainer.removePlayer(playerConnection);
 		
 		playerConnection.setMyCurrentRoom(null);
 		

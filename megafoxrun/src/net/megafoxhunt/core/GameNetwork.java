@@ -33,6 +33,7 @@ import net.megafoxhunt.shared.KryoNetwork.ChangeTilesTypes;
 import net.megafoxhunt.shared.KryoNetwork.PlayerReady;
 import net.megafoxhunt.shared.KryoNetwork.PowerupSpeed;
 import net.megafoxhunt.shared.KryoNetwork.ChangeTilesTypes.Tile;
+import net.megafoxhunt.shared.KryoNetwork.Disconnect;
 import net.megafoxhunt.shared.KryoNetwork.Login;
 import net.megafoxhunt.shared.KryoNetwork.Move;
 import net.megafoxhunt.shared.KryoNetwork.PowerupRage;
@@ -280,7 +281,8 @@ public class GameNetwork {
 
 			@Override
 			public void disconnected (Connection connection) {
-				MyGdxGame.shutdown();
+				stopPingingServer();
+				//MyGdxGame.shutdown();
 			}
 		}));		
 	}	
@@ -293,6 +295,7 @@ public class GameNetwork {
 	}
 	public void connect(String host, int port){
 		try {			
+			start();
 			kryoClient.connect(TIMEOUT_MS, host, port);
 			Login login = new Login();
 			login.name = localUser.getName();
@@ -301,7 +304,11 @@ public class GameNetwork {
 			ex.printStackTrace();
 		}
 	}
-	
+	public void disconnect(){
+		Disconnect disconnect = new Disconnect();
+		kryoClient.sendTCP(disconnect);		
+		stop();
+	}	
 	public void startPingingServer() {
 		pingingServer = true;
 		
@@ -328,6 +335,9 @@ public class GameNetwork {
 
 	public void start() {
 		kryoClient.start();		
+	}
+	public void stop(){
+		kryoClient.stop();
 	}
 	
 }
