@@ -1,16 +1,14 @@
 package net.megafox.gameroom;
 import java.util.ArrayList;
 
+
 import java.util.Timer;
 import java.util.TimerTask;
-
 import java.util.Random;
-
 import net.megafox.entities.Berry;
 import net.megafox.entities.Chaser;
 import net.megafox.entities.Empty;
 import net.megafox.entities.Entity;
-import net.megafox.entities.Hole;
 import net.megafox.entities.PickupItem;
 import net.megafox.entities.Powerup;
 import net.megafox.entities.Chased;
@@ -246,24 +244,25 @@ public class GameRoom extends Thread {
 		}
 		int index = 0;
 		// Set teams
-		for (PlayerConnection player : chased) {
+		for (PlayerConnection player : chased) {			
 			setPlayerToChased(player, index);	
 			index++;
 		}
 		index = 0;
-		for (PlayerConnection player : chasers) {			
-			
+		for (PlayerConnection player : chasers) {				
 			setPlayerToChaser(player, index);	
 			index++;			
 		}
 	}
 	private void setPlayerToChaser(PlayerConnection connection, int positionOffset){
 		Chaser chaser = new Chaser(13, 12 + (positionOffset), connection.getMyId(), connection);
+		connection.setCurrentItem(null);
 		connection.setEntity(chaser);		
 		gameSimulation.addChaser(chaser);
 	}
 	private void setPlayerToChased(PlayerConnection connection, int positionOffset){
 		Chased chased = new Chased(2, 12 + (positionOffset), connection.getMyId(), connection);
+		connection.setCurrentItem(null);
 		connection.setEntity(chased);
 		gameSimulation.addChased(chased);
 	}
