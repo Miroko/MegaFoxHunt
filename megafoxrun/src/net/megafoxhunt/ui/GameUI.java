@@ -1,32 +1,69 @@
 package net.megafoxhunt.ui;
 
 import net.megafoxhunt.core.MyGdxGame;
-import net.megafoxhunt.core.User;
 import net.megafoxhunt.core.UserContainer;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 public class GameUI extends Table{
 	
-	public void draw(SpriteBatch batch, Camera camera) {
-		int berryCount = MyGdxGame.mapHandler.currentMap.getBerryCount();
-		int screenWidth = Gdx.graphics.getWidth();
-		int screenHeight = Gdx.graphics.getHeight();
-
-		MyGdxGame.resources.BASIC_FONT.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 25, 25);
-		MyGdxGame.resources.BASIC_FONT.draw(batch, "Ms: " + MyGdxGame.network.getCurrentPing(), 100, 25);
-		MyGdxGame.resources.BASIC_FONT.draw(batch, "Berries: " + berryCount, screenWidth - screenWidth / 2, screenHeight - 50);
-		
-		for (User user : UserContainer.getUsersConcurrentSafe()) {
-			if (user != null && user.getControlledEntity() != null) {
-	        	Vector3 v3 = new Vector3(user.getControlledEntity().getX(), user.getControlledEntity().getY(), 0);
-	        	camera.project(v3);
-	        	MyGdxGame.resources.BASIC_FONT.draw(batch, user.getName(), v3.x, v3.y);
+	private ImageButton resume;
+	private ImageButton joinNewGame;
+	private ImageButton quit;
+	
+	public GameUI(){		
+		setFillParent(true);	
+	
+		TextureRegionDrawable resumeImage = new TextureRegionDrawable(new TextureRegion(MyGdxGame.resources.readyButtonTexture));	
+		resume = new ImageButton(resumeImage);
+		resume.addListener(new ChangeListener() {			
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {		
+				if(resume.isPressed()){					
+					toggle();
+				}
 			}
-        }
+		});
+		
+		TextureRegionDrawable joinNewGameImage = new TextureRegionDrawable(new TextureRegion(MyGdxGame.resources.connectButtonTexture));	
+		joinNewGame = new ImageButton(joinNewGameImage);
+		joinNewGame.addListener(new ChangeListener() {			
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {		
+				if(joinNewGame.isPressed()){	
+					MyGdxGame.network.disconnect();
+					MyGdxGame.network.connect(MyGdxGame.IP_SERVER, 6666);
+				}
+			}
+		});
+		
+		TextureRegionDrawable quitImage = new TextureRegionDrawable(new TextureRegion(MyGdxGame.resources.quitButtonTexture));	
+		quit = new ImageButton(quitImage);
+		quit.addListener(new ChangeListener() {			
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {		
+				if(quit.isPressed()){				
+					MyGdxGame.network.disconnect();
+					UserContainer.removeUsers();
+					MyGdxGame.screenHandler.setSceenMenu();	
+				}
+			}
+		});
+		
+		add(resume);
+		row();
+		add(joinNewGame).padTop(20);
+		row();
+		add(quit).padTop(20);
+		
+	}	
+	public void toggle() {
+		setVisible(!isVisible());		
 	}
+
 }

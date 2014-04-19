@@ -4,6 +4,7 @@ package net.megafoxhunt.core;
 import net.megafoxhunt.entities.EntityMovable;
 
 
+import net.megafoxhunt.ui.GameUI;
 import net.megafoxhunt.ui.TouchJoystick;
 import net.megafoxhunt.shared.KryoNetwork.ActivateItem;
 
@@ -20,12 +21,14 @@ public class GameInputProcessor extends InputAdapter implements GestureListener 
 	
 	private GameNetwork network;
 	private TouchJoystick touchJoystick;
+	private GameUI gameUI;
 	
 	private int numFingersOnScreen = 0;
 	
-	public GameInputProcessor(GameNetwork network, TouchJoystick touchJoystick) {
+	public GameInputProcessor(GameNetwork network, GameUI gameUI, TouchJoystick touchJoystick) {
 		this.touchJoystick = touchJoystick;
 		this.network = network;
+		this.gameUI = gameUI;
 	}
 	
 	private void sendDirection(int direction){
@@ -39,6 +42,9 @@ public class GameInputProcessor extends InputAdapter implements GestureListener 
 	public boolean keyDown(int k) {
 		if (k == Keys.SPACE || k == Keys.ENTER) return true;
 
+		if(k == Keys.ESCAPE){
+			gameUI.toggle();
+		}
 		if(k == Keys.UP) {
 			sendDirection(EntityMovable.DIRECTION_UP);
 		}

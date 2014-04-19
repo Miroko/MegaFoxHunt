@@ -9,6 +9,7 @@ import net.megafoxhunt.shared.KryoNetwork;
 
 import net.megafoxhunt.shared.KryoNetwork.ActivateItem;
 
+import net.megafoxhunt.shared.KryoNetwork.Disconnect;
 import net.megafoxhunt.shared.KryoNetwork.Login;
 import net.megafoxhunt.shared.KryoNetwork.Message;
 import net.megafoxhunt.shared.KryoNetwork.Move;
@@ -51,7 +52,18 @@ public class GameServer {
 				 * LOGIN
 				 */
 				if(object instanceof Login){	
-					handleLogin((Login)object, playerConnection);
+					handleLogin((Login)object, playerConnection);	
+				}
+				/*
+				 * DICONNECT
+				 */
+				else if (object instanceof Disconnect) {					
+					try {
+						handleDisconnection(playerConnection);
+						connection.close();
+					} catch (Exception e) {						
+						e.printStackTrace();
+					}
 				}
 				/*
 				 * MOVE 
@@ -120,9 +132,10 @@ public class GameServer {
 		boolean playerRemovedFromRoom = removePlayerFromRoom(connection);
 		if(playerRemovedFromRoom){			
 			logDisconnection(connection);
-			connection.dispose(idHandler);
+			connection.dispose(idHandler);			
 		}
 		else{
+			System.out.println("Player not found in room");
 			return false;
 		}		
 		return true;

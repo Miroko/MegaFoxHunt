@@ -34,4 +34,7 @@ public class UserContainer {
 			}
 		}
 	}
+	public static void removeUsers() {
+		USERS = new ArrayList<User>();		
+	}
 }

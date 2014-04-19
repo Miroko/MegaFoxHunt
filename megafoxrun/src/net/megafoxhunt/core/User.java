@@ -10,7 +10,7 @@ public class User {
 	public int getID(){return id;}
 	public void setID(int id){this.id = id;}
 	
-	private String name;
+	private String name = "player";
 	public String getName(){return name;}
 	public void setName(String name){this.name = name;}
 	
