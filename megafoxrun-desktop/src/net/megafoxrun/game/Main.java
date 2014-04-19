@@ -11,9 +11,7 @@ public class Main {
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
 		cfg.title = "Mega Fox Hunt";
 		cfg.useGL20 = true;
-		cfg.width = 800;
-		cfg.height = 480;
 		cfg.vSyncEnabled = true;
-		new LwjglApplication(new MyGdxGame(), cfg);		
+		new LwjglApplication(new MyGdxGame(), cfg);
 	}
 }

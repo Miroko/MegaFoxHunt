@@ -3,6 +3,7 @@ package net.megafoxhunt.core;
 import net.megafoxhunt.screens.ScreenHandler;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Graphics.DisplayMode;
 
 public class MyGdxGame extends Game {	
 	
@@ -15,7 +16,10 @@ public class MyGdxGame extends Game {
 	public static ScreenHandler screenHandler;
 	
 	@Override	
-	public void create() {		
+	public void create() {
+		//DisplayMode displayMode = Gdx.graphics.getDesktopDisplayMode();
+		//Gdx.graphics.setDisplayMode(displayMode);
+		
 		resources = new GameResources();
 		resources.init();
 		
