@@ -1,5 +1,6 @@
 package net.megafox.game;
 
+import java.awt.Point;
 import java.util.ArrayList;
 
 
@@ -154,8 +155,9 @@ public class GameSimulation {
 			return false;
 		}
 	}
-	private void reSpawnChaser(Chaser chaser){		
-		move(chaser, 33, 12, Shared.DIRECTION_STOP, true);
+	private void reSpawnChaser(Chaser chaser){
+		Point p = gameMap.getDogSpawn(0);
+		move(chaser, p.x, p.y, Shared.DIRECTION_STOP, true);
 		playerContainer.sendObjectToAll(new Move(chaser.getId(), Shared.DIRECTION_STOP, chaser.getX(), chaser.getY(), true), Visibility.BOTH);
 	}
 	public void addPowerup(Powerup powerup){

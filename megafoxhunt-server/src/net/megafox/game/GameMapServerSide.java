@@ -1,5 +1,6 @@
 package net.megafox.game;
 
+import java.awt.Point;
 import java.io.BufferedReader;
 
 import java.io.FileInputStream;
@@ -8,6 +9,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 import net.megafox.entities.Berry;
 import net.megafox.entities.Empty;
@@ -40,6 +43,9 @@ public class GameMapServerSide {
 	
 	private IDHandler idHandler;
 	
+	private ArrayList<Point> dogSpawns;
+	private ArrayList<Point> foxSpawns;
+	
 	public GameMapServerSide(GameMapSharedConfig mapConfig, IDHandler idHandler){
 		this.config = mapConfig;
 		this.idHandler = idHandler;
@@ -47,8 +53,11 @@ public class GameMapServerSide {
 		loadCollisionMap(config.getBinaryMapPath());
 	}
 	private void loadCollisionMap(String path){
-		collisionMap = new Entity[getWidth()][getHeight()];	
-		
+		collisionMap = new Entity[getWidth()][getHeight()];
+		holes = new ArrayList<Hole>();
+		dogSpawns = new ArrayList<Point>();
+		foxSpawns = new ArrayList<Point>();
+
 	    try {
 			InputStream is = null;			
 	    	is = new FileInputStream(path);
@@ -71,6 +80,9 @@ public class GameMapServerSide {
 			        	holes.add(hole);
 			        	target = hole;
 			        } else {
+			        	if (n == 89) foxSpawns.add(new Point(col, getHeight() - 1 - row));
+			        	else if (n == 90) dogSpawns.add(new Point(col, getHeight() - 1 - row));
+			        	
 			        	target = EMPTY;
 			        }
 
@@ -78,6 +90,7 @@ public class GameMapServerSide {
 			    }
 			    row++;
 			}
+
 			br.close();
 		} catch (NumberFormatException | IOException e) {			
 			e.printStackTrace();
@@ -131,6 +144,31 @@ public class GameMapServerSide {
 	
 	public int getHolesSize() {
 		return holes.size();
+	}
+	
+	public Point getDogSpawn(int index) {
+		if (dogSpawns.size() <= 0) return getRandomEmptyPoint();
+		return dogSpawns.get(index % dogSpawns.size());
+	}
+	
+	public Point getFoxSpawn(int index) {
+		if (foxSpawns.size() <= 0) return getRandomEmptyPoint();
+		return foxSpawns.get(index % foxSpawns.size());
+	}
+	
+	private Point getRandomEmptyPoint() {
+		Random ran = new Random();
+		
+		Point p = null;
+		while (p == null) {
+			int x = ran.nextInt(getWidth());
+			int y = ran.nextInt(getHeight());
+			if (collisionMap[x][y] != WALL) {
+				p = new Point(x, y);
+			}
+		}
+		
+		return p;
 	}
 }
 
