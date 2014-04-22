@@ -5,6 +5,7 @@ public class GameMapSharedConfig {
 	public static final GameMapSharedConfig DEBUG_MAP = new GameMapSharedConfig("Debug", "data/basic_map.tmx", "data/basic_map.txt", 35, 25, 10, 5 );	
 	public static final GameMapSharedConfig TEST_MAP = new GameMapSharedConfig("Test", "data/test_map.tmx", "data/test_map.txt", 15, 15, 2, 2);
 	public static final GameMapSharedConfig MAP1 = new GameMapSharedConfig("Map1", "data/map1.tmx", "data/map1.txt", 35, 25, 6, 6);
+	public static final GameMapSharedConfig MAP2 = new GameMapSharedConfig("Map2", "data/map2.tmx", "data/map2.txt", 34, 19, 4, 4);
 	
 	private String name;
 	private String tiledMapPath;

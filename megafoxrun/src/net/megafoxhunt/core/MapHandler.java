@@ -13,6 +13,8 @@ public class MapHandler {
 			currentMap = new GameMapClientSide(GameMapSharedConfig.TEST_MAP);
 		} else if (name.equals(GameMapSharedConfig.MAP1.getName())) {
 			currentMap = new GameMapClientSide(GameMapSharedConfig.MAP1);
+		} else if (name.equals(GameMapSharedConfig.MAP2.getName())) {
+			currentMap = new GameMapClientSide(GameMapSharedConfig.MAP2);
 		}
 	}	
 	public void dispose() {

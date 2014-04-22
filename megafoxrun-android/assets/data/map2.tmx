@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="34" height="19" tilewidth="64" tileheight="64">
+ <tileset firstgid="1" name="atlas" tilewidth="64" tileheight="64">
+  <image source="atlas.png" width="1024" height="512"/>
+  <tile id="0">
+   <properties>
+    <property name="wall" value=""/>
+   </properties>
+  </tile>
+  <tile id="1">
+   <properties>
+    <property name="wall" value=""/>
+   </properties>
+  </tile>
+  <tile id="2">
+   <properties>
+    <property name="wall" value=""/>
+   </properties>
+  </tile>
+  <tile id="4">
+   <properties>
+    <property name="wall" value=""/>
+   </properties>
+  </tile>
+  <tile id="16">
+   <properties>
+    <property name="wall" value=""/>
+   </properties>
+  </tile>
+  <tile id="17">
+   <properties>
+    <property name="wall" value=""/>
+   </properties>
+  </tile>
+  <tile id="18">
+   <properties>
+    <property name="wall" value=""/>
+   </properties>
+  </tile>
+  <tile id="19">
+   <properties>
+    <property name="wall" value=""/>
+   </properties>
+  </tile>
+  <tile id="32">
+   <properties>
+    <property name="wall" value=""/>
+   </properties>
+  </tile>
+  <tile id="33">
+   <properties>
+    <property name="wall" value=""/>
+   </properties>
+  </tile>
+  <tile id="34">
+   <properties>
+    <property name="wall" value=""/>
+   </properties>
+  </tile>
+  <tile id="36">
+   <properties>
+    <property name="wall" value=""/>
+   </properties>
+  </tile>
+  <tile id="37">
+   <properties>
+    <property name="wall" value=""/>
+   </properties>
+  </tile>
+  <tile id="39">
+   <properties>
+    <property name="wall" value=""/>
+   </properties>
+  </tile>
+  <tile id="48">
+   <properties>
+    <property name="wall" value=""/>
+   </properties>
+  </tile>
+  <tile id="49">
+   <properties>
+    <property name="wall" value=""/>
+   </properties>
+  </tile>
+  <tile id="50">
+   <properties>
+    <property name="wall" value=""/>
+   </properties>
+  </tile>
+  <tile id="65">
+   <properties>
+    <property name="hole" value=""/>
+    <property name="wall" value=""/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="Background" width="34" height="19">
+  <data encoding="base64" compression="zlib">
+   eJzFVUEOxCAI9FFu/YBbe+3/P1Ob1GRCBoSmuz1MUkWgDgPmlFLu+LyIvaN2fF/GTsC4WYI26zzzZWD8rEFbcXK9kvxPosF3uRnD4t7rj+dbML+sSzH4s+5Yr/MzTcj/9XDrsWFcSxeoJ6aPiN6HHXmpzprOeMA7WP2BdsmL1U+ybhF9ypk3wPYi2o/ODW3mjb0s9rX4MvYTc0NqAte/nkuYX2pCrlGH3t6M1LIRO8uHOjy/N8PPwqyWWl9pNWmGX4SHotg989L7Vnt4YPfxvKFVWf/zvb2DAw5HsqU=
+  </data>
+ </layer>
+ <layer name="Main" width="34" height="19">
+  <data encoding="base64" compression="zlib">
+   eJy9VtsNwjAMdEEMUGABikD8Ahv0jxFg/0GopZx0cs8hgMCSReo46fn8oIOZXRp1MekobK3nM91Oupv0bm3ivjd6XhXbN3Ivd+Cevvx2CV6Xs805uJa9oTyP5N/ZnK9R3Ms4YlwnWsc9xQFszte64gs+mUuFo7e5xD3lm+UHmOCr4lM4nHvnTnGvfLfB1pGNpcZhlpfIbTyneOfzqCPWTfldEl6Oj+85THoM7+7JHmMa6C7mRkmtrxgHx8CY92THGu9zXh5l/bA5Dwu6i/MGG9fbJ/3femaXrKONcaD/azMPfswL84H4Yl85B6gP5vtVndZii/XI+LK+yuZuy/yINat6hZ9VDpSN763hiLhXyfvjvOP8qh56l49Y87EXPdc+5zzf2SxgAX7Mx0/rQ83wW8HR6s/nlG82PxjzOtnfm+6ra/BnzjJf4Gj9/viF4PtD/Rf8W52XJ+ESNEM=
+  </data>
+ </layer>
+ <layer name="Extra" width="34" height="19">
+  <data encoding="base64" compression="zlib">
+   eJzNldsKgCAMhnucnqesrjvQfYf3pwYJQ5bO36w+iGK4g/N3FQXGKNj6gE8H5vKxCbYlQ54/MSjWVGDs0BlyVjAHcbeH+nq7Z5hDO0TKHjRM7LvMnMvH/mHup7DalGYPB9W+OZ9Gsc5qU5o9LlTzDNbD/TR3XvKzUM1PaP3N+4JA/ZZ65TsDmjmtY+P3xQB1xPQ7pOcU/5jYGj2j/qmx/0asJtCZlAr63zwA7j8Tww==
+  </data>
+ </layer>
+ <layer name="Foreground" width="34" height="19">
+  <data encoding="base64" compression="zlib">
+   eJxjYBi8gB2IOYCYc4DdIQ7EEkAsSWVzh7P/hrPfYEAUiMVIEB8Fo2CgAa3S5miaHwWjYPgAAOOEAc0=
+  </data>
+ </layer>
+</map>
