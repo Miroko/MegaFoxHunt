@@ -48,7 +48,7 @@ public class ServerRooms {
 	}
 	public void startGame(GameRoom room){	
 		if(room.getRoomState() == GameRoom.STATE_LOBBY){
-			room.changeMap(GameMapSharedConfig.MAP1, gameServer.idHandler);	
+			room.changeMap(GameMapSharedConfig.MAP2, gameServer.idHandler);	
 			room.startSimulation(gameServer.idHandler);		
 			room.setChasedsAndChasers();
 			room.generateBerries(GameMapServerSide.TOTAL_BERRIES, gameServer.idHandler);

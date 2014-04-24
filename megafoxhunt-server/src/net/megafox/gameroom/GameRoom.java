@@ -1,4 +1,5 @@
 package net.megafox.gameroom;
+import java.awt.Point;
 import java.util.ArrayList;
 
 
@@ -251,17 +252,19 @@ public class GameRoom extends Thread {
 		index = 0;
 		for (PlayerConnection player : chasers) {				
 			setPlayerToChaser(player, index);	
-			index++;			
+			index++;
 		}
 	}
 	private void setPlayerToChaser(PlayerConnection connection, int positionOffset){
-		Chaser chaser = new Chaser(13, 12 + (positionOffset), connection.getMyId(), connection);
+		Point p = currentMap.getDogSpawn(positionOffset);
+		Chaser chaser = new Chaser(p.x, p.y, connection.getMyId(), connection);
 		connection.setCurrentItem(null);
 		connection.setEntity(chaser);		
 		gameSimulation.addChaser(chaser);
 	}
 	private void setPlayerToChased(PlayerConnection connection, int positionOffset){
-		Chased chased = new Chased(2, 12 + (positionOffset), connection.getMyId(), connection);
+		Point p = currentMap.getFoxSpawn(positionOffset);
+		Chased chased = new Chased(p.x, p.y, connection.getMyId(), connection);
 		connection.setCurrentItem(null);
 		connection.setEntity(chased);
 		gameSimulation.addChased(chased);
