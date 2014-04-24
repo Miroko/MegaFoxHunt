@@ -191,6 +191,7 @@ public class GameScreen implements Screen{
 		multiplexer.addProcessor(new GestureDetector(gameInputProcessor));
 		multiplexer.addProcessor(stageUI);
 		Gdx.input.setInputProcessor(multiplexer);
+		Gdx.input.setCatchBackKey(true);
 	}
 
 	@Override

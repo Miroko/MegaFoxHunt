@@ -42,7 +42,7 @@ public class GameInputProcessor extends InputAdapter implements GestureListener 
 	public boolean keyDown(int k) {
 		if (k == Keys.SPACE || k == Keys.ENTER) return true;
 
-		if(k == Keys.ESCAPE){
+		if(k == Keys.ESCAPE || k == Keys.BACK){
 			gameUI.toggle();
 		}
 		if(k == Keys.UP) {
