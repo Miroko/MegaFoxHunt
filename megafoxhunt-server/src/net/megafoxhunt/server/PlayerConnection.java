@@ -1,5 +1,6 @@
 package net.megafoxhunt.server;
 
+import net.megafox.entities.Chaser;
 import net.megafox.entities.Entity;
 import net.megafox.gameroom.GameRoom;
 import net.megafox.items.Item;
@@ -93,8 +94,13 @@ public class PlayerConnection extends Connection {
 	public void activateItem() {
 		Item item = getCurrentItem();
 		if (item == null) return;
-		else{
-			if (item.activate(getEntity().getX(), getEntity().getY(), this)) setCurrentItem(null);
+		else if(entity instanceof Chaser){
+			if(((Chaser)entity).isEaten()){
+				return;
+			}
+		}	
+		else if (item.activate(getEntity().getX(), getEntity().getY(), this)){
+			setCurrentItem(null);
 		}			
 	}	
 	public Item getCurrentItem() {

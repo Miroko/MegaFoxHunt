@@ -51,6 +51,7 @@ public class GameSimulation {
 	private ArrayList<Entity> removable;
 	
 	private ArrayList<Entity> chasers;
+	
 	private ArrayList<Entity> chaseds;
 	private ArrayList<Entity> berries;
 	
@@ -73,7 +74,7 @@ public class GameSimulation {
 		this.idHandler = idHandler;
 		removable = new ArrayList<>();
 		chasers = new ArrayList<>();
-		chaseds = new ArrayList<>();
+		chaseds = new ArrayList<>();		
 		berries = new ArrayList<>();
 		powerups = new ArrayList<>();
 		pickups = new ArrayList<>();
@@ -156,10 +157,9 @@ public class GameSimulation {
 			return false;
 		}
 	}
-	private void reSpawnChaser(Chaser chaser){
+	public void reSpawnChaser(Chaser chaser){	
 		Point p = gameMap.getDogSpawn(0);
-		move(chaser, p.x, p.y, Shared.DIRECTION_STOP, true);
-		playerContainer.sendObjectToAll(new Move(chaser.getId(), Shared.DIRECTION_STOP, chaser.getX(), chaser.getY(), true), Visibility.BOTH);
+		chaser.respawn(p, this);
 	}
 	public void addPowerup(Powerup powerup){
 		powerups.add(powerup);		
@@ -172,13 +172,11 @@ public class GameSimulation {
 	public void addChaser(Chaser chaser){
 		chasers.add(chaser);		
 		playerContainer.sendObjectToAll(new AddChaser(chaser.getId(), chaser.getX(), chaser.getY()));	
-	}
-	
+	}	
 	public void addChased(Chased chased){
 		chaseds.add(chased);	
 		playerContainer.sendObjectToAll(new AddChased(chased.getId(), chased.getX(), chased.getY()));		
-	}
-	
+	}	
 	public void addBerry(Berry berry){		
 		berries.add(berry);		
 		playerContainer.sendObjectToAll(new AddBerry(berry.getId(), berry.getX(), berry.getY()), berry.getVisibility());
@@ -194,22 +192,23 @@ public class GameSimulation {
 	public void addPickupToRemove(PickupItem item){
 		removable.add(item);
 		gameMap.removeEntity(item);
-	}
-	
+	}	
 	public void addHoleToRemove(Hole hole) {
 		removable.add(hole);
 		gameMap.removeEntity(hole);
-	}	
-	
+	}		
 	public void move(Entity entity, int x, int y, int direction, boolean force) {
-		if (entity.move(x, y, direction, gameMap, force)) {
-			playerContainer.sendObjectToAllExcept(entity.getPlayer(), new Move(entity.getId(), direction, x, y, force));
-		} else {
-			Move backMove = new Move(entity.getId(), 0, entity.getX(), entity.getY(), true);
-			entity.getPlayer().sendTCP(backMove);
-			return;
-		}
-		// static entities
+			if (entity.move(x, y, direction, gameMap, force)) {
+				playerContainer.sendObjectToAllExcept(entity.getPlayer(), new Move(entity.getId(), direction, x, y, force));
+			} else {
+				Move backMove = new Move(entity.getId(), 0, entity.getX(), entity.getY(), true);
+				entity.getPlayer().sendTCP(backMove);
+				return;
+			}
+			checkCollisionStaticEntities(entity, x, y);
+			checkCollisionDynamicEntities(entity);
+	}
+	private void checkCollisionStaticEntities(Entity entity, int x, int y){
 		Entity collidedEntity = gameMap.getEntity(x, y);
 		
 		if (entity instanceof Chased) {
@@ -224,43 +223,51 @@ public class GameSimulation {
 		} else if(collidedEntity instanceof PickupItem){
 			pickupCollision((PickupItem) collidedEntity, entity);
 		}
-
-		// dynamic entities
+	}
+	private void checkCollisionDynamicEntities(Entity entity){		
+		// Entity positions
 		int entityX = entity.getX();
 		int entityY = entity.getY();
 		int entityLastX = entity.getLastX();
-		int entityLastY = entity.getLastY();				
+		int entityLastY = entity.getLastY();
+		
 		if (entity instanceof Chased) {
-			for (Entity chaser : chasers) {
-				if (entityX == chaser.getX() && entityY == chaser.getY() ||
-					entityX == chaser.getLastX() && entityY == chaser.getLastY() ||
-					entityLastX == chaser.getX() && entityLastY == chaser.getY()  ||
-					entityLastX == chaser.getLastX() && entityLastY == chaser.getLastY()) {
+			Chased chased = (Chased) entity;
+			for (Entity chaserEntity : chasers) {
+				Chaser chaser = (Chaser) chaserEntity;
+				if(!chaser.isEaten()){
+					if (entityX == chaser.getX() && entityY == chaser.getY() ||
+						entityX == chaser.getLastX() && entityY == chaser.getLastY() ||
+						entityLastX == chaser.getX() && entityLastY == chaser.getY()  ||
+						entityLastX == chaser.getLastX() && entityLastY == chaser.getLastY()) {
 					
-					if (entity.getPlayer().isRageOn()){
-						// remove chaser from map
-						timer.schedule(new RespawnChaserTask((Chaser) chaser), RespawnChaserTask.DELAY_MS);
+						if (chased.getPlayer().isRageOn()){
+							chaser.collisionWithChased(this);
+						}
+						else removable.add(chased);
 					}
-					else removable.add(entity);
-				}
-			}
-		} else if (entity instanceof Chaser) {
-			for (Entity chased : chaseds) {
-				if (entityX == chased.getX() && entityY == chased.getY() ||
-					entityX == chased.getLastX() && entityY == chased.getLastY() ||
-					entityLastX == chased.getX() && entityLastY == chased.getY()  ||
-					entityLastX == chased.getLastX() && entityLastY == chased.getLastY()) {
-					
-					if (entity.getPlayer().isRageOn()){
-						// remove chaser from map
-						timer.schedule(new RespawnChaserTask((Chaser) entity), RespawnChaserTask.DELAY_MS);
-					}
-					else removable.add(chased);
 				}
 			}
 		}
-	}
+		else if (entity instanceof Chaser) {
+			Chaser chaser = (Chaser) entity;
+			if(!chaser.isEaten()){
+				for (Entity chasedEntity : chaseds) {	
+					Chased chased = (Chased) chasedEntity;
+					if (entityX == chased.getX() && entityY == chased.getY() ||
+						entityX == chased.getLastX() && entityY == chased.getLastY() ||
+						entityLastX == chased.getX() && entityLastY == chased.getY()  ||
+						entityLastX == chased.getLastX() && entityLastY == chased.getLastY()) {
 	
+						if (chased.getPlayer().isRageOn()){
+							chaser.collisionWithChased(this);
+						}
+						else removable.add(chased);
+					}
+				}
+			}
+		}	
+	}
 	private void powerupCollisionDetected(Powerup powerup, Entity collidedEntity) {	
 		if(collidedEntity instanceof Chaser){
 			int speedId = idHandler.getFreeID();			
@@ -350,20 +357,6 @@ public class GameSimulation {
 				rage.on = false;
 				playerContainer.sendObjectToAll(rage);
 			}
-		}
-		
-	}
-	class RespawnChaserTask extends TimerTask{
-		
-		public static final long DELAY_MS = 4000;
-		private Chaser chaser;
-
-		public RespawnChaserTask(Chaser chaser){
-			this.chaser = chaser;
-		}	
-		@Override
-		public void run() {
-			reSpawnChaser(chaser);
 		}
 		
 	}
