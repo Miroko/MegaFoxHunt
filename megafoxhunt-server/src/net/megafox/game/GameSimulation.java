@@ -8,9 +8,11 @@ import java.util.ArrayList;
 
 
 
+import java.util.Date;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+
 
 
 import net.megafox.entities.Berry;
@@ -26,7 +28,6 @@ import net.megafox.items.Barricade;
 import net.megafox.items.Bomb;
 import net.megafoxhunt.server.IDHandler;
 import net.megafoxhunt.server.PlayerConnection;
-
 import net.megafoxhunt.shared.KryoNetwork.AddChaser;
 import net.megafoxhunt.shared.KryoNetwork.AddChased;
 import net.megafoxhunt.shared.KryoNetwork.AddPowerup;
@@ -236,7 +237,11 @@ public class GameSimulation {
 					entityLastX == chaser.getX() && entityLastY == chaser.getY()  ||
 					entityLastX == chaser.getLastX() && entityLastY == chaser.getLastY()) {
 					
-					if (entity.getPlayer().isRageOn()) reSpawnChaser((Chaser) chaser);
+					if (entity.getPlayer().isRageOn()){
+						move(chaser, -50, -50, Shared.DIRECTION_STOP, true);
+						playerContainer.sendObjectToAll(new Move(chaser.getId(), Shared.DIRECTION_STOP, chaser.getX(), chaser.getY(), true), Visibility.BOTH);
+						timer.schedule(new RespawnChaserTask((Chaser) chaser), RespawnChaserTask.DELAY_MS);
+					}
 					else removable.add(entity);
 				}
 			}
@@ -247,7 +252,11 @@ public class GameSimulation {
 					entityLastX == chased.getX() && entityLastY == chased.getY()  ||
 					entityLastX == chased.getLastX() && entityLastY == chased.getLastY()) {
 					
-					if (chased.getPlayer().isRageOn()) reSpawnChaser((Chaser) entity);
+					if (entity.getPlayer().isRageOn()){
+						move(entity, -50, -50, Shared.DIRECTION_STOP, true);
+						playerContainer.sendObjectToAll(new Move(entity.getId(), Shared.DIRECTION_STOP, entity.getX(), entity.getY(), true), Visibility.BOTH);
+						timer.schedule(new RespawnChaserTask((Chaser) entity), RespawnChaserTask.DELAY_MS);
+					}
 					else removable.add(chased);
 				}
 			}
@@ -343,6 +352,20 @@ public class GameSimulation {
 				rage.on = false;
 				playerContainer.sendObjectToAll(rage);
 			}
+		}
+		
+	}
+	class RespawnChaserTask extends TimerTask{
+		
+		public static final long DELAY_MS = 4000;
+		private Chaser chaser;
+
+		public RespawnChaserTask(Chaser chaser){
+			this.chaser = chaser;
+		}	
+		@Override
+		public void run() {
+			reSpawnChaser(chaser);
 		}
 		
 	}
