@@ -52,7 +52,7 @@ import com.esotericsoftware.kryonet.Listener.ThreadedListener;
 
 public class GameNetwork {
 
-	private static final int TIMEOUT_MS = 50000;
+	private static final int TIMEOUT_MS = 5000;
 
 	private User localUser = new User(0, null);
 	public User getLocalUser(){return localUser;}
@@ -63,6 +63,8 @@ public class GameNetwork {
 	private boolean pingingServer = false;
 	
 	private int currentPing;
+	
+	private boolean connecting = false;
 		
 	public void init(){
 		KryoNetwork.register(kryoClient);	
@@ -294,13 +296,21 @@ public class GameNetwork {
 		UserContainer.addUser(localUser);		
 	}
 	public void connect(String host, int port){
+		if (kryoClient.isConnected() || connecting) return;
+		
+		connecting = true;
 		try {			
 			start();
 			kryoClient.connect(TIMEOUT_MS, host, port);
-			Login login = new Login();
-			login.name = localUser.getName();
-			kryoClient.sendTCP(login);
+			if (kryoClient.isConnected()) {
+				Login login = new Login();
+				login.name = localUser.getName();
+				kryoClient.sendTCP(login);
+			} else {
+				connecting = false;
+			}
 		} catch (IOException ex) {
+			connecting = false;
 			ex.printStackTrace();
 		}
 	}
@@ -339,5 +349,8 @@ public class GameNetwork {
 	public void stop(){
 		kryoClient.stop();
 	}
-	
+
+	public boolean isConnecting() {
+		return connecting;
+	}
 }

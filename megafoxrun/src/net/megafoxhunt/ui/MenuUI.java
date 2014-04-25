@@ -54,9 +54,11 @@ public class MenuUI extends Table{
 		connectButton.addListener(new ChangeListener() {			
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {		
-				if(connectButton.isPressed()){					
-					MyGdxGame.network.setUsername(nameField.getText());						
-					MyGdxGame.network.connect(MyGdxGame.IP_SERVER, 6666);
+				if(connectButton.isPressed()) {
+					if (!MyGdxGame.network.isConnecting()) {
+						MyGdxGame.network.setUsername(nameField.getText());						
+						MyGdxGame.network.connect(MyGdxGame.IP_SERVER, 6666);
+					}
 				}
 			}
 		});			
