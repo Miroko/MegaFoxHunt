@@ -3,6 +3,10 @@ package net.megafoxhunt.server;
 import net.megafox.entities.Entity;
 import net.megafox.gameroom.GameRoom;
 import net.megafox.items.Item;
+import net.megafoxhunt.shared.KryoNetwork.SetItemType;
+import net.megafoxhunt.shared.Shared;
+import net.megafoxhunt.shared.KryoNetwork;
+
 import com.esotericsoftware.kryonet.Connection;
 
 public class PlayerConnection extends Connection {
@@ -94,7 +98,11 @@ public class PlayerConnection extends Connection {
 		Item item = getCurrentItem();
 		if (item == null) return;
 		else{
-			if (item.activate(getEntity().getX(), getEntity().getY(), this)) setCurrentItem(null);
+			if (item.activate(getEntity().getX(), getEntity().getY(), this)) {
+				setCurrentItem(null);
+				SetItemType setItemType = new SetItemType(Shared.ITEM_EMPTY);
+				this.sendTCP(setItemType);
+			}
 		}			
 	}	
 	public Item getCurrentItem() {
@@ -102,6 +110,10 @@ public class PlayerConnection extends Connection {
 	}
 	public void setCurrentItem(Item item) {
 		this.currentItem = item;
+		if (item != null) {
+			SetItemType setItemType = new SetItemType(item.getItemType());
+			this.sendTCP(setItemType);
+		}
 	}
 	public boolean isRageOn() {
 		return rageOn;

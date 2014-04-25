@@ -25,4 +25,8 @@ public class Shared {
 	public static final int DIRECTION_RIGHT = 2;
 	public static final int DIRECTION_DOWN = 3;
 	public static final int DIRECTION_LEFT = 4;
+	
+	public static final int ITEM_EMPTY = 0;
+	public static final int ITEM_BOMB = 1;
+	public static final int ITEM_BARRICADE = 2;
 }

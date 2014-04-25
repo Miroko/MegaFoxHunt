@@ -18,6 +18,9 @@ public class User {
 	public void setReady(boolean ready){this.ready = ready;}
 	public boolean getReady(){return ready;}
 	
+	// 0 = no item
+	private int itemType = 0;
+	
 	private EntityMovable controlledEntity;
 	public void setControlledEntity(EntityMovable entity){controlledEntity = entity;}
 	public EntityMovable getControlledEntity(){return controlledEntity;}
@@ -25,5 +28,13 @@ public class User {
 	public User(int id, String name) {
 		this.id = id;
 		this.name = name;
+	}
+	
+	public void setItemType(int itemType) {
+		this.itemType = itemType;
+	}
+	
+	public int getItemType() {
+		return itemType;
 	}
 }

@@ -39,6 +39,7 @@ import net.megafoxhunt.shared.KryoNetwork.Move;
 import net.megafoxhunt.shared.KryoNetwork.PowerupRage;
 import net.megafoxhunt.shared.KryoNetwork.RemoveEntity;
 import net.megafoxhunt.shared.KryoNetwork.RemovePlayer;
+import net.megafoxhunt.shared.KryoNetwork.SetItemType;
 import net.megafoxhunt.shared.KryoNetwork.SetMap;
 import net.megafoxhunt.shared.KryoNetwork.WelcomePlayer;
 import net.megafoxhunt.shared.KryoNetwork.Winner;
@@ -278,6 +279,12 @@ public class GameNetwork {
                      if (ping.isReply) {
                     	 currentPing = connection.getReturnTripTime();
                      }
+				}
+				
+				
+				else if (object instanceof SetItemType) {
+					SetItemType item = (SetItemType)object;
+					MyGdxGame.network.localUser.setItemType(item.itemType);
 				}
 			}
 

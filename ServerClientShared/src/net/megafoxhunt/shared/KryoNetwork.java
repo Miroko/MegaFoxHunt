@@ -38,6 +38,7 @@ public class KryoNetwork {
 		kryo.register(AddBomb.class);
 		kryo.register(AddPickupItem.class);
 		kryo.register(Disconnect.class);
+		kryo.register(SetItemType.class);
 	}	
 	/*
 	 * MESSAGE
@@ -233,6 +234,15 @@ public class KryoNetwork {
 	}
 	public static class ActivateItem {
 		
+	}
+	
+	public static class SetItemType {
+		public int itemType = 0;
+		
+		public SetItemType() {}
+		public SetItemType(int itemType) {
+			this.itemType = itemType;
+		}
 	}
 	
 	public static class ChangeTilesTypes {

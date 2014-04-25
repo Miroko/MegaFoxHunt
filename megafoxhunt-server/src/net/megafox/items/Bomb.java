@@ -6,6 +6,7 @@ import net.megafox.entities.Empty;
 import net.megafox.game.GameMapServerSide;
 import net.megafox.game.GameSimulation;
 import net.megafoxhunt.server.PlayerConnection;
+import net.megafoxhunt.shared.Shared;
 import net.megafoxhunt.shared.KryoNetwork.AddBomb;
 import net.megafoxhunt.shared.KryoNetwork.ChangeTilesTypes;
 import net.megafoxhunt.shared.KryoNetwork.Move;
@@ -17,7 +18,7 @@ public class Bomb extends Item{
 	private int y;
 
 	public Bomb(GameSimulation gameSimulation) {
-		super(gameSimulation);
+		super(gameSimulation, Shared.ITEM_BOMB);
 	}
 	public void explode(){		
 		ChangeTilesTypes changeTilesTypes = new ChangeTilesTypes();
