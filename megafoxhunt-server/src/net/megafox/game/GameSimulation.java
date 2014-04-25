@@ -238,8 +238,7 @@ public class GameSimulation {
 					entityLastX == chaser.getLastX() && entityLastY == chaser.getLastY()) {
 					
 					if (entity.getPlayer().isRageOn()){
-						move(chaser, -50, -50, Shared.DIRECTION_STOP, true);
-						playerContainer.sendObjectToAll(new Move(chaser.getId(), Shared.DIRECTION_STOP, chaser.getX(), chaser.getY(), true), Visibility.BOTH);
+						// remove chaser from map
 						timer.schedule(new RespawnChaserTask((Chaser) chaser), RespawnChaserTask.DELAY_MS);
 					}
 					else removable.add(entity);
@@ -253,8 +252,7 @@ public class GameSimulation {
 					entityLastX == chased.getLastX() && entityLastY == chased.getLastY()) {
 					
 					if (entity.getPlayer().isRageOn()){
-						move(entity, -50, -50, Shared.DIRECTION_STOP, true);
-						playerContainer.sendObjectToAll(new Move(entity.getId(), Shared.DIRECTION_STOP, entity.getX(), entity.getY(), true), Visibility.BOTH);
+						// remove chaser from map
 						timer.schedule(new RespawnChaserTask((Chaser) entity), RespawnChaserTask.DELAY_MS);
 					}
 					else removable.add(chased);
