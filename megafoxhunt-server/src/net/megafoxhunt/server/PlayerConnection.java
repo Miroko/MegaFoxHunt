@@ -6,7 +6,6 @@ import net.megafox.gameroom.GameRoom;
 import net.megafox.items.Item;
 import net.megafoxhunt.shared.KryoNetwork.SetItemType;
 import net.megafoxhunt.shared.Shared;
-import net.megafoxhunt.shared.KryoNetwork;
 
 import com.esotericsoftware.kryonet.Connection;
 
@@ -67,10 +66,10 @@ public class PlayerConnection extends Connection {
 	}	
 	public void resetData(){
 		playerReady = false;
-		preferedTeam = null;
-		currentItem = null;
+		preferedTeam = null;		
 		speedOn = false;
 		rageOn = false;
+		removeItem();
 	}
 	public PlayerConnection(int id, String name) {
 		super();	
@@ -109,6 +108,11 @@ public class PlayerConnection extends Connection {
 			this.sendTCP(setItemType);
 		}			
 	}	
+	public void removeItem(){
+		setCurrentItem(null);
+		SetItemType setItemType = new SetItemType(Shared.ITEM_EMPTY);
+		this.sendTCP(setItemType);
+	}
 	public Item getCurrentItem() {
 		return currentItem;
 	}

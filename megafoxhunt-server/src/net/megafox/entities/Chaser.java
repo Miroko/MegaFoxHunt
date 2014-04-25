@@ -26,6 +26,7 @@ public class Chaser extends Entity{
 
 	public void collisionWithChased(GameSimulation gameSimulation) {
 		this.isEated = true;		
+		getPlayer().removeItem();
 		
 		RemoveEntity removeEntity = new RemoveEntity();
 		removeEntity.id = getId();	
