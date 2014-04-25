@@ -63,6 +63,9 @@ public class PlayerConnection extends Connection {
 	public void resetData(){
 		playerReady = false;
 		preferedTeam = null;
+		currentItem = null;
+		speedOn = false;
+		rageOn = false;
 	}
 	public PlayerConnection(int id, String name) {
 		super();	
