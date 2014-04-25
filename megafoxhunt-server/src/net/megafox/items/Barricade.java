@@ -14,7 +14,7 @@ import net.megafoxhunt.shared.KryoNetwork.RemoveEntity;
 public class Barricade extends Item {	
 
 	public Barricade(GameSimulation gameSimulation) {
-		super(gameSimulation);
+		super(gameSimulation, Shared.ITEM_BARRICADE);
 	}
 
 	@Override
