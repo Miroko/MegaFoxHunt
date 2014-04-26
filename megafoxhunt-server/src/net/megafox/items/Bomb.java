@@ -47,7 +47,7 @@ public class Bomb extends Item{
 		}
 	}
 	@Override
-	public boolean activate(int x, int y, PlayerConnection player) {		
+	public boolean activate(int x, int y, PlayerConnection player) {
 		this.x = x;
 		this.y = y;
 		if (gameSimulation.gameMap.getEntity(x, y) instanceof Empty) {			

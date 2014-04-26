@@ -97,12 +97,9 @@ public class PlayerConnection extends Connection {
 	public void activateItem() {
 		Item item = getCurrentItem();
 		if (item == null) return;
-		else if(entity instanceof Chaser){
-			if(((Chaser)entity).isEaten()){
-				return;
-			}
-		}	
-		else if (item.activate(getEntity().getX(), getEntity().getY(), this)) {
+		else if(entity instanceof Chaser && ((Chaser)entity).isEaten()){
+			return;
+		} else if (item.activate(getEntity().getX(), getEntity().getY(), this)) {
 			setCurrentItem(null);
 			SetItemType setItemType = new SetItemType(Shared.ITEM_EMPTY);
 			this.sendTCP(setItemType);
