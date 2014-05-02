@@ -2,6 +2,7 @@ package net.megafox.items;
 
 import java.util.TimerTask;
 
+import net.megafox.entities.Berry;
 import net.megafox.entities.Empty;
 import net.megafox.game.GameMapServerSide;
 import net.megafox.game.GameSimulation;
@@ -50,7 +51,7 @@ public class Bomb extends Item{
 	public boolean activate(int x, int y, PlayerConnection player) {
 		this.x = x;
 		this.y = y;
-		if (gameSimulation.gameMap.getEntity(x, y) instanceof Empty) {			
+		if (gameSimulation.gameMap.getEntity(x, y) instanceof Empty || gameSimulation.gameMap.getEntity(x, y) instanceof Berry) {			
 			net.megafox.entities.Bomb bomb = new net.megafox.entities.Bomb(x, y, gameSimulation.idHandler.getFreeID());
 			gameSimulation.playerContainer.sendObjectToAll(new AddBomb(bomb.getId(), bomb.getX(), bomb.getY()));				
 			gameSimulation.timer.schedule(new BombExplodeTimerTask(bomb), BombExplodeTimerTask.EXPLODE_DELAY);

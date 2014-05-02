@@ -100,17 +100,16 @@ public class GameSimulation {
 		 * HANDLE REMOVABLE
 		 */
 		for(Entity entity : removable){			
-			if(entity instanceof Chased){
-				chaseds.remove(entity);	
-			}
-			else if(entity instanceof Berry){
+			if(entity instanceof Berry){
 				berries.remove(entity);
-			}
-			else if(entity instanceof Powerup){
+			} else if(entity instanceof Powerup){
 				powerups.remove(entity);
-			}
-			else if(entity instanceof PickupItem){
+			} else if(entity instanceof PickupItem){
 				pickups.remove(entity);
+			} else if(entity instanceof Chased){
+				chaseds.remove(entity);	
+			} else if(entity instanceof Chaser){
+				chasers.remove(entity);	
 			}
 			// INFORM ABOUT ENTITY DELETION
 			RemoveEntity removeEntity = new RemoveEntity();
@@ -196,7 +195,12 @@ public class GameSimulation {
 	public void addHoleToRemove(Hole hole) {
 		removable.add(hole);
 		gameMap.removeEntity(hole);
-	}		
+	}
+	
+	public void addRemovable(Entity entity) {
+		removable.add(entity);
+	}
+	
 	public void move(Entity entity, int x, int y, int direction, boolean force) {
 			if (entity.move(x, y, direction, gameMap, force)) {
 				playerContainer.sendObjectToAllExcept(entity.getPlayer(), new Move(entity.getId(), direction, x, y, force));

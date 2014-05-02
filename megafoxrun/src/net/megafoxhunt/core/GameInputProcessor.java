@@ -9,6 +9,7 @@ import net.megafoxhunt.ui.GameUI;
 import net.megafoxhunt.ui.TouchJoystick;
 import net.megafoxhunt.shared.KryoNetwork.ActivateItem;
 
+import com.badlogic.gdx.Graphics.DisplayMode;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
@@ -41,6 +42,15 @@ public class GameInputProcessor extends InputAdapter implements GestureListener 
 	}
 
 	public boolean keyDown(int k) {
+		if (Gdx.input.isKeyPressed(Keys.ENTER) && Gdx.input.isKeyPressed(Keys.ALT_LEFT)) {
+			if (Gdx.graphics.isFullscreen()) {
+				Gdx.graphics.setDisplayMode(800, 600, false);
+			} else {
+				DisplayMode displayMode = Gdx.graphics.getDesktopDisplayMode();
+				Gdx.graphics.setDisplayMode(displayMode);
+			}
+		}
+		
 		if (k == Keys.SPACE || k == Keys.ENTER) return true;
 
 		if(k == Keys.ESCAPE || k == Keys.BACK){

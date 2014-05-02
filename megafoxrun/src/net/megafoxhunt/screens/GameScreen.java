@@ -177,6 +177,7 @@ public class GameScreen implements Screen{
 	@Override
 	public void resize(int width, int height) {
 		spriteBatch = new SpriteBatch();
+		stageUI.setViewport(width, height, true);
 	}
 
 	@Override
