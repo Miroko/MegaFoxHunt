@@ -140,13 +140,13 @@ public class GameInputProcessor extends InputAdapter implements GestureListener 
 
 	@Override
 	public boolean fling(float velocityX, float velocityY, int button) {
-		if(Math.abs(velocityX)>Math.abs(velocityY)) {
+		/*if(Math.abs(velocityX)>Math.abs(velocityY)) {
 			if(velocityX>0) sendDirection(EntityMovable.DIRECTION_RIGHT);
 			else sendDirection(EntityMovable.DIRECTION_LEFT);
 		} else {
 			if(velocityY>0) sendDirection(EntityMovable.DIRECTION_DOWN);
 			else sendDirection(EntityMovable.DIRECTION_UP);
-		}
+		}*/
 		
 		return false;
 	}
