@@ -103,6 +103,7 @@ public class TouchJoystick {
 	private void sendDirection(int direction){
 		// IF DIRECTION HAS CHANGED
 		EntityMovable entity = network.getLocalUser().getControlledEntity();
+		if (entity == null) return;
 		entity.setDirection(direction);
 	}
 }
