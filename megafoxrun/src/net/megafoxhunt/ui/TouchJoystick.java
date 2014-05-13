@@ -7,6 +7,7 @@ import net.megafoxhunt.entities.EntityMovable;
 import net.megafoxhunt.shared.Shared;
 import net.megafoxhunt.shared.KryoNetwork.ActivateItem;
 
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -27,9 +28,6 @@ public class TouchJoystick {
 	private Vector2 circlePos;
 	private Vector2 joystickPos;
 	
-	private Texture circle;
-	private Texture joystick;
-	
 	private int actionBtnPressed = 0;
 	
 	private GameNetwork network;
@@ -39,9 +37,6 @@ public class TouchJoystick {
 		
 		circlePos = new Vector2(120, 120);
 		joystickPos = new Vector2();
-		
-		circle = new Texture(Gdx.files.internal("data/circle.png"));
-		joystick = new Texture(Gdx.files.internal("data/joystick.png"));
 	}
 	
 	public void draw(SpriteBatch batch) {
@@ -55,12 +50,15 @@ public class TouchJoystick {
 				batch.draw(MyGdxGame.resources.BOMB_ANIMATIONS[GameResources.DEFAULT_ANIMATION].getKeyFrame(0), BTN1_X - (WIDTH / 2), BTN1_Y - (HEIGHT / 2), WIDTH, HEIGHT);
 			break;
 		}
-		
-		batch.draw(circle, circlePos.x - (CIRCLE_SIZE / 2), circlePos.y - (CIRCLE_SIZE / 2), CIRCLE_SIZE, CIRCLE_SIZE);
-		batch.draw(joystick, (joystickPos.x + circlePos.x) - (JOYSTICK_SIZE / 2), (joystickPos.y + circlePos.y) - (JOYSTICK_SIZE / 2), JOYSTICK_SIZE, JOYSTICK_SIZE);
+		if (Gdx.app.getType() == ApplicationType.Android) {
+			batch.draw(MyGdxGame.resources.circle, circlePos.x - (CIRCLE_SIZE / 2), circlePos.y - (CIRCLE_SIZE / 2), CIRCLE_SIZE, CIRCLE_SIZE);
+			batch.draw(MyGdxGame.resources.joystick, (joystickPos.x + circlePos.x) - (JOYSTICK_SIZE / 2), (joystickPos.y + circlePos.y) - (JOYSTICK_SIZE / 2), JOYSTICK_SIZE, JOYSTICK_SIZE);
+		}
 	}
 	
 	public void mouseDown(int x, int y) {
+		if (Gdx.app.getType() != ApplicationType.Android) return;
+		
 		y = Gdx.graphics.getHeight() - y;
 
 		joystickPos.x = x - circlePos.x;
@@ -69,7 +67,11 @@ public class TouchJoystick {
 		joystickPos.clamp(0, 55);
 		
 		double distance = getDistance((int)joystickPos.x, (int)joystickPos.y, x, y);
-		if (distance > Gdx.graphics.getWidth() / 2) return;
+		if (distance > Gdx.graphics.getWidth() / 2) {
+			joystickPos.x = 0;
+			joystickPos.y = 0;
+			return;
+		}
 		
 		float angle = joystickPos.angle();
 		if (angle < 45 && angle > 0 || angle < 360 && angle > 315) {

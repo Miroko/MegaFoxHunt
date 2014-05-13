@@ -39,6 +39,9 @@ public class GameResources {
 	public Texture btnNormal;
 	public Texture btnPressed;
 	
+	public Texture circle;
+	public Texture joystick;
+	
 	public Music MUSIC;	
 	public Music LOSE_ANTHEM;
 	public Music VICTORY_ANTHEM;	
@@ -87,6 +90,9 @@ public class GameResources {
 		 preferDogButtonTexture = new Texture("data/preferDog.png");
 		 preferFoxButtonTexture = new Texture("data/preferFox.png");
 		 readyButtonTexture = new Texture("data/ready.png");
+		 
+		 circle = new Texture(Gdx.files.internal("data/circle.png"));
+		 joystick = new Texture(Gdx.files.internal("data/joystick.png"));
 		 
 		 btnNormal = new Texture("data/btn_normal.png");
 		 btnPressed = new Texture("data/btn_pressed.png");
@@ -168,6 +174,9 @@ public class GameResources {
 		preferDogButtonTexture.dispose();
 		preferFoxButtonTexture.dispose();
 		readyButtonTexture.dispose();
+		
+		circle.dispose();
+		joystick.dispose();
 		
 		btnNormal.dispose();
 		btnPressed.dispose();
