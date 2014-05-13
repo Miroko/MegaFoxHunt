@@ -115,11 +115,7 @@ public class GameServer {
 			@Override
 			public void disconnected (Connection connection) {
 				PlayerConnection playerConnection = (PlayerConnection)connection;
-				try {
-					handleDisconnection(playerConnection);
-				} catch (Exception e) {					
-					System.out.println("Disconnection error");
-				}
+				handleDisconnection(playerConnection);
 			}
 		}));					
 		try {
@@ -128,7 +124,7 @@ public class GameServer {
 			e.printStackTrace();
 		}
 	}
-	private boolean handleDisconnection(PlayerConnection connection) throws Exception{		
+	private boolean handleDisconnection(PlayerConnection connection) {		
 		boolean playerRemovedFromRoom = removePlayerFromRoom(connection);
 		if(playerRemovedFromRoom){			
 			logDisconnection(connection);
