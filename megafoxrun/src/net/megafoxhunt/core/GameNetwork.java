@@ -3,9 +3,6 @@ package net.megafoxhunt.core;
 import java.io.IOException;
 
 
-import java.util.Scanner;
-
-import net.megafoxhunt.debug.Robot;
 import net.megafoxhunt.entities.Barricade;
 import net.megafoxhunt.entities.Berry;
 import net.megafoxhunt.entities.Bomb;
@@ -14,9 +11,7 @@ import net.megafoxhunt.entities.Chaser;
 import net.megafoxhunt.entities.EntityMovable;
 import net.megafoxhunt.entities.PickupItem;
 import net.megafoxhunt.entities.Powerup;
-import net.megafoxhunt.screens.GameScreen;
-import net.megafoxhunt.screens.LobbyScreen;
-import net.megafoxhunt.shared.GameMapSharedConfig;
+
 import net.megafoxhunt.shared.KryoNetwork;
 import net.megafoxhunt.shared.KryoNetwork.AddBarricade;
 import net.megafoxhunt.shared.KryoNetwork.AddBerry;
@@ -112,13 +107,14 @@ public class GameNetwork {
 					Winner winner = (Winner)object;			
 					System.out.println(winner.winner);
 					if(winner.winner.equals("chased") && localUser.getControlledEntity() instanceof Chased){
-						//MyGdxGame.resources.VICTORY_ANTHEM.play();
+						MyGdxGame.resources.voittajien_anthem.play();
+						MyGdxGame.resources.kettu_voittaa_ja_hurraa.play();
 					}
 					else if(winner.winner.equals("chaser") && localUser.getControlledEntity() instanceof Chaser){
-						//MyGdxGame.resources.VICTORY_ANTHEM.play();
+						MyGdxGame.resources.voittajien_anthem.play();
 					}
 					else{
-						//MyGdxGame.resources.LOSE_ANTHEM.play();
+						MyGdxGame.resources.h‰vi‰jien_anthem.play();
 					}					
 					MyGdxGame.screenHandler.setScreenLobby(winner.winner);
 				} 
@@ -133,7 +129,7 @@ public class GameNetwork {
 							if (changeState.roomState == ChangeState.GAME) {								
 								MyGdxGame.screenHandler.setScreenGame();
 								
-								//MyGdxGame.resources.ROUND_START.play();
+								MyGdxGame.resources.aloitus_l‰htˆlaukaisu.play();
 								
 								//Robot robot = new Robot(MyGdxGame.network, 400);
 							} else if (changeState.roomState == ChangeState.LOBBY) {								
@@ -206,7 +202,7 @@ public class GameNetwork {
 				else if (object instanceof RemoveEntity) {
 					RemoveEntity removeEntity = (RemoveEntity)object;
 					// DELETE FROM MAP
-					MyGdxGame.mapHandler.currentMap.removeStaticObjectByID(removeEntity.id);					
+					MyGdxGame.mapHandler.currentMap.removeStaticObjectByID(removeEntity.id);
 										
 					// TODO
 					// Refactor this to its own kryo command
@@ -214,7 +210,7 @@ public class GameNetwork {
 						if (user != null && user.getControlledEntity() != null && user.getControlledEntity().getId() == removeEntity.id) {
 							user.setControlledEntity(null);	
 							 
-							MyGdxGame.resources.GOT_CAUGHT.play();
+							MyGdxGame.resources.koira_saa_ketun_kiinni.play();
 							
 							break;
 						}
@@ -239,7 +235,8 @@ public class GameNetwork {
 					}
 					else if (speed.on == false){
 						entity.resetSpeedMultiplier();
-					}
+					}				
+					MyGdxGame.resources.koira_ker‰‰_bonuksen_lyhyt_‰‰ntely.play();					
 				}
 				/*
 				 * POWERUP RAGE
@@ -250,6 +247,7 @@ public class GameNetwork {
 					if (entity != null) {
 						entity.setRageMode(rage.on);
 					}
+					MyGdxGame.resources.kettu_ker‰‰_bonuksen_lyhyt_‰‰ntely.play();
 				}
 				/*
 				 * CHANGE MAP

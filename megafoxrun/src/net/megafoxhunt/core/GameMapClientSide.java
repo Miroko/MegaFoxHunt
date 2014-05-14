@@ -60,6 +60,7 @@ public class GameMapClientSide {
 				object.setShouldBeRemoved(true);
 				if (object instanceof Barricade){
 					barricades.remove(object);
+					MyGdxGame.resources.kettu_ker‰‰_barrikadin.play();
 				} else if (object instanceof Berry) {
 					berryCount--;
 				}
@@ -76,9 +77,6 @@ public class GameMapClientSide {
 			   i.remove();			   
 			   if(s instanceof Berry){
 				   ((Berry)s).playEatSound();
-			   }
-			   else if (s instanceof Powerup){
-					MyGdxGame.resources.PICKUP.play();
 			   }
 		   }
 		}

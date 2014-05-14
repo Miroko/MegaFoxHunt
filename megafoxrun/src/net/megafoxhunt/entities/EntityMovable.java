@@ -5,6 +5,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import net.megafoxhunt.core.GameMapClientSide;
 import net.megafoxhunt.core.GameNetwork;
 import net.megafoxhunt.core.GameResources;
+import net.megafoxhunt.core.MyGdxGame;
 import net.megafoxhunt.shared.Shared;
 import net.megafoxhunt.shared.KryoNetwork.Move;
 
@@ -176,6 +177,9 @@ public abstract class EntityMovable extends Entity{
 			setDirection(newMove.direction);
 			newMove = null;
 			movementQueue.clear();
+			
+			MyGdxGame.resources.ketunkolo_sis‰‰n_ulos.play();
+			
 		} else movementQueue.offer(newMove);
 	}
 	
