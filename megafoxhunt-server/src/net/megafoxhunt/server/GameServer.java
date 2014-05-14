@@ -194,9 +194,13 @@ public class GameServer {
 		System.out.println("Disconnected: " + connection.getRemoteAddressTCP() + " " + connection.getName() + " " + connection.getMyId());		
 	}
 	private boolean removePlayerFromRoom(PlayerConnection connection){
+		if (connection == null) return false;
+		
 		boolean playerRemovedFromRoom = false;
+		
 		GameRoom room = connection.getMyCurrentRoom();
-		if (room == null || connection == null || serverRooms == null) return false;
+		
+		if (room == null || serverRooms == null) return false;
 		
 		playerRemovedFromRoom = room.removePlayer(connection);
 		if(room.isEmpty()){
