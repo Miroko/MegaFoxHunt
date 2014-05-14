@@ -30,7 +30,7 @@ public class GameUI extends Table{
 			}
 		});
 		
-		TextureRegionDrawable joinNewGameImage = new TextureRegionDrawable(new TextureRegion(MyGdxGame.resources.connectButtonTexture));	
+		TextureRegionDrawable joinNewGameImage = new TextureRegionDrawable(new TextureRegion(MyGdxGame.resources.connectButtonUpTexture));	
 		joinNewGame = new ImageButton(joinNewGameImage);
 		joinNewGame.addListener(new ChangeListener() {			
 			@Override
@@ -42,7 +42,7 @@ public class GameUI extends Table{
 			}
 		});
 		
-		TextureRegionDrawable quitImage = new TextureRegionDrawable(new TextureRegion(MyGdxGame.resources.quitButtonTexture));	
+		TextureRegionDrawable quitImage = new TextureRegionDrawable(new TextureRegion(MyGdxGame.resources.quitButtonUpTexture));	
 		quit = new ImageButton(quitImage);
 		quit.addListener(new ChangeListener() {			
 			@Override

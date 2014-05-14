@@ -28,18 +28,14 @@ public class MenuUI extends Table{
 	
 	public MenuUI(){
 		setFillParent(true);
-				
+										
 		TextFieldStyle fieldStyle = new TextFieldStyle();
 		fieldStyle.font = new BitmapFont();
 		fieldStyle.fontColor = Color.BLACK;
 		
-		Pixmap background = new Pixmap(120,30, Format.RGB888);
-		background.setColor(Color.WHITE);
-		background.fill();
+		TextureRegionDrawable namefield = new TextureRegionDrawable(new TextureRegion(MyGdxGame.resources.namefieldTexture));
 		
-		TextureRegionDrawable backgroundImage = new TextureRegionDrawable(new TextureRegion(new Texture(background)));
-		
-		fieldStyle.background = backgroundImage;
+		fieldStyle.background = namefield;
 		nameField = new TextField("player", fieldStyle);
 		if(MyGdxGame.network.getLocalUser().getName() == null){
 			nameField.setText("player");
@@ -48,9 +44,10 @@ public class MenuUI extends Table{
 			nameField.setText(MyGdxGame.network.getLocalUser().getName());
 		}
 		
-		TextureRegionDrawable connectButtonImage = new TextureRegionDrawable(new TextureRegion(MyGdxGame.resources.connectButtonTexture));
+		TextureRegionDrawable connectButtonUpImage = new TextureRegionDrawable(new TextureRegion(MyGdxGame.resources.connectButtonUpTexture));
+		TextureRegionDrawable connectButtonDownImage = new TextureRegionDrawable(new TextureRegion(MyGdxGame.resources.connectButtonDownTexture));
 		
-		connectButton = new ImageButton(connectButtonImage);	
+		connectButton = new ImageButton(connectButtonUpImage, connectButtonDownImage);	
 		connectButton.addListener(new ChangeListener() {			
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {		
@@ -63,9 +60,10 @@ public class MenuUI extends Table{
 			}
 		});			
 				
-		TextureRegionDrawable quitButtonImage = new TextureRegionDrawable(new TextureRegion(MyGdxGame.resources.quitButtonTexture));
+		TextureRegionDrawable quitButtonUpImage = new TextureRegionDrawable(new TextureRegion(MyGdxGame.resources.quitButtonUpTexture));
+		TextureRegionDrawable quitButtonDownImage = new TextureRegionDrawable(new TextureRegion(MyGdxGame.resources.quitButtonDownTexture));
 		
-		quitButton = new ImageButton(quitButtonImage);	
+		quitButton = new ImageButton(quitButtonUpImage, quitButtonDownImage);	
 		quitButton.addListener(new ChangeListener() {			
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {		
@@ -75,11 +73,13 @@ public class MenuUI extends Table{
 			}
 		});				
 		
-		add(nameField);
+		setBackground(new TextureRegionDrawable(new TextureRegion(MyGdxGame.resources.menuBackground)));
+		
+		add(nameField).padTop(220);
 		row();
-		add(connectButton).padTop(20);
+		add(connectButton);
 		row();
-		add(quitButton).padTop(20);
+		add(quitButton);
 
 	}
 

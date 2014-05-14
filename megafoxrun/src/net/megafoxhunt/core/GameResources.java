@@ -31,8 +31,15 @@ public class GameResources {
 	public Animation[] BOMB_ANIMATIONS = new Animation[10];
 	public Animation[] PICKUP_ITEM_ANIMATIONS = new Animation[10];
 	
-	public Texture connectButtonTexture;
-	public Texture quitButtonTexture;
+	public Texture menuBackground;
+	public Texture namefieldTexture;
+	
+	public Texture connectButtonUpTexture;
+	public Texture connectButtonDownTexture;
+	
+	public Texture quitButtonUpTexture;
+	public Texture quitButtonDownTexture;
+	
 	public Texture preferDogButtonTexture;
 	public Texture preferFoxButtonTexture;
 	public Texture readyButtonTexture;
@@ -58,7 +65,7 @@ public class GameResources {
 	public Sound GOT_CAUGHT;
 	
 	public BitmapFont BASIC_FONT;
-	
+		
 	public void init(){						
 		 ITEMS_TEXTURE = new Texture("data/items.png");
 		 ITEMS_TEXTURE.setFilter(TextureFilter.Linear, TextureFilter.Linear);
@@ -85,8 +92,15 @@ public class GameResources {
 		 DOG_ANIMATIONS[FRONT_ANIMATION] = generateAnimation(CHARACTERS_TEXTURE, 0.042f, 0, 839, 79, 175, 1, 8);
 		 DOG_ANIMATIONS[BACK_ANIMATION] = generateAnimation(CHARACTERS_TEXTURE, 0.042f, 0, 689, 79, 150, 1, 8);
 		 
-		 connectButtonTexture = new Texture("data/connect.png"); 
-		 quitButtonTexture = new Texture("data/quit.png");
+		 menuBackground = new Texture("data/tausta2.png");
+		 namefieldTexture = new Texture("data/Player_tausta2.png");
+		 
+		 connectButtonUpTexture = new Texture("data/connect_nappula_up2.png"); 
+		 connectButtonDownTexture = new Texture("data/connect_nappula_down2.png"); 
+		 
+		 quitButtonUpTexture = new Texture("data/quit_nappula_up2.png");
+		 quitButtonDownTexture = new Texture("data/quit_nappula_down2.png");
+		 
 		 preferDogButtonTexture = new Texture("data/preferDog.png");
 		 preferFoxButtonTexture = new Texture("data/preferFox.png");
 		 readyButtonTexture = new Texture("data/ready.png");
@@ -97,7 +111,7 @@ public class GameResources {
 		 btnNormal = new Texture("data/btn_normal.png");
 		 btnPressed = new Texture("data/btn_pressed.png");
 		 
-		 MUSIC = Gdx.audio.newMusic(Gdx.files.internal("data/audio/music.mp3"));
+		 MUSIC = Gdx.audio.newMusic(Gdx.files.internal("data/audio/megafox band demo.mp3"));
 		 
 		 BERRY_EAT = Gdx.audio.newSound(Gdx.files.internal("data/audio/berry_eat.mp3"));
 		 PICKUP = Gdx.audio.newSound(Gdx.files.internal("data/audio/berry_eat.mp3"));
@@ -169,8 +183,14 @@ public class GameResources {
 		GOT_CAUGHT.dispose();
 		BUBBLE.dispose();
 
-		connectButtonTexture.dispose();
-		quitButtonTexture.dispose();
+		namefieldTexture.dispose();
+		
+		connectButtonUpTexture.dispose();
+		connectButtonDownTexture.dispose();
+
+		quitButtonUpTexture.dispose();
+		quitButtonDownTexture.dispose();
+		
 		preferDogButtonTexture.dispose();
 		preferFoxButtonTexture.dispose();
 		readyButtonTexture.dispose();
