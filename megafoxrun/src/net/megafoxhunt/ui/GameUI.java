@@ -19,8 +19,10 @@ public class GameUI extends Table{
 	public GameUI(){		
 		setFillParent(true);	
 	
-		TextureRegionDrawable resumeImage = new TextureRegionDrawable(new TextureRegion(MyGdxGame.resources.readyButtonTexture));	
-		resume = new ImageButton(resumeImage);
+		TextureRegionDrawable resumeButtonUpImage = new TextureRegionDrawable(new TextureRegion(MyGdxGame.resources.resumeButtonUpTexture));	
+		TextureRegionDrawable resumeButtonDownImage = new TextureRegionDrawable(new TextureRegion(MyGdxGame.resources.resumeButtonDownTexture));	
+		
+		resume = new ImageButton(resumeButtonUpImage, resumeButtonDownImage);
 		resume.addListener(new ChangeListener() {			
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {		
@@ -30,8 +32,10 @@ public class GameUI extends Table{
 			}
 		});
 		
-		TextureRegionDrawable joinNewGameImage = new TextureRegionDrawable(new TextureRegion(MyGdxGame.resources.connectButtonUpTexture));	
-		joinNewGame = new ImageButton(joinNewGameImage);
+		TextureRegionDrawable newgameButtonUpImage = new TextureRegionDrawable(new TextureRegion(MyGdxGame.resources.newgameButtonUpTexture));	
+		TextureRegionDrawable newgameButtonDownImage = new TextureRegionDrawable(new TextureRegion(MyGdxGame.resources.newgameButtonDownTexture));	
+		
+		joinNewGame = new ImageButton(newgameButtonUpImage, newgameButtonDownImage);
 		joinNewGame.addListener(new ChangeListener() {			
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {		
@@ -42,8 +46,10 @@ public class GameUI extends Table{
 			}
 		});
 		
-		TextureRegionDrawable quitImage = new TextureRegionDrawable(new TextureRegion(MyGdxGame.resources.quitButtonUpTexture));	
-		quit = new ImageButton(quitImage);
+		TextureRegionDrawable quitButtonUpImage = new TextureRegionDrawable(new TextureRegion(MyGdxGame.resources.quitButtonUpTexture));	
+		TextureRegionDrawable quitButtonDownImage = new TextureRegionDrawable(new TextureRegion(MyGdxGame.resources.quitButtonDownTexture));	
+		
+		quit = new ImageButton(quitButtonUpImage, quitButtonDownImage);
 		quit.addListener(new ChangeListener() {			
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {		
