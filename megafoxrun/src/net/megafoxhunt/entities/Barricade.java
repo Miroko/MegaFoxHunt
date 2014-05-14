@@ -19,7 +19,7 @@ public class Barricade extends Entity {
 	}
 
 	public void playBuildSound() {
-		MyGdxGame.resources.BARRICADE_BUILD.play();		
+		MyGdxGame.resources.barrikadin_rakentaminen.play();
 	}
 
 }
