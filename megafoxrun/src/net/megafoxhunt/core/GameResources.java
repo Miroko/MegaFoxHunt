@@ -144,7 +144,7 @@ public class GameResources {
 		 btnNormal = new Texture("data/btn_normal.png");
 		 btnPressed = new Texture("data/btn_pressed.png");
 		 
-		 MUSIC = Gdx.audio.newMusic(Gdx.files.internal("data/audio/megafox band demo.mp3"));
+		 MUSIC = Gdx.audio.newMusic(Gdx.files.internal("data/audio/music.mp3"));
 		 
 		 BERRY_EAT = Gdx.audio.newSound(Gdx.files.internal("data/audio/berry_eat.mp3"));
 		 PICKUP = Gdx.audio.newSound(Gdx.files.internal("data/audio/berry_eat.mp3"));

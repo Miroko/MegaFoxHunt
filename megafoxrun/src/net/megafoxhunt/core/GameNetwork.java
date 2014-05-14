@@ -354,6 +354,8 @@ public class GameNetwork {
 		kryoClient.start();		
 	}
 	public void stop(){
+		connecting = false;
+		stopPingingServer();
 		kryoClient.stop();
 	}
 
