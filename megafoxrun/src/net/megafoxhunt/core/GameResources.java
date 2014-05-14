@@ -114,8 +114,11 @@ public class GameResources {
 		 DOG_ANIMATIONS[BACK_ANIMATION] = generateAnimation(CHARACTERS_TEXTURE, 0.042f, 0, 689, 79, 150, 1, 8);
 		 
 		 lobbyBackground = new Texture("data/tausta_lobby2.png");
+		 lobbyBackground.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		 
 		 menuBackground = new Texture("data/tausta2.png");
+		 menuBackground.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		 
 		 namefieldTexture = new Texture("data/Player_tausta2.png");
 		 
 		 connectButtonUpTexture = new Texture("data/connect_nappula_up2.png"); 
