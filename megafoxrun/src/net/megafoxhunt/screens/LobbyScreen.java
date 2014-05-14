@@ -17,6 +17,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 public class LobbyScreen implements Screen {
 	
 	private Stage stageUI;		
+	
+	public LobbyUI lobbyUI = new LobbyUI();	    
 
 	private BitmapFont font;
 
@@ -25,9 +27,8 @@ public class LobbyScreen implements Screen {
 	private OrthographicCamera camera;
 	
 	public LobbyScreen() {		
-		stageUI = new Stage();
-				
-	    LobbyUI lobbyUI = new LobbyUI();	    
+		stageUI = new Stage();				
+	   
 	    stageUI.addActor(lobbyUI);	    
 	    
 		batch = new SpriteBatch();
@@ -37,7 +38,6 @@ public class LobbyScreen implements Screen {
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.update();
 	}
-
 	@Override
 	public void render(float delta) {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -51,7 +51,7 @@ public class LobbyScreen implements Screen {
         batch.setProjectionMatrix(camera.combined);        
         
         batch.begin();
-		drawLobbyUsers();
+		drawLobbyUsers();		
 		batch.end();
 	}
 	private void drawLobbyUsers(){	

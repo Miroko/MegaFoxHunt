@@ -16,7 +16,8 @@ public class ScreenHandler {
 		menuScreen = new MenuScreen();
 		gameScreen = new GameScreen();
 	}	
-	public void setScreenLobby(){
+	public void setScreenLobby(String winner){
+		lobbyScreen.lobbyUI.setWinner(winner);
 		game.setScreen(lobbyScreen);
 	}
 	public void setScreenGame(){

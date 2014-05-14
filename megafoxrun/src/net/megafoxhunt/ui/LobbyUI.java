@@ -9,6 +9,7 @@ import net.megafoxhunt.shared.KryoNetwork.SetPreferedTeam;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -21,6 +22,9 @@ public class LobbyUI extends Table{
 	private ImageButton startButton;
 	private ImageButton preferDogButton;
 	private ImageButton preferFoxButton;
+	private TextureRegionDrawable foxWon = null;
+	private TextureRegionDrawable dogWon = null;
+	private Image victoryImage = new Image(foxWon);
 	
 	public LobbyUI(){
 		setFillParent(true);
@@ -70,16 +74,34 @@ public class LobbyUI extends Table{
 				}
 			}
 		});		
+
 		
+		dogWon = preferDogButtonDownImage;
+		foxWon = preferFoxButtonDownImage;
 		
-		setBackground(new TextureRegionDrawable(new TextureRegion(MyGdxGame.resources.lobbyBackground)));		
+		setBackground(new TextureRegionDrawable(new TextureRegion(MyGdxGame.resources.lobbyBackground)));	
 		
+		add(victoryImage);
+		row();
 		add(startButton);
 		row();
 		add(preferDogButton).padTop(20);
 		row();
 		add(preferFoxButton).padTop(20);
 		
+	}
+	public void setWinner(String winner){
+		if(winner.equals("chaser")){
+			victoryImage.setVisible(true);
+			victoryImage.setDrawable(dogWon);
+		}
+		else if(winner.equals("chased")){
+			victoryImage.setVisible(true);
+			victoryImage.setDrawable(foxWon);
+		}
+		else{
+			victoryImage.setVisible(false);
+		}
 	}
 
 }
