@@ -196,6 +196,8 @@ public class GameServer {
 	private boolean removePlayerFromRoom(PlayerConnection connection){
 		boolean playerRemovedFromRoom = false;
 		GameRoom room = connection.getMyCurrentRoom();
+		if (room == null || connection == null || serverRooms == null) return false;
+		
 		playerRemovedFromRoom = room.removePlayer(connection);
 		if(room.isEmpty()){
 			serverRooms.removeRoom(room);
