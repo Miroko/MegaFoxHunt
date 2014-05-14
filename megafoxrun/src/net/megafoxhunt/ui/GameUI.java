@@ -28,6 +28,8 @@ public class GameUI extends Table{
 			public void changed(ChangeEvent event, Actor actor) {		
 				if(resume.isPressed()){					
 					toggle();
+					
+					MyGdxGame.resources.painike.play();
 				}
 			}
 		});
@@ -39,9 +41,11 @@ public class GameUI extends Table{
 		joinNewGame.addListener(new ChangeListener() {			
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {		
-				if(joinNewGame.isPressed()){	
+				if(joinNewGame.isPressed()){						
 					MyGdxGame.network.disconnect();
 					MyGdxGame.network.connect(MyGdxGame.IP_SERVER, 6666);
+					
+					MyGdxGame.resources.painike.play();
 				}
 			}
 		});
@@ -57,6 +61,8 @@ public class GameUI extends Table{
 					MyGdxGame.network.disconnect();
 					UserContainer.removeUsers();
 					MyGdxGame.screenHandler.setSceenMenu();	
+					
+					MyGdxGame.resources.painike.play();
 				}
 			}
 		});

@@ -31,8 +31,7 @@ public class PickupItem extends Entity{
 	}	
 
 	@Override
-	public void setShouldBeRemoved(boolean shouldBeRemoved) {
-		MyGdxGame.resources.BUBBLE.play();
+	public void setShouldBeRemoved(boolean shouldBeRemoved) {		
 		stateTime = 0;
 		removing = true;
 	}

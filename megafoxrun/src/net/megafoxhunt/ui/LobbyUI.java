@@ -22,9 +22,9 @@ public class LobbyUI extends Table{
 	private ImageButton startButton;
 	private ImageButton preferDogButton;
 	private ImageButton preferFoxButton;
-	private TextureRegionDrawable foxWon = null;
-	private TextureRegionDrawable dogWon = null;
-	private Image victoryImage = new Image(foxWon);
+	private TextureRegionDrawable foxWon;
+	private TextureRegionDrawable dogWon;
+	private Image victoryImage;
 	
 	public LobbyUI(){
 		setFillParent(true);
@@ -41,6 +41,8 @@ public class LobbyUI extends Table{
 					playerReady.id = MyGdxGame.network.getLocalUser().getID();
 					playerReady.ready = true;
 					MyGdxGame.network.getKryoClient().sendTCP(playerReady);
+					
+					MyGdxGame.resources.painike.play();
 				}
 			}
 		});
@@ -56,6 +58,8 @@ public class LobbyUI extends Table{
 					SetPreferedTeam setPreferedTeam = new SetPreferedTeam();
 					setPreferedTeam.team = SetPreferedTeam.Chased;
 					MyGdxGame.network.getKryoClient().sendTCP(setPreferedTeam);
+					
+					MyGdxGame.resources.painike.play();
 				}
 			}
 		});		
@@ -71,13 +75,17 @@ public class LobbyUI extends Table{
 					SetPreferedTeam setPreferedTeam = new SetPreferedTeam();
 					setPreferedTeam.team = SetPreferedTeam.Chasers;
 					MyGdxGame.network.getKryoClient().sendTCP(setPreferedTeam);
+					
+					MyGdxGame.resources.painike.play();
 				}
 			}
 		});		
 
 		
-		dogWon = preferDogButtonDownImage;
-		foxWon = preferFoxButtonDownImage;
+		dogWon = new TextureRegionDrawable(new TextureRegion(MyGdxGame.resources.victoryDog));		
+		foxWon = new TextureRegionDrawable(new TextureRegion(MyGdxGame.resources.victoryFox));		
+		victoryImage = new Image(foxWon);	
+		victoryImage.setVisible(false);
 		
 		setBackground(new TextureRegionDrawable(new TextureRegion(MyGdxGame.resources.lobbyBackground)));	
 		
@@ -90,14 +98,14 @@ public class LobbyUI extends Table{
 		add(preferFoxButton).padTop(20);
 		
 	}
-	public void setWinner(String winner){
-		if(winner.equals("chaser")){
-			victoryImage.setVisible(true);
+	public void setWinner(String winner){	
+		if(winner.equals("Chasers")){				
 			victoryImage.setDrawable(dogWon);
-		}
-		else if(winner.equals("chased")){
 			victoryImage.setVisible(true);
+		}
+		else if(winner.equals("Chased")){				
 			victoryImage.setDrawable(foxWon);
+			victoryImage.setVisible(true);
 		}
 		else{
 			victoryImage.setVisible(false);

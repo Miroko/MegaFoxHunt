@@ -12,7 +12,7 @@ public class Berry extends Entity{
 	}
 
 	public void playEatSound(){
-		MyGdxGame.resources.BERRY_EAT.play();		
+		MyGdxGame.resources.marja_ker‰t‰‰n.play();		
 	}
 
 }

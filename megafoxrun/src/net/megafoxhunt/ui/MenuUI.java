@@ -55,6 +55,8 @@ public class MenuUI extends Table{
 					if (!MyGdxGame.network.isConnecting()) {
 						MyGdxGame.network.setUsername(nameField.getText());						
 						MyGdxGame.network.connect(MyGdxGame.IP_SERVER, 6666);
+						
+						MyGdxGame.resources.painike.play();
 					}
 				}
 			}
@@ -67,8 +69,10 @@ public class MenuUI extends Table{
 		quitButton.addListener(new ChangeListener() {			
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {		
-				if(quitButton.isPressed()){					
-					MyGdxGame.shutdown();
+				if(quitButton.isPressed()){		
+					MyGdxGame.resources.painike.play();
+					
+					MyGdxGame.shutdown();					
 				}
 			}
 		});				

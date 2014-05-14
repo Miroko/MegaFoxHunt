@@ -79,10 +79,10 @@ public class GameRoom extends Thread {
 				break;
 			case STATE_GAME:
 				gameSimulation.update(delta, playerContainer);
-				boolean winnerFound = gameSimulation.findWinner();
+				boolean winnerFound = gameSimulation.findWinner();			
 				if(winnerFound){
 					serverRooms.switchToLobby(this);
-				}			
+				}							
 				break;
 		}
 	}	
@@ -110,12 +110,11 @@ public class GameRoom extends Thread {
 	}
 	
 	public void switchState(int state) {
-		roomState = state;
+		roomState = state;		
 		
 		ChangeState changeState = new ChangeState();
-		changeState.roomState = roomState;
-	
-		playerContainer.sendObjectToAll(changeState);
+		changeState.roomState = roomState;	
+		playerContainer.sendObjectToAll(changeState);		
 	}
 	
 	public void generateBerries(int amount, IDHandler idHandler){

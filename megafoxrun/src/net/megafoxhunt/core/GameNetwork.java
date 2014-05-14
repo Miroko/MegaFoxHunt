@@ -104,19 +104,20 @@ public class GameNetwork {
 				 * WINNER				 
 				 */
 				else if (object instanceof Winner) {
-					Winner winner = (Winner)object;			
-					System.out.println(winner.winner);
-					if(winner.winner.equals("chased") && localUser.getControlledEntity() instanceof Chased){
-						MyGdxGame.resources.voittajien_anthem.play();
+					Winner winner = (Winner)object;	
+					if(winner.winner.equals("Chased")){
 						MyGdxGame.resources.kettu_voittaa_ja_hurraa.play();
 					}
-					else if(winner.winner.equals("chaser") && localUser.getControlledEntity() instanceof Chaser){
+					if(winner.winner.equals("Chased") && localUser.getControlledEntity() instanceof Chased){
+						MyGdxGame.resources.voittajien_anthem.play();						
+					}
+					else if(winner.winner.equals("Chasers") && localUser.getControlledEntity() instanceof Chaser){
 						MyGdxGame.resources.voittajien_anthem.play();
 					}
 					else{
 						MyGdxGame.resources.häviäjien_anthem.play();
 					}					
-					MyGdxGame.screenHandler.setScreenLobby(winner.winner);
+					MyGdxGame.screenHandler.getLobby().lobbyUI.setWinner(winner.winner);
 				} 
 				/*
 				 * CHANGE GAME STATE
@@ -131,9 +132,11 @@ public class GameNetwork {
 								
 								MyGdxGame.resources.aloitus_lähtölaukaisu.play();
 								
+								MyGdxGame.screenHandler.getLobby().lobbyUI.setWinner("null");
+								
 								//Robot robot = new Robot(MyGdxGame.network, 400);
 							} else if (changeState.roomState == ChangeState.LOBBY) {								
-								MyGdxGame.screenHandler.setScreenLobby(" ");
+								MyGdxGame.screenHandler.setScreenLobby();
 							}
 						}
 					});
@@ -279,7 +282,9 @@ public class GameNetwork {
                      }
 				}
 				
-				
+				/*
+				 * ITEM SET
+				 */
 				else if (object instanceof SetItemType) {
 					SetItemType item = (SetItemType)object;
 					MyGdxGame.network.localUser.setItemType(item.itemType);

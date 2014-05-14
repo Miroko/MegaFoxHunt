@@ -1,6 +1,7 @@
 package net.megafoxhunt.core;
 
 import net.megafoxhunt.entities.EntityMovable;
+import net.megafoxhunt.shared.Shared;
 
 
 
@@ -32,6 +33,12 @@ public class User {
 	
 	public void setItemType(int itemType) {
 		this.itemType = itemType;
+		if(itemType == Shared.ITEM_BOMB){
+			MyGdxGame.resources.koira_ker‰‰_pommin.play();
+		}
+		else if(itemType == Shared.ITEM_BARRICADE){
+			MyGdxGame.resources.kettu_ker‰‰_barrikadin.play();
+		}
 	}
 	
 	public int getItemType() {

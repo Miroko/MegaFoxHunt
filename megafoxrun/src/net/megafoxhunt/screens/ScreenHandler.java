@@ -7,6 +7,8 @@ public class ScreenHandler {
 	private MyGdxGame game;
 	
 	private LobbyScreen lobbyScreen;
+	public LobbyScreen getLobby(){return lobbyScreen;}
+	
 	private MenuScreen menuScreen;
 	private GameScreen gameScreen;
 	
@@ -16,8 +18,7 @@ public class ScreenHandler {
 		menuScreen = new MenuScreen();
 		gameScreen = new GameScreen();
 	}	
-	public void setScreenLobby(String winner){
-		lobbyScreen.lobbyUI.setWinner(winner);
+	public void setScreenLobby(){		
 		game.setScreen(lobbyScreen);
 	}
 	public void setScreenGame(){
