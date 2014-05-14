@@ -92,7 +92,10 @@ public class GameResources {
 		 readyButtonTexture = new Texture("data/ready.png");
 		 
 		 circle = new Texture(Gdx.files.internal("data/circle.png"));
+		 circle.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		 
 		 joystick = new Texture(Gdx.files.internal("data/joystick.png"));
+		 joystick.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		 
 		 btnNormal = new Texture("data/btn_normal.png");
 		 btnPressed = new Texture("data/btn_pressed.png");

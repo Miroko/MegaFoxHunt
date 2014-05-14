@@ -10,13 +10,13 @@ import net.megafoxhunt.shared.KryoNetwork.ActivateItem;
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
 public class TouchJoystick {
 
-	private static final int CIRCLE_SIZE = 200;
-	private static final int JOYSTICK_SIZE = 50;
+	private static final int CIRCLE_SIZE = 50;
 	
 	private static final int WIDTH = 64;
 	private static final int HEIGHT = 64;
@@ -28,6 +28,10 @@ public class TouchJoystick {
 	private Vector2 circlePos;
 	private Vector2 joystickPos;
 	
+	private Vector2 center;
+	
+	private Sprite joystick;
+	
 	private int actionBtnPressed = 0;
 	
 	private GameNetwork network;
@@ -35,8 +39,15 @@ public class TouchJoystick {
 	public TouchJoystick(GameNetwork network) {
 		this.network = network;
 		
-		circlePos = new Vector2(120, 120);
+		center = new Vector2(120, 120);
+		circlePos = new Vector2(0, 0);
+		
 		joystickPos = new Vector2();
+		joystick = new Sprite(MyGdxGame.resources.joystick);
+		joystick.setOrigin(joystick.getWidth() / 2, 0);
+		joystick.setX(center.x - joystick.getWidth() / 2);
+		joystick.setY(center.y);
+		joystick.setScale(1, 0);
 	}
 	
 	public void draw(SpriteBatch batch) {
@@ -50,30 +61,43 @@ public class TouchJoystick {
 				batch.draw(MyGdxGame.resources.BOMB_ANIMATIONS[GameResources.DEFAULT_ANIMATION].getKeyFrame(0), BTN1_X - (WIDTH / 2), BTN1_Y - (HEIGHT / 2), WIDTH, HEIGHT);
 			break;
 		}
-		if (Gdx.app.getType() == ApplicationType.Android) {
-			batch.draw(MyGdxGame.resources.circle, circlePos.x - (CIRCLE_SIZE / 2), circlePos.y - (CIRCLE_SIZE / 2), CIRCLE_SIZE, CIRCLE_SIZE);
-			batch.draw(MyGdxGame.resources.joystick, (joystickPos.x + circlePos.x) - (JOYSTICK_SIZE / 2), (joystickPos.y + circlePos.y) - (JOYSTICK_SIZE / 2), JOYSTICK_SIZE, JOYSTICK_SIZE);
-		}
+		
+		joystick.draw(batch, 1);
+		//if (Gdx.app.getType() == ApplicationType.Android) {
+			//batch.draw(MyGdxGame.resources.circle, circlePos.x - (MyGdxGame.resources.circle.getWidth() / 2), circlePos.y - (MyGdxGame.resources.circle.getHeight() / 2), MyGdxGame.resources.circle.getWidth(), MyGdxGame.resources.circle.getHeight());
+			batch.draw(MyGdxGame.resources.circle, (circlePos.x + center.x) - (CIRCLE_SIZE / 2), (circlePos.y + center.y) - (CIRCLE_SIZE / 2), CIRCLE_SIZE, CIRCLE_SIZE);
+		//}
 	}
 	
 	public void mouseDown(int x, int y) {
-		if (Gdx.app.getType() != ApplicationType.Android) return;
+		//if (Gdx.app.getType() != ApplicationType.Android) return;
 		
 		y = Gdx.graphics.getHeight() - y;
 
-		joystickPos.x = x - circlePos.x;
-		joystickPos.y = y - circlePos.y;
+		circlePos.x = x - center.x;
+		circlePos.y = y - center.y;
+		circlePos.clamp(0, 100);
 		
-		joystickPos.clamp(0, 55);
+		float deltaY = x - center.y;
+		float deltaX = y - center.x;
 		
-		double distance = getDistance((int)joystickPos.x, (int)joystickPos.y, x, y);
+		double angleInDegrees = Math.atan2(deltaY, deltaX) * 180 / Math.PI;
+		if (angleInDegrees < 0) angleInDegrees = 360 + angleInDegrees;
+		
+		angleInDegrees = 360 - angleInDegrees;
+		joystick.setRotation((float)angleInDegrees);
+		joystick.setScale(1, (circlePos.len() / 100));
+		
+		double distance = getDistance((int)circlePos.x, (int)circlePos.y, x, y);
+		
 		if (distance > Gdx.graphics.getWidth() / 2) {
-			joystickPos.x = 0;
-			joystickPos.y = 0;
+			circlePos.x = 0;
+			circlePos.y = 0;
+			joystick.setScale(1, 0);
 			return;
 		}
 		
-		float angle = joystickPos.angle();
+		float angle = circlePos.angle();
 		if (angle < 45 && angle > 0 || angle < 360 && angle > 315) {
 			sendDirection(Shared.DIRECTION_RIGHT);
 		} else if (angle > 45 && angle < 135) {
