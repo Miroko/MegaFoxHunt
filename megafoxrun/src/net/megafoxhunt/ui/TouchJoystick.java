@@ -62,15 +62,15 @@ public class TouchJoystick {
 			break;
 		}
 		
-		joystick.draw(batch, 1);
-		//if (Gdx.app.getType() == ApplicationType.Android) {
+		if (Gdx.app.getType() == ApplicationType.Android) {
 			//batch.draw(MyGdxGame.resources.circle, circlePos.x - (MyGdxGame.resources.circle.getWidth() / 2), circlePos.y - (MyGdxGame.resources.circle.getHeight() / 2), MyGdxGame.resources.circle.getWidth(), MyGdxGame.resources.circle.getHeight());
+			joystick.draw(batch, 1);
 			batch.draw(MyGdxGame.resources.circle, (circlePos.x + center.x) - (CIRCLE_SIZE / 2), (circlePos.y + center.y) - (CIRCLE_SIZE / 2), CIRCLE_SIZE, CIRCLE_SIZE);
-		//}
+		}
 	}
 	
 	public void mouseDown(int x, int y) {
-		//if (Gdx.app.getType() != ApplicationType.Android) return;
+		if (Gdx.app.getType() != ApplicationType.Android) return;
 		
 		y = Gdx.graphics.getHeight() - y;
 

@@ -51,7 +51,6 @@ public class MenuUI extends Table{
 		connectButton.addListener(new ChangeListener() {			
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {	
-				System.out.println(MyGdxGame.network.isConnecting());
 				if(connectButton.isPressed()) {
 					if (!MyGdxGame.network.isConnecting()) {
 						MyGdxGame.network.setUsername(nameField.getText());						
