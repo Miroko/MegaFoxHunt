@@ -193,11 +193,15 @@ public class GameScreen implements Screen{
 		multiplexer.addProcessor(stageUI);
 		Gdx.input.setInputProcessor(multiplexer);
 		Gdx.input.setCatchBackKey(true);
+		
+		MyGdxGame.resources.tausta_ambienssi_loopattava.setLooping(true);
+		MyGdxGame.resources.tausta_ambienssi_loopattava.play();
 	}
 
 	@Override
 	public void hide() {
-		MyGdxGame.mapHandler.currentMap.dispose();			
+		MyGdxGame.mapHandler.currentMap.dispose();		
+		MyGdxGame.resources.tausta_ambienssi_loopattava.stop();
 	}
 
 	@Override

@@ -129,12 +129,12 @@ public class GameSimulation {
 	public boolean findWinner(){
 		if(chacedWon()){
 			Winner winner = new Winner();
-			winner.winner = "Chaced";
+			winner.winner = "Chased";
 			playerContainer.sendObjectToAll(winner);
 			return true;
 		}else if(chacersWon() || isTimeFull()){
 			Winner winner = new Winner();
-			winner.winner = "Chacers";
+			winner.winner = "Chasers";
 			playerContainer.sendObjectToAll(winner);
 			return true;
 		}

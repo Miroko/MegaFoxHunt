@@ -57,26 +57,33 @@ public class GameResources {
 	public Texture newgameButtonUpTexture;
 	public Texture newgameButtonDownTexture;
 	
+	public Texture victoryFox;
+	public Texture victoryDog;	
+	
 	public Texture btnNormal;
 	public Texture btnPressed;
 	
 	public Texture circle;
 	public Texture joystick;
+		
+	public Music megafox_band_demo;
+	public Music h‰vi‰jien_anthem;
+	public Music tausta_ambienssi_loopattava;
+	public Music voittajien_anthem;
 	
-	public Music MUSIC;	
-	public Music LOSE_ANTHEM;
-	public Music VICTORY_ANTHEM;	
-	public Music ROUND_START;
-	
-	public Sound BERRY_EAT;	
-	public Sound BOMB_EXPLOSION;
-	public Sound BOMB_FUSE;
-	public Sound BARRICADE_BUILD;
-	public Sound PICKUP;	
-	public Sound BUBBLE;
-	public Sound MENU_BUTTON;
-	public Sound CAUGHT;
-	public Sound GOT_CAUGHT;
+	public Sound aloitus_l‰htˆlaukaisu;
+	public Sound barrikadin_rakentaminen;	 
+	public Sound kettu_ker‰‰_barrikadin;
+	public Sound kettu_ker‰‰_bonuksen_lyhyt_‰‰ntely;
+	public Sound kettu_voittaa_ja_hurraa;
+	public Sound ketunkolo_sis‰‰n_ulos;	 
+	public Sound koira_ker‰‰_bonuksen_lyhyt_‰‰ntely;
+	public Sound koira_ker‰‰_pommin;
+	public Sound koira_saa_ketun_kiinni;
+	public Sound painike;
+	public Sound pommi_sytytyslanka;
+	public Sound start_painike;
+	public Sound marja_ker‰t‰‰n;
 	
 	public BitmapFont BASIC_FONT;
 		
@@ -135,6 +142,9 @@ public class GameResources {
 		 newgameButtonUpTexture = new Texture("data/newgame_nappula_up2.png");
 		 newgameButtonDownTexture = new Texture("data/newgame_nappula_down2.png");
 		 
+		 victoryDog = new Texture("data/koira_voitto.png");
+		 victoryFox = new Texture("data/kettu_voitto.png");
+		 
 		 circle = new Texture(Gdx.files.internal("data/circle.png"));
 		 circle.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		 
@@ -144,29 +154,28 @@ public class GameResources {
 		 btnNormal = new Texture("data/btn_normal.png");
 		 btnPressed = new Texture("data/btn_pressed.png");
 		 
-		 MUSIC = Gdx.audio.newMusic(Gdx.files.internal("data/audio/music.mp3"));
 		 
-		 BERRY_EAT = Gdx.audio.newSound(Gdx.files.internal("data/audio/berry_eat.mp3"));
-		 PICKUP = Gdx.audio.newSound(Gdx.files.internal("data/audio/berry_eat.mp3"));
+		 megafox_band_demo = Gdx.audio.newMusic(Gdx.files.internal("data/audio/music.mp3"));
+		 h‰vi‰jien_anthem = Gdx.audio.newMusic(Gdx.files.internal("data/audio/h‰vi‰jien_anthem.ogg"));
+		 tausta_ambienssi_loopattava = Gdx.audio.newMusic(Gdx.files.internal("data/audio/tausta_ambienssi_loopattava.ogg"));
+		 voittajien_anthem = Gdx.audio.newMusic(Gdx.files.internal("data/audio/voittajien_anthem.ogg"));
+		
+	 	 aloitus_l‰htˆlaukaisu = Gdx.audio.newSound(Gdx.files.internal("data/audio/aloitus_l‰htˆlaukaisu.ogg"));
+	 	 barrikadin_rakentaminen = Gdx.audio.newSound(Gdx.files.internal("data/audio/barrikadin_rakentaminen.ogg"));
+		 kettu_ker‰‰_barrikadin = Gdx.audio.newSound(Gdx.files.internal("data/audio/kettu_ker‰‰_barrikadin.ogg"));
+		 kettu_ker‰‰_bonuksen_lyhyt_‰‰ntely = Gdx.audio.newSound(Gdx.files.internal("data/audio/kettu_ker‰‰_bonuksen_lyhyt_‰‰ntely.ogg"));
+		 kettu_voittaa_ja_hurraa = Gdx.audio.newSound(Gdx.files.internal("data/audio/kettu_voittaa_ja_hurraa.ogg"));
+		 ketunkolo_sis‰‰n_ulos = Gdx.audio.newSound(Gdx.files.internal("data/audio/ketunkolo_sis‰‰n_ulos.ogg"));	 
+		 koira_ker‰‰_bonuksen_lyhyt_‰‰ntely = Gdx.audio.newSound(Gdx.files.internal("data/audio/koira_ker‰‰_bonuksen_lyhyt_‰‰ntely.ogg"));		
+		 koira_ker‰‰_pommin = Gdx.audio.newSound(Gdx.files.internal("data/audio/koira_ker‰‰_pommin.ogg"));
+		 koira_saa_ketun_kiinni = Gdx.audio.newSound(Gdx.files.internal("data/audio/koira_saa_ketun_kiinni.ogg"));
+		 painike = Gdx.audio.newSound(Gdx.files.internal("data/audio/painike.ogg"));
+		 pommi_sytytyslanka = Gdx.audio.newSound(Gdx.files.internal("data/audio/pommi_1,5sek_sytytyslanka.ogg"));
+		 start_painike = Gdx.audio.newSound(Gdx.files.internal("data/audio/start_painike.ogg"));
+		 marja_ker‰t‰‰n = Gdx.audio.newSound(Gdx.files.internal("data/audio/marja_ker‰t‰‰n.ogg"));
 		 
-		 BOMB_EXPLOSION = Gdx.audio.newSound(Gdx.files.internal("data/audio/bomb_explosion.mp3"));
-		 BOMB_FUSE = Gdx.audio.newSound(Gdx.files.internal("data/audio/bomb_fuse.mp3"));
+		 BASIC_FONT = new BitmapFont();		 
 		 
-		 BARRICADE_BUILD = Gdx.audio.newSound(Gdx.files.internal("data/audio/bomb_explosion.mp3"));
-		 
-		 LOSE_ANTHEM = Gdx.audio.newMusic(Gdx.files.internal("data/audio/music.mp3"));
-		 VICTORY_ANTHEM = Gdx.audio.newMusic(Gdx.files.internal("data/audio/music.mp3"));		
-		 
-		 ROUND_START = Gdx.audio.newMusic(Gdx.files.internal("data/audio/music.mp3"));		
-		 
-		 MENU_BUTTON = Gdx.audio.newSound(Gdx.files.internal("data/audio/bomb_explosion.mp3"));	
-		 
-		 CAUGHT = Gdx.audio.newSound(Gdx.files.internal("data/audio/bomb_explosion.mp3"));	
-		 GOT_CAUGHT = Gdx.audio.newSound(Gdx.files.internal("data/audio/bomb_explosion.mp3"));
-		 
-		 BUBBLE = Gdx.audio.newSound(Gdx.files.internal("data/audio/bubble.mp3"));
-	
-		 BASIC_FONT = new BitmapFont();
 	}
 	
 	private Animation generateAnimation(Texture texture, float frameDuration, int startX, int startY, int width, int height, int rows, int cols) {
@@ -201,20 +210,6 @@ public class GameResources {
 	}
 	
 	public void dispose(){
-		MUSIC.dispose();
-		BERRY_EAT.dispose();
-		BOMB_EXPLOSION.dispose();		
-		LOSE_ANTHEM.dispose();
-		VICTORY_ANTHEM.dispose();	
-		ROUND_START.dispose();		
-		BOMB_EXPLOSION.dispose();
-		BOMB_FUSE.dispose();
-		BARRICADE_BUILD.dispose();
-		PICKUP.dispose();	
-		MENU_BUTTON.dispose();
-		CAUGHT.dispose();
-		GOT_CAUGHT.dispose();
-		BUBBLE.dispose();
 
 		namefieldTexture.dispose();
 		
