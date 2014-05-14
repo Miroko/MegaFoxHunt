@@ -24,6 +24,7 @@ public class MenuUI extends Table{
 	
 	private ImageButton connectButton;
 	private ImageButton quitButton;
+	private ImageButton creditsButton;
 	private TextField nameField;
 	
 	public MenuUI(){
@@ -75,7 +76,22 @@ public class MenuUI extends Table{
 					MyGdxGame.shutdown();					
 				}
 			}
-		});				
+		});		
+		
+		TextureRegionDrawable creditsButtonUpImage = new TextureRegionDrawable(new TextureRegion(MyGdxGame.resources.creditsButtonUpTexture));
+		TextureRegionDrawable creditsButtonDownImage = new TextureRegionDrawable(new TextureRegion(MyGdxGame.resources.creditsButtonDownTexture));
+		
+		creditsButton = new ImageButton(creditsButtonUpImage, creditsButtonDownImage);	
+		creditsButton.addListener(new ChangeListener() {			
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {		
+				if(creditsButton.isPressed()){		
+					MyGdxGame.screenHandler.setScreenCredits();
+					
+					MyGdxGame.resources.painike.play();				
+				}
+			}
+		});	
 		
 		setBackground(new TextureRegionDrawable(new TextureRegion(MyGdxGame.resources.menuBackground)));
 		
@@ -84,6 +100,8 @@ public class MenuUI extends Table{
 		add(connectButton);
 		row();
 		add(quitButton);
+		row();
+		add(creditsButton);
 
 	}
 

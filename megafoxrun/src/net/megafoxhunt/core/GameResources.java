@@ -31,8 +31,15 @@ public class GameResources {
 	public Animation[] BOMB_ANIMATIONS = new Animation[10];
 	public Animation[] PICKUP_ITEM_ANIMATIONS = new Animation[10];
 	
+	public Texture creditsBackground;
 	public Texture lobbyBackground;	
 	public Texture menuBackground;
+	
+	public Texture creditsButtonUpTexture;
+	public Texture creditsButtonDownTexture;
+	
+	public Texture backButtonUpTexture;
+	public Texture backButtonDownTexture;
 	
 	public Texture namefieldTexture;
 	
@@ -113,11 +120,20 @@ public class GameResources {
 		 DOG_ANIMATIONS[FRONT_ANIMATION] = generateAnimation(CHARACTERS_TEXTURE, 0.042f, 0, 839, 79, 175, 1, 8);
 		 DOG_ANIMATIONS[BACK_ANIMATION] = generateAnimation(CHARACTERS_TEXTURE, 0.042f, 0, 689, 79, 150, 1, 8);
 		 
+		 creditsBackground = new Texture("data/credits.png");
+		 creditsBackground.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		 
 		 lobbyBackground = new Texture("data/tausta_lobby2.png");
 		 lobbyBackground.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		 
 		 menuBackground = new Texture("data/tausta2.png");
 		 menuBackground.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		 
+		 creditsButtonUpTexture = new Texture("data/credits_nappula_up2.png");
+		 creditsButtonDownTexture = new Texture("data/credits_nappula_down2.png");
+		 
+		 backButtonUpTexture = new Texture("data/back_nappula_up2.png");
+		 backButtonDownTexture = new Texture("data/back_nappula_down2.png");
 		 
 		 namefieldTexture = new Texture("data/Player_tausta2.png");
 		 
