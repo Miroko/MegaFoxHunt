@@ -119,8 +119,8 @@ public class GameNetwork {
 					}
 					else{
 						//MyGdxGame.resources.LOSE_ANTHEM.play();
-					}
-					MyGdxGame.screenHandler.setScreenLobby();
+					}					
+					MyGdxGame.screenHandler.setScreenLobby(winner.winner);
 				} 
 				/*
 				 * CHANGE GAME STATE
@@ -137,7 +137,7 @@ public class GameNetwork {
 								
 								//Robot robot = new Robot(MyGdxGame.network, 400);
 							} else if (changeState.roomState == ChangeState.LOBBY) {								
-								MyGdxGame.screenHandler.setScreenLobby();
+								MyGdxGame.screenHandler.setScreenLobby(" ");
 							}
 						}
 					});

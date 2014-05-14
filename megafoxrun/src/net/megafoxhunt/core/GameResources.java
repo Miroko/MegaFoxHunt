@@ -31,11 +31,32 @@ public class GameResources {
 	public Animation[] BOMB_ANIMATIONS = new Animation[10];
 	public Animation[] PICKUP_ITEM_ANIMATIONS = new Animation[10];
 	
-	public Texture connectButtonTexture;
-	public Texture quitButtonTexture;
-	public Texture preferDogButtonTexture;
-	public Texture preferFoxButtonTexture;
-	public Texture readyButtonTexture;
+	public Texture lobbyBackground;	
+	public Texture menuBackground;
+	
+	public Texture namefieldTexture;
+	
+	public Texture connectButtonUpTexture;
+	public Texture connectButtonDownTexture;
+	
+	public Texture quitButtonUpTexture;
+	public Texture quitButtonDownTexture;
+	
+	public Texture preferDogButtonUpTexture;
+	public Texture preferDogButtonDownTexture;
+	
+	public Texture preferFoxButtonUpTexture;
+	public Texture preferFoxButtonDownTexture;
+	
+	public Texture readyButtonUpTexture;
+	public Texture readyButtonDownTexture;
+
+	public Texture resumeButtonUpTexture;
+	public Texture resumeButtonDownTexture;
+	
+	public Texture newgameButtonUpTexture;
+	public Texture newgameButtonDownTexture;
+	
 	public Texture btnNormal;
 	public Texture btnPressed;
 	
@@ -58,7 +79,7 @@ public class GameResources {
 	public Sound GOT_CAUGHT;
 	
 	public BitmapFont BASIC_FONT;
-	
+		
 	public void init(){						
 		 ITEMS_TEXTURE = new Texture("data/items.png");
 		 ITEMS_TEXTURE.setFilter(TextureFilter.Linear, TextureFilter.Linear);
@@ -85,11 +106,31 @@ public class GameResources {
 		 DOG_ANIMATIONS[FRONT_ANIMATION] = generateAnimation(CHARACTERS_TEXTURE, 0.042f, 0, 839, 79, 175, 1, 8);
 		 DOG_ANIMATIONS[BACK_ANIMATION] = generateAnimation(CHARACTERS_TEXTURE, 0.042f, 0, 689, 79, 150, 1, 8);
 		 
-		 connectButtonTexture = new Texture("data/connect.png"); 
-		 quitButtonTexture = new Texture("data/quit.png");
-		 preferDogButtonTexture = new Texture("data/preferDog.png");
-		 preferFoxButtonTexture = new Texture("data/preferFox.png");
-		 readyButtonTexture = new Texture("data/ready.png");
+		 lobbyBackground = new Texture("data/tausta_lobby2.png");
+		 
+		 menuBackground = new Texture("data/tausta2.png");
+		 namefieldTexture = new Texture("data/Player_tausta2.png");
+		 
+		 connectButtonUpTexture = new Texture("data/connect_nappula_up2.png"); 
+		 connectButtonDownTexture = new Texture("data/connect_nappula_down2.png"); 
+		 
+		 quitButtonUpTexture = new Texture("data/quit_nappula_up2.png");
+		 quitButtonDownTexture = new Texture("data/quit_nappula_down2.png");
+		 
+		 preferDogButtonUpTexture = new Texture("data/preferdog_nappula_up2.png");
+		 preferDogButtonDownTexture = new Texture("data/preferdog_nappula_down2.png");		 
+		 
+		 preferFoxButtonUpTexture = new Texture("data/preferfox_nappula_up2.png");
+		 preferFoxButtonDownTexture = new Texture("data/preferfox_nappula_down2.png");	
+		 
+		 readyButtonUpTexture = new Texture("data/ready_nappula_up2.png");
+		 readyButtonDownTexture = new Texture("data/ready_nappula_down2.png");
+		 
+		 resumeButtonUpTexture = new Texture("data/resume_nappula_up2.png");
+		 resumeButtonDownTexture = new Texture("data/resume_nappula_down2.png");
+		 
+		 newgameButtonUpTexture = new Texture("data/newgame_nappula_up2.png");
+		 newgameButtonDownTexture = new Texture("data/newgame_nappula_down2.png");
 		 
 		 circle = new Texture(Gdx.files.internal("data/circle.png"));
 		 circle.setFilter(TextureFilter.Linear, TextureFilter.Linear);
@@ -100,7 +141,7 @@ public class GameResources {
 		 btnNormal = new Texture("data/btn_normal.png");
 		 btnPressed = new Texture("data/btn_pressed.png");
 		 
-		 MUSIC = Gdx.audio.newMusic(Gdx.files.internal("data/audio/music.mp3"));
+		 MUSIC = Gdx.audio.newMusic(Gdx.files.internal("data/audio/megafox band demo.mp3"));
 		 
 		 BERRY_EAT = Gdx.audio.newSound(Gdx.files.internal("data/audio/berry_eat.mp3"));
 		 PICKUP = Gdx.audio.newSound(Gdx.files.internal("data/audio/berry_eat.mp3"));
@@ -172,11 +213,22 @@ public class GameResources {
 		GOT_CAUGHT.dispose();
 		BUBBLE.dispose();
 
-		connectButtonTexture.dispose();
-		quitButtonTexture.dispose();
-		preferDogButtonTexture.dispose();
-		preferFoxButtonTexture.dispose();
-		readyButtonTexture.dispose();
+		namefieldTexture.dispose();
+		
+		connectButtonUpTexture.dispose();
+		connectButtonDownTexture.dispose();
+
+		quitButtonUpTexture.dispose();
+		quitButtonDownTexture.dispose();
+		
+		preferDogButtonUpTexture.dispose();
+		preferDogButtonDownTexture.dispose();
+		
+		preferFoxButtonUpTexture.dispose();
+		preferFoxButtonDownTexture.dispose();		
+		
+		readyButtonUpTexture.dispose();
+		readyButtonDownTexture.dispose();
 		
 		circle.dispose();
 		joystick.dispose();

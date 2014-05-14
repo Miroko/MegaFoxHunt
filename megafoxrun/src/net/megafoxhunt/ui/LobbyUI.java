@@ -9,6 +9,7 @@ import net.megafoxhunt.shared.KryoNetwork.SetPreferedTeam;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -21,13 +22,17 @@ public class LobbyUI extends Table{
 	private ImageButton startButton;
 	private ImageButton preferDogButton;
 	private ImageButton preferFoxButton;
+	private TextureRegionDrawable foxWon = null;
+	private TextureRegionDrawable dogWon = null;
+	private Image victoryImage = new Image(foxWon);
 	
 	public LobbyUI(){
 		setFillParent(true);
 			
-		TextureRegionDrawable startButtonImage = new TextureRegionDrawable(new TextureRegion(MyGdxGame.resources.readyButtonTexture));
+		TextureRegionDrawable readyButtonUpImage = new TextureRegionDrawable(new TextureRegion(MyGdxGame.resources.readyButtonUpTexture));
+		TextureRegionDrawable readyButtonDownImage = new TextureRegionDrawable(new TextureRegion(MyGdxGame.resources.readyButtonDownTexture));
 	
-		startButton = new ImageButton(startButtonImage);
+		startButton = new ImageButton(readyButtonUpImage, readyButtonDownImage);
 		startButton.addListener(new ChangeListener() {			
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {		
@@ -40,9 +45,10 @@ public class LobbyUI extends Table{
 			}
 		});
 		
-		TextureRegionDrawable preferFoxButtonImage = new TextureRegionDrawable(new TextureRegion(MyGdxGame.resources.preferFoxButtonTexture));
+		TextureRegionDrawable preferFoxButtonUpImage = new TextureRegionDrawable(new TextureRegion(MyGdxGame.resources.preferFoxButtonUpTexture));
+		TextureRegionDrawable preferFoxButtonDownImage = new TextureRegionDrawable(new TextureRegion(MyGdxGame.resources.preferFoxButtonDownTexture));
 		
-		preferFoxButton = new ImageButton(preferFoxButtonImage);
+		preferFoxButton = new ImageButton(preferFoxButtonUpImage, preferFoxButtonDownImage);
 		preferFoxButton.addListener(new ChangeListener() {			
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {		
@@ -54,9 +60,10 @@ public class LobbyUI extends Table{
 			}
 		});		
 		
-		TextureRegionDrawable preferDogButtonImage = new TextureRegionDrawable(new TextureRegion(MyGdxGame.resources.preferDogButtonTexture));
+		TextureRegionDrawable preferDogButtonUpImage = new TextureRegionDrawable(new TextureRegion(MyGdxGame.resources.preferDogButtonUpTexture));
+		TextureRegionDrawable preferDogButtonDownImage = new TextureRegionDrawable(new TextureRegion(MyGdxGame.resources.preferDogButtonDownTexture));
 		
-		preferDogButton = new ImageButton(preferDogButtonImage);
+		preferDogButton = new ImageButton(preferDogButtonUpImage, preferDogButtonDownImage);
 		preferDogButton.addListener(new ChangeListener() {			
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {		
@@ -67,14 +74,34 @@ public class LobbyUI extends Table{
 				}
 			}
 		});		
+
 		
+		dogWon = preferDogButtonDownImage;
+		foxWon = preferFoxButtonDownImage;
 		
+		setBackground(new TextureRegionDrawable(new TextureRegion(MyGdxGame.resources.lobbyBackground)));	
+		
+		add(victoryImage);
+		row();
 		add(startButton);
 		row();
 		add(preferDogButton).padTop(20);
 		row();
 		add(preferFoxButton).padTop(20);
 		
+	}
+	public void setWinner(String winner){
+		if(winner.equals("chaser")){
+			victoryImage.setVisible(true);
+			victoryImage.setDrawable(dogWon);
+		}
+		else if(winner.equals("chased")){
+			victoryImage.setVisible(true);
+			victoryImage.setDrawable(foxWon);
+		}
+		else{
+			victoryImage.setVisible(false);
+		}
 	}
 
 }

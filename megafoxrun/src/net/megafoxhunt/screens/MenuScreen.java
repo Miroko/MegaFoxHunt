@@ -5,7 +5,6 @@ import net.megafoxhunt.ui.MenuUI;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
@@ -14,9 +13,9 @@ public class MenuScreen implements Screen {
 	private Stage stageUI;		
 	
 	public MenuScreen(){	  		
-		stageUI = new Stage();	        
+		stageUI = new Stage();   
 		
-	    MenuUI menuUI = new MenuUI();	  
+	    MenuUI menuUI = new MenuUI();
 	  
 	    stageUI.addActor(menuUI);
 	    
@@ -44,7 +43,7 @@ public class MenuScreen implements Screen {
 
 	@Override
 	public void show() {
-		Gdx.input.setInputProcessor(stageUI);				
+		Gdx.input.setInputProcessor(stageUI);		
 	}
 
 	@Override
