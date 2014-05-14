@@ -14,9 +14,9 @@ public class MenuScreen implements Screen {
 	private Stage stageUI;		
 	
 	public MenuScreen(){	  		
-		stageUI = new Stage();	        
+		stageUI = new Stage();   
 		
-	    MenuUI menuUI = new MenuUI();	  
+	    MenuUI menuUI = new MenuUI();
 	  
 	    stageUI.addActor(menuUI);
 	    
@@ -44,7 +44,7 @@ public class MenuScreen implements Screen {
 
 	@Override
 	public void show() {
-		Gdx.input.setInputProcessor(stageUI);				
+		Gdx.input.setInputProcessor(stageUI);		
 	}
 
 	@Override
