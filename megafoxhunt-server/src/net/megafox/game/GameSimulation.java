@@ -32,6 +32,7 @@ import net.megafoxhunt.shared.KryoNetwork.AddChaser;
 import net.megafoxhunt.shared.KryoNetwork.AddChased;
 import net.megafoxhunt.shared.KryoNetwork.AddPowerup;
 import net.megafoxhunt.shared.KryoNetwork.AddBerry;
+import net.megafoxhunt.shared.KryoNetwork.ChangeTilesTypes;
 import net.megafoxhunt.shared.KryoNetwork.Move;
 import net.megafoxhunt.shared.KryoNetwork.PowerupRage;
 import net.megafoxhunt.shared.KryoNetwork.PowerupSpeed;
@@ -324,24 +325,35 @@ public class GameSimulation {
 			move(entity, targetHole.getX(), targetHole.getY(), Shared.DIRECTION_DOWN, true);
 			playerContainer.sendObjectToAll(new Move(entity.getId(), Shared.DIRECTION_DOWN, targetHole.getX(), targetHole.getY(), true), Visibility.BOTH);
 			
-			timer.schedule(new TimerListener(hole), 5000);
-			timer.schedule(new TimerListener(targetHole), 5000);	
+			timer.schedule(new HoleTask((Hole)hole, (Hole)targetHole), 5000);
 		}		
 	}
 	
-	class TimerListener extends TimerTask {
+	class HoleTask extends TimerTask {
 
-		private Entity entity;
+		private Hole hole1;
+		private Hole hole2;
 		
-		public TimerListener(Entity entity) {
-			this.entity = entity;
+		public HoleTask(Hole hole1, Hole hole2) {
+			this.hole1 = hole1;
+			this.hole2 = hole2;
+			
+			ChangeTilesTypes changeTileTypes = new ChangeTilesTypes();
+			changeTileTypes.addTile(hole1.getX(), hole1.getY(), 67);
+			changeTileTypes.addTile(hole2.getX(), hole2.getY(), 67);
+			playerContainer.sendObjectToAll(changeTileTypes);
 		}
 		
 
 		@Override
 		public void run() {
-			if (entity == null) return;
-			else if (entity instanceof Hole)((Hole)entity).setHoleCooldown(false);			
+			hole1.setHoleCooldown(false);
+			hole2.setHoleCooldown(false);
+			
+			ChangeTilesTypes changeTileTypes = new ChangeTilesTypes();
+			changeTileTypes.addTile(hole1.getX(), hole1.getY(), 66);
+			changeTileTypes.addTile(hole2.getX(), hole2.getY(), 66);
+			playerContainer.sendObjectToAll(changeTileTypes);
 		}
 	}
 	class RageDeactivateTask extends TimerTask{

@@ -171,7 +171,7 @@ public class GameResources {
 		 btnPressed = new Texture("data/btn_pressed.png");
 		 
 		 
-		 megafox_band_demo = Gdx.audio.newMusic(Gdx.files.internal("data/audio/music.mp3"));
+		 megafox_band_demo = Gdx.audio.newMusic(Gdx.files.internal("data/audio/music.ogg"));
 		 häviäjien_anthem = Gdx.audio.newMusic(Gdx.files.internal("data/audio/haviajien_anthem.ogg"));
 		 tausta_ambienssi_loopattava = Gdx.audio.newMusic(Gdx.files.internal("data/audio/tausta_ambienssi_loopattava.ogg"));
 		 voittajien_anthem = Gdx.audio.newMusic(Gdx.files.internal("data/audio/voittajien_anthem.ogg"));

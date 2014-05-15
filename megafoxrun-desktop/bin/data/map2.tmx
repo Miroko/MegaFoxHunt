@@ -93,6 +93,11 @@
     <property name="wall" value=""/>
    </properties>
   </tile>
+  <tile id="66">
+   <properties>
+    <property name="wall" value=""/>
+   </properties>
+  </tile>
  </tileset>
  <layer name="Background" width="34" height="19">
   <data encoding="base64" compression="zlib">
@@ -101,7 +106,7 @@
  </layer>
  <layer name="Main" width="34" height="19">
   <data encoding="base64" compression="zlib">
-   eJy9VtsNwjAMdEEMUGABikD8Ahv0jxFg/0GopZx0utohgMCSReo46fn8oIOZXRp1MekY2FrPZ7qddDfp3drEfW/0vCq2b+Re7sA9ffntErwuZ5tzcC17Q3keyb+zOV9jcC/j0LhOtNa9iAPYnK91xRd8MpcRjt7monuRb5YfYIJvFF+Ew7l37iLuI9+t2DqysdQ4zPKi3Oo57J2S86gj1k35XRJejo/vOUx6lHf3ZNeYBrqLuYmk1leMg2NgzHuyY433OS+Psn7YnIcF3cV5g43r7ZP+bz2zS9ZqYxzo/9rMgx/zwnwgPu0r5wD1wXy/qtNabFqPjC/rq2zutswPrVntFZPnKAeRje+t4VDcq+T9Ou84v1EPvcuH1rz2oufa55znO5sFLMCP+fhpfUQz/PamP5+LfLP5wZjXyf7e4r66ij9zlvkCR+v3xy8E3x/Rf8G/1Xl5AgbANHk=
+   eJy9VVsOgkAMLBoPgHIBMBp/1Rvwx/0vJE1oMhmm60KMTRqg2+3OTh8MZvaq1MOso7DV7s+0m7W3enHfCb5PG/eX4kacdnk2pvG6PG3NwXtZG5bvEfwbW/M1iriIg+/1ILyMX93Jxfk6F3yDT+RS4WhtLbymfLP8BKbwVfdTOJx7505xr3w7sjVgQylxmOWFueV9sfZI9kcdoV6W5xHw4v0wzm3WO53dgp3vNEAs5EZJqa8QB94BMV/BHu9xHnPGPBwgFuYtbFhve/q/dk+fvLMNcUT/l2Ze+DEvIS09kYOoD+T7W50qyeoR8WV9lc3dmvnBNcu9YvStcqBsGLeEg3GfkvN53mF+VQ9t5YNrnmvAc+1zzvOdzQKUwB/zcW99qBk+bfTHfco3mx+I+ZysX0331Zv8kbPMd+/8+LU4BvUv+Lc6Lx/lhzGt
   </data>
  </layer>
  <layer name="Extra" width="34" height="19">
