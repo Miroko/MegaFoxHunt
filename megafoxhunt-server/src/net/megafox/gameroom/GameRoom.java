@@ -32,7 +32,7 @@ public class GameRoom extends Thread {
 	private static final int MAX_SIZE = 12;
 	private static final long UPDATE_RATE_MS = 100;
 	
-	public static final int MATCH_LENGHT_SECONDS_DEFAULT =  (60 * 3);
+	public static final int MATCH_LENGHT_SECONDS_DEFAULT =  (60 * 5);
 	
 	public static final int STATE_LOBBY = KryoNetwork.ChangeState.LOBBY;
 	public static final int STATE_GAME = KryoNetwork.ChangeState.GAME;

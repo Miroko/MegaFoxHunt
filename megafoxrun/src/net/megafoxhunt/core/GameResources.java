@@ -226,7 +226,6 @@ public class GameResources {
 	}
 	
 	public void dispose(){
-
 		namefieldTexture.dispose();
 		
 		connectButtonUpTexture.dispose();
@@ -251,6 +250,25 @@ public class GameResources {
 		btnPressed.dispose();
 		
 		BASIC_FONT.dispose();
+		
+		megafox_band_demo.dispose();
+		h‰vi‰jien_anthem.dispose();
+		tausta_ambienssi_loopattava.dispose();
+		voittajien_anthem.dispose();
+		
+		aloitus_l‰htˆlaukaisu.dispose();
+		barrikadin_rakentaminen.dispose();
+		kettu_ker‰‰_barrikadin.dispose();
+		kettu_ker‰‰_bonuksen_lyhyt_‰‰ntely.dispose();
+		kettu_voittaa_ja_hurraa.dispose();
+		ketunkolo_sis‰‰n_ulos.dispose(); 
+		koira_ker‰‰_bonuksen_lyhyt_‰‰ntely.dispose();		
+		koira_ker‰‰_pommin.dispose();
+		koira_saa_ketun_kiinni.dispose();
+		painike.dispose();
+		pommi_sytytyslanka.dispose();
+		start_painike.dispose();
+		marja_ker‰t‰‰n.dispose();
 	}
 	
 	
