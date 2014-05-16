@@ -34,11 +34,15 @@ public class ServerRooms {
 		return roomAddedTo;		
 	}
 	public synchronized GameRoom createNewRoom(){
+		System.out.println();
+		System.out.println("creating new room");
 		GameRoom room = new GameRoom(this);	
+		System.out.println("New room created: " + room.toString());
 		rooms.add(room);			
 		return room;
 	}
-	public synchronized void removeRoom(GameRoom room){	
+	public synchronized void removeRoom(GameRoom room){
+		System.out.println("Room removed: " + room.toString());
 		room.removePlayers();
 		rooms.remove(room);
 	}
@@ -65,5 +69,16 @@ public class ServerRooms {
 	}
 	public void printInfo() {
 		System.out.println("Rooms: " + rooms.size());		
+	}
+	
+	public void printRooms() {
+		System.out.println();
+		printInfo();
+		for (GameRoom room : rooms) {
+			System.out.println("-");
+			System.out.println(room.toString() + " has " + room.getPlayerContainer().getPlayersConcurrentSafe().size() + " players.");
+			System.out.println("-");
+		}
+		System.out.println();
 	}
 }

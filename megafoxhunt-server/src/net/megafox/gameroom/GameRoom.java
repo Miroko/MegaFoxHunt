@@ -112,6 +112,12 @@ public class GameRoom extends Thread {
 	public void switchState(int state) {
 		roomState = state;		
 		
+		System.out.println("Room: " + this.toString() + " changed state to: " + (state == STATE_LOBBY ? "lobby" : "game"));
+		System.out.println("Room: " + this.toString() + " has " + this.playerContainer.getPlayersConcurrentSafe().size() + " players.");
+		System.out.println();
+		
+		serverRooms.printRooms();
+		
 		ChangeState changeState = new ChangeState();
 		changeState.roomState = roomState;	
 		playerContainer.sendObjectToAll(changeState);		
@@ -284,6 +290,8 @@ public class GameRoom extends Thread {
 	 * @param player
 	 */
 	public void addPlayerToRoom(PlayerConnection player) {
+		System.out.println(player.getName() + "(" + player.getMyId() + ")" + " joined to room: " + this.toString());
+		
 		playerContainer.addPlayer(player);
 		player.setMyCurrentRoom(this);
 
@@ -322,7 +330,9 @@ public class GameRoom extends Thread {
 	 * Removes player and informs other players about it
 	 * @param player
 	 */
-	public boolean removePlayer(PlayerConnection playerConnection) {			
+	public boolean removePlayer(PlayerConnection playerConnection) {
+		System.out.println(playerConnection.getName() + "(" + playerConnection.getMyId() + ")" + " left the room: " + this.toString());
+		
 		RemovePlayer removePlayer = new RemovePlayer();
 		removePlayer.id = playerConnection.getMyId();
 		playerContainer.sendObjectToAllExcept(playerConnection, removePlayer);
