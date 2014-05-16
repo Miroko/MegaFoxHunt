@@ -272,6 +272,7 @@ public class GameNetwork {
 				 */
 				else if (object instanceof ChangeTilesTypes) {
 					ChangeTilesTypes changeTileType = (ChangeTilesTypes)object;
+					if (MyGdxGame.mapHandler == null || MyGdxGame.mapHandler.currentMap == null) return;
 					
 					for (Tile tile : changeTileType.getTiles()) {
 						MyGdxGame.mapHandler.currentMap.changeTile(tile.x, tile.y, tile.type);
