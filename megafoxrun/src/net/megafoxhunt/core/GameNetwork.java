@@ -232,25 +232,31 @@ public class GameNetwork {
 				 */
 				else if (object instanceof PowerupSpeed) {
 					PowerupSpeed speed = (PowerupSpeed) object;				
-					EntityMovable entity = (EntityMovable)UserContainer.getUserByID(speed.id).getControlledEntity();
+
+					User user = UserContainer.getUserByID(speed.id);
+					if (user == null) return;
+					EntityMovable entity = user.getControlledEntity();
+					if (entity == null) return;
+					
 					if(speed.on == true){
 						entity.setSpeedMultiplier(1.25f);
-					}
-					else if (speed.on == false){
+						MyGdxGame.resources.koira_ker‰‰_bonuksen_lyhyt_‰‰ntely.play();	
+					} else if (speed.on == false){
 						entity.resetSpeedMultiplier();
-					}				
-					MyGdxGame.resources.koira_ker‰‰_bonuksen_lyhyt_‰‰ntely.play();					
+					}			
 				}
 				/*
 				 * POWERUP RAGE
 				 */
 				else if (object instanceof PowerupRage) {
 					PowerupRage rage = (PowerupRage)object;
-					EntityMovable entity = (EntityMovable)UserContainer.getUserByID(rage.id).getControlledEntity();
+					User user = UserContainer.getUserByID(rage.id);
+					if (user == null) return;
+					EntityMovable entity = user.getControlledEntity();
 					if (entity != null) {
 						entity.setRageMode(rage.on);
+						MyGdxGame.resources.kettu_ker‰‰_bonuksen_lyhyt_‰‰ntely.play();
 					}
-					MyGdxGame.resources.kettu_ker‰‰_bonuksen_lyhyt_‰‰ntely.play();
 				}
 				/*
 				 * CHANGE MAP
