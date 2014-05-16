@@ -48,6 +48,8 @@ public class TouchJoystick {
 		joystick.setX(center.x - joystick.getWidth() / 2);
 		joystick.setY(center.y);
 		joystick.setScale(1, 0);
+		
+		mouseDown((int)(center.x + 35), (int)(center.y + 35), true);
 	}
 	
 	public void draw(SpriteBatch batch) {
@@ -64,12 +66,13 @@ public class TouchJoystick {
 		
 		if (Gdx.app.getType() == ApplicationType.Android) {
 			//batch.draw(MyGdxGame.resources.circle, circlePos.x - (MyGdxGame.resources.circle.getWidth() / 2), circlePos.y - (MyGdxGame.resources.circle.getHeight() / 2), MyGdxGame.resources.circle.getWidth(), MyGdxGame.resources.circle.getHeight());
+			batch.draw(MyGdxGame.resources.btnNormal, center.x - 50, center.y - 50, 100, 100);
 			joystick.draw(batch, 1);
 			batch.draw(MyGdxGame.resources.circle, (circlePos.x + center.x) - (CIRCLE_SIZE / 2), (circlePos.y + center.y) - (CIRCLE_SIZE / 2), CIRCLE_SIZE, CIRCLE_SIZE);
 		}
 	}
 	
-	public void mouseDown(int x, int y) {
+	public void mouseDown(int x, int y, boolean isStartPos) {
 		if (Gdx.app.getType() != ApplicationType.Android) return;
 		
 		y = Gdx.graphics.getHeight() - y;
@@ -97,14 +100,16 @@ public class TouchJoystick {
 			return;
 		}
 		
+		if (isStartPos) return;
+		
 		float angle = circlePos.angle();
-		if (angle < 45 && angle > 0 || angle < 360 && angle > 315) {
+		if (angle < 40 && angle > 5 || angle < 355 && angle > 320) {
 			sendDirection(Shared.DIRECTION_RIGHT);
-		} else if (angle > 45 && angle < 135) {
+		} else if (angle > 50 && angle < 130) {
 			sendDirection(Shared.DIRECTION_UP);
-		} else if (angle > 135 && angle < 225) {
+		} else if (angle > 140 && angle < 220) {
 			sendDirection(Shared.DIRECTION_LEFT);
-		} else if (angle > 225 && angle < 315) {
+		} else if (angle > 230 && angle < 310) {
 			sendDirection(Shared.DIRECTION_DOWN);
 		}
 	}

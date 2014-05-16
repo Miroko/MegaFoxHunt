@@ -110,7 +110,7 @@ public class GameInputProcessor extends InputAdapter implements GestureListener 
 		//int width = Gdx.graphics.getWidth();
 		//int height = Gdx.graphics.getHeight();
 		
-		touchJoystick.mouseDown(mouseX, mouseY);
+		touchJoystick.mouseDown(mouseX, mouseY, false);
 		
 		/*
 		int calculatedTopAndDownAreas = (int)(height * 0.35f);
