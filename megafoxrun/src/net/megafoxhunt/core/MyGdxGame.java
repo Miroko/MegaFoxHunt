@@ -7,8 +7,8 @@ import com.badlogic.gdx.Graphics.DisplayMode;
 
 public class MyGdxGame extends Game {	
 	
-	public static final String IP_SERVER = "54.72.44.136";
-	//public static final String IP_SERVER = "54.72.44.136";
+	public static final String IP_SERVER = "54.76.186.34";
+	//public static final String IP_SERVER = "54.76.186.34";
 	
 	public static GameResources resources; 	
 	public static GameNetwork network;
