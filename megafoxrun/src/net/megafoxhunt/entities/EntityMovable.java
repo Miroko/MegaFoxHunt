@@ -178,7 +178,7 @@ public abstract class EntityMovable extends Entity{
 			newMove = null;
 			movementQueue.clear();
 			
-			MyGdxGame.resources.ketunkolo_sis‰‰n_ulos.play();
+			MyGdxGame.resources.ketunkolo_sisaan_ulos.play();
 			
 		} else movementQueue.offer(newMove);
 	}

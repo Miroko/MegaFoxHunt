@@ -74,27 +74,27 @@ public class GameResources {
 	public Texture joystick;
 		
 	public Music megafox_band_demo;
-	public Music h‰vi‰jien_anthem;
+	public Music haviajien_anthem;
 	public Music tausta_ambienssi_loopattava;
 	public Music voittajien_anthem;
 	
-	public Sound aloitus_l‰htˆlaukaisu;
+	public Sound aloitus_lahtolaukaisu;
 	public Sound barrikadin_rakentaminen;	 
-	public Sound kettu_ker‰‰_barrikadin;
-	public Sound kettu_ker‰‰_bonuksen_lyhyt_‰‰ntely;
+	public Sound kettu_keraa_barrikaadin;
+	public Sound kettu_keraa_bonuksen_lyhyt;
 	public Sound kettu_voittaa_ja_hurraa;
-	public Sound ketunkolo_sis‰‰n_ulos;	 
-	public Sound koira_ker‰‰_bonuksen_lyhyt_‰‰ntely;
-	public Sound koira_ker‰‰_pommin;
+	public Sound ketunkolo_sisaan_ulos;
+	public Sound koira_keraa_bonuksen_lyhyt;
+	public Sound koira_keraa_pommin;
 	public Sound koira_saa_ketun_kiinni;
 	public Sound painike;
 	public Sound pommi_sytytyslanka;
 	public Sound start_painike;
-	public Sound marja_ker‰t‰‰n;
+	public Sound marja_kerataan;
 	
 	public BitmapFont BASIC_FONT;
 		
-	public void init(){						
+	public void init(){
 		 ITEMS_TEXTURE = new Texture("data/items.png");
 		 ITEMS_TEXTURE.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		 
@@ -172,23 +172,23 @@ public class GameResources {
 		 
 		 
 		 megafox_band_demo = Gdx.audio.newMusic(Gdx.files.internal("data/audio/music.ogg"));
-		 h‰vi‰jien_anthem = Gdx.audio.newMusic(Gdx.files.internal("data/audio/haviajien_anthem.ogg"));
+		 haviajien_anthem = Gdx.audio.newMusic(Gdx.files.internal("data/audio/haviajien_anthem.ogg"));
 		 tausta_ambienssi_loopattava = Gdx.audio.newMusic(Gdx.files.internal("data/audio/tausta_ambienssi_loopattava.ogg"));
 		 voittajien_anthem = Gdx.audio.newMusic(Gdx.files.internal("data/audio/voittajien_anthem.ogg"));
 		
-	 	 aloitus_l‰htˆlaukaisu = Gdx.audio.newSound(Gdx.files.internal("data/audio/aloitus_lahtolaukaisu.ogg"));
+	 	 aloitus_lahtolaukaisu = Gdx.audio.newSound(Gdx.files.internal("data/audio/aloitus_lahtolaukaisu.ogg"));
 	 	 barrikadin_rakentaminen = Gdx.audio.newSound(Gdx.files.internal("data/audio/barrikadin_rakentaminen.ogg"));
-		 kettu_ker‰‰_barrikadin = Gdx.audio.newSound(Gdx.files.internal("data/audio/kettu_keraa_barrikadin.ogg"));
-		 kettu_ker‰‰_bonuksen_lyhyt_‰‰ntely = Gdx.audio.newSound(Gdx.files.internal("data/audio/kettu_keraa_bonuksen_lyhyt_aantely.ogg"));
+		 kettu_keraa_barrikaadin = Gdx.audio.newSound(Gdx.files.internal("data/audio/kettu_keraa_barrikadin.ogg"));
+		 kettu_keraa_bonuksen_lyhyt = Gdx.audio.newSound(Gdx.files.internal("data/audio/kettu_keraa_bonuksen_lyhyt_aantely.ogg"));
 		 kettu_voittaa_ja_hurraa = Gdx.audio.newSound(Gdx.files.internal("data/audio/kettu_voittaa_ja_hurraa.ogg"));
-		 ketunkolo_sis‰‰n_ulos = Gdx.audio.newSound(Gdx.files.internal("data/audio/ketunkolo_sisaan_ulos.ogg"));	 
-		 koira_ker‰‰_bonuksen_lyhyt_‰‰ntely = Gdx.audio.newSound(Gdx.files.internal("data/audio/koira_keraa_bonuksen_lyhyt_aantely.ogg"));		
-		 koira_ker‰‰_pommin = Gdx.audio.newSound(Gdx.files.internal("data/audio/koira_keraa_pommin.ogg"));
+		 ketunkolo_sisaan_ulos = Gdx.audio.newSound(Gdx.files.internal("data/audio/ketunkolo_sisaan_ulos.ogg"));
+		 koira_keraa_bonuksen_lyhyt = Gdx.audio.newSound(Gdx.files.internal("data/audio/koira_keraa_bonuksen_lyhyt_aantely.ogg"));
+		 koira_keraa_pommin = Gdx.audio.newSound(Gdx.files.internal("data/audio/koira_keraa_pommin.ogg"));
 		 koira_saa_ketun_kiinni = Gdx.audio.newSound(Gdx.files.internal("data/audio/koira_saa_ketun_kiinni.ogg"));
 		 painike = Gdx.audio.newSound(Gdx.files.internal("data/audio/painike.ogg"));
 		 pommi_sytytyslanka = Gdx.audio.newSound(Gdx.files.internal("data/audio/pommi_1_5sek_sytytyslanka.ogg"));
 		 start_painike = Gdx.audio.newSound(Gdx.files.internal("data/audio/start_painike.ogg"));
-		 marja_ker‰t‰‰n = Gdx.audio.newSound(Gdx.files.internal("data/audio/marja_kerataan.ogg"));
+		 marja_kerataan = Gdx.audio.newSound(Gdx.files.internal("data/audio/marja_kerataan.ogg"));
 		 
 		 BASIC_FONT = new BitmapFont();		 
 		 
@@ -252,23 +252,23 @@ public class GameResources {
 		BASIC_FONT.dispose();
 		
 		megafox_band_demo.dispose();
-		h‰vi‰jien_anthem.dispose();
+		haviajien_anthem.dispose();
 		tausta_ambienssi_loopattava.dispose();
 		voittajien_anthem.dispose();
 		
-		aloitus_l‰htˆlaukaisu.dispose();
+		aloitus_lahtolaukaisu.dispose();
 		barrikadin_rakentaminen.dispose();
-		kettu_ker‰‰_barrikadin.dispose();
-		kettu_ker‰‰_bonuksen_lyhyt_‰‰ntely.dispose();
+		kettu_keraa_barrikaadin.dispose();
+		kettu_keraa_bonuksen_lyhyt.dispose();
 		kettu_voittaa_ja_hurraa.dispose();
-		ketunkolo_sis‰‰n_ulos.dispose(); 
-		koira_ker‰‰_bonuksen_lyhyt_‰‰ntely.dispose();		
-		koira_ker‰‰_pommin.dispose();
+		ketunkolo_sisaan_ulos.dispose();
+		koira_keraa_bonuksen_lyhyt.dispose();
+		koira_keraa_pommin.dispose();
 		koira_saa_ketun_kiinni.dispose();
 		painike.dispose();
 		pommi_sytytyslanka.dispose();
 		start_painike.dispose();
-		marja_ker‰t‰‰n.dispose();
+		marja_kerataan.dispose();
 	}
 	
 	

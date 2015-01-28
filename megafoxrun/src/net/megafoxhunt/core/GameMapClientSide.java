@@ -60,7 +60,7 @@ public class GameMapClientSide {
 				object.setShouldBeRemoved(true);
 				if (object instanceof Barricade){
 					barricades.remove(object);
-					MyGdxGame.resources.kettu_ker‰‰_barrikadin.play();
+					MyGdxGame.resources.kettu_keraa_barrikaadin.play();
 				} else if (object instanceof Berry) {
 					berryCount--;
 				}

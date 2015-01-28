@@ -34,10 +34,10 @@ public class User {
 	public void setItemType(int itemType) {
 		this.itemType = itemType;
 		if(itemType == Shared.ITEM_BOMB){
-			MyGdxGame.resources.koira_ker‰‰_pommin.play();
+			MyGdxGame.resources.koira_keraa_pommin.play();
 		}
 		else if(itemType == Shared.ITEM_BARRICADE){
-			MyGdxGame.resources.kettu_ker‰‰_barrikadin.play();
+			MyGdxGame.resources.kettu_keraa_barrikaadin.play();
 		}
 	}
 	

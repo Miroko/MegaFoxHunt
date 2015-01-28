@@ -115,7 +115,7 @@ public class GameNetwork {
 						MyGdxGame.resources.voittajien_anthem.play();
 					}
 					else{
-						MyGdxGame.resources.h‰vi‰jien_anthem.play();
+						MyGdxGame.resources.haviajien_anthem.play();
 					}					
 					MyGdxGame.screenHandler.getLobby().lobbyUI.setWinner(winner.winner);
 				} 
@@ -130,7 +130,7 @@ public class GameNetwork {
 							if (changeState.roomState == ChangeState.GAME) {								
 								MyGdxGame.screenHandler.setScreenGame();
 								
-								MyGdxGame.resources.aloitus_l‰htˆlaukaisu.play();
+								MyGdxGame.resources.aloitus_lahtolaukaisu.play();
 								
 								MyGdxGame.screenHandler.getLobby().lobbyUI.setWinner("null");
 								
@@ -240,7 +240,7 @@ public class GameNetwork {
 					
 					if(speed.on == true){
 						entity.setSpeedMultiplier(1.25f);
-						MyGdxGame.resources.koira_ker‰‰_bonuksen_lyhyt_‰‰ntely.play();	
+						MyGdxGame.resources.koira_keraa_bonuksen_lyhyt.play();
 					} else if (speed.on == false){
 						entity.resetSpeedMultiplier();
 					}			
@@ -255,7 +255,7 @@ public class GameNetwork {
 					EntityMovable entity = user.getControlledEntity();
 					if (entity != null) {
 						entity.setRageMode(rage.on);
-						MyGdxGame.resources.kettu_ker‰‰_bonuksen_lyhyt_‰‰ntely.play();
+						MyGdxGame.resources.kettu_keraa_bonuksen_lyhyt.play();
 					}
 				}
 				/*
